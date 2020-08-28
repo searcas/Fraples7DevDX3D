@@ -149,15 +149,23 @@
   <ItemGroup>
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Debugging\WindowsMessageMap.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Exceptions\FraplesException.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\Input Events\KeyboardEvent.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\Input Events\MouseEvents.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Platform\Windows\Window.cpp" />
     <ClCompile Include="WinEntryPoint.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Debugging\WindowsMessageMap.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Exceptions\FraplesException.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Exceptions\WindowsThrowMacros.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Fraples7.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\Input Events\KeyboardEvent.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\Input Events\MouseEvents.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Platform\Windows\Window.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Fraples7DevDX3D.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

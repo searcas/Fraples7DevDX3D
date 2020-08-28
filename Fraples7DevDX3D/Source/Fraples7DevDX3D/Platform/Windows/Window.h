@@ -1,6 +1,8 @@
 #pragma once
 #include "../../Core/Fraples7.h"
 #include "../../Core/Exceptions/FraplesException.h"
+#include "../../Input Events/KeyboardEvent.h"
+#include "../../Input Events/MouseEvents.h"
 
 namespace FraplesDev {
 	class Window
@@ -51,14 +53,23 @@ namespace FraplesDev {
 		~Window();
 		Window(const Window&) = delete;
 		Window& operator =(const Window&) = delete;
-
+	public:
+		 Keyboard _mKey;
+		 Mouse _mMouse;
 	private:
+		void ConfineCursor()noexcept;
+		void FreeCursor()noexcept;
+		void ShowCursor()noexcept;
+		void HideCursor()noexcept;
+
 		static LRESULT CALLBACK HandleMsgSetup(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 		static LRESULT CALLBACK HandleMsgThunk(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 		LRESULT HandleMsg(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lparam) noexcept;
 	private:
+		bool _mCursorEnabled = true;
 		int _mWidth;
 		int _mHeight;
 		HWND _mHwnd;
+		std::vector<BYTE>_mRawBuffer;
 	};
 }

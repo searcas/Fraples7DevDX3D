@@ -73,7 +73,6 @@ namespace FraplesDev {
 
 	Window::WindowClass::WindowClass() noexcept
 	{
-		const auto pClassName = "Fraples7 Engine Dx3D";
 		WNDCLASSEX wc = { 0 };
 		wc.cbSize = sizeof(wc);
 		wc.style = CS_OWNDC;
@@ -81,7 +80,7 @@ namespace FraplesDev {
 		wc.cbClsExtra = 0;
 		wc.cbWndExtra = 0;
 		wc.hInstance = GetInstance();
-		wc.hIcon = nullptr;
+		wc.hIcon = reinterpret_cast<HICON>(LoadImage(hInst,GetName(),IMAGE_ICON,32,32,LR_DEFAULTSIZE));
 		wc.hCursor = nullptr;
 		wc.hbrBackground = nullptr;
 		wc.lpszMenuName = nullptr;
@@ -103,7 +102,7 @@ namespace FraplesDev {
 		wr.right = width + wr.left;
 		wr.top = 100;
 		wr.bottom = height + wr.top;
-		if (AdjustWindowRect(&wr, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE) == 0);
+		if (AdjustWindowRect(&wr, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE) == 0)
 		{
 			throw FPL_LAST_EXCEPT();
 		}
@@ -124,6 +123,29 @@ namespace FraplesDev {
 	Window::~Window()
 	{
 		DestroyWindow(_mHwnd);
+	}
+
+	void Window::ConfineCursor() noexcept
+	{
+		RECT rect;
+		GetClientRect(_mHwnd, &rect);
+		MapWindowPoints(_mHwnd, nullptr, (POINT*)&rect, 2);
+		ClipCursor(&rect);
+	}
+
+	void Window::FreeCursor() noexcept
+	{
+		ClipCursor(nullptr);
+	}
+
+	void Window::ShowCursor() noexcept
+	{
+		while (::ShowCursor(FALSE) >= 0);
+	}
+
+	void Window::HideCursor() noexcept
+	{
+		while (::ShowCursor(true) < 0);
 	}
 
 	LRESULT Window::HandleMsgSetup(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -159,9 +181,145 @@ namespace FraplesDev {
 		switch (msg)
 		{
 		case WM_CLOSE:
+		{
 			PostQuitMessage(0);
 			return 0;
 		}
+		case WM_KILLFOCUS:
+		{
+			_mKey.ClearState();
+			break;
+		}
+		/********* KEYBOARD *********/
+		case WM_KEYDOWN:
+			// syskey commands need to be handled to track ALT key (VK_MENU) and F10
+		case WM_SYSKEYDOWN:
+		{	// stifle this keyboard message if imgui wants to capture
+			if (!(lparam & 0x40000000) || _mKey.AutorepeatIsEnabled())
+			{
+				_mKey.OnKeyPressed(static_cast<unsigned char>(wParam));
+			}
+			break;
+		}
+		case WM_KEYUP:
+		case WM_SYSKEYUP:
+		{
+			_mKey.OnKeyReleased(static_cast<unsigned char>(wParam));
+			break;
+		}
+		case WM_CHAR:
+			_mKey.OnChar(static_cast<unsigned char>(wParam));
+		case WM_MOUSEMOVE:
+		{
+			const POINTS pt = MAKEPOINTS(lparam);
+			//cursorless exclusive gets first dibs
+			if (!_mCursorEnabled)
+			{
+				if (!_mMouse.IsInWindow())
+				{
+					SetCapture(hwnd);
+					_mMouse.OnMouseEnter();
+					HideCursor();
+				}
+				break;
+			}
+			if (pt.x >= 0 && pt.x < _mWidth && pt.y >= 0 && pt.y < _mHeight)
+			{
+				_mMouse.OnMouseMove(pt.x, pt.y);
+				if (!_mMouse.IsInWindow())
+				{
+					SetCapture(hwnd);
+					_mMouse.OnMouseEnter();
+				}
+			}
+			//not in client -> log move /maintain capture if button down
+			else
+			{
+				if (wParam & (MK_LBUTTON | MK_RBUTTON))
+				{
+					_mMouse.OnMouseMove(pt.x, pt.y);
+				}
+				else
+				{
+					ReleaseCapture();
+					_mMouse.OnMouseLeave();
+				}
+			}
+			break;
+		}
+		case WM_LBUTTONDOWN:
+		{
+			SetForegroundWindow(hwnd);
+			if (!_mCursorEnabled)
+			{
+				ConfineCursor();
+				HideCursor();
+			}
+			const POINTS pt = MAKEPOINTS(lparam);
+			_mMouse.OnLeftPressed(pt.x, pt.y);
+			break;
+		}
+		case WM_RBUTTONDOWN:
+		{
+			const POINTS pt = MAKEPOINTS(lparam);
+			_mMouse.OnRightPressed(pt.x, pt.y);
+			break;
+		}
+		case WM_LBUTTONUP:
+		{
+			const POINTS pt = MAKEPOINTS(lparam);
+			_mMouse.OnLeftReleased(pt.x, pt.y);
+			if (pt.x < 0 || pt.x >= _mWidth || pt.y < 0 || pt.y >= _mHeight)
+			{
+				ReleaseCapture();
+				_mMouse.OnMouseLeave();
+			}
+			break;
+		}
+		case WM_RBUTTONUP:
+		{
+			const POINTS pt = MAKEPOINTS(lparam);
+			_mMouse.OnRightReleased(pt.x, pt.y);
+			if (pt.x < 0 || pt.x >= _mWidth || pt.y < 0 || pt.y >= _mHeight)
+			{
+				ReleaseCapture();
+				_mMouse.OnMouseLeave();
+			}
+			break;
+		}
+		case WM_MOUSEWHEEL:
+		{
+			const POINTS pt = MAKEPOINTS(lparam);
+			const int delta = GET_WHEEL_DELTA_WPARAM(wParam);
+			_mMouse.OnWheelDelta(pt.x, pt.y, delta);
+			break;
+		}
+		case WM_INPUT:
+		{
+			if (!_mMouse.RawEnabled())
+			{
+				break;
+			}
+			UINT size;
+			if (GetRawInputData(HRAWINPUT(lparam), RID_INPUT, nullptr, &size, sizeof(RAWINPUTHEADER)) == -1)
+			{
+				break;
+			}
+			_mRawBuffer.resize(size);
+			if (GetRawInputData(HRAWINPUT(lparam), RID_INPUT, _mRawBuffer.data(), &size, sizeof(RAWINPUTHEADER)) != size)
+			{
+				break;
+			}
+			auto& ri = (const RAWINPUT&)(*_mRawBuffer.data());
+			if (ri.header.dwType == RIM_TYPEMOUSE &&
+				(ri.data.mouse.lLastX != 0 || ri.data.mouse.lLastY != 0))
+			{
+				_mMouse.OnRawDelta(ri.data.mouse.lLastX, ri.data.mouse.lLastY);
+			}
+			break;
+		}
+		}
+
 		return DefWindowProc(hwnd, msg, wParam, lparam);
 	}
 }
