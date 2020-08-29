@@ -147,6 +147,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Fraples7DevDX3D\Core\Application.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\Core\Debugging\Timer.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Debugging\WindowsMessageMap.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Exceptions\FraplesException.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Input Events\KeyboardEvent.cpp" />
@@ -156,6 +158,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\Core\Application.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\Core\Debugging\Timer.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Debugging\WindowsMessageMap.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Exceptions\FraplesException.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Exceptions\WindowsThrowMacros.h" />

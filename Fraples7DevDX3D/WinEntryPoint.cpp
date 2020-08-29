@@ -1,25 +1,27 @@
 #include "Source/Fraples7DevDX3D/Core/Fraples7.h"
-#include "Source/Fraples7DevDX3D/Platform/Windows/Window.h"
-#include "Source/Fraples7DevDX3D/Core/Exceptions/WindowsThrowMacros.h"
-
+#include "Source/Fraples7DevDX3D/Core/Application.h"
+#include "Source/Fraples7DevDX3D/Core/Exceptions/FraplesException.h"
 int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	LPSTR lpCmdLine, int nCmdShow)
 {
-	FraplesDev::Window win = FraplesDev::Window(320, 720, "Ban Max");
-	MSG msg;
-	BOOL gResult;
-	while ((gResult =GetMessage(&msg,nullptr,0,0))>0)
+	try
 	{
-		TranslateMessage(&msg);
-		DispatchMessage(&msg);
-		if (win._mKey.KeyIsPressed(VK_SPACE))
-		{
-			MessageBox(nullptr, "Fraples Seven Best Engine Ever!", nullptr, MB_OK | MB_ICONEXCLAMATION);
-		}
+		return Application().StartApp();
 	}
-	if (gResult == -1)
+	catch (const FraplesDev::FraplesException & e)
 	{
-		throw FPL_LAST_EXCEPT();
+		MessageBox(nullptr, e.what(), e.GetType(), MB_OK | MB_ICONEXCLAMATION);
 	}
-	return msg.wParam;
+	catch(const std::exception& e)
+	{
+		MessageBox(nullptr, e.what(),  "Standard Exception", MB_OK | MB_ICONEXCLAMATION);
+
+	}
+	catch (...)
+	{
+		MessageBox(nullptr, "No details available","Unknown Excaption", MB_OK | MB_ICONEXCLAMATION);
+	}
+	
+
+	return 0;
 }

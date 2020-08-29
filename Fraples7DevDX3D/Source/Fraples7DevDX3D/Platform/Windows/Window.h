@@ -50,9 +50,11 @@ namespace FraplesDev {
 		};
 	public:
 		Window(int width, int height, const char* name);
+		Window();
 		~Window();
 		Window(const Window&) = delete;
 		Window& operator =(const Window&) = delete;
+		static std::optional<int>ProcessMessages()noexcept;
 	public:
 		 Keyboard _mKey;
 		 Mouse _mMouse;

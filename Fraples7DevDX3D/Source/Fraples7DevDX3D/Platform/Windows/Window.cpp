@@ -120,11 +120,35 @@ namespace FraplesDev {
 
 	}
 
+	Window::Window():_mWidth(720),_mHeight(1080)
+	{
+
+	}
+
 	Window::~Window()
 	{
 		DestroyWindow(_mHwnd);
 	}
-
+	std::optional<int>Window::ProcessMessages()noexcept
+	{
+		MSG msg;
+	// while queue has messages, remove and dispatch them (but do not block on empty queue)
+		while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+		{
+			// check for quit because peekmessage does not signal this via return val
+			if (msg.message == WM_QUIT)
+			{
+				// return optional wrapping int (arg to PostQuitMessage is in wparam) signals quit
+				return (int)msg.wParam;
+			}
+			// TranslateMessage will post auxilliary WM_CHAR messages from key msgs
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+			
+		}
+		// return empty optional when not quitting app
+		return {};
+	}
 	void Window::ConfineCursor() noexcept
 	{
 		RECT rect;
