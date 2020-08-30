@@ -91,6 +91,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>d3d11.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -107,6 +108,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>d3d11.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -123,6 +125,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>d3d11.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -144,13 +147,17 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>d3d11.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Application.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\Core\Debugging\dxerr.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\Core\Debugging\DxgiInfoManager.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Debugging\Timer.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Debugging\WindowsMessageMap.cpp" />
-    <ClCompile Include="Source\Fraples7DevDX3D\Core\Exceptions\FraplesException.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\Core\Debugging\Exceptions\FraplesException.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\GraphicAPI\Graphic.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Input Events\KeyboardEvent.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Input Events\MouseEvents.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Platform\Windows\Window.cpp" />
@@ -159,17 +166,26 @@
   <ItemGroup>
     <ClInclude Include="resource.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Application.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\Core\Debugging\dxerr.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\Core\Debugging\DxgiInfoManager.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\Core\Debugging\Exceptions\GraphicsThrowMacros.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Debugging\Timer.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Debugging\WindowsMessageMap.h" />
-    <ClInclude Include="Source\Fraples7DevDX3D\Core\Exceptions\FraplesException.h" />
-    <ClInclude Include="Source\Fraples7DevDX3D\Core\Exceptions\WindowsThrowMacros.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\Core\Debugging\Exceptions\FraplesException.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\Core\Debugging\Exceptions\WindowsThrowMacros.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Fraples7.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\GraphicAPI\Graphic.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Input Events\KeyboardEvent.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Input Events\MouseEvents.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Platform\Windows\Window.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Fraples7DevDX3D.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Source\Fraples7DevDX3D\Core\Debugging\DXGetErrorDescription.inl" />
+    <None Include="Source\Fraples7DevDX3D\Core\Debugging\DXGetErrorString.inl" />
+    <None Include="Source\Fraples7DevDX3D\Core\Debugging\DXTrace.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

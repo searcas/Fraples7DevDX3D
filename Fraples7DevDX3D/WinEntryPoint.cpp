@@ -1,6 +1,6 @@
 #include "Source/Fraples7DevDX3D/Core/Fraples7.h"
 #include "Source/Fraples7DevDX3D/Core/Application.h"
-#include "Source/Fraples7DevDX3D/Core/Exceptions/FraplesException.h"
+#include "Source/Fraples7DevDX3D/Core/Debugging/Exceptions/FraplesException.h"
 int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	LPSTR lpCmdLine, int nCmdShow)
 {

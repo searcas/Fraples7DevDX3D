@@ -10,7 +10,7 @@ public:
 	~Application();
 	int StartApp();
 private:
-	void Update();
+	void DoFrame();
 private:
 	FraplesDev::Window* _mWin;
 	FraplesDev::Timer _mTimer;

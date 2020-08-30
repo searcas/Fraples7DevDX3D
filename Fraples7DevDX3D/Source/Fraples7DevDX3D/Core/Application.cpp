@@ -1,5 +1,5 @@
 #include "Application.h"
-#include "Exceptions/WindowsThrowMacros.h"
+#include "Debugging/Exceptions/WindowsThrowMacros.h"
 #include "Debugging/Timer.h"
 
 
@@ -30,14 +30,13 @@ int Application::StartApp()
 		}
 		// execute the game logic
 		const auto timer = _mTimer.Start() * _mSpeedFactor;
-		Update();
+		DoFrame();
 	}
 }
 
-void Application::Update()
+void Application::DoFrame()
 {
-	if (_mWin->_mKey.KeyIsPressed(VK_SPACE))
-	{
-		MessageBox(nullptr, "Fraples Seven Best Engine Ever!", nullptr, MB_OK | MB_ICONEXCLAMATION);
-	}
+	const float c = sin(_mTimer.Time()) / 2.0f + 0.5f;
+	_mWin->GetGFX().ClearBuffer(c, c, 1.0f);
+	_mWin->GetGFX().EndFrame();
 }

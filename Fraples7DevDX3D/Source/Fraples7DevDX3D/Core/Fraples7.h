@@ -66,3 +66,7 @@
 #define STRICT
 
 #include <Windows.h>
+
+#pragma warning(disable:4265)
+#include <wrl.h>
+#pragma warning(default:4265)

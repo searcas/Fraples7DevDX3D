@@ -1,9 +1,10 @@
 #pragma once
 #include "../../Core/Fraples7.h"
-#include "../../Core/Exceptions/FraplesException.h"
+#include "../../Core/Debugging/Exceptions/FraplesException.h"
 #include "../../Input Events/KeyboardEvent.h"
 #include "../../Input Events/MouseEvents.h"
-
+#include "../../GraphicAPI/Graphic.h"
+#include <memory>
 namespace FraplesDev {
 	class Window
 	{
@@ -30,7 +31,6 @@ namespace FraplesDev {
 		public:
 			using Exception::Exception;
 			const char* GetType()const noexcept override;
-		private:
 
 		};
 		//singleton manages registration/cleanup of window class
@@ -55,14 +55,15 @@ namespace FraplesDev {
 		Window(const Window&) = delete;
 		Window& operator =(const Window&) = delete;
 		static std::optional<int>ProcessMessages()noexcept;
+		Graphics& GetGFX();
 	public:
 		 Keyboard _mKey;
 		 Mouse _mMouse;
 	private:
-		void ConfineCursor()noexcept;
-		void FreeCursor()noexcept;
-		void ShowCursor()noexcept;
-		void HideCursor()noexcept;
+		void ConfineCursor() noexcept;
+		void FreeCursor() noexcept;
+		void ShowCursor() noexcept;
+		void HideCursor() noexcept;
 
 		static LRESULT CALLBACK HandleMsgSetup(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 		static LRESULT CALLBACK HandleMsgThunk(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -72,6 +73,7 @@ namespace FraplesDev {
 		int _mWidth;
 		int _mHeight;
 		HWND _mHwnd;
+		std::unique_ptr<Graphics>_mpGFX;
 		std::vector<BYTE>_mRawBuffer;
 	};
 }

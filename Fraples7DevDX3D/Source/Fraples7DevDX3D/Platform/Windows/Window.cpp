@@ -1,6 +1,6 @@
 #include "Window.h"
 #include <sstream>
-#include "../../Core/Exceptions/WindowsThrowMacros.h"
+#include "../../Core/Debugging/Exceptions/WindowsThrowMacros.h"
 
 namespace FraplesDev {
 	Window::WindowClass Window::WindowClass::_sWindClass;
@@ -30,6 +30,7 @@ namespace FraplesDev {
 
 	}
 
+	
 	const char* Window::HrException::what() const noexcept
 	{
 		std::ostringstream oss;
@@ -50,10 +51,14 @@ namespace FraplesDev {
 		return _mHr;
 	}
 
+	
+
 	std::string Window::HrException::GetErrorDescription() const noexcept
 	{
 		return Exception::TranslateErrorCode(_mHr);
 	}
+
+
 
 	const char* Window::NoGfxException::GetType() const noexcept
 	{
@@ -117,7 +122,7 @@ namespace FraplesDev {
 			throw FPL_LAST_EXCEPT();
 		}
 		ShowWindow(_mHwnd, SW_SHOWDEFAULT);
-
+		_mpGFX = std::make_unique<Graphics>(_mHwnd);
 	}
 
 	Window::Window():_mWidth(720),_mHeight(1080)
@@ -148,6 +153,14 @@ namespace FraplesDev {
 		}
 		// return empty optional when not quitting app
 		return {};
+	}
+	Graphics& Window::GetGFX()
+	{
+		if (!_mpGFX)
+		{
+			throw FPL_NOGFX_EXCEPT();
+		}
+		return *_mpGFX;
 	}
 	void Window::ConfineCursor() noexcept
 	{
