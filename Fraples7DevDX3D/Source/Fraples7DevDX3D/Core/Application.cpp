@@ -10,7 +10,7 @@ Application::Application(const char* name,int width, int height)
 
 Application::Application()
 {
-	_mWin = new FraplesDev::Window(720, 1080, "Fraples7 ENGINE");
+	_mWin = new FraplesDev::Window(1200, 600, "Fraples7 ENGINE");
 }
 
 Application::~Application()
@@ -29,7 +29,7 @@ int Application::StartApp()
 			return *ecode;
 		}
 		// execute the game logic
-		const auto timer = _mTimer.Start() * _mSpeedFactor;
+		// const auto timer = _mTimer.Start() * _mSpeedFactor;
 		DoFrame();
 	}
 }
@@ -37,6 +37,7 @@ int Application::StartApp()
 void Application::DoFrame()
 {
 	const float c = sin(_mTimer.Time()) / 2.0f + 0.5f;
-	_mWin->GetGFX().ClearBuffer(c, c, 1.0f);
+	_mWin->GetGFX().ClearBuffer(c, 0.8f, 0.8f);
+	_mWin->GetGFX().DrawTestTriangle(_mTimer.Time(),_mWin->_mMouse.GetPosX()/ 600 -1, -_mWin->_mMouse.GetPosY()/300+1);
 	_mWin->GetGFX().EndFrame();
 }

@@ -4,7 +4,7 @@
 #include "../Core/Debugging/DxgiInfoManager.h"
 #include <vector>
 #include <d3d11.h>
-
+#include <wrl.h>
 
 #define GFX_THROW_FAILED(hrcall) if(FAILED(hr = (hrcall))) throw FraplesDev::Graphics::HrException(__LINE__,__FILE__,hr)
 namespace FraplesDev
@@ -53,19 +53,20 @@ namespace FraplesDev
 		Graphics(const Graphics&) = delete;
 		Graphics& operator=(const Graphics&) = delete;
 
-		~Graphics();
+		~Graphics() = default;
 	public:
 		void EndFrame();
 		inline void ClearBuffer(float red, float green, float blue)noexcept
 		{
 			const float color[] = { red,green,blue,1.0f };
-			_mpContext->ClearRenderTargetView(_mpTarget, color);
+			_mpContext->ClearRenderTargetView(_mpTarget.Get(), color);
 		}
+		void DrawTestTriangle(float angle,float x, float y);
 	private:
-		ID3D11Device* _mpDevice = nullptr;
-		IDXGISwapChain* _mpSwap = nullptr;
-		ID3D11DeviceContext* _mpContext = nullptr;
-		ID3D11RenderTargetView* _mpTarget = nullptr;
+		Microsoft::WRL::ComPtr<ID3D11Device> _mpDevice = nullptr;
+		Microsoft::WRL::ComPtr < IDXGISwapChain> _mpSwap = nullptr;
+		Microsoft::WRL::ComPtr < ID3D11DeviceContext> _mpContext = nullptr;
+		Microsoft::WRL::ComPtr < ID3D11RenderTargetView> _mpTarget = nullptr;
 
 #ifndef NDEBUG
 		DxgiInfoManager infoManager;

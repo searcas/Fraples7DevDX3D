@@ -43,27 +43,27 @@ namespace FraplesDev {
 				_mX(parent._mX),
 				_mY(parent._mY)
 			{}
-			Type GetType() const noexcept
+			inline Type GetType() const noexcept
 			{
 				return _mType;
 			}
-			std::pair<int, int> GetPos() const noexcept
+			inline std::pair<int, int> GetPos() const noexcept
 			{
 				return{ _mX,_mY };
 			}
-			int GetPosX() const noexcept
+			inline int GetPosX() const noexcept
 			{
 				return _mX;
 			}
-			int GetPosY() const noexcept
+			inline int GetPosY() const noexcept
 			{
 				return _mY;
 			}
-			bool LeftIsPressed() const noexcept
+			inline bool LeftIsPressed() const noexcept
 			{
 				return _mLeftIsPressed;
 			}
-			bool RightIsPressed() const noexcept
+			inline bool RightIsPressed() const noexcept
 			{
 				return _mRightIsPressed;
 			}

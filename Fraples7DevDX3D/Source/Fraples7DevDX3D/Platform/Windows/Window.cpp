@@ -125,7 +125,7 @@ namespace FraplesDev {
 		_mpGFX = std::make_unique<Graphics>(_mHwnd);
 	}
 
-	Window::Window():_mWidth(720),_mHeight(1080)
+	Window::Window():_mWidth(1080),_mHeight(720)
 	{
 
 	}
