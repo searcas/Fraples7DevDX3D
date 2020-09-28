@@ -161,6 +161,16 @@
     <ClCompile Include="Source\Fraples7DevDX3D\Input Events\KeyboardEvent.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Input Events\MouseEvents.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Platform\Windows\Window.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\IndexBuffer.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\InputLayout.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\PixelShader.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Topology.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\TransformCBuf.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\VertexBuffer.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\VertexShader.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\SandBox\Box.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\GFXContext.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Renderer.cpp" />
     <ClCompile Include="WinEntryPoint.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -168,16 +178,28 @@
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Application.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Debugging\dxerr.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Debugging\DxgiInfoManager.h" />
-    <ClInclude Include="Source\Fraples7DevDX3D\Core\Debugging\Exceptions\GraphicsThrowMacros.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\Core\Debugging\Exceptions\Macros\GraphicsThrowMacros.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Debugging\Timer.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Debugging\WindowsMessageMap.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Debugging\Exceptions\FraplesException.h" />
-    <ClInclude Include="Source\Fraples7DevDX3D\Core\Debugging\Exceptions\WindowsThrowMacros.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\Core\Debugging\Exceptions\Macros\WindowsThrowMacros.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Fraples7.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\GraphicAPI\Graphic.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Input Events\KeyboardEvent.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Input Events\MouseEvents.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Platform\Windows\Window.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\GFXContextBase.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\IndexBuffer.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\InputLayout.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\PixelShader.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Topology.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\TransformCBuf.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\VertexBuffer.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\VertexShader.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\SandBox\Box.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\ConstantBuffers.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\GFXContext.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Renderer.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Fraples7DevDX3D.rc" />
@@ -195,6 +217,10 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\VertexShader.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
@@ -203,6 +229,10 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0_level_9_3</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4.0_level_9_3</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0_level_9_3</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0_level_9_3</ShaderModel>
     </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

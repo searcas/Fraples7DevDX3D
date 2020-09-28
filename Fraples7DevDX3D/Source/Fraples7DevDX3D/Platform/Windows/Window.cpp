@@ -1,6 +1,6 @@
 #include "Window.h"
 #include <sstream>
-#include "../../Core/Debugging/Exceptions/WindowsThrowMacros.h"
+#include "../../Core/Debugging/Exceptions/Macros/WindowsThrowMacros.h"
 
 namespace FraplesDev {
 	Window::WindowClass Window::WindowClass::_sWindClass;
@@ -99,7 +99,7 @@ namespace FraplesDev {
 		UnregisterClass(GetName(), GetInstance());
 	}
 
-	Window::Window(int width, int height, const char* name)
+	Window::Window(const char* name, int width, int height )
 		:_mWidth(width), _mHeight(height)
 	{
 		RECT wr;
@@ -125,10 +125,6 @@ namespace FraplesDev {
 		_mpGFX = std::make_unique<Graphics>(_mHwnd);
 	}
 
-	Window::Window():_mWidth(1080),_mHeight(720)
-	{
-
-	}
 
 	Window::~Window()
 	{

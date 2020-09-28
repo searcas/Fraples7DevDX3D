@@ -18,17 +18,12 @@ namespace FraplesDev {
 #define FPL_GFX_THROW_INFO_ONLY(call) 
 #endif
 
+//Macro for importing infomanager into local scope
+//this.GetInfoManager(Graphics&gfx) must exist;
 
 #ifdef NDEBUG
 #define INFOMAN(GFX) HRESULT hr
 #else
 #define INFOMAN(gfx) HRESULT hr; DxgiInfoManager& infoManager = GetInfoManager((gfx))
 #endif // NDEBUG
-
-#ifdef NDEBUG
-#define INFOMAN_NOHR(gfx)
-#else
-#define INFOMAN_NOHR(gfx) DxgiInfoManager& infoManager = GetInfoManager((gfx))
-#endif // NDEBUG
-
 }

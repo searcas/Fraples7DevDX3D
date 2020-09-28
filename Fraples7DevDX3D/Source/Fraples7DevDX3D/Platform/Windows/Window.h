@@ -49,8 +49,8 @@ namespace FraplesDev {
 			HINSTANCE hInst;
 		};
 	public:
-		Window(int width, int height, const char* name);
-		Window();
+		Window(const char* name, int width, int height);
+		Window() = default;
 		~Window();
 		Window(const Window&) = delete;
 		Window& operator =(const Window&) = delete;

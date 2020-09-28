@@ -1,43 +1,58 @@
 #include "Application.h"
-#include "Debugging/Exceptions/WindowsThrowMacros.h"
+#include "Debugging/Exceptions/Macros/WindowsThrowMacros.h"
 #include "Debugging/Timer.h"
+#include "../SandBox/Box.h"
 
-
-Application::Application(const char* name,int width, int height) 
-{
-	_mWin = new FraplesDev::Window(width, height, name);
-}
-
-Application::Application()
-{
-	_mWin = new FraplesDev::Window(1200, 600, "Fraples7 ENGINE");
-}
-
-Application::~Application()
-{
-	delete _mWin;
-}
-
-int Application::StartApp()
-{
-	// process all messages pending, but to not block for new messages
-	while (true)
+namespace FraplesDev {
+	Application::Application(const char* name, int width, int height)
+		:_mWin(name, width, height)
 	{
-		if (const auto& ecode = FraplesDev::Window::ProcessMessages())
-		{
-			// if return optional has value, means we're quitting so return exit code
-			return *ecode;
-		}
-		// execute the game logic
-		// const auto timer = _mTimer.Start() * _mSpeedFactor;
-		DoFrame();
-	}
-}
 
-void Application::DoFrame()
-{
-	const float c = sin(_mTimer.Time()) / 2.0f + 0.5f;
-	_mWin->GetGFX().ClearBuffer(c, 0.8f, 0.8f);
-	_mWin->GetGFX().DrawTestTriangle(_mTimer.Time(),_mWin->_mMouse.GetPosX()/ 600 -1, -_mWin->_mMouse.GetPosY()/300+1);
-	_mWin->GetGFX().EndFrame();
+		std::mt19937 rng(std::random_device{}());
+		std::uniform_real_distribution<float>adist(0.0f, 3.1415 * 2.0f);
+		std::uniform_real_distribution<float>ddist(0.0f, 3.1415 * 2.0f);
+		std::uniform_real_distribution<float>odist(0.0f, 3.1415 * 0.3f);
+		std::uniform_real_distribution<float>rdist(6.0f, 20.0f);
+
+		for (size_t i = 0; i < 1+ std::rand() % 80; i++)
+		{
+			_mBoxes.push_back(std::make_unique<Box>(_mWin.GetGFX(), rng, adist, ddist, odist, rdist));
+		}
+		_mWin.GetGFX().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
+	}
+	Application::Application():_mWin("Fraples7 Engine Studio", 1920,1080)
+	{
+
+	}
+
+	Application::~Application()
+	{
+	}
+
+	int Application::StartApp()
+	{
+		// process all messages pending, but to not block for new messages
+		while (true)
+		{
+			if (const auto& ecode = FraplesDev::Window::ProcessMessages())
+			{// if return optional has value, means we're quitting so return exit code
+				return *ecode;
+			}
+			// execute the game logic
+			// const auto timer = _mTimer.Start() * _mSpeedFactor;
+			DoFrame();
+		}
+	}
+
+	void Application::DoFrame()
+	{
+		auto dt = _mTimer.Time();
+		_mWin.GetGFX().ClearBuffer(0.07f, 0.0f, 0.12f);
+		for (auto& b : _mBoxes)
+		{
+			b->Update(dt);
+			b->Render(_mWin.GetGFX());
+		}
+		_mWin.GetGFX().EndFrame();
+	}
 }

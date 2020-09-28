@@ -6,7 +6,7 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 {
 	try
 	{
-		return Application().StartApp();
+		return FraplesDev::Application("Fraples7", 800,600).StartApp();
 	}
 	catch (const FraplesDev::FraplesException & e)
 	{

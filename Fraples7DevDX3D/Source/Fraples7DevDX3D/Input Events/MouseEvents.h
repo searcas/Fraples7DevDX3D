@@ -104,8 +104,8 @@ namespace FraplesDev {
 		void OnWheelDelta(int x, int y, int delta) noexcept;
 	private:
 		static constexpr unsigned int _mBufferSize = 16u;
-		int _mX;
-		int _mY;
+		int _mX = 0;
+		int _mY = 0;
 		bool _mLeftIsPressed = false;
 		bool _mRightIsPressed = false;
 		bool _mIsInWindow = false;

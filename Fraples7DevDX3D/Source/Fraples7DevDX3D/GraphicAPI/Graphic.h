@@ -2,6 +2,8 @@
 #include "../Core/Fraples7.h"
 #include "../Core/Debugging/Exceptions/FraplesException.h"
 #include "../Core/Debugging/DxgiInfoManager.h"
+#include <d3dcompiler.h>
+#include <DirectXMath.h>
 #include <vector>
 #include <d3d11.h>
 #include <wrl.h>
@@ -11,6 +13,7 @@ namespace FraplesDev
 {
 	class Graphics
 	{
+		friend class GfxContext;
 	public:
 		class Exception : public FraplesDev::FraplesException
 		{
@@ -60,17 +63,23 @@ namespace FraplesDev
 		{
 			const float color[] = { red,green,blue,1.0f };
 			_mpContext->ClearRenderTargetView(_mpTarget.Get(), color);
+			_mpContext->ClearDepthStencilView(_mpDSV.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0u);
 		}
-		void DrawTestTriangle(float angle,float x, float y);
+		void RenderIndexed(UINT count)noexcept;
+		void SetProjection(DirectX::FXMMATRIX proj) noexcept;
+		DirectX::XMMATRIX GetProjection() const noexcept;
+
 	private:
 		Microsoft::WRL::ComPtr<ID3D11Device> _mpDevice = nullptr;
-		Microsoft::WRL::ComPtr < IDXGISwapChain> _mpSwap = nullptr;
-		Microsoft::WRL::ComPtr < ID3D11DeviceContext> _mpContext = nullptr;
-		Microsoft::WRL::ComPtr < ID3D11RenderTargetView> _mpTarget = nullptr;
+		Microsoft::WRL::ComPtr<IDXGISwapChain> _mpSwap = nullptr;
+		Microsoft::WRL::ComPtr<ID3D11DeviceContext> _mpContext = nullptr;
+		Microsoft::WRL::ComPtr<ID3D11RenderTargetView> _mpTarget = nullptr;
+		Microsoft::WRL::ComPtr<ID3D11DepthStencilView> _mpDSV;
+		DirectX::XMMATRIX _mProjection;
 
 #ifndef NDEBUG
 		DxgiInfoManager infoManager;
-#endif // !NDEBUG
+#endif // NDEBUG
 
 	};
 

@@ -10,7 +10,7 @@ namespace FraplesDev
 		_mLast = std::chrono::steady_clock::now();
 	}
 
-	float Timer::Start() noexcept
+	float Timer::Get() noexcept
 	{
 		const auto& old = _mLast;
 		_mLast  = std::chrono::steady_clock::now();
