@@ -14,13 +14,13 @@ namespace FraplesDev {
 		std::uniform_real_distribution<float>odist(0.0f, 3.1415 * 0.3f);
 		std::uniform_real_distribution<float>rdist(6.0f, 20.0f);
 
-		for (size_t i = 0; i < 1+ std::rand() % 80; i++)
+		for (size_t i = 0; i < 80; i++)
 		{
 			_mBoxes.push_back(std::make_unique<Box>(_mWin.GetGFX(), rng, adist, ddist, odist, rdist));
 		}
 		_mWin.GetGFX().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
 	}
-	Application::Application():_mWin("Fraples7 Engine Studio", 1920,1080)
+	Application::Application():_mWin("Fraples7 Engine Studio", 1920, 1080)
 	{
 
 	}
@@ -42,6 +42,7 @@ namespace FraplesDev {
 			// const auto timer = _mTimer.Start() * _mSpeedFactor;
 			DoFrame();
 		}
+		return -1;
 	}
 
 	void Application::DoFrame()

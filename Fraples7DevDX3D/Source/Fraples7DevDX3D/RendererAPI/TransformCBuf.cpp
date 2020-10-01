@@ -1,13 +1,20 @@
 #include "TransformCBuf.h"
-
-FraplesDev::TransformCBuf::TransformCBuf(Graphics& gfx, const Renderer& parent)
-	:vcbuf(gfx),parent(parent)
+namespace FraplesDev
 {
 
-}
+	TransformCBuf::TransformCBuf(Graphics& gfx, const Renderer& parent)
+		:parent(parent)
+	{
+		if (!_spVcbuf)
+		{
+			_spVcbuf = std::make_unique<VertexConstantBuffer<DirectX::XMMATRIX>>(gfx);
+		}
+	}
 
-void FraplesDev::TransformCBuf::Bind(Graphics& gfx) noexcept
-{
-	vcbuf.Update(gfx, DirectX::XMMatrixTranspose(parent.GetTransformXM() * gfx.GetProjection()));
-	vcbuf.Bind(gfx);
+	void TransformCBuf::Bind(Graphics& gfx) noexcept
+	{
+		_spVcbuf->Update(gfx, DirectX::XMMatrixTranspose(parent.GetTransformXM() * gfx.GetProjection()));
+		_spVcbuf->Bind(gfx);
+	}
+	std::unique_ptr<VertexConstantBuffer<DirectX::XMMATRIX>> TransformCBuf::_spVcbuf;
 }

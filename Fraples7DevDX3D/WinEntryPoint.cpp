@@ -1,12 +1,13 @@
 #include "Source/Fraples7DevDX3D/Core/Fraples7.h"
 #include "Source/Fraples7DevDX3D/Core/Application.h"
 #include "Source/Fraples7DevDX3D/Core/Debugging/Exceptions/FraplesException.h"
+
 int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	LPSTR lpCmdLine, int nCmdShow)
 {
 	try
 	{
-		return FraplesDev::Application("Fraples7", 800,600).StartApp();
+		return FraplesDev::Application("Fraples7 Engine Studio ", 800,600).StartApp();
 	}
 	catch (const FraplesDev::FraplesException & e)
 	{

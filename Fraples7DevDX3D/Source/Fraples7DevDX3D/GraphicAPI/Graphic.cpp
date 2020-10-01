@@ -41,7 +41,8 @@ namespace FraplesDev {
 			&_mpSwap, 
 			&_mpDevice, 
 			nullptr, 
-			&_mpContext);
+			&_mpContext
+		);
 		
 		Microsoft::WRL::ComPtr<ID3D11Resource> pBackBuffer;
 		FPL_GFX_THROW_INFO(_mpSwap->GetBuffer(0, __uuidof(ID3D11Resource),&pBackBuffer));

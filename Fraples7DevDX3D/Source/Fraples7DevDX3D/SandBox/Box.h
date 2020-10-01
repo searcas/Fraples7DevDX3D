@@ -1,9 +1,9 @@
 #pragma once
-#include "../RendererAPI/Renderer.h"
+#include "../RendererAPI/RendererBase.h"
 #include <random>
 namespace FraplesDev
 {
-	class Box : public Renderer
+	class Box : public RendererBase<Box>
 	{
 	public:
 		Box(Graphics& gfx, std::mt19937& rng, std::uniform_real_distribution<float>& adist,

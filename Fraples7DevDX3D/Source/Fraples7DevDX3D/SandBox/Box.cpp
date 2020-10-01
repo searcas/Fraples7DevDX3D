@@ -20,69 +20,75 @@ namespace FraplesDev
 		theta(adist(rng)),
 		phi(adist(rng))
 	{
-		struct Vertex
+		if (!IsStaticInitialized())
 		{
-			struct {
-				float x, y, z;
-			}pos;
-		};
-		const std::vector<Vertex>vertices =
-		{
-			{-1.0f, -1.0f, -1.0f},
-			{ 1.0f, -1.0f, -1.0f},
-			{-1.0f,  1.0f, -1.0f},
-			{ 1.0f,  1.0f, -1.0f},
-			{-1.0f, -1.0f,  1.0f},
-			{ 1.0f, -1.0f,  1.0f},
-			{-1.0f,  1.0f,  1.0f},
-			{ 1.0f,  1.0f,  1.0f},
-		};
-		AddBind(std::make_unique<VertexBuffer>(gfx, vertices));
-
-		auto pvs = std::make_unique<VertexShader>(gfx, L"VertexShader.cso");
-		auto pvsbc = pvs->GetBytecode();
-		AddBind(std::move(pvs));
-
-		AddBind(std::make_unique<PixelShader>(gfx, L"PixelShader.cso"));
-
-		const std::vector<unsigned short>indices = {
-
-			0,2,1, 2,3,1,
-			1,3,5, 3,7,5,
-			2,6,3, 3,6,7,
-			4,5,7, 4,7,6,
-			0,4,2, 2,4,6,
-			0,1,4, 1,5,4
-		};
-		AddIndexBuffer(std::make_unique<IndexBuffer>(gfx, indices));
-
-		struct ConstantBuffer2
-		{
-			struct
+			struct Vertex
 			{
-				float r, g, b, a;
-			}face_colors[6];
-		};
-
-
-		const ConstantBuffer2 cb2 = {
+				struct {
+					float x, y, z;
+				}pos;
+			};
+			const std::vector<Vertex>vertices =
 			{
-				{1.0f, 0.0f, 1.0f},
-				{1.0f, 0.0f, 0.0f},
-				{0.0f, 1.0f, 0.0f},
-				{0.0f, 0.0f, 1.0f},
-				{1.0f, 1.0f, 0.0f},
-				{0.0f, 1.0f, 1.0f},
-			}
-		};
-		AddBind(std::make_unique<PixelConstantBuffer<ConstantBuffer2>>(gfx, cb2));
+				{-1.0f, -1.0f, -1.0f},
+				{ 1.0f, -1.0f, -1.0f},
+				{-1.0f,  1.0f, -1.0f},
+				{ 1.0f,  1.0f, -1.0f},
+				{-1.0f, -1.0f,  1.0f},
+				{ 1.0f, -1.0f,  1.0f},
+				{-1.0f,  1.0f,  1.0f},
+				{ 1.0f,  1.0f,  1.0f},
+			};
+			AddStaticBind(std::make_unique<VertexBuffer>(gfx, vertices));
 
-		const std::vector<D3D11_INPUT_ELEMENT_DESC>IelementDesc =
+			auto pvs = std::make_unique<VertexShader>(gfx, L"VertexShader.cso");
+			auto pvsbc = pvs->GetBytecode();
+			AddStaticBind(std::move(pvs));
+
+			AddStaticBind(std::make_unique<PixelShader>(gfx, L"PixelShader.cso"));
+
+			const std::vector<unsigned short>indices = {
+				0,2,1, 2,3,1,
+				1,3,5, 3,7,5,
+				2,6,3, 3,6,7,
+				4,5,7, 4,7,6,
+				0,4,2, 2,4,6,
+				0,1,4, 1,5,4
+			};
+			AddStaticIndexBuffer(std::make_unique<IndexBuffer>(gfx, indices));
+
+			struct ConstantBuffer2
+			{
+				struct
+				{
+					float r, g, b, a;
+				}face_colors[6];
+			};
+
+
+			const ConstantBuffer2 cb2 = {
+				{
+					{1.0f, 0.0f, 1.0f},
+					{1.0f, 0.0f, 0.0f},
+					{0.0f, 1.0f, 0.0f},
+					{0.0f, 0.0f, 1.0f},
+					{1.0f, 1.0f, 0.0f},
+					{0.0f, 1.0f, 1.0f},
+				}
+			};
+			AddStaticBind(std::make_unique<PixelConstantBuffer<ConstantBuffer2>>(gfx, cb2));
+
+			const std::vector<D3D11_INPUT_ELEMENT_DESC>IelementDesc =
+			{
+				{"Position", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
+			};
+			AddStaticBind(std::make_unique<InputLayout>(gfx, IelementDesc, pvsbc));
+			AddStaticBind(std::make_unique<Topology>(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
+		}
+		else
 		{
-			{"Position", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
-		};
-		AddBind(std::make_unique<InputLayout>(gfx, IelementDesc, pvsbc));
-		AddBind(std::make_unique<Topology>(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
+			SetIndexFromStatic();
+		}
 		AddBind(std::make_unique<TransformCBuf>(gfx, *this));
 
 	}

@@ -12,7 +12,7 @@ namespace FraplesDev
 		TransformCBuf(Graphics& gfx,const Renderer& parent);
 		void Bind(Graphics& gfx)noexcept override;
 	private:
-		VertexConstantBuffer<DirectX::XMMATRIX>vcbuf;
+		static std::unique_ptr<VertexConstantBuffer<DirectX::XMMATRIX>>_spVcbuf;
 		const Renderer& parent;
 	};
 
