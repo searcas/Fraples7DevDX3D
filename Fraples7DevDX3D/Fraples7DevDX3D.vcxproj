@@ -157,6 +157,7 @@
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Debugging\Timer.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Debugging\WindowsMessageMap.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Debugging\Exceptions\FraplesException.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\Core\IndexedList.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\GraphicAPI\Graphic.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Input Events\KeyboardEvent.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Input Events\MouseEvents.cpp" />
@@ -171,6 +172,7 @@
     <ClCompile Include="Source\Fraples7DevDX3D\SandBox\Box.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\GFXContext.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Renderer.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\SandBox\Sphere.cpp" />
     <ClCompile Include="WinEntryPoint.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -184,6 +186,8 @@
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Debugging\Exceptions\FraplesException.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Debugging\Exceptions\Macros\WindowsThrowMacros.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Fraples7.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\Core\IndexedList.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\Core\Math\Math.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\GraphicAPI\Graphic.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Input Events\KeyboardEvent.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Input Events\MouseEvents.h" />
@@ -201,6 +205,7 @@
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\ConstantBuffers.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\GFXContext.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Renderer.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\SandBox\Sphere.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Fraples7DevDX3D.rc" />
