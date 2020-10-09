@@ -20,7 +20,8 @@ namespace FraplesDev
 		FraplesDev::Window _mWin;
 		FraplesDev::Timer _mTimer;
 		float _mSpeedFactor = 1.0f;
-		std::vector<std::unique_ptr<class Box>>_mBoxes;
+		std::vector<std::unique_ptr<class Renderer>>_mrenderable;
+		static constexpr size_t nDrawables = 180;
 	};
 
 }

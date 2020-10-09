@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -157,7 +157,6 @@
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Debugging\Timer.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Debugging\WindowsMessageMap.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Debugging\Exceptions\FraplesException.cpp" />
-    <ClCompile Include="Source\Fraples7DevDX3D\Core\IndexedList.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\GraphicAPI\Graphic.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Input Events\KeyboardEvent.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Input Events\MouseEvents.cpp" />
@@ -172,7 +171,8 @@
     <ClCompile Include="Source\Fraples7DevDX3D\SandBox\Box.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\GFXContext.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Renderer.cpp" />
-    <ClCompile Include="Source\Fraples7DevDX3D\SandBox\Sphere.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\SandBox\Melon.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\SandBox\Pyramid.cpp" />
     <ClCompile Include="WinEntryPoint.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -205,6 +205,12 @@
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\ConstantBuffers.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\GFXContext.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Renderer.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\SandBox\Cone.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\SandBox\Cube.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\SandBox\Melon.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\SandBox\Plane.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\SandBox\Prism.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\SandBox\Pyramid.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\SandBox\Sphere.h" />
   </ItemGroup>
   <ItemGroup>
@@ -216,7 +222,27 @@
     <None Include="Source\Fraples7DevDX3D\Core\Debugging\DXTrace.inl" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PixelShader.hlsl">
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\ColorBlendPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\ColorBlendVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\ColorIndexPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
@@ -227,8 +253,10 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
     </FxCompile>
-    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\VertexShader.hlsl">
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\ColorIndexVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
@@ -236,9 +264,11 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0_level_9_3</ShaderModel>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4.0_level_9_3</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0_level_9_3</ShaderModel>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0_level_9_3</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
     </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

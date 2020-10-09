@@ -18,7 +18,7 @@ namespace FraplesDev
 		return frameTime.count();
 	}
 
-	float Timer::Time() noexcept
+	float Timer::Time() const noexcept
 	{
 		return std::chrono::duration<float>(std::chrono::steady_clock::now() - _mLast).count();
 

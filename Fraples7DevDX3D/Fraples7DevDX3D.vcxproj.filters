@@ -78,10 +78,10 @@
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\VertexShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Fraples7DevDX3D\SandBox\Sphere.cpp">
+    <ClCompile Include="Source\Fraples7DevDX3D\SandBox\Pyramid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Fraples7DevDX3D\Core\IndexedList.cpp">
+    <ClCompile Include="Source\Fraples7DevDX3D\SandBox\Melon.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -176,6 +176,24 @@
     <ClInclude Include="Source\Fraples7DevDX3D\Core\IndexedList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\SandBox\Prism.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\SandBox\Plane.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\SandBox\Cube.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\SandBox\Cone.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\SandBox\Pyramid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\SandBox\Melon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Fraples7DevDX3D.rc">
@@ -194,7 +212,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\VertexShader.hlsl" />
-    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PixelShader.hlsl" />
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\ColorBlendVS.hlsl" />
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\ColorBlendPS.hlsl" />
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\ColorIndexPS.hlsl" />
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\ColorIndexVS.hlsl" />
   </ItemGroup>
 </Project>

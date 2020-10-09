@@ -3,11 +3,8 @@
 #include "../Core/Math/Math.h"
 #include <DirectXMath.h>
 #include <vector>
-namespace FraplesDev {
+#include "../Core/IndexedList.h"
 
-	template<typename T>
-	class IndexedList;
-}
 
 
 namespace FraplesDev
@@ -15,7 +12,8 @@ namespace FraplesDev
 	struct Sphere
 	{
 	public:
-		template<typename T>
+
+		template<class T>
 		static IndexedList<T> MakeTessellated(int latDiv, int longDiv)
 		{
 			assert(latDiv >= 3);
@@ -93,10 +91,14 @@ namespace FraplesDev
 			indices.push_back(calcIdx(latDiv - 2, longDiv - 1));
 			indices.push_back(iSouthPole);
 
-			return { std::move(vertices),std::move(indices) };
+			return { std::move(vertices), std::move(indices) };
 		}
 
-		
+		template<class V>
+		static IndexedList<V>Make()
+		{
+			return MakeTessellated<V>(12, 24);
+		}
 
 	};
 

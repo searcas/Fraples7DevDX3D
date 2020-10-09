@@ -7,7 +7,7 @@ namespace FraplesDev
 	class IndexBuffer : public GfxContext
 	{
 	public:
-		IndexBuffer(Graphics& gfx, const std::vector<unsigned short>&indices);
+		IndexBuffer(Graphics& gfx,const std::vector<unsigned short>&indices);
 		void Bind(Graphics& gfx) noexcept override;
 		UINT GetCount() const noexcept;
 	protected:

@@ -1,21 +1,21 @@
 #pragma once
 #include "../RendererAPI/RendererBase.h"
 #include <random>
+
 namespace FraplesDev
 {
-	class Box : public RendererBase<Box>
+	class Pyramid : public RendererBase<Pyramid>
 	{
 	public:
-		Box(Graphics& gfx, std::mt19937& rng, 
+		Pyramid(Graphics& gfx, std::mt19937& rng,
 			std::uniform_real_distribution<float>& adist,
 			std::uniform_real_distribution<float>& ddist,
 			std::uniform_real_distribution<float>& odist,
-			std::uniform_real_distribution<float>& rdist,
-			std::uniform_real_distribution<float>& bdist);
-		void Update(float diff)noexcept override;
-		DirectX::XMMATRIX GetTransformXM()const noexcept override;
-	protected:
-		//positional
+			std::uniform_real_distribution<float>& rdist);
+		void Update(float dt) noexcept override;
+		DirectX::XMMATRIX GetTransformXM() const noexcept override;
+	private:
+		// positional
 		float r;
 		float roll = 0.0f;
 		float pitch = 0.0f;
@@ -23,16 +23,12 @@ namespace FraplesDev
 		float theta;
 		float phi;
 		float chi;
-		//speed (Delta/s)
+		// speed (delta/s)
 		float droll;
 		float dpitch;
 		float dyaw;
 		float dtheta;
 		float dphi;
 		float dchi;
-		DirectX::XMFLOAT3X3 mt;
-
 	};
-
-	
 }

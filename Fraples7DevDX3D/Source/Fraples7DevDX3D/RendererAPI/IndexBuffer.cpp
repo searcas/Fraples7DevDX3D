@@ -3,7 +3,7 @@
 
 namespace FraplesDev
 {
-	IndexBuffer::IndexBuffer(Graphics& gfx, const std::vector<unsigned short>& indices)
+	IndexBuffer::IndexBuffer(Graphics& gfx,const std::vector<unsigned short>& indices)
 		:_mCount((UINT)indices.size())
 	{
 		

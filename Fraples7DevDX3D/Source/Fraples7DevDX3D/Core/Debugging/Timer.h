@@ -9,8 +9,8 @@ namespace FraplesDev
 	{
 	public:
 		Timer();
-		float Get()noexcept;
-		float Time()noexcept;
+		float Get() noexcept;
+		float Time() const noexcept;
 	private:
 		std::chrono::steady_clock::time_point _mLast;
 	};
