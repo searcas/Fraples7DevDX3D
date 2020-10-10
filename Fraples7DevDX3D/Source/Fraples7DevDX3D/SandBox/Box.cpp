@@ -91,7 +91,7 @@ namespace FraplesDev
 		chi += dchi * diff;
 	}
 
-	DirectX::XMMATRIX Box::GetTransformXM()const noexcept
+	const DirectX::XMMATRIX& Box::GetTransformXM()const noexcept
 	{
 		return DirectX::XMLoadFloat3x3(&mt) *
 			DirectX::XMMatrixRotationRollPitchYaw(pitch, yaw, roll) *

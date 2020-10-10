@@ -85,7 +85,7 @@ namespace FraplesDev
 		chi += dchi * dt;
 	}
 
-	DirectX::XMMATRIX Pyramid::GetTransformXM() const noexcept
+	const DirectX::XMMATRIX& Pyramid::GetTransformXM() const noexcept
 	{
 		namespace dx = DirectX;
 		return dx::XMMatrixRotationRollPitchYaw(pitch, yaw, roll) *

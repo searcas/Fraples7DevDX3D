@@ -16,7 +16,7 @@ namespace FraplesDev
 			std::uniform_int_distribution<int>& longdist,
 			std::uniform_int_distribution<int>& latdist);
 		void Update(float dt) noexcept override;
-		DirectX::XMMATRIX GetTransformXM() const noexcept override;
+		const DirectX::XMMATRIX& GetTransformXM() const noexcept override;
 	private:
 		// positional
 		float r;

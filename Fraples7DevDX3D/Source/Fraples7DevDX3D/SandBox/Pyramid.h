@@ -13,7 +13,7 @@ namespace FraplesDev
 			std::uniform_real_distribution<float>& odist,
 			std::uniform_real_distribution<float>& rdist);
 		void Update(float dt) noexcept override;
-		DirectX::XMMATRIX GetTransformXM() const noexcept override;
+		const DirectX::XMMATRIX& GetTransformXM() const noexcept override;
 	private:
 		// positional
 		float r;
