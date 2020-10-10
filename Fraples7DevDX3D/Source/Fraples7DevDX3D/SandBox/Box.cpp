@@ -1,19 +1,7 @@
 #include "Box.h"
 #include "../RendererAPI/GFXContextBase.h"
 #include "Cube.h"
-namespace FraplesDev {
-	
 
-	template<typename T>
-	class Cone;
-
-	template<typename T>
-	class Plane;
-
-	template<typename T>
-	class Prism;
-
-}
 
 namespace FraplesDev
 {
@@ -64,15 +52,15 @@ namespace FraplesDev
 
 			const PixelShaderConstants cb2 = {
 				{
-					{1.0f, 1.0f, 1.0f},
-					{1.0f, 0.0f, 0.0f},
-					{0.0f, 1.0f, 0.0f},
 
-					{1.0f, 1.0f, 0.0f},
-					{0.0f, 0.0f, 1.0f},
-					{1.0f, 0.0f, 1.0f},
-					{0.0f, 1.0f, 1.0f},
-					{0.0f, 0.0f, 0.0f},
+					{ 1.0f, 1.0f, 1.0f },
+					{ 1.0f, 0.0f, 0.0f },
+					{ 0.0f, 1.0f, 0.0f },
+					{ 1.0f, 1.0f, 0.0f },
+					{ 0.0f, 0.0f, 1.0f },
+					{ 1.0f, 0.0f, 1.0f },
+					{ 0.0f, 1.0f, 1.0f },
+					{ 0.0f, 0.0f, 0.0f },
 				}
 			};
 			AddStaticBind(std::make_unique<PixelConstantBuffer<PixelShaderConstants>>(gfx, cb2));
@@ -90,7 +78,6 @@ namespace FraplesDev
 			SetIndexFromStatic();
 		}
 		AddBind(std::make_unique<TransformCBuf>(gfx, *this));
-
 	}
 	void Box::Update(float diff)noexcept
 	{

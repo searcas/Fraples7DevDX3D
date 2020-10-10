@@ -307,7 +307,7 @@ namespace FraplesDev {
 		_mProjection = proj;
 	}
 
-	DirectX::XMMATRIX Graphics::GetProjection() const noexcept
+	const DirectX::XMMATRIX& Graphics::GetProjection() const noexcept
 	{
 		return _mProjection;
 	}

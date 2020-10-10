@@ -67,7 +67,7 @@ namespace FraplesDev
 		}
 		void RenderIndexed(UINT count)noexcept;
 		void SetProjection(DirectX::FXMMATRIX proj) noexcept;
-		DirectX::XMMATRIX GetProjection() const noexcept;
+		const DirectX::XMMATRIX& GetProjection() const noexcept;
 
 	private:
 		Microsoft::WRL::ComPtr<ID3D11Device> _mpDevice = nullptr;

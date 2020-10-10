@@ -36,7 +36,6 @@ namespace FraplesDev
 				}
 			}
 			assert("Failed to find index buffer in static binds" && _mpIndexBuffer != nullptr);
-
 		}
 	private:
 		const std::vector<std::unique_ptr<GfxContext>>& GetStaticBinds()const noexcept override

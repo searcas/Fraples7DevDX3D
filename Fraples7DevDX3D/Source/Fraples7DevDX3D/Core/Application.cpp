@@ -82,7 +82,7 @@ namespace FraplesDev
 		// process all messages pending, but to not block for new messages
 		while (true)
 		{
-			if (const auto& ecode = FraplesDev::Window::ProcessMessages())
+			if (const auto ecode = FraplesDev::Window::ProcessMessages())
 			{// if return optional has value, means we're quitting so return exit code
 				return *ecode;
 			}
@@ -94,7 +94,7 @@ namespace FraplesDev
 
 	void Application::DoFrame()
 	{
-		auto dt = _mTimer.Time();
+		const auto dt = _mTimer.Get();
 		_mWin.GetGFX().ClearBuffer(0.07f, 0.0f, 0.12f);
 		for (auto& b : _mrenderable)
 		{

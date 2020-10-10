@@ -12,7 +12,7 @@ namespace FraplesDev
 
 	float Timer::Get() noexcept
 	{
-		const auto& old = _mLast;
+		const auto old = _mLast;
 		_mLast  = std::chrono::steady_clock::now();
 		const std::chrono::duration<float> frameTime = _mLast - old;
 		return frameTime.count();
