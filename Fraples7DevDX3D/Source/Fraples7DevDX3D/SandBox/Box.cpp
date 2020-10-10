@@ -71,13 +71,15 @@ namespace FraplesDev
 			};
 			AddStaticBind(std::make_unique<InputLayout>(gfx, IelementDesc, pvsbc));
 			AddStaticBind(std::make_unique<Topology>(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
-			DirectX::XMStoreFloat3x3(&mt, DirectX::XMMatrixScaling(1.0f, 1.0f, bdist(rng)));
+
 		}
 		else
 		{
 			SetIndexFromStatic();
 		}
 		AddBind(std::make_unique<TransformCBuf>(gfx, *this));
+		DirectX::XMStoreFloat3x3(&mt, DirectX::XMMatrixScaling(1.0f, 1.0f, bdist(rng)));
+
 	}
 	void Box::Update(float diff)noexcept
 	{

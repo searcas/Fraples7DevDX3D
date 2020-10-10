@@ -29,7 +29,12 @@ namespace FraplesDev {
 		swap.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 		swap.Flags = 0;
 
-		D3D11CreateDeviceAndSwapChain(
+		UINT swapCreateFlags = 0u;
+#ifndef NDEBUG
+		swapCreateFlags |= D3D11_CREATE_DEVICE_DEBUG;
+#endif // !NDEBUG
+
+		FPL_GFX_THROW_INFO(D3D11CreateDeviceAndSwapChain(
 			nullptr, 
 			D3D_DRIVER_TYPE_HARDWARE, 
 			nullptr,
@@ -42,24 +47,24 @@ namespace FraplesDev {
 			&_mpDevice, 
 			nullptr, 
 			&_mpContext
-		);
+		));
 		
 		Microsoft::WRL::ComPtr<ID3D11Resource> pBackBuffer;
 		FPL_GFX_THROW_INFO(_mpSwap->GetBuffer(0, __uuidof(ID3D11Resource),&pBackBuffer));
-		_mpDevice->CreateRenderTargetView(pBackBuffer.Get(), nullptr, &_mpTarget);
+		FPL_GFX_THROW_INFO(_mpDevice->CreateRenderTargetView(pBackBuffer.Get(), nullptr, &_mpTarget));
 
 		D3D11_DEPTH_STENCIL_DESC ddsd = {};
 		ddsd.DepthEnable = true;
 		ddsd.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
 		ddsd.DepthFunc = D3D11_COMPARISON_LESS;
 		Microsoft::WRL::ComPtr<ID3D11DepthStencilState> pDSState;
-		_mpDevice->CreateDepthStencilState(&ddsd, &pDSState);
+		FPL_GFX_THROW_INFO(_mpDevice->CreateDepthStencilState(&ddsd, &pDSState));
 
 		//bind depth state
 		_mpContext->OMSetDepthStencilState(pDSState.Get(), 1u);
 
 		Microsoft::WRL::ComPtr<ID3D11Texture2D> pDepthStencil;
-		D3D11_TEXTURE2D_DESC descDepth;
+		D3D11_TEXTURE2D_DESC descDepth = {};
 		descDepth.Width = 800u;
 		descDepth.Height = 600u;
 		descDepth.MipLevels = 1u;
@@ -69,14 +74,14 @@ namespace FraplesDev {
 		descDepth.SampleDesc.Quality = 0u;
 		descDepth.Usage = D3D11_USAGE_DEFAULT;
 		descDepth.BindFlags = D3D11_BIND_DEPTH_STENCIL;
-		_mpDevice->CreateTexture2D(&descDepth, nullptr, &pDepthStencil);
+		FPL_GFX_THROW_INFO(_mpDevice->CreateTexture2D(&descDepth, nullptr, &pDepthStencil));
 
 		//create view of depth stensil texture
 		D3D11_DEPTH_STENCIL_VIEW_DESC descDSV = {};
 		descDSV.Format = DXGI_FORMAT_D32_FLOAT;
 		descDSV.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 		descDSV.Texture2D.MipSlice = 0u;
-		_mpDevice->CreateDepthStencilView(pDepthStencil.Get(), &descDSV, &_mpDSV);
+		FPL_GFX_THROW_INFO(_mpDevice->CreateDepthStencilView(pDepthStencil.Get(), &descDSV, &_mpDSV));
 
 		_mpContext->OMSetRenderTargets(1u, _mpTarget.GetAddressOf(), _mpDSV.Get());
 

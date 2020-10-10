@@ -59,7 +59,7 @@ namespace FraplesDev
 		~Graphics() = default;
 	public:
 		void EndFrame();
-		inline void ClearBuffer(float red, float green, float blue)noexcept
+		void ClearBuffer(float red, float green, float blue) noexcept
 		{
 			const float color[] = { red,green,blue,1.0f };
 			_mpContext->ClearRenderTargetView(_mpTarget.Get(), color);

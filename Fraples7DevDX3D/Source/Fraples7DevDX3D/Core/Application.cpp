@@ -7,7 +7,8 @@
 #include "../SandBox/Melon.h"
 #include "Math/Math.h"
 #include <algorithm>
-namespace FraplesDev 
+
+namespace FraplesDev
 {
 	Application::Application(const char* name, int width, int height)
 		:_mWin(name, width, height)
@@ -46,14 +47,14 @@ namespace FraplesDev
 		private:
 			Graphics& _mGfx;
 			std::mt19937 rng{ std::random_device{}() };
-			std::uniform_real_distribution<float> adist{ 0.0f,PI * 2.0f };
-			std::uniform_real_distribution<float> ddist{ 0.0f,PI * 0.5f };
-			std::uniform_real_distribution<float> odist{ 0.0f,PI * 0.08f };
-			std::uniform_real_distribution<float> rdist{ 6.0f,20.0f };
-			std::uniform_real_distribution<float> bdist{ 0.4f,3.0f };
-			std::uniform_int_distribution<int> latdist{ 5,20 };
-			std::uniform_int_distribution<int> longdist{ 10,40 };
-			std::uniform_int_distribution<int> typedist{ 0,2 };
+			std::uniform_real_distribution<float> adist{ 0.0f, PI * 2.0f };
+			std::uniform_real_distribution<float> ddist{ 0.0f, PI * 0.5f };
+			std::uniform_real_distribution<float> odist{ 0.0f, PI * 0.08f };
+			std::uniform_real_distribution<float> rdist{ 6.0f, 20.0f };
+			std::uniform_real_distribution<float> bdist{ 0.4f, 3.0f };
+			std::uniform_int_distribution<int> latdist{ 5, 20 };
+			std::uniform_int_distribution<int> longdist{ 10, 50 };
+			std::uniform_int_distribution<int> typedist{ 0, 2 };
 		};
 
 		Factory f(_mWin.GetGFX());
@@ -82,7 +83,7 @@ namespace FraplesDev
 		// process all messages pending, but to not block for new messages
 		while (true)
 		{
-			if (const auto ecode = FraplesDev::Window::ProcessMessages())
+			if (const auto& ecode = FraplesDev::Window::ProcessMessages())
 			{// if return optional has value, means we're quitting so return exit code
 				return *ecode;
 			}
@@ -95,7 +96,7 @@ namespace FraplesDev
 	void Application::DoFrame()
 	{
 		const auto dt = _mTimer.Get();
-		_mWin.GetGFX().ClearBuffer(0.07f, 0.0f, 0.12f);
+		_mWin.GetGFX().ClearBuffer(0.87f, 0.017f, 0.021f);
 		for (auto& b : _mrenderable)
 		{
 			b->Update(dt);

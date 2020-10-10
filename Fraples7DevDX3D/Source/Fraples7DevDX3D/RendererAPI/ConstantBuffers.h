@@ -68,13 +68,13 @@ namespace FraplesDev
 	{
 		//Template inharitance not letting you access to protected members directly 
 		//So this is one of ways arounds
-		//or use this->
 		using ConstantBuffer<C>::_mpConstantBuffer;
 		using GfxContext::GetContext;
 	public:
 		using ConstantBuffer<C>::ConstantBuffer;
 		void Bind(Graphics& gfx)noexcept override
 		{
+			//or use this->
 			GetContext(gfx)->PSSetConstantBuffers(0u, 1u, _mpConstantBuffer.GetAddressOf());
 		}
 	};
