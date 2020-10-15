@@ -9,7 +9,7 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	{
 		return FraplesDev::Application("Fraples7 Engine Studio ", 800,600).StartApp();
 	}
-	catch (const FraplesDev::FraplesException & e)
+	catch (const FraplesDev::FraplesException& e)
 	{
 		MessageBox(nullptr, e.what(), e.GetType(), MB_OK | MB_ICONEXCLAMATION);
 	}

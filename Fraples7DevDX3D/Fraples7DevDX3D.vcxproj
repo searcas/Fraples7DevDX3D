@@ -157,6 +157,7 @@
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Debugging\Timer.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Debugging\WindowsMessageMap.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Debugging\Exceptions\FraplesException.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\Core\Surface.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\GraphicAPI\Graphic.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Input Events\KeyboardEvent.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Input Events\MouseEvents.cpp" />
@@ -188,6 +189,7 @@
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Fraples7.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\IndexedList.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Math\Math.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\Core\Surface.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\GraphicAPI\Graphic.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Input Events\KeyboardEvent.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Input Events\MouseEvents.h" />
