@@ -7,7 +7,8 @@
 #include "../SandBox/Melon.h"
 #include "Math/Math.h"
 #include <algorithm>
-
+#include "Surface.h"
+#include "GDIPlusManager.h"
 namespace FraplesDev
 {
 	Application::Application(const char* name, int width, int height)
@@ -61,7 +62,7 @@ namespace FraplesDev
 		_mrenderable.reserve(nDrawables);
 		std::generate_n(std::back_inserter(_mrenderable), nDrawables, f);
 
-
+		const auto fromFile = Surface::FromFile("Images\\car.png");
 		_mWin.GetGFX().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
 	}
 

@@ -3,6 +3,7 @@
 #include <memory>
 #include <assert.h>
 #include <string>
+#include "Fraples7.h"
 namespace FraplesDev
 {
 	class Surface
@@ -90,9 +91,9 @@ namespace FraplesDev
 			Exception(int line, const char* file, std::string note)noexcept;
 			const char* what()const noexcept override;
 			const char* GetType()const noexcept override;
-			const std::string& GetNode()const noexcept;
+			inline const std::string& GetNote()const noexcept;
 		private:
-			std::string note;
+			std::string _mNote;
 		};
 
 		Surface(unsigned int width, unsigned int height, unsigned int pitch)noexcept;
@@ -108,17 +109,17 @@ namespace FraplesDev
 		unsigned int GetHeight()const noexcept;
 		const Color* GetBufferPtr()const noexcept;
 		const Color* GetBufferPtrConst()const noexcept;
-		static Surface FromFile(std::string& name);
+		static Surface FromFile(const std::string& name);
 		
-		void Save(const std::string& filename)const;
+		void Save(const std::string& filename) const;
 		void Copy(const Surface& src)noexcept(!IS_DEBUG);
 		private:
 			Surface(unsigned int width, unsigned int height, std::unique_ptr<Color[]>pBufferParam)noexcept;
 
 	private:
 		std::unique_ptr<Color[]>_mPBuffer;
-		unsigned int width;
-		unsigned int height;
+		unsigned int _mWidth;
+		unsigned int _mHeight;
 	};
 
 
