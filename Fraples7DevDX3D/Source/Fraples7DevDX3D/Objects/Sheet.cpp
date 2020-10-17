@@ -39,7 +39,7 @@ namespace FraplesDev
 			model._mVertices[2].tex = { 0.0f, 1.0f };
 			model._mVertices[3].tex = { 1.0f, 1.0f };
 
-			AddStaticBind(std::make_unique<Texture>(gfx, Surface::FromFile("Images\\car.png")));
+			AddStaticBind(std::make_unique<Texture>(gfx, Surface::FromFile("C:\\Projects\\GameEngine\\Fraples7DevDX3D\\Fraples7DevDX3D\\Images\\car.png")));
 
 			AddStaticBind(std::make_unique<VertexBuffer>(gfx, model._mVertices));
 			AddStaticBind(std::make_unique<Sampler>(gfx));

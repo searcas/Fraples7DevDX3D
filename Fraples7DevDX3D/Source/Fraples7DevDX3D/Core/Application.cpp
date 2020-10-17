@@ -12,6 +12,7 @@
 #include "GDIPlusManager.h"
 namespace FraplesDev
 {
+	GDIPlusManager gdipm;
 	Application::Application(const char* name, int width, int height)
 		:_mWin(name, width, height)
 	{

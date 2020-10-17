@@ -11,6 +11,7 @@ namespace FraplesDev
 {
 	ULONG_PTR GDIPlusManager::s_token = 0;
 	int GDIPlusManager::s_refCount = 0;
+
 	GDIPlusManager::GDIPlusManager()
 	{
 		if (s_refCount++ == 0)
