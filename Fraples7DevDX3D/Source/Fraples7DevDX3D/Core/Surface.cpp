@@ -13,16 +13,12 @@ namespace Gdiplus
 
 namespace FraplesDev
 {
-	Surface::Surface(unsigned int width, unsigned int height, unsigned int pitch)noexcept :
-		_mPBuffer(std::make_unique<Color[]>( pitch * height )),
+	Surface::Surface(unsigned int width, unsigned int height )noexcept :
+		_mPBuffer(std::make_unique<Color[]>( width * height )),
 		_mWidth(width),
 		_mHeight(height)
 	{
 
-	}
-	Surface::Surface(unsigned int width, unsigned int height) noexcept :
-		Surface(width, height, width)
-	{
 	}
 	Surface::Surface(Surface&& source) noexcept
 		:_mPBuffer(std::move(source._mPBuffer)),
@@ -78,9 +74,8 @@ namespace FraplesDev
  	{
 		unsigned int  width = 0;
 		unsigned int  height = 0;
-		unsigned int  pitch = 0;
 
-		std::unique_ptr<Color[]> pBuffer = nullptr;
+		std::unique_ptr<Color[]> pBuffer;
 
 		{
 			//convert filenam to wide string (for Gdiplus)
@@ -95,7 +90,7 @@ namespace FraplesDev
 				ss << "Loading Image [" << name << "]: failed to load.";
 				throw Exception(__LINE__, __FILE__, ss.str());
 			}
-
+			width = bitmap.GetWidth();
 			height = bitmap.GetHeight();
 			pBuffer = std::make_unique<Color[]>(width * height);
 
@@ -105,7 +100,7 @@ namespace FraplesDev
 				{
 					Gdiplus::Color c;
 					bitmap.GetPixel(x, y, &c);
-					pBuffer[y * pitch + x] = c.GetValue();
+					pBuffer[y * width + x] = c.GetValue();
 				}
 			}
 		}
@@ -192,7 +187,7 @@ namespace FraplesDev
 	}
 	const char* Surface::Exception::GetType() const noexcept
 	{
-		return "Chili Graphics Exception";
+		return "Fraples Graphics Exception";
 	}
 	const std::string& Surface::Exception::GetNote() const noexcept
 	{

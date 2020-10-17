@@ -158,10 +158,13 @@
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Debugging\WindowsMessageMap.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Debugging\Exceptions\FraplesException.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\GDIPlusManager.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\Core\Sampler.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Surface.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\Core\Texture\Texture.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\GraphicAPI\Graphic.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Input Events\KeyboardEvent.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Input Events\MouseEvents.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\Objects\Sheet.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Platform\Windows\Window.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\IndexBuffer.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\InputLayout.cpp" />
@@ -170,11 +173,11 @@
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\TransformCBuf.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\VertexBuffer.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\VertexShader.cpp" />
-    <ClCompile Include="Source\Fraples7DevDX3D\SandBox\Box.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\Objects\Box.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\GFXContext.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Renderer.cpp" />
-    <ClCompile Include="Source\Fraples7DevDX3D\SandBox\Melon.cpp" />
-    <ClCompile Include="Source\Fraples7DevDX3D\SandBox\Pyramid.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\Objects\Melon.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\Objects\Pyramid.cpp" />
     <ClCompile Include="WinEntryPoint.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -192,30 +195,33 @@
     <ClInclude Include="Source\Fraples7DevDX3D\Core\IndexedList.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Math\Math.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Surface.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\Core\Texture\Texture.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\GraphicAPI\Graphic.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Input Events\KeyboardEvent.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Input Events\MouseEvents.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\Objects\Sheet.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Platform\Windows\Window.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\GFXContextBase.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\IndexBuffer.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\InputLayout.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\PixelShader.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RendererBase.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\Core\Sampler.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Topology.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\TransformCBuf.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\VertexBuffer.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\VertexShader.h" />
-    <ClInclude Include="Source\Fraples7DevDX3D\SandBox\Box.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\Objects\Box.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\ConstantBuffers.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\GFXContext.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Renderer.h" />
-    <ClInclude Include="Source\Fraples7DevDX3D\SandBox\Cone.h" />
-    <ClInclude Include="Source\Fraples7DevDX3D\SandBox\Cube.h" />
-    <ClInclude Include="Source\Fraples7DevDX3D\SandBox\Melon.h" />
-    <ClInclude Include="Source\Fraples7DevDX3D\SandBox\Plane.h" />
-    <ClInclude Include="Source\Fraples7DevDX3D\SandBox\Prism.h" />
-    <ClInclude Include="Source\Fraples7DevDX3D\SandBox\Pyramid.h" />
-    <ClInclude Include="Source\Fraples7DevDX3D\SandBox\Sphere.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\Objects\Cone.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\Objects\Cube.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\Objects\Melon.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\Objects\Plane.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\Objects\Prism.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\Objects\Pyramid.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\Objects\Sphere.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Fraples7DevDX3D.rc" />
@@ -272,6 +278,26 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0_level_9_3</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\TexturePS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\TextureVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
     </FxCompile>
   </ItemGroup>

@@ -1,10 +1,11 @@
 #include "Application.h"
 #include "Debugging/Exceptions/Macros/WindowsThrowMacros.h"
 #include "Debugging/Timer.h"
-#include "../SandBox/Box.h"
-#include "../SandBox/Sphere.h"
-#include "../SandBox/Pyramid.h"
-#include "../SandBox/Melon.h"
+#include "../Objects/Box.h"
+#include "../Objects/Sphere.h"
+#include "../Objects/Pyramid.h"
+#include "../Objects/Melon.h"
+#include "../Objects/Sheet.h"
 #include "Math/Math.h"
 #include <algorithm>
 #include "Surface.h"
@@ -40,6 +41,8 @@ namespace FraplesDev
 						_mGfx, rng, adist, ddist,
 						odist, rdist, longdist, latdist
 						);
+				case 3:
+					return std::make_unique<Sheet>(_mGfx, rng, adist, ddist, odist, rdist);
 				default:
 					assert(false && "bad drawable type in factory");
 					return {};
@@ -55,14 +58,13 @@ namespace FraplesDev
 			std::uniform_real_distribution<float> bdist{ 0.4f, 3.0f };
 			std::uniform_int_distribution<int> latdist{ 5, 20 };
 			std::uniform_int_distribution<int> longdist{ 10, 50 };
-			std::uniform_int_distribution<int> typedist{ 0, 2 };
+			std::uniform_int_distribution<int> typedist{ 0, 3 };
 		};
 
 		Factory f(_mWin.GetGFX());
 		_mrenderable.reserve(nDrawables);
 		std::generate_n(std::back_inserter(_mrenderable), nDrawables, f);
 
-		const auto fromFile = Surface::FromFile("Images\\car.png");
 		_mWin.GetGFX().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
 	}
 
@@ -100,7 +102,7 @@ namespace FraplesDev
 		_mWin.GetGFX().ClearBuffer(0.87f, 0.017f, 0.021f);
 		for (auto& b : _mrenderable)
 		{
-			b->Update(dt);
+			b->Update(_mWin._mKey.KeyIsPressed(VK_SPACE) ? 0.0f : dt);
 			b->Render(_mWin.GetGFX());
 		}
 		_mWin.GetGFX().EndFrame();

@@ -3,11 +3,10 @@
 #include <vector>
 #include <array>
 #include "../Core/Math/Math.h"
-
+#include "../Core/IndexedList.h"
 namespace FraplesDev
 {
-	template <typename T>
-	class IndexedList;
+	
 
 	class Plane
 	{
@@ -47,7 +46,7 @@ namespace FraplesDev
 			}
 
 			std::vector<unsigned short> indices;
-			indices.reserve(sq(divisions_x * divisions_y) * 6);
+			indices.reserve(Sq(divisions_x * divisions_y) * 6);
 			{
 				const auto vxy2i = [nVertices_x](size_t x, size_t y)
 				{
@@ -71,7 +70,7 @@ namespace FraplesDev
 
 			return{ std::move(vertices),std::move(indices) };
 		}
-		template<class V>
+		template<typename V>
 		static IndexedList <V> Make()
 		{
 			return MakeTesselated<V>(1, 1);
