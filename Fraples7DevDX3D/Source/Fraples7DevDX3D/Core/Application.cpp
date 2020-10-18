@@ -1,19 +1,25 @@
 #include "Application.h"
 #include "Debugging/Exceptions/Macros/WindowsThrowMacros.h"
 #include "Debugging/Timer.h"
+// ########## Objects ################
 #include "../Objects/Box.h"
 #include "../Objects/SkinnedBox.h"
 #include "../Objects/Sphere.h"
 #include "../Objects/Pyramid.h"
 #include "../Objects/Melon.h"
 #include "../Objects/Sheet.h"
+//########### End Objects ###########
 #include "Math/Math.h"
-#include <algorithm>
 #include "Surface.h"
 #include "GDIPlusManager.h"
+#include "imgui.h"
+#include "imgui_impl_dx11.h"
+#include "imgui_impl_win32.h"
+#include <algorithm>
 namespace FraplesDev
 {
 	GDIPlusManager gdipm;
+
 	Application::Application(const char* name, int width, int height)
 		:_mWin(name, width, height)
 	{
@@ -64,8 +70,6 @@ namespace FraplesDev
 			std::uniform_int_distribution<int> longdist{ 10, 50 };
 			std::uniform_int_distribution<int> typedist{ 0, 4 };
 		};
-
-		Factory f(_mWin.GetGFX());
 		_mrenderable.reserve(nDrawables);
 		std::generate_n(std::back_inserter(_mrenderable), nDrawables, Factory{ _mWin.GetGFX() });
 
@@ -102,6 +106,7 @@ namespace FraplesDev
 
 	void Application::DoFrame()
 	{
+		
 		const auto dt = _mTimer.Get();
 		_mWin.GetGFX().ClearBuffer(0.87f, 0.017f, 0.021f);
 		for (auto& b : _mrenderable)
@@ -109,6 +114,19 @@ namespace FraplesDev
 			b->Update(_mWin._mKey.KeyIsPressed(VK_SPACE) ? 0.0f : dt);
 			b->Render(_mWin.GetGFX());
 		}
+
+		ImGui_ImplDX11_NewFrame();
+		ImGui_ImplWin32_NewFrame();
+		ImGui::NewFrame();
+
+		static bool show_demo_window = true;
+
+		if (show_demo_window)
+		{
+			ImGui::ShowDemoWindow(&show_demo_window);
+		}
+		ImGui::Render();
+		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 		_mWin.GetGFX().EndFrame();
 	}
 

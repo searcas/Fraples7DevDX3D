@@ -87,6 +87,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);IS_DEBUG=true</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Fraples7DevDX3D\ImGui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -104,6 +105,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Fraples7DevDX3D\ImGui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -119,6 +121,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);IS_DEBUG=false</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Fraples7DevDX3D\ImGui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -141,6 +144,7 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Fraples7DevDX3D\ImGui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -154,6 +158,8 @@
     <ClCompile Include="ImGui\imgui.cpp" />
     <ClCompile Include="ImGui\imgui_demo.cpp" />
     <ClCompile Include="ImGui\imgui_draw.cpp" />
+    <ClCompile Include="ImGui\imgui_impl_dx11.cpp" />
+    <ClCompile Include="ImGui\imgui_impl_win32.cpp" />
     <ClCompile Include="ImGui\imgui_widgets.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Application.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Debugging\dxerr.cpp" />
@@ -166,6 +172,7 @@
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Surface.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Texture\Texture.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\GraphicAPI\Graphic.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\ImGuiMgr\ImGuiMgr.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Input Events\KeyboardEvent.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Input Events\MouseEvents.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Objects\Sheet.cpp" />
@@ -188,6 +195,8 @@
   <ItemGroup>
     <ClInclude Include="ImGui\imconfig.h" />
     <ClInclude Include="ImGui\imgui.h" />
+    <ClInclude Include="ImGui\imgui_impl_dx11.h" />
+    <ClInclude Include="ImGui\imgui_impl_win32.h" />
     <ClInclude Include="ImGui\imgui_internal.h" />
     <ClInclude Include="ImGui\imstb_rectpack.h" />
     <ClInclude Include="ImGui\imstb_textedit.h" />
@@ -208,6 +217,7 @@
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Surface.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Texture\Texture.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\GraphicAPI\Graphic.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\ImGuiMgr\ImGuiMgr.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Input Events\KeyboardEvent.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Input Events\MouseEvents.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Objects\Sheet.h" />

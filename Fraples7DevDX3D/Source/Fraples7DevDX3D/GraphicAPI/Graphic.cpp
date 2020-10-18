@@ -2,10 +2,10 @@
 #include "../Core/Debugging/Exceptions/Macros/GraphicsThrowMacros.h"
 #include "../Core/Debugging/dxerr.h"
 #include "../Core/Debugging/DxgiInfoManager.h"
+#include "imgui_impl_dx11.h"
 #include "Graphic.h"
 #include <sstream>
 #include <random>
-
 #pragma comment(lib,"d3d11.lib")
 
 namespace FraplesDev {
@@ -93,6 +93,8 @@ namespace FraplesDev {
 		vp.TopLeftX = 0.0f;
 		vp.TopLeftY = 0.0f;
 		_mpContext->RSSetViewports(1u, &vp);
+
+		ImGui_ImplDX11_Init(_mpDevice.Get(), _mpContext.Get());
 	}
 
 	

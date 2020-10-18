@@ -10,10 +10,10 @@
 // Read online: https://github.com/ocornut/imgui/tree/master/docs
 
 #pragma once
-#include "imgui.h"      // IMGUI_IMPL_API
 
-struct ID3D11Device;
-struct ID3D11DeviceContext;
+#include "imgui.h"      // IMGUI_IMPL_API
+#include "../Source/Fraples7DevDX3D/Core/Fraples7.h"
+#include "../Source/Fraples7DevDX3D/GraphicAPI/Graphic.h"
 
 IMGUI_IMPL_API bool     ImGui_ImplDX11_Init(ID3D11Device* device, ID3D11DeviceContext* device_context);
 IMGUI_IMPL_API void     ImGui_ImplDX11_Shutdown();

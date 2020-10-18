@@ -1,7 +1,8 @@
 #include "Window.h"
 #include <sstream>
 #include "../../Core/Debugging/Exceptions/Macros/WindowsThrowMacros.h"
-
+#include "../../../../ImGui/imgui_impl_win32.h"
+#include "../Source/Fraples7DevDX3D/ImGuiMgr/ImGuiMgr.h"
 namespace FraplesDev {
 	Window::WindowClass Window::WindowClass::_sWindClass;
 	//Window Exception Stuff
@@ -122,12 +123,15 @@ namespace FraplesDev {
 			throw FPL_LAST_EXCEPT();
 		}
 		ShowWindow(_mHwnd, SW_SHOWDEFAULT);
+		ImGuiMgr mgr = {};
+		ImGui_ImplWin32_Init(_mHwnd);
 		_mpGFX = std::make_unique<Graphics>(_mHwnd);
 	}
 
 
 	Window::~Window()
 	{
+		ImGui_ImplWin32_Shutdown();
 		DestroyWindow(_mHwnd);
 	}
 	std::optional<int>Window::ProcessMessages()noexcept
@@ -211,6 +215,10 @@ namespace FraplesDev {
 
 	LRESULT Window::HandleMsg(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lparam) noexcept
 	{
+		if (ImGui_ImplWin32_WndProcHandler(hwnd,msg,wParam,lparam))
+		{
+			return true;
+		}
 		switch (msg)
 		{
 		case WM_CLOSE:
