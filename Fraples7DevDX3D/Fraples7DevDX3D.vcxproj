@@ -151,6 +151,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ImGui\imgui.cpp" />
+    <ClCompile Include="ImGui\imgui_demo.cpp" />
+    <ClCompile Include="ImGui\imgui_draw.cpp" />
+    <ClCompile Include="ImGui\imgui_widgets.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Application.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Debugging\dxerr.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Debugging\DxgiInfoManager.cpp" />
@@ -182,6 +186,12 @@
     <ClCompile Include="WinEntryPoint.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ImGui\imconfig.h" />
+    <ClInclude Include="ImGui\imgui.h" />
+    <ClInclude Include="ImGui\imgui_internal.h" />
+    <ClInclude Include="ImGui\imstb_rectpack.h" />
+    <ClInclude Include="ImGui\imstb_textedit.h" />
+    <ClInclude Include="ImGui\imstb_truetype.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Application.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Debugging\dxerr.h" />
