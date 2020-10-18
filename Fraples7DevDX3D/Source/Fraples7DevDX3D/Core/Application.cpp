@@ -2,6 +2,7 @@
 #include "Debugging/Exceptions/Macros/WindowsThrowMacros.h"
 #include "Debugging/Timer.h"
 #include "../Objects/Box.h"
+#include "../Objects/SkinnedBox.h"
 #include "../Objects/Sphere.h"
 #include "../Objects/Pyramid.h"
 #include "../Objects/Melon.h"
@@ -44,6 +45,8 @@ namespace FraplesDev
 						);
 				case 3:
 					return std::make_unique<Sheet>(_mGfx, rng, adist, ddist, odist, rdist);
+				case 4:
+					return std::make_unique<SkinnedBox>(_mGfx, rng, adist, ddist, odist, rdist);
 				default:
 					assert(false && "bad drawable type in factory");
 					return {};
@@ -59,12 +62,12 @@ namespace FraplesDev
 			std::uniform_real_distribution<float> bdist{ 0.4f, 3.0f };
 			std::uniform_int_distribution<int> latdist{ 5, 20 };
 			std::uniform_int_distribution<int> longdist{ 10, 50 };
-			std::uniform_int_distribution<int> typedist{ 0, 3 };
+			std::uniform_int_distribution<int> typedist{ 0, 4 };
 		};
 
 		Factory f(_mWin.GetGFX());
 		_mrenderable.reserve(nDrawables);
-		std::generate_n(std::back_inserter(_mrenderable), nDrawables, f);
+		std::generate_n(std::back_inserter(_mrenderable), nDrawables, Factory{ _mWin.GetGFX() });
 
 		_mWin.GetGFX().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
 	}

@@ -165,6 +165,7 @@
     <ClCompile Include="Source\Fraples7DevDX3D\Input Events\KeyboardEvent.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Input Events\MouseEvents.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Objects\Sheet.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\Objects\SkinnedBox.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Platform\Windows\Window.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\IndexBuffer.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\InputLayout.cpp" />
@@ -200,6 +201,7 @@
     <ClInclude Include="Source\Fraples7DevDX3D\Input Events\KeyboardEvent.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Input Events\MouseEvents.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Objects\Sheet.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\Objects\SkinnedBox.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Platform\Windows\Window.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\GFXContextBase.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\IndexBuffer.h" />
