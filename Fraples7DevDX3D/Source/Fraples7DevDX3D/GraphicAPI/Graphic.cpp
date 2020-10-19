@@ -178,7 +178,8 @@ namespace FraplesDev {
 		infoManager.Set();
 #endif // !_DEBUG
 
-		if (FAILED(hr = _mpSwap->Present(1u, 0u)))
+		//Disabled Vysnc
+		if (FAILED(hr = _mpSwap->Present(0u, 0u)))
 		{
 			if (hr == DXGI_ERROR_DEVICE_REMOVED)
 			{
@@ -189,6 +190,7 @@ namespace FraplesDev {
 				throw FPL_GFX_EXCEPT(hr);
 			}
 		}
+		
 	}
 
 

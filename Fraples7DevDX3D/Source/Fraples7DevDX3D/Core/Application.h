@@ -23,7 +23,7 @@ namespace FraplesDev
 		std::vector<std::unique_ptr<class Renderer>>_mrenderable;
 		static constexpr size_t nDrawables = 180;
 		bool show_demo_window = true;
-
+		float speed_accelerator = 1.500f;
 	};
 
 }

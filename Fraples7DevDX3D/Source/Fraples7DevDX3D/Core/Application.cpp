@@ -106,16 +106,16 @@ namespace FraplesDev
 
 	void Application::DoFrame()
 	{
-		const auto dt = _mTimer.Get();
+		const auto dt = _mTimer.Get() * speed_accelerator;
 
-		if (_mWin._mKey.KeyIsPressed(VK_SPACE))
-		{
-			_mWin.GetGFX().DisableImGui();
-		}
-		else
-		{
-			_mWin.GetGFX().EnableImGui();
-		}
+		//if (_mWin._mKey.KeyIsPressed(VK_SPACE))
+		//{
+		//	_mWin.GetGFX().DisableImGui();
+		//}
+		//else
+		//{
+		//	_mWin.GetGFX().EnableImGui();
+		//}
 		
 		_mWin.GetGFX().BeginFrame(0.87f, 0.017f, 0.021f);
 
@@ -124,9 +124,15 @@ namespace FraplesDev
 			b->Update(_mWin._mKey.KeyIsPressed(VK_SPACE) ? 0.0f : dt);
 			b->Render(_mWin.GetGFX());
 		}
-		if (show_demo_window)
+		static char buffer[1024];
+
+		if (ImGui::Begin("Speed Controller"))
 		{
-			ImGui::ShowDemoWindow(&show_demo_window); 
+			ImGui::SliderFloat("Speed Factor", &speed_accelerator, 0.0f, 10.0f);
+			ImGui::Text("Application Average %.3f ms/frame (%.1f Fps)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+			ImGui::InputText("Bad Boy", buffer,1024);
+			ImGui::End();
+
 		}
 		_mWin.GetGFX().EndFrame();
 	
