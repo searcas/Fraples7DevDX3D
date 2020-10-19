@@ -4,6 +4,8 @@
 #include "../../Input Events/KeyboardEvent.h"
 #include "../../Input Events/MouseEvents.h"
 #include "../../GraphicAPI/Graphic.h"
+#include "../../ImGuiMgr/ImGuiMgr.h"
+
 #include <memory>
 namespace FraplesDev {
 	class Window
@@ -69,6 +71,7 @@ namespace FraplesDev {
 		static LRESULT CALLBACK HandleMsgThunk(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 		LRESULT HandleMsg(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lparam) noexcept;
 	private:
+		ImGuiMgr mgr;
 		bool _mCursorEnabled = true;
 		int _mWidth;
 		int _mHeight;

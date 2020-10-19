@@ -7,7 +7,7 @@
 #include <vector>
 #include <d3d11.h>
 #include <wrl.h>
-
+#include "imgui_impl_win32.h"
 #define GFX_THROW_FAILED(hrcall) if(FAILED(hr = (hrcall))) throw FraplesDev::Graphics::HrException(__LINE__,__FILE__,hr)
 namespace FraplesDev
 {
@@ -59,16 +59,19 @@ namespace FraplesDev
 		~Graphics() = default;
 	public:
 		void EndFrame();
-		void ClearBuffer(float red, float green, float blue) noexcept
-		{
-			const float color[] = { red,green,blue,1.0f };
-			_mpContext->ClearRenderTargetView(_mpTarget.Get(), color);
-			_mpContext->ClearDepthStencilView(_mpDSV.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0u);
-		}
+		//clear buffer
+		void BeginFrame(float red, float green, float blue) noexcept;
 		void RenderIndexed(UINT count)noexcept;
 		void SetProjection(DirectX::FXMMATRIX proj) noexcept;
 		const DirectX::XMMATRIX& GetProjection() const noexcept;
 
+	public:
+		void EnableImGui()noexcept;
+		void DisableImGui()noexcept;
+		constexpr bool IsEnabled() noexcept
+		{
+			return IsImGuiEnabled;
+		};
 	private:
 		Microsoft::WRL::ComPtr<ID3D11Device> _mpDevice = nullptr;
 		Microsoft::WRL::ComPtr<IDXGISwapChain> _mpSwap = nullptr;
@@ -76,6 +79,7 @@ namespace FraplesDev
 		Microsoft::WRL::ComPtr<ID3D11RenderTargetView> _mpTarget = nullptr;
 		Microsoft::WRL::ComPtr<ID3D11DepthStencilView> _mpDSV;
 		DirectX::XMMATRIX _mProjection;
+		bool IsImGuiEnabled = true;
 
 #ifndef NDEBUG
 		DxgiInfoManager infoManager;

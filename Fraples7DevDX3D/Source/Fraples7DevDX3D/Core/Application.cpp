@@ -106,28 +106,30 @@ namespace FraplesDev
 
 	void Application::DoFrame()
 	{
-		
 		const auto dt = _mTimer.Get();
-		_mWin.GetGFX().ClearBuffer(0.87f, 0.017f, 0.021f);
-		for (auto& b : _mrenderable)
+
+		if (_mWin._mKey.KeyIsPressed(VK_SPACE))
+		{
+			_mWin.GetGFX().DisableImGui();
+		}
+		else
+		{
+			_mWin.GetGFX().EnableImGui();
+		}
+		
+		_mWin.GetGFX().BeginFrame(0.87f, 0.017f, 0.021f);
+
+ 		for (auto& b : _mrenderable)
 		{
 			b->Update(_mWin._mKey.KeyIsPressed(VK_SPACE) ? 0.0f : dt);
 			b->Render(_mWin.GetGFX());
 		}
-
-		ImGui_ImplDX11_NewFrame();
-		ImGui_ImplWin32_NewFrame();
-		ImGui::NewFrame();
-
-		static bool show_demo_window = true;
-
 		if (show_demo_window)
 		{
-			ImGui::ShowDemoWindow(&show_demo_window);
+			ImGui::ShowDemoWindow(&show_demo_window); 
 		}
-		ImGui::Render();
-		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 		_mWin.GetGFX().EndFrame();
+	
 	}
 
 }

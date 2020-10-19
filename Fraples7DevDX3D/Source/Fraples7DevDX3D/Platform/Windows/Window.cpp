@@ -123,7 +123,6 @@ namespace FraplesDev {
 			throw FPL_LAST_EXCEPT();
 		}
 		ShowWindow(_mHwnd, SW_SHOWDEFAULT);
-		ImGuiMgr mgr = {};
 		ImGui_ImplWin32_Init(_mHwnd);
 		_mpGFX = std::make_unique<Graphics>(_mHwnd);
 	}

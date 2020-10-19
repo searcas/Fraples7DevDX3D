@@ -153,8 +153,26 @@ namespace FraplesDev {
 	{
 		return _mInfo;
 	}
+	void Graphics::BeginFrame(float red, float green, float blue) noexcept
+	{
+
+		if (IsImGuiEnabled)
+		{
+			ImGui_ImplDX11_NewFrame();
+			ImGui_ImplWin32_NewFrame();
+			ImGui::NewFrame();
+		}
+		const float color[] = { red,green,blue,1.0f };
+		_mpContext->ClearRenderTargetView(_mpTarget.Get(), color);
+		_mpContext->ClearDepthStencilView(_mpDSV.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0u);
+	}
 	void FraplesDev::Graphics::EndFrame()
 	{
+		if (IsImGuiEnabled)
+		{
+			ImGui::Render();
+			ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+		}
 		HRESULT hr;
 #ifndef NDEBUG
 		infoManager.Set();
@@ -172,6 +190,8 @@ namespace FraplesDev {
 			}
 		}
 	}
+
+
 
 	void Graphics::RenderIndexed(UINT count)noexcept
 	{
@@ -317,5 +337,13 @@ namespace FraplesDev {
 	const DirectX::XMMATRIX& Graphics::GetProjection() const noexcept
 	{
 		return _mProjection;
+	}
+	void Graphics::EnableImGui() noexcept
+	{
+		IsImGuiEnabled = true;
+	}
+	void Graphics::DisableImGui() noexcept
+	{
+		IsImGuiEnabled = false;
 	}
 }

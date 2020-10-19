@@ -3,7 +3,6 @@
 #include "../Platform/Windows/Window.h"
 #include "../Core/Debugging/Timer.h"
 #include "../Objects/Box.h"
-#include "../ImGuiMgr/ImGuiMgr.h"
 namespace FraplesDev
 {
 
@@ -23,8 +22,8 @@ namespace FraplesDev
 		float _mSpeedFactor = 1.0f;
 		std::vector<std::unique_ptr<class Renderer>>_mrenderable;
 		static constexpr size_t nDrawables = 180;
+		bool show_demo_window = true;
 
-		ImGuiMgr imGuiMgr;
 	};
 
 }
