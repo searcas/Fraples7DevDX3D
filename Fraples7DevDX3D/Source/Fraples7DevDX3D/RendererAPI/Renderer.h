@@ -1,5 +1,5 @@
 #pragma once
-#include "../GraphicAPI/Graphic.h"
+#include "../GraphicAPI/Graphics.h"
 #include "GFXContext.h"
 #include "IndexBuffer.h"
 #include <DirectXMath.h>

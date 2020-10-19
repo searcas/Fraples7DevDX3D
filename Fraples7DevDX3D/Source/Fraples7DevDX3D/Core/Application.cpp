@@ -74,6 +74,7 @@ namespace FraplesDev
 		std::generate_n(std::back_inserter(_mrenderable), nDrawables, Factory{ _mWin.GetGFX() });
 
 		_mWin.GetGFX().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
+		_mWin.GetGFX().SetCamera(DirectX::XMMatrixTranslation(0.0f, 0.0f, 20.0f));
 	}
 
 
@@ -107,7 +108,7 @@ namespace FraplesDev
 	void Application::DoFrame()
 	{
 		const auto dt = _mTimer.Get() * speed_accelerator;
-
+		_mWin.GetGFX().SetCamera(_mCamera.GetMatrix());
 		//if (_mWin._mKey.KeyIsPressed(VK_SPACE))
 		//{
 		//	_mWin.GetGFX().DisableImGui();
@@ -130,10 +131,12 @@ namespace FraplesDev
 		{
 			ImGui::SliderFloat("Speed Factor", &speed_accelerator, 0.0f, 10.0f);
 			ImGui::Text("Application Average %.3f ms/frame (%.1f Fps)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-			ImGui::InputText("Bad Boy", buffer,1024);
+			ImGui::InputText("Commands: ", buffer,1024);
 			ImGui::End();
 
 		}
+		_mCamera.SpawnControllWindow();
+
 		_mWin.GetGFX().EndFrame();
 	
 	}

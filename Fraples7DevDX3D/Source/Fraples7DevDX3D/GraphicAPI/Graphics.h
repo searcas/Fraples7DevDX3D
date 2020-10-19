@@ -64,7 +64,11 @@ namespace FraplesDev
 		void RenderIndexed(UINT count)noexcept;
 		void SetProjection(DirectX::FXMMATRIX proj) noexcept;
 		const DirectX::XMMATRIX& GetProjection() const noexcept;
-
+		void SetCamera(DirectX::FXMMATRIX cameraView) noexcept;
+		inline DirectX::XMMATRIX GetCamera()const noexcept
+		{
+			return _mCamera;
+		}
 	public:
 		void EnableImGui()noexcept;
 		void DisableImGui()noexcept;
@@ -79,6 +83,7 @@ namespace FraplesDev
 		Microsoft::WRL::ComPtr<ID3D11RenderTargetView> _mpTarget = nullptr;
 		Microsoft::WRL::ComPtr<ID3D11DepthStencilView> _mpDSV;
 		DirectX::XMMATRIX _mProjection;
+		DirectX::XMMATRIX _mCamera;
 		bool IsImGuiEnabled = true;
 
 #ifndef NDEBUG

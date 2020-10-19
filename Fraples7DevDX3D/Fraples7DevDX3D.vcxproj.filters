@@ -36,9 +36,6 @@
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Fraples7DevDX3D\GraphicAPI\Graphic.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Debugging\Exceptions\FraplesException.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -123,6 +120,12 @@
     <ClCompile Include="Source\Fraples7DevDX3D\ImGuiMgr\ImGuiMgr.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\GraphicAPI\Graphics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Debugging\WindowsMessageMap.h">
@@ -147,9 +150,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Application.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Fraples7DevDX3D\GraphicAPI\Graphic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Debugging\Exceptions\FraplesException.h">
@@ -276,6 +276,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Fraples7DevDX3D\ImGuiMgr\ImGuiMgr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\GraphicAPI\Graphics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

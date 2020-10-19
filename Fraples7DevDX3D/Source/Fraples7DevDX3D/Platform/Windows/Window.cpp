@@ -218,6 +218,7 @@ namespace FraplesDev {
 		{
 			return true;
 		}
+		const auto imIo = ImGui::GetIO();
 		switch (msg)
 		{
 		case WM_CLOSE:
@@ -234,7 +235,12 @@ namespace FraplesDev {
 		case WM_KEYDOWN:
 			// syskey commands need to be handled to track ALT key (VK_MENU) and F10
 		case WM_SYSKEYDOWN:
-		{	// stifle this keyboard message if imgui wants to capture
+		{	
+			if (imIo.WantCaptureKeyboard)
+			{
+				break;
+			}
+			// stifle this keyboard message if imgui wants to capture
 			if (!(lparam & 0x40000000) || _mKey.AutorepeatIsEnabled())
 			{
 				_mKey.OnKeyPressed(static_cast<unsigned char>(wParam));
@@ -244,13 +250,26 @@ namespace FraplesDev {
 		case WM_KEYUP:
 		case WM_SYSKEYUP:
 		{
+			if (imIo.WantCaptureKeyboard)
+			{
+				break;
+			}
 			_mKey.OnKeyReleased(static_cast<unsigned char>(wParam));
 			break;
 		}
 		case WM_CHAR:
+			if (imIo.WantCaptureKeyboard)
+			{
+				break;
+			}
 			_mKey.OnChar(static_cast<unsigned char>(wParam));
+			break;
 		case WM_MOUSEMOVE:
 		{
+			if (imIo.WantCaptureMouse)
+			{
+				break;
+			}
 			const POINTS pt = MAKEPOINTS(lparam);
 			//cursorless exclusive gets first dibs
 			if (!_mCursorEnabled)
@@ -289,6 +308,10 @@ namespace FraplesDev {
 		}
 		case WM_LBUTTONDOWN:
 		{
+			if (imIo.WantCaptureMouse)
+			{
+				break;
+			}
 			SetForegroundWindow(hwnd);
 			if (!_mCursorEnabled)
 			{
@@ -329,6 +352,10 @@ namespace FraplesDev {
 		}
 		case WM_MOUSEWHEEL:
 		{
+			if (imIo.WantCaptureMouse)
+			{
+				break;
+			}
 			const POINTS pt = MAKEPOINTS(lparam);
 			const int delta = GET_WHEEL_DELTA_WPARAM(wParam);
 			_mMouse.OnWheelDelta(pt.x, pt.y, delta);

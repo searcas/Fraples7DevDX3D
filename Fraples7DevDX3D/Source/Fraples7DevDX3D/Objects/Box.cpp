@@ -96,7 +96,6 @@ namespace FraplesDev
 		return std::move(DirectX::XMLoadFloat3x3(&mt) *
 			DirectX::XMMatrixRotationRollPitchYaw(pitch, yaw, roll) *
 			DirectX::XMMatrixTranslation(r, 0.0f, 0.0f) *
-			DirectX::XMMatrixRotationRollPitchYaw(theta, phi, chi) *
-			DirectX::XMMatrixTranslation(0.0f, 0.0f, 20.0f));
+			DirectX::XMMatrixRotationRollPitchYaw(theta, phi, chi));
 	}
 }

@@ -1,5 +1,5 @@
 #pragma once
-#include "../GraphicAPI/Graphic.h"
+#include "../GraphicAPI/Graphics.h"
 
 namespace FraplesDev
 {

@@ -3,7 +3,7 @@
 #include "../../Core/Debugging/Exceptions/FraplesException.h"
 #include "../../Input Events/KeyboardEvent.h"
 #include "../../Input Events/MouseEvents.h"
-#include "../../GraphicAPI/Graphic.h"
+#include "../../GraphicAPI/Graphics.h"
 #include "../../ImGuiMgr/ImGuiMgr.h"
 
 #include <memory>

@@ -3,6 +3,7 @@
 #include "../Platform/Windows/Window.h"
 #include "../Core/Debugging/Timer.h"
 #include "../Objects/Box.h"
+#include "../RendererAPI/Camera.h"
 namespace FraplesDev
 {
 
@@ -24,6 +25,7 @@ namespace FraplesDev
 		static constexpr size_t nDrawables = 180;
 		bool show_demo_window = true;
 		float speed_accelerator = 1.500f;
+		Camera _mCamera;
 	};
 
 }

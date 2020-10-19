@@ -3,7 +3,7 @@
 #include "../Core/Debugging/dxerr.h"
 #include "../Core/Debugging/DxgiInfoManager.h"
 #include "imgui_impl_dx11.h"
-#include "Graphic.h"
+#include "Graphics.h"
 #include <sstream>
 #include <random>
 #pragma comment(lib,"d3d11.lib")
@@ -339,6 +339,10 @@ namespace FraplesDev {
 	const DirectX::XMMATRIX& Graphics::GetProjection() const noexcept
 	{
 		return _mProjection;
+	}
+	void Graphics::SetCamera(DirectX::FXMMATRIX cameraView) noexcept
+	{
+		_mCamera = cameraView;
 	}
 	void Graphics::EnableImGui() noexcept
 	{

@@ -2,7 +2,7 @@
 #include "ConstantBuffers.h"
 #include "Renderer.h"
 #include <DirectXMath.h>
-
+#include "../GraphicAPI/Graphics.h"
 
 namespace FraplesDev
 {
