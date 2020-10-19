@@ -97,7 +97,11 @@ namespace FraplesDev {
 		ImGui_ImplDX11_Init(_mpDevice.Get(), _mpContext.Get());
 	}
 
-	
+	Graphics::~Graphics()
+	{
+		ImGui_ImplDX11_Shutdown();
+		ImGui_ImplWin32_Shutdown();
+	}
 	Graphics::HrException::HrException(int line, const char* file, HRESULT hr, std::vector<std::string> infoMsgs) noexcept
 		: Exception(line,file)
 	{

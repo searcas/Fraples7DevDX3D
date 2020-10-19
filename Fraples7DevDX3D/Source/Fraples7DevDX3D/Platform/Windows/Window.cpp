@@ -218,7 +218,7 @@ namespace FraplesDev {
 		{
 			return true;
 		}
-		const auto imIo = ImGui::GetIO();
+		const auto& imIo = ImGui::GetIO();
 		switch (msg)
 		{
 		case WM_CLOSE:

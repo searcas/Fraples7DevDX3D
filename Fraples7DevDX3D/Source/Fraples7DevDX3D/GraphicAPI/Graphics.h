@@ -56,7 +56,7 @@ namespace FraplesDev
 		Graphics(const Graphics&) = delete;
 		Graphics& operator=(const Graphics&) = delete;
 
-		~Graphics() = default;
+		~Graphics();
 	public:
 		void EndFrame();
 		//clear buffer
