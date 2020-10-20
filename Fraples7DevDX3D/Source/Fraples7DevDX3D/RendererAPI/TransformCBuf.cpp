@@ -7,14 +7,20 @@ namespace FraplesDev
 	{
 		if (!_spVcbuf)
 		{
-			_spVcbuf = std::make_unique<VertexConstantBuffer<DirectX::XMMATRIX>>(gfx);
+			_spVcbuf = std::make_unique<VertexConstantBuffer<Transforms>>(gfx);
 		}
 	}
 
 	void TransformCBuf::Bind(Graphics& gfx) noexcept
 	{
-		_spVcbuf->Update(gfx, DirectX::XMMatrixTranspose(parent.GetTransformXM() * gfx.GetCamera() * gfx.GetProjection()));
+		const auto model = parent.GetTransformXM();
+		const Transforms transforms =
+		{
+			DirectX::XMMatrixTranspose(model),
+			DirectX::XMMatrixTranspose(model * gfx.GetCamera() * gfx.GetProjection())
+		};
+		_spVcbuf->Update(gfx, transforms);
 		_spVcbuf->Bind(gfx);
 	}
-	std::unique_ptr<VertexConstantBuffer<DirectX::XMMATRIX>> TransformCBuf::_spVcbuf;
+	std::unique_ptr<VertexConstantBuffer<TransformCBuf::Transforms>> TransformCBuf::_spVcbuf;
 }

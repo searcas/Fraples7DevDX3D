@@ -3,11 +3,11 @@
 #include "Debugging/Timer.h"
 // ########## Objects ################
 #include "../Objects/Box.h"
-#include "../Objects/SkinnedBox.h"
-#include "../Objects/Sphere.h"
-#include "../Objects/Pyramid.h"
-#include "../Objects/Melon.h"
-#include "../Objects/Sheet.h"
+//#include "../Objects/SkinnedBox.h"
+//#include "../Objects/Sphere.h"
+//#include "../Objects/Pyramid.h"
+//#include "../Objects/Melon.h"
+//#include "../Objects/Sheet.h"
 //########### End Objects ###########
 #include "Math/Math.h"
 #include "Surface.h"
@@ -21,7 +21,7 @@ namespace FraplesDev
 	GDIPlusManager gdipm;
 
 	Application::Application(const char* name, int width, int height)
-		:_mWin(name, width, height)
+		:_mWin(name, width, height),light(_mWin.GetGFX())
 	{
 		class Factory
 		{
@@ -33,26 +33,13 @@ namespace FraplesDev
 			}
 			std::unique_ptr<Renderer> operator()()
 			{
-				switch (typedist(rng))
+				switch (0)
 				{
 				case 0:
-					return std::make_unique<Pyramid>(
-						_mGfx, rng, adist, ddist,
-						odist, rdist);
-				case 1:
 					return std::make_unique<Box>(
 						_mGfx, rng, adist, ddist,
 						odist, rdist, bdist
 						);
-				case 2:
-					return std::make_unique<Melon>(
-						_mGfx, rng, adist, ddist,
-						odist, rdist, longdist, latdist
-						);
-				case 3:
-					return std::make_unique<Sheet>(_mGfx, rng, adist, ddist, odist, rdist);
-				case 4:
-					return std::make_unique<SkinnedBox>(_mGfx, rng, adist, ddist, odist, rdist);
 				default:
 					assert(false && "bad drawable type in factory");
 					return {};
@@ -81,13 +68,14 @@ namespace FraplesDev
 		
 
 	Application::Application()
-		: _mWin("Fraples7 Engine Studio", 1920, 1080)
+		: _mWin("Fraples7 Engine Studio", 1920, 1080),light(_mWin.GetGFX())
 	{
 
 	}
 
 	Application::~Application()
 	{
+
 	}
 
 	int Application::StartApp()
@@ -109,6 +97,7 @@ namespace FraplesDev
 	{
 		const auto dt = _mTimer.Get() * speed_accelerator;
 		_mWin.GetGFX().SetCamera(_mCamera.GetMatrix());
+		light.Bind(_mWin.GetGFX());
 		//if (_mWin._mKey.KeyIsPressed(VK_SPACE))
 		//{
 		//	_mWin.GetGFX().DisableImGui();
@@ -120,11 +109,12 @@ namespace FraplesDev
 		
 		_mWin.GetGFX().BeginFrame(0.87f, 0.017f, 0.021f);
 
- 		for (auto& b : _mrenderable)
+		for (auto& b : _mrenderable)
 		{
 			b->Update(_mWin._mKey.KeyIsPressed(VK_SPACE) ? 0.0f : dt);
 			b->Render(_mWin.GetGFX());
 		}
+		light.Render(_mWin.GetGFX());
 		static char buffer[1024];
 
 		if (ImGui::Begin("Speed Controller"))
@@ -136,7 +126,7 @@ namespace FraplesDev
 
 		}
 		_mCamera.SpawnControllWindow();
-
+		light.SpawnControlWindow();
 		_mWin.GetGFX().EndFrame();
 	
 	}

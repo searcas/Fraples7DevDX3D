@@ -126,6 +126,12 @@
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\Objects\SolidSphere.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\Objects\PointLight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Debugging\WindowsMessageMap.h">
@@ -284,6 +290,12 @@
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\Objects\SolidSphere.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\Objects\PointLight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Fraples7DevDX3D.rc">
@@ -308,5 +320,9 @@
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\ColorIndexVS.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\TexturePS.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\TextureVS.hlsl" />
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\SolidVS.hlsl" />
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\SolidPS.hlsl" />
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongVS.hlsl" />
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongPS.hlsl" />
   </ItemGroup>
 </Project>
