@@ -36,4 +36,5 @@ void FraplesDev::PointLight::Render(Graphics& gfx) const noexcept(!IS_DEBUG)
 void FraplesDev::PointLight::Bind(Graphics& gfx) const noexcept
 {
 	_mCbuf.Update(gfx, PointLightCBuf{ pos });
+	_mCbuf.Bind(gfx);
 }

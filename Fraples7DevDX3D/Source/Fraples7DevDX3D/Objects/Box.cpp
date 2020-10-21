@@ -43,13 +43,7 @@ namespace FraplesDev
 			AddStaticBind(std::make_unique<PixelShader>(gfx, L"PhongPS.cso"));
 
 			AddStaticIndexBuffer(std::make_unique<IndexBuffer>(gfx, model._mIndices));
-		
-			struct PSLightConstant
-			{
-				DirectX::XMVECTOR pos;
-			};
 
-			AddStaticBind(std::make_unique<PixelConstantBuffer<PSLightConstant>>(gfx));
 
 			const std::vector<D3D11_INPUT_ELEMENT_DESC>IelementDesc =
 			{

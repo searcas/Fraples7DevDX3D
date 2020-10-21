@@ -107,7 +107,7 @@ namespace FraplesDev
 		//	_mWin.GetGFX().EnableImGui();
 		//}
 		
-		_mWin.GetGFX().BeginFrame(0.87f, 0.017f, 0.021f);
+		_mWin.GetGFX().BeginFrame(0.0f, 0.017f, 0.021f);
 
 		for (auto& b : _mrenderable)
 		{
