@@ -132,6 +132,9 @@
     <ClCompile Include="Source\Fraples7DevDX3D\Objects\PointLight.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\Objects\Cylinder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Debugging\WindowsMessageMap.h">
@@ -296,6 +299,12 @@
     <ClInclude Include="Source\Fraples7DevDX3D\Objects\PointLight.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\Objects\BaseObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\Objects\Cylinder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Fraples7DevDX3D.rc">
@@ -324,5 +333,6 @@
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\SolidPS.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongVS.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongPS.hlsl" />
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\IndexedPhongPS.hlsl" />
   </ItemGroup>
 </Project>

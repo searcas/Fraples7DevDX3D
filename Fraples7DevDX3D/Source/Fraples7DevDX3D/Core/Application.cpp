@@ -3,6 +3,7 @@
 #include "Debugging/Timer.h"
 // ########## Objects ################
 #include "../Objects/Box.h"
+#include "../Objects/Cylinder.h"
 //#include "../Objects/SkinnedBox.h"
 //#include "../Objects/Sphere.h"
 //#include "../Objects/Pyramid.h"
@@ -34,16 +35,29 @@ namespace FraplesDev
 			std::unique_ptr<Renderer> operator()()
 			{
 	
+
 				const DirectX::XMFLOAT3 mat = { cdist(rng),cdist(rng),cdist(rng) };
+				switch (sdist(rng))
+				{
+				case 0:
 					return std::make_unique<Box>(
 						_mGfx, rng, adist, ddist,
-						odist, rdist, bdist,mat
+						odist, rdist, bdist, mat
 						);
+				case 1:
+					return std::make_unique<Cylinder>(_mGfx, rng, adist, ddist, odist, rdist, bdist, tdist);
+
+				default:
+					assert(false && "Impossible drawable option in factory");
+					return { };
+				}
+				
 			
 			}
 		private:
 			Graphics& _mGfx;
 			std::mt19937 rng{ std::random_device{}() };
+			std::uniform_int_distribution<int> sdist{ 0,1};
 			std::uniform_real_distribution<float> adist{ 0.0f, PI * 2.0f };
 			std::uniform_real_distribution<float> ddist{ 0.0f, PI * 0.5f };
 			std::uniform_real_distribution<float> odist{ 0.0f, PI * 0.08f };
@@ -53,6 +67,8 @@ namespace FraplesDev
 			std::uniform_int_distribution<int> latdist{ 5, 20 };
 			std::uniform_int_distribution<int> longdist{ 10, 50 };
 			std::uniform_int_distribution<int> typedist{ 0, 4 };
+			std::uniform_int_distribution<int> tdist{ 3,30 };
+
 		};
 		_mrenderable.reserve(nDrawables);
 		std::generate_n(std::back_inserter(_mrenderable), nDrawables, Factory{ _mWin.GetGFX() });
@@ -94,7 +110,7 @@ namespace FraplesDev
 	{
 		const auto dt = _mTimer.Get() * speed_accelerator;
 		_mWin.GetGFX().SetCamera(_mCamera.GetMatrix());
-		light.Bind(_mWin.GetGFX());
+		light.Bind(_mWin.GetGFX(),_mCamera.GetMatrix());
 		//if (_mWin._mKey.KeyIsPressed(VK_SPACE))
 		//{
 		//	_mWin.GetGFX().DisableImGui();
@@ -116,7 +132,7 @@ namespace FraplesDev
 
 		if (ImGui::Begin("Speed Controller"))
 		{
-			ImGui::SliderFloat("Speed Factor", &speed_accelerator, 0.0f, 10.0f);
+			ImGui::SliderFloat("Speed Factor", &speed_accelerator, 0.0f, 6.0f,"%.4f",ImGuiSliderFlags_Logarithmic);
 			ImGui::Text("Application Average %.3f ms/frame (%.1f Fps)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 			ImGui::InputText("Commands: ", buffer,1024);
 

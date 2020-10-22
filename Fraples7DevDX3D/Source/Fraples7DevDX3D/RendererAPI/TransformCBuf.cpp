@@ -13,11 +13,11 @@ namespace FraplesDev
 
 	void TransformCBuf::Bind(Graphics& gfx) noexcept
 	{
-		const auto model = parent.GetTransformXM();
+		const auto modelView = parent.GetTransformXM() * gfx.GetCamera();
 		const Transforms transforms =
 		{
-			DirectX::XMMatrixTranspose(model),
-			DirectX::XMMatrixTranspose(model * gfx.GetCamera() * gfx.GetProjection())
+			DirectX::XMMatrixTranspose(modelView),
+			DirectX::XMMatrixTranspose(modelView *  gfx.GetProjection())
 		};
 		_spVcbuf->Update(gfx, transforms);
 		_spVcbuf->Bind(gfx);

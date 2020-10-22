@@ -11,18 +11,8 @@ namespace FraplesDev
 		std::uniform_real_distribution<float>& odist,
 		std::uniform_real_distribution<float>& rdist,
 		std::uniform_real_distribution<float>& bdist,
-		DirectX::XMFLOAT3 material)
-		:
-		r(rdist(rng)),
-		droll(ddist(rng)),
-		dpitch(ddist(rng)),
-		dyaw(ddist(rng)),
-		dphi(odist(rng)),
-		dtheta(odist(rng)),
-		dchi(odist(rng)),
-		chi(adist(rng)),
-		theta(adist(rng)),
-		phi(adist(rng))
+		DirectX::XMFLOAT3 material) 
+		: BaseObject(gfx,rng,adist,ddist,odist,rdist)
 	{
 		if (!IsStaticInitialized())
 		{
@@ -63,28 +53,20 @@ namespace FraplesDev
 		struct PSMaterialConstant
 		{
 			DirectX::XMFLOAT3 color;
-			float padding;
+			float specularIntentsity = 0.6f;
+			float specularPower = 30.0f;
+			float padding[3];
 		}colorConstant;
 		colorConstant.color = material;
 		AddBind(std::make_unique<PixelConstantBuffer<PSMaterialConstant>>(gfx, colorConstant, 1u));
 		DirectX::XMStoreFloat3x3(&mt, DirectX::XMMatrixScaling(1.0f, 1.0f, bdist(rng)));
 
 	}
-	void Box::Update(float diff)noexcept
-	{
-		roll += droll * diff;
-		pitch += dpitch * diff;
-		yaw += dyaw * diff;
-		theta += dtheta * diff;
-		phi += dphi * diff;
-		chi += dchi * diff;
-	}
+
 
 	const DirectX::XMMATRIX Box::GetTransformXM()const noexcept
 	{
 		return std::move(DirectX::XMLoadFloat3x3(&mt) *
-			DirectX::XMMatrixRotationRollPitchYaw(pitch, yaw, roll) *
-			DirectX::XMMatrixTranslation(r, 0.0f, 0.0f) *
-			DirectX::XMMatrixRotationRollPitchYaw(theta, phi, chi));
+			BaseObject::GetTransformXM());
 	}
 }

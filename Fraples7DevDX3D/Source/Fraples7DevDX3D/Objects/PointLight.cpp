@@ -45,6 +45,8 @@ void FraplesDev::PointLight::Reset() noexcept
 		0.045f,
 		0.0075
 	};
+	
+	
 }
 
 void FraplesDev::PointLight::Render(Graphics& gfx) const noexcept(!IS_DEBUG)
@@ -53,8 +55,11 @@ void FraplesDev::PointLight::Render(Graphics& gfx) const noexcept(!IS_DEBUG)
 	_mMesh.Render(gfx);
 }
 
-void FraplesDev::PointLight::Bind(Graphics& gfx) const noexcept
+void FraplesDev::PointLight::Bind(Graphics& gfx, DirectX::FXMMATRIX view) const noexcept
 {
-	_mCbuf.Update(gfx, _mConstantBufferData);
+	auto dataCopy = _mConstantBufferData;
+	const auto pos = DirectX::XMLoadFloat3(&_mConstantBufferData.pos);
+	DirectX::XMStoreFloat3(&dataCopy.pos, DirectX::XMVector3Transform(pos, view));
+	_mCbuf.Update(gfx, dataCopy);
 	_mCbuf.Bind(gfx);
 }

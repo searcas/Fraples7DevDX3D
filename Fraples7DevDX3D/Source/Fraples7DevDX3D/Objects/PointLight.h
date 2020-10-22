@@ -15,7 +15,7 @@ namespace FraplesDev
 		void SpawnControlWindow()noexcept;
 		void Reset()noexcept;
 		void Render(Graphics& gfx) const noexcept(!IS_DEBUG);
-		void Bind(Graphics& gfx) const noexcept;
+		void Bind(Graphics& gfx, DirectX::FXMMATRIX view) const noexcept;
 		~PointLight()= default;
 	private:
 		struct PointLightCBuf
@@ -29,11 +29,7 @@ namespace FraplesDev
 			float attLin;
 			float attQuad;
 		};
-		struct ObjectCbuffer
-		{
-			alignas(16) DirectX::XMFLOAT3 material;
 
-		};
 
 	private:
 		PointLightCBuf _mConstantBufferData;
