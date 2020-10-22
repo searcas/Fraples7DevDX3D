@@ -8,7 +8,7 @@ namespace FraplesDev
 	class ConstantBuffer : public GfxContext
 	{
 	public:
-		void Update(Graphics& gfx, const C& consts)
+		void Update(Graphics& gfx, const C& consts) 
 		{
 			INFOMAN(gfx);
 
@@ -19,7 +19,7 @@ namespace FraplesDev
 			memcpy(msr.pData, &consts, sizeof(consts));
 			GetContext(gfx)->Unmap(_mpConstantBuffer.Get(), 0u);
 		}
-		ConstantBuffer(Graphics& gfx,const C& consts)
+		ConstantBuffer(Graphics& gfx,const C& consts,UINT slot = 0):_mSlot(slot)
 		{
 			INFOMAN(gfx);
 			D3D11_BUFFER_DESC cbd;
@@ -34,7 +34,7 @@ namespace FraplesDev
 			csd.pSysMem = &consts;
 			FPL_GFX_THROW_INFO( GetDevice(gfx)->CreateBuffer(&cbd, &csd, &_mpConstantBuffer));
 		}
-		ConstantBuffer(Graphics& gfx)
+		ConstantBuffer(Graphics& gfx, UINT slot = 0u) : _mSlot(slot)
 		{
 			INFOMAN(gfx);
 			D3D11_BUFFER_DESC cbd;
@@ -48,18 +48,20 @@ namespace FraplesDev
 		}
 	protected:
 		Microsoft::WRL::ComPtr<ID3D11Buffer> _mpConstantBuffer;
+		UINT _mSlot;
 	};
 
 	template<typename C>
 	class VertexConstantBuffer : public ConstantBuffer<C>
 	{
 		using ConstantBuffer<C>::_mpConstantBuffer;
+		using ConstantBuffer<C>::_mSlot;
 		using GfxContext::GetContext;
 	public:
 		using ConstantBuffer<C>::ConstantBuffer;
 		void Bind(Graphics& gfx)noexcept override
 		{
-			GetContext(gfx)->VSSetConstantBuffers(0u, 1u, _mpConstantBuffer.GetAddressOf());
+			GetContext(gfx)->VSSetConstantBuffers(_mSlot, 1u, _mpConstantBuffer.GetAddressOf());
 		}
 	};
 
@@ -69,13 +71,14 @@ namespace FraplesDev
 		//Template inharitance not letting you access to protected members directly 
 		//So this is one of ways arounds
 		using ConstantBuffer<C>::_mpConstantBuffer;
+		using ConstantBuffer<C>::_mSlot;
 		using GfxContext::GetContext;
 	public:
 		using ConstantBuffer<C>::ConstantBuffer;
 		void Bind(Graphics& gfx)noexcept override
 		{
 			//or use this->
-			GetContext(gfx)->PSSetConstantBuffers(0u, 1u, _mpConstantBuffer.GetAddressOf());
+			GetContext(gfx)->PSSetConstantBuffers(_mSlot, 1u, _mpConstantBuffer.GetAddressOf());
 		}
 	};
 }

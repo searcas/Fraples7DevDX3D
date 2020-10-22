@@ -10,7 +10,8 @@ namespace FraplesDev
 		std::uniform_real_distribution<float>& ddist,
 		std::uniform_real_distribution<float>& odist,
 		std::uniform_real_distribution<float>& rdist,
-		std::uniform_real_distribution<float>& bdist)
+		std::uniform_real_distribution<float>& bdist,
+		DirectX::XMFLOAT3 material)
 		:
 		r(rdist(rng)),
 		droll(ddist(rng)),
@@ -59,6 +60,13 @@ namespace FraplesDev
 			SetIndexFromStatic();
 		}
 		AddBind(std::make_unique<TransformCBuf>(gfx, *this));
+		struct PSMaterialConstant
+		{
+			DirectX::XMFLOAT3 color;
+			float padding;
+		}colorConstant;
+		colorConstant.color = material;
+		AddBind(std::make_unique<PixelConstantBuffer<PSMaterialConstant>>(gfx, colorConstant, 1u));
 		DirectX::XMStoreFloat3x3(&mt, DirectX::XMMatrixScaling(1.0f, 1.0f, bdist(rng)));
 
 	}

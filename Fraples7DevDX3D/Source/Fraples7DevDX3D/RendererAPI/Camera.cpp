@@ -7,7 +7,7 @@ namespace FraplesDev
 		if (ImGui::Begin("Camera"))
 		{
 			ImGui::Text("Camera Position");
-			ImGui::SliderFloat("R", &r, 0.0f, 80.0f, "%.1f");
+			ImGui::SliderFloat("R", &r, 1.0f, 80.0f, "%.1f");
 			ImGui::SliderAngle("Theta", &theta, -180.0f, 180.0f);
 			ImGui::SliderAngle("Phi", &phi, -89.0f, 89.0f);
 			ImGui::Text("Orientation");
@@ -18,9 +18,9 @@ namespace FraplesDev
 			{
 				Reset();
 			}
-			ImGui::End();
 		}
 
+			ImGui::End();
 	}
 
 	void Camera::Reset()

@@ -14,7 +14,7 @@ namespace FraplesDev
 			DirectX::XMMATRIX model;
 		};
 	public:
-		TransformCBuf(Graphics& gfx,const Renderer& parent);
+		TransformCBuf(Graphics& gfx,const Renderer& parent, UINT slot = 0u);
 		void Bind(Graphics& gfx)noexcept override;
 	private:
 		static std::unique_ptr<VertexConstantBuffer<Transforms>>_spVcbuf;

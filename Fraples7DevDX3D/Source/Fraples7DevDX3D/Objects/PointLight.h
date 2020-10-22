@@ -20,12 +20,23 @@ namespace FraplesDev
 	private:
 		struct PointLightCBuf
 		{
-			DirectX::XMFLOAT3 pos;
-			float padding;
+		alignas(16)	DirectX::XMFLOAT3 pos;
+		alignas(16) DirectX::XMFLOAT3 ambient;
+		alignas(16) DirectX::XMFLOAT3 diffuseColor;
+
+			float diffuseIntensity;
+			float attConst;
+			float attLin;
+			float attQuad;
+		};
+		struct ObjectCbuffer
+		{
+			alignas(16) DirectX::XMFLOAT3 material;
+
 		};
 
 	private:
-		DirectX::XMFLOAT3 pos = { 0.0f, 0.0f, 0.0f };
+		PointLightCBuf _mConstantBufferData;
 		mutable SolidSphere _mMesh;
 		mutable PixelConstantBuffer<PointLightCBuf>_mCbuf;
 	};

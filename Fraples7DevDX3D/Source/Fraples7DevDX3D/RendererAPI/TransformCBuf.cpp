@@ -2,12 +2,12 @@
 namespace FraplesDev
 {
 
-	TransformCBuf::TransformCBuf(Graphics& gfx, const Renderer& parent)
+	TransformCBuf::TransformCBuf(Graphics& gfx, const Renderer& parent, UINT slot )
 		:parent(parent)
 	{
 		if (!_spVcbuf)
 		{
-			_spVcbuf = std::make_unique<VertexConstantBuffer<Transforms>>(gfx);
+			_spVcbuf = std::make_unique<VertexConstantBuffer<Transforms>>(gfx, slot);
 		}
 	}
 

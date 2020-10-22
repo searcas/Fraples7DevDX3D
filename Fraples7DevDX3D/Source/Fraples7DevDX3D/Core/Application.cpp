@@ -33,17 +33,13 @@ namespace FraplesDev
 			}
 			std::unique_ptr<Renderer> operator()()
 			{
-				switch (0)
-				{
-				case 0:
+	
+				const DirectX::XMFLOAT3 mat = { cdist(rng),cdist(rng),cdist(rng) };
 					return std::make_unique<Box>(
 						_mGfx, rng, adist, ddist,
-						odist, rdist, bdist
+						odist, rdist, bdist,mat
 						);
-				default:
-					assert(false && "bad drawable type in factory");
-					return {};
-				}
+			
 			}
 		private:
 			Graphics& _mGfx;
@@ -53,6 +49,7 @@ namespace FraplesDev
 			std::uniform_real_distribution<float> odist{ 0.0f, PI * 0.08f };
 			std::uniform_real_distribution<float> rdist{ 6.0f, 20.0f };
 			std::uniform_real_distribution<float> bdist{ 0.4f, 3.0f };
+			std::uniform_real_distribution<float> cdist{ 0.0f, 1.0f };
 			std::uniform_int_distribution<int> latdist{ 5, 20 };
 			std::uniform_int_distribution<int> longdist{ 10, 50 };
 			std::uniform_int_distribution<int> typedist{ 0, 4 };
@@ -122,13 +119,14 @@ namespace FraplesDev
 			ImGui::SliderFloat("Speed Factor", &speed_accelerator, 0.0f, 10.0f);
 			ImGui::Text("Application Average %.3f ms/frame (%.1f Fps)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 			ImGui::InputText("Commands: ", buffer,1024);
-			ImGui::End();
 
 		}
+		ImGui::End();
+
 		_mCamera.SpawnControllWindow();
 		light.SpawnControlWindow();
 		_mWin.GetGFX().EndFrame();
-	
+
 	}
 
 }
