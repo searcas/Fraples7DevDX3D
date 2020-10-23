@@ -33,7 +33,7 @@ namespace FraplesDev
 		Camera _mCamera;
 		PointLight light;
 		std::optional<int>comboBoxIndex;
-		std::set<int> bobxControlIds;
+		std::set<int> boxControlIds;
 	};
 
 }

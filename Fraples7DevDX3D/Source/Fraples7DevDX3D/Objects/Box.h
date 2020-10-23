@@ -17,7 +17,7 @@ namespace FraplesDev
 			DirectX::XMFLOAT3 material);
 		const DirectX::XMMATRIX GetTransformXM()const noexcept override;
 		DirectX::XMFLOAT3X3 mt;
-		void SpawnControlWindow(int id, Graphics& gfx)noexcept;
+		bool SpawnControlWindow(int id, Graphics& gfx)noexcept;
 	private:
 		void SyncMaterial(Graphics& gfx)noexcept(!IS_DEBUG);
 	private:

@@ -176,7 +176,7 @@ namespace FraplesDev
 			}
 			if (ImGui::Button("Spawn Control Window") && comboBoxIndex)
 			{
-				bobxControlIds.insert(*comboBoxIndex);
+				boxControlIds.insert(*comboBoxIndex);
 				comboBoxIndex.reset();
 			}
 		}
@@ -186,9 +186,16 @@ namespace FraplesDev
 	//imgui box attribute control windows
 	void Application::SpawnBoxWindows() noexcept
 	{
-		for (auto id : bobxControlIds)
+		for (auto i = boxControlIds.begin(); i!= boxControlIds.end();)
 		{
-			boxes[id]->SpawnControlWindow(id, _mWin.GetGFX());
+			if (!boxes[*i]->SpawnControlWindow(*i,_mWin.GetGFX()))
+			{
+				i = boxControlIds.erase(i);
+			}
+			else
+			{
+				i++;
+			}
 		}
 		_mWin.GetGFX().EndFrame();
 	}
