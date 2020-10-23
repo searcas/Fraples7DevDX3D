@@ -24,6 +24,8 @@ namespace FraplesDev
 	Application::Application(const char* name, int width, int height)
 		:_mWin(name, width, height),light(_mWin.GetGFX())
 	{
+		Assimp::Importer imp;
+		auto model = imp.ReadFile("models\\suzanne.obj", aiProcess_Triangulate | aiProcess_JoinIdenticalVertices);
 		class Factory
 		{
 		public:

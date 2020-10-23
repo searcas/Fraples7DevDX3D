@@ -12,7 +12,7 @@ namespace FraplesDev
 		{
 			INFOMAN(gfx);
 
-			D3D11_MAPPED_SUBRESOURCE msr;
+			D3D11_MAPPED_SUBRESOURCE msr = {};
 			FPL_GFX_THROW_INFO(GetContext(gfx)->Map( 
 				_mpConstantBuffer.Get(), 0u, D3D11_MAP_WRITE_DISCARD, 0u, &msr
 			));
