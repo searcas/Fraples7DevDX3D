@@ -4,9 +4,7 @@
 #include "../Core/Debugging/Timer.h"
 #include "../RendererAPI/Camera.h"
 #include "../Objects/PointLight.h"
-#include "assimp/Importer.hpp"
-#include "assimp/scene.h"
-#include "assimp/postprocess.h"
+
 
 #include <set>
 namespace FraplesDev

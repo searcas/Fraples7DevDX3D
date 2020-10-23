@@ -58,7 +58,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Fraples7DevDX3D\ImGui;$(SolutionDir)\Fraples7DevDX3D\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Fraples7DevDX3D\ImGui;$(SolutionDir)Fraples7DevDX3D\Source\Fraples7DevDX3D;$(SolutionDir)Fraples7DevDX3D\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -80,7 +80,7 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Fraples7DevDX3D\ImGui;$(SolutionDir)\Fraples7DevDX3D\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Fraples7DevDX3D\ImGui;$(SolutionDir)Fraples7DevDX3D\Source\Fraples7DevDX3D;$(SolutionDir)Fraples7DevDX3D\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -112,6 +112,7 @@
     <ClCompile Include="Source\Fraples7DevDX3D\ImGuiMgr\ImGuiMgr.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Input Events\KeyboardEvent.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Input Events\MouseEvents.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\Objects\AssetTest.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Objects\Cylinder.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Objects\PointLight.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Objects\Sheet.cpp" />
@@ -161,6 +162,7 @@
     <ClInclude Include="Source\Fraples7DevDX3D\ImGuiMgr\ImGuiMgr.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Input Events\KeyboardEvent.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Input Events\MouseEvents.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\Objects\AssetTest.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Objects\BaseObject.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Objects\Cylinder.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Objects\PointLight.h" />

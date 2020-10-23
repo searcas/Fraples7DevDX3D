@@ -6,6 +6,7 @@
 #include "../Objects/Cylinder.h"
 #include "../Objects/Pyramid.h"
 #include "../Objects/SkinnedBox.h"
+#include "../Objects/AssetTest.h"
 //#include "../Objects/Sphere.h"
 //#include "../Objects/Melon.h"
 //#include "../Objects/Sheet.h"
@@ -24,8 +25,7 @@ namespace FraplesDev
 	Application::Application(const char* name, int width, int height)
 		:_mWin(name, width, height),light(_mWin.GetGFX())
 	{
-		Assimp::Importer imp;
-		auto model = imp.ReadFile("models\\suzanne.obj", aiProcess_Triangulate | aiProcess_JoinIdenticalVertices);
+	
 		class Factory
 		{
 		public:
@@ -52,6 +52,9 @@ namespace FraplesDev
 					return std::make_unique<Pyramid>(_mGfx, rng, adist, ddist, odist, rdist, tdist);
 				case  3:
 					return std::make_unique<SkinnedBox>(_mGfx, rng, adist, ddist, odist, rdist);
+				case 4:
+					return std::make_unique<Asset>(_mGfx, rng, adist, ddist, odist, rdist,mat,1.5f);
+
 				default:
 					assert(false && "Impossible drawable option in factory");
 					return { };
@@ -62,7 +65,7 @@ namespace FraplesDev
 		private:
 			Graphics& _mGfx;
 			std::mt19937 rng{ std::random_device{}() };
-			std::uniform_int_distribution<int> sdist{ 0, 3};
+			std::uniform_int_distribution<int> sdist{ 0, 4};
 			std::uniform_real_distribution<float> adist{ 0.0f, PI * 2.0f };
 			std::uniform_real_distribution<float> ddist{ 0.0f, PI * 0.5f };
 			std::uniform_real_distribution<float> odist{ 0.0f, PI * 0.08f };
