@@ -4,6 +4,7 @@
 #include "../Core/Debugging/Timer.h"
 #include "../RendererAPI/Camera.h"
 #include "../Objects/PointLight.h"
+#include <set>
 namespace FraplesDev
 {
 
@@ -17,6 +18,9 @@ namespace FraplesDev
 		int StartApp();
 	private:
 		void DoFrame();
+		void SpawnSimulationWindow() noexcept;
+		void SpawnBoxWindowManagerWindow() noexcept;
+		void SpawnBoxWindows() noexcept;
 	private:
 		std::vector<class Box*>boxes;
 		FraplesDev::Window _mWin;
@@ -28,6 +32,8 @@ namespace FraplesDev
 		float speed_accelerator = 1.500f;
 		Camera _mCamera;
 		PointLight light;
+		std::optional<int>comboBoxIndex;
+		std::set<int> bobxControlIds;
 	};
 
 }

@@ -69,10 +69,10 @@ namespace FraplesDev
 		bool dirty = false;
 		if (ImGui::Begin(("Box "s+ std::to_string(id)).c_str()))
 		{
-			dirty = dirty || ImGui::ColorEdit3("Material Color", &materialConstants.color.x);
-			dirty = dirty || ImGui::SliderFloat("Specular Intensity	",&materialConstants.specularIntensity,0.05f,4.0f,"%.2f");
-			dirty = dirty || ImGui::SliderFloat("Specular Power", &materialConstants.specularPower, 1.0f, 200.0f, "%.2f");
-
+			const auto cd  = ImGui::ColorEdit3("Material Color", &materialConstants.color.x);
+			const auto sid = ImGui::SliderFloat("Specular Intensity	",&materialConstants.specularIntensity,0.05f,4.0f,"%.2f");
+			const auto spd = ImGui::SliderFloat("Specular Power", &materialConstants.specularPower, 1.0f, 200.0f, "%.2f");
+			dirty = cd || sid || spd;
 		}
 		ImGui::End();
 		if (dirty)

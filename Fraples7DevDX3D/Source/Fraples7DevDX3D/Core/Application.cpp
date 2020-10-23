@@ -121,8 +121,8 @@ namespace FraplesDev
 	{
 		const auto dt = _mTimer.Get() * speed_accelerator;
 		_mWin.GetGFX().SetCamera(_mCamera.GetMatrix());
-		light.Bind(_mWin.GetGFX(),_mCamera.GetMatrix());
-		
+		light.Bind(_mWin.GetGFX(), _mCamera.GetMatrix());
+
 		_mWin.GetGFX().BeginFrame(0.0f, 0.017f, 0.021f);
 
 		for (auto& b : _mrenderable)
@@ -131,22 +131,66 @@ namespace FraplesDev
 			b->Render(_mWin.GetGFX());
 		}
 		light.Render(_mWin.GetGFX());
+		SpawnSimulationWindow();
+		_mCamera.SpawnControllWindow();
+		light.SpawnControlWindow();
+		SpawnBoxWindowManagerWindow();
+		SpawnBoxWindows();
+	}
+
+	void Application::SpawnSimulationWindow()noexcept
+	{
 		static char buffer[1024];
 
 		if (ImGui::Begin("Speed Controller"))
 		{
-			ImGui::SliderFloat("Speed Factor", &speed_accelerator, 0.0f, 6.0f,"%.4f",ImGuiSliderFlags_Logarithmic);
+			ImGui::SliderFloat("Speed Factor", &speed_accelerator, 0.0f, 6.0f, "%.4f", ImGuiSliderFlags_Logarithmic);
 			ImGui::Text("Application Average %.3f ms/frame (%.1f Fps)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-			ImGui::InputText("Commands: ", buffer,1024);
+			ImGui::InputText("Commands: ", buffer, 1024);
 
 		}
 		ImGui::End();
+	}
+	void Application::SpawnBoxWindowManagerWindow()noexcept
+	{
 
-		_mCamera.SpawnControllWindow();
-		light.SpawnControlWindow();
-		boxes.front()->SpawnControlWindow(69, _mWin.GetGFX());
+		if (ImGui::Begin("Boxes"))
+		{
+			using namespace std::string_literals;
+			const auto preview = comboBoxIndex ? std::to_string(*comboBoxIndex) : "Chose a box..."s;
+			if (ImGui::BeginCombo("Box Number ", preview.c_str()))
+			{
+				for (int i = 0; i < boxes.size(); i++)
+				{
+					const bool selected = *comboBoxIndex == i;
+					if (ImGui::Selectable(std::to_string(i).c_str(), selected))
+					{
+						comboBoxIndex = i;
+					}
+					if (selected)
+					{
+						ImGui::SetItemDefaultFocus();
+					}
+				}
+				ImGui::EndCombo();
+			}
+			if (ImGui::Button("Spawn Control Window") && comboBoxIndex)
+			{
+				bobxControlIds.insert(*comboBoxIndex);
+				comboBoxIndex.reset();
+			}
+		}
+		ImGui::End();
+	}
+	
+	//imgui box attribute control windows
+	void Application::SpawnBoxWindows() noexcept
+	{
+		for (auto id : bobxControlIds)
+		{
+			boxes[id]->SpawnControlWindow(id, _mWin.GetGFX());
+		}
 		_mWin.GetGFX().EndFrame();
-
+	}
 	}
 
-}
