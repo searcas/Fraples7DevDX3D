@@ -1,9 +1,8 @@
 #pragma once
-#include "../RendererAPI/RendererBase.h"
-#include <random>
+#include "BaseObject.h"
 namespace FraplesDev
 {
-	class SkinnedBox : public RendererBase<SkinnedBox>
+	class SkinnedBox : public BaseObject<SkinnedBox>
 	{
 	public:
 		SkinnedBox(Graphics& gfx, std::mt19937& rng,
@@ -11,25 +10,6 @@ namespace FraplesDev
 			std::uniform_real_distribution<float>& ddist,
 			std::uniform_real_distribution<float>& odist,
 			std::uniform_real_distribution<float>& rdist);
-		void Update(float dt) noexcept override;
-		const DirectX::XMMATRIX GetTransformXM() const noexcept override;
-	private:
-		// positional
-		float r;
-		float roll = 0.0f;
-		float pitch = 0.0f;
-		float yaw = 0.0f;
-		float theta;
-		float phi;
-		float chi;
-		// speed (delta/s)
-		float droll;
-		float dpitch;
-		float dyaw;
-		float dtheta;
-		float dphi;
-		float dchi;
-
 	};
 
 }

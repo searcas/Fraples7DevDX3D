@@ -129,5 +129,37 @@ namespace FraplesDev
 				}
 			};
 		}
+		template<class V>
+		static IndexedList<V> MakeIndependentTextured()
+		{
+			auto itl = MakeIndependent<V>();
+
+			itl._mVertices[0].tc = { 0.0f,0.0f };
+			itl._mVertices[1].tc = { 1.0f,0.0f };
+			itl._mVertices[2].tc = { 0.0f,1.0f };
+			itl._mVertices[3].tc = { 1.0f,1.0f };
+			itl._mVertices[4].tc = { 0.0f,0.0f };
+			itl._mVertices[5].tc = { 1.0f,0.0f };
+			itl._mVertices[6].tc = { 0.0f,1.0f };
+			itl._mVertices[7].tc = { 1.0f,1.0f };
+			itl._mVertices[8].tc = { 0.0f,0.0f };
+			itl._mVertices[9].tc = { 1.0f,0.0f };
+			itl._mVertices[10].tc = { 0.0f,1.0f };
+			itl._mVertices[11].tc = { 1.0f,1.0f };
+			itl._mVertices[12].tc = { 0.0f,0.0f };
+			itl._mVertices[13].tc = { 1.0f,0.0f };
+			itl._mVertices[14].tc = { 0.0f,1.0f };
+			itl._mVertices[15].tc = { 1.0f,1.0f };
+			itl._mVertices[16].tc = { 0.0f,0.0f };
+			itl._mVertices[17].tc = { 1.0f,0.0f };
+			itl._mVertices[18].tc = { 0.0f,1.0f };
+			itl._mVertices[19].tc = { 1.0f,1.0f };
+			itl._mVertices[20].tc = { 0.0f,0.0f };
+			itl._mVertices[21].tc = { 1.0f,0.0f };
+			itl._mVertices[22].tc = { 0.0f,1.0f };
+			itl._mVertices[23].tc = { 1.0f,1.0f };
+
+			return itl;
+		}
 	};
 }

@@ -334,5 +334,9 @@
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongVS.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongPS.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\IndexedPhongPS.hlsl" />
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\BlendedPhongVS.hlsl" />
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\BlendedPhongPS.hlsl" />
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\TexturePhongVS.hlsl" />
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\TexturePhongPS.hlsl" />
   </ItemGroup>
 </Project>

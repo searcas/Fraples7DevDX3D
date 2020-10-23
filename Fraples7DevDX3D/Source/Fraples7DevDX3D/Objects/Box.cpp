@@ -1,7 +1,7 @@
 #include "Box.h"
 #include "../RendererAPI/GFXContextBase.h"
 #include "Cube.h"
-
+#include "imgui.h"
 
 namespace FraplesDev
 {
@@ -50,15 +50,9 @@ namespace FraplesDev
 			SetIndexFromStatic();
 		}
 		AddBind(std::make_unique<TransformCBuf>(gfx, *this));
-		struct PSMaterialConstant
-		{
-			DirectX::XMFLOAT3 color;
-			float specularIntentsity = 0.6f;
-			float specularPower = 30.0f;
-			float padding[3];
-		}colorConstant;
-		colorConstant.color = material;
-		AddBind(std::make_unique<PixelConstantBuffer<PSMaterialConstant>>(gfx, colorConstant, 1u));
+
+		materialConstants.color = material;
+		AddBind(std::make_unique<MaterialCbuf>(gfx, materialConstants, 1u));
 		DirectX::XMStoreFloat3x3(&mt, DirectX::XMMatrixScaling(1.0f, 1.0f, bdist(rng)));
 
 	}
@@ -68,5 +62,28 @@ namespace FraplesDev
 	{
 		return std::move(DirectX::XMLoadFloat3x3(&mt) *
 			BaseObject::GetTransformXM());
+	}
+	void Box::SpawnControlWindow(int id, Graphics& gfx) noexcept
+	{
+		using namespace std::string_literals;
+		bool dirty = false;
+		if (ImGui::Begin(("Box "s+ std::to_string(id)).c_str()))
+		{
+			dirty = dirty || ImGui::ColorEdit3("Material Color", &materialConstants.color.x);
+			dirty = dirty || ImGui::SliderFloat("Specular Intensity	",&materialConstants.specularIntensity,0.05f,4.0f,"%.2f");
+			dirty = dirty || ImGui::SliderFloat("Specular Power", &materialConstants.specularPower, 1.0f, 200.0f, "%.2f");
+
+		}
+		ImGui::End();
+		if (dirty)
+		{
+			SyncMaterial(gfx);
+		}
+	}
+	void Box::SyncMaterial(Graphics& gfx) noexcept(!IS_DEBUG)
+	{
+		auto pConstPS = QueryBindable<MaterialCbuf>();
+		assert(pConstPS != nullptr);
+		pConstPS->Update(gfx, materialConstants);
 	}
 }

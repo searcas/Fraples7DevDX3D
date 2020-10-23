@@ -16,7 +16,6 @@ namespace FraplesDev
 		void Reset()noexcept;
 		void Render(Graphics& gfx) const noexcept(!IS_DEBUG);
 		void Bind(Graphics& gfx, DirectX::FXMMATRIX view) const noexcept;
-		~PointLight()= default;
 	private:
 		struct PointLightCBuf
 		{

@@ -16,7 +16,7 @@ namespace FraplesDev
 			const auto base = DirectX::XMVectorSet(1.0f, 0.0f, -1.0f, 0.0f);
 			const auto offset = DirectX::XMVectorSet(0.0f, 0.0f, 2.0f, 0.0f);
 
-			const float longitudeAngle = 2.0f / PI / longDiv;
+			const float longitudeAngle = 2.0f * PI / longDiv;
 
 			//near center
 			std::vector<V>vertices;
@@ -25,7 +25,6 @@ namespace FraplesDev
 			const auto iCenterNear = static_cast<unsigned short>(vertices.size() - 1);
 
 			//far center
-
 			vertices.emplace_back();
 			vertices.back().pos = { 0.0f, 0.0f, 1.0f };
 			const auto iCenterFar = static_cast<unsigned short>(vertices.size() - 1);
@@ -94,7 +93,7 @@ namespace FraplesDev
 
 			//near center
 			std::vector<T>vertices;
-
+			
 			//near center
 			const auto iCenterNear = static_cast<unsigned short>(vertices.size());
 			vertices.emplace_back();
@@ -149,12 +148,13 @@ namespace FraplesDev
 				}
 
 				//far base
-
-				vertices.emplace_back();
-				auto v = DirectX::XMVector3Transform(base, DirectX::XMMatrixRotationZ(longitudeAngle * iLong));
-				v = DirectX::XMVectorAdd(v, offset);
-				DirectX::XMStoreFloat3(&vertices.back().pos, v);
-				vertices.back().n = { vertices.back().pos.x,vertices.back().pos.y,0.0f };
+				{
+					vertices.emplace_back();
+					auto v = DirectX::XMVector3Transform(base, DirectX::XMMatrixRotationZ(longitudeAngle * iLong));
+					v = DirectX::XMVectorAdd(v, offset);
+					DirectX::XMStoreFloat3(&vertices.back().pos, v);
+					vertices.back().n = { vertices.back().pos.x,vertices.back().pos.y,0.0f };
+				}
 			}
 
 			std::vector<unsigned short> indices;

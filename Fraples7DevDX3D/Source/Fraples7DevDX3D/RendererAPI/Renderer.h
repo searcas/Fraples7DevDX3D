@@ -24,6 +24,19 @@ namespace FraplesDev
 		virtual void Update(float diff) noexcept = 0;
 		virtual ~Renderer() = default;
 		virtual const std::vector<std::unique_ptr<GfxContext>>& GetStaticBinds() const noexcept = 0;
+	protected:
+		template <class T>
+		T* QueryBindable()noexcept
+		{
+			for (auto& pb :_mBinds)
+			{
+				if (auto pt = dynamic_cast<T*>(pb.get()))
+				{
+					return pt;
+				}
+			}
+			return nullptr;
+		}
 	private:
 		const IndexBuffer* _mpIndexBuffer = nullptr;
 		std::vector<std::unique_ptr<class GfxContext>>_mBinds;

@@ -4,9 +4,9 @@
 // ########## Objects ################
 #include "../Objects/Box.h"
 #include "../Objects/Cylinder.h"
-//#include "../Objects/SkinnedBox.h"
+#include "../Objects/Pyramid.h"
+#include "../Objects/SkinnedBox.h"
 //#include "../Objects/Sphere.h"
-//#include "../Objects/Pyramid.h"
 //#include "../Objects/Melon.h"
 //#include "../Objects/Sheet.h"
 //########### End Objects ###########
@@ -46,7 +46,10 @@ namespace FraplesDev
 						);
 				case 1:
 					return std::make_unique<Cylinder>(_mGfx, rng, adist, ddist, odist, rdist, bdist, tdist);
-
+				case 2:
+					return std::make_unique<Pyramid>(_mGfx, rng, adist, ddist, odist, rdist, tdist);
+				case  3:
+					return std::make_unique<SkinnedBox>(_mGfx, rng, adist, ddist, odist, rdist);
 				default:
 					assert(false && "Impossible drawable option in factory");
 					return { };
@@ -57,7 +60,7 @@ namespace FraplesDev
 		private:
 			Graphics& _mGfx;
 			std::mt19937 rng{ std::random_device{}() };
-			std::uniform_int_distribution<int> sdist{ 0,1};
+			std::uniform_int_distribution<int> sdist{ 0, 3};
 			std::uniform_real_distribution<float> adist{ 0.0f, PI * 2.0f };
 			std::uniform_real_distribution<float> ddist{ 0.0f, PI * 0.5f };
 			std::uniform_real_distribution<float> odist{ 0.0f, PI * 0.08f };
@@ -73,6 +76,14 @@ namespace FraplesDev
 		_mrenderable.reserve(nDrawables);
 		std::generate_n(std::back_inserter(_mrenderable), nDrawables, Factory{ _mWin.GetGFX() });
 
+		//init box pointers for editing instance parameters
+		for (auto& pd : _mrenderable)
+		{
+			if (auto pb = dynamic_cast<Box*>(pd.get()))
+			{
+				boxes.push_back(pb);
+			}
+		}
 		_mWin.GetGFX().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
 		_mWin.GetGFX().SetCamera(DirectX::XMMatrixTranslation(0.0f, 0.0f, 20.0f));
 	}
@@ -111,14 +122,6 @@ namespace FraplesDev
 		const auto dt = _mTimer.Get() * speed_accelerator;
 		_mWin.GetGFX().SetCamera(_mCamera.GetMatrix());
 		light.Bind(_mWin.GetGFX(),_mCamera.GetMatrix());
-		//if (_mWin._mKey.KeyIsPressed(VK_SPACE))
-		//{
-		//	_mWin.GetGFX().DisableImGui();
-		//}
-		//else
-		//{
-		//	_mWin.GetGFX().EnableImGui();
-		//}
 		
 		_mWin.GetGFX().BeginFrame(0.0f, 0.017f, 0.021f);
 
@@ -141,6 +144,7 @@ namespace FraplesDev
 
 		_mCamera.SpawnControllWindow();
 		light.SpawnControlWindow();
+		boxes.front()->SpawnControlWindow(69, _mWin.GetGFX());
 		_mWin.GetGFX().EndFrame();
 
 	}

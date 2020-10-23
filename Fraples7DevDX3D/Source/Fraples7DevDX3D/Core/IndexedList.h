@@ -12,7 +12,7 @@ namespace FraplesDev
 		IndexedList() = default;
 		IndexedList(std::vector<T>vertices, std::vector<unsigned short>indices);
 		void Transform(DirectX::FXMMATRIX matrix);
-		void SetNormalsIndependentFlat()noexcept(!IS_DEBUG)
+		void SetNormalsIndependentFlat() noexcept(!IS_DEBUG)
 		{
 			using namespace DirectX;
 			assert(_mIndices.size() % 3 == 0 && _mIndices.size() > 0);

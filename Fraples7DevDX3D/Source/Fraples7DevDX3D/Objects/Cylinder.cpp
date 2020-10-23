@@ -4,28 +4,24 @@
 
 namespace FraplesDev
 {
-	Cylinder::Cylinder(Graphics& gfx, std::mt19937& rng, std::uniform_real_distribution<float>& adist, std::uniform_real_distribution<float>& ddist, std::uniform_real_distribution<float>& odist, std::uniform_real_distribution<float>& rdist, std::uniform_real_distribution<float>& bdist, std::uniform_int_distribution<int>& tdist)
+	Cylinder::Cylinder(Graphics& gfx, std::mt19937& rng, 
+		std::uniform_real_distribution<float>& adist, 
+		std::uniform_real_distribution<float>& ddist, 
+		std::uniform_real_distribution<float>& odist, 
+		std::uniform_real_distribution<float>& rdist, 
+		std::uniform_real_distribution<float>& bdist, 
+		std::uniform_int_distribution<int>& tdist)
 		:BaseObject(gfx, rng, adist, ddist, odist, rdist)
 	{
 		if (!IsStaticInitialized())
 		{
-			struct Vertex
-			{
-				DirectX::XMFLOAT3 pos;
-				DirectX::XMFLOAT3 n;
-			};
-
-			auto model = Prism::MakeTessellatedIndependentCapNormals<Vertex>(tdist(rng));
 			
-			AddStaticBind(std::make_unique<VertexBuffer>(gfx, model._mVertices));
-
 			auto pvs = std::make_unique<VertexShader>(gfx, L"PhongVS.cso");
 			auto pvsbyteCode = pvs->GetBytecode();
 			AddStaticBind(std::move(pvs));
 
 			AddStaticBind(std::make_unique<PixelShader>(gfx, L"IndexedPhongPS.cso"));
 
-			AddStaticIndexBuffer(std::make_unique<IndexBuffer>(gfx, model._mIndices));
 
 			const std::vector<D3D11_INPUT_ELEMENT_DESC>ied
 			{
@@ -41,7 +37,6 @@ namespace FraplesDev
 					{1.0f, 0.0f, 0.0f},
 					{0.0f, 1.0f, 0.0f},
 					{0.0f, 0.0f, 1.0f},
-
 					{1.0f, 1.0f, 0.0f},
 					{1.0f, 0.0f, 1.0f},
 					{0.0f, 1.0f, 1.0f},
@@ -50,12 +45,18 @@ namespace FraplesDev
 				float specularPower = 30.0f;
 			}matConst;
 			AddStaticBind(std::make_unique<PixelConstantBuffer<PSMaterialConstant>>(gfx, matConst, 1u));
-
 		}
-		else
+		struct Vertex
 		{
-			SetIndexFromStatic();
-		}
+			DirectX::XMFLOAT3 pos;
+			DirectX::XMFLOAT3 n;
+		};
+
+		auto model = Prism::MakeTessellatedIndependentCapNormals<Vertex>(tdist(rng));
+
+		AddBind(std::make_unique<VertexBuffer>(gfx, model._mVertices));
+		AddIndexBuffer(std::make_unique<IndexBuffer>(gfx, model._mIndices));
+
 		AddBind(std::make_unique<TransformCBuf>(gfx, *this));
 	}
 }

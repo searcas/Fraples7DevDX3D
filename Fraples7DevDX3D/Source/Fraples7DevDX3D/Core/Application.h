@@ -2,7 +2,6 @@
 
 #include "../Platform/Windows/Window.h"
 #include "../Core/Debugging/Timer.h"
-#include "../Objects/Box.h"
 #include "../RendererAPI/Camera.h"
 #include "../Objects/PointLight.h"
 namespace FraplesDev
@@ -19,6 +18,7 @@ namespace FraplesDev
 	private:
 		void DoFrame();
 	private:
+		std::vector<class Box*>boxes;
 		FraplesDev::Window _mWin;
 		FraplesDev::Timer _mTimer;
 		float _mSpeedFactor = 1.0f;
