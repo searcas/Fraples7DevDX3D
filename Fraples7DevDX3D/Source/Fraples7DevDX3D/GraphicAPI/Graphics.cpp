@@ -65,8 +65,8 @@ namespace FraplesDev {
 
 		Microsoft::WRL::ComPtr<ID3D11Texture2D> pDepthStencil;
 		D3D11_TEXTURE2D_DESC descDepth = {};
-		descDepth.Width = 800u;
-		descDepth.Height = 600u;
+		descDepth.Width = 1200u;
+		descDepth.Height = 900u;
 		descDepth.MipLevels = 1u;
 		descDepth.ArraySize = 1u;
 		descDepth.Format = DXGI_FORMAT_D32_FLOAT;
@@ -86,8 +86,8 @@ namespace FraplesDev {
 		_mpContext->OMSetRenderTargets(1u, _mpTarget.GetAddressOf(), _mpDSV.Get());
 
 		D3D11_VIEWPORT vp;
-		vp.Width = 800.0f;
-		vp.Height = 600.0f;
+		vp.Width = 1200.0f;
+		vp.Height = 900.0f;
 		vp.MinDepth = 0.0f;
 		vp.MaxDepth = 1.0f;
 		vp.TopLeftX = 0.0f;
@@ -204,96 +204,7 @@ namespace FraplesDev {
 		_mpContext->DrawIndexed(count, 0u, 0u);
 	}
 
-	/*void Graphics::DrawTestTriangle(float angle, float x, float z)
-	{
-		DirectX::XMVECTOR v = DirectX::XMVectorSet(3.0f, 3.0f, 0.0f, 0.0f);
-		auto result = DirectX::XMVector3Transform(v, DirectX::XMMatrixScaling(1.5f, 0.0f, 0.0f));
-		auto xx = DirectX::XMVectorGetX(result);
-		HRESULT hr;
-
 	
-		Microsoft::WRL::ComPtr<ID3D11Buffer> pVertexBuffer;
-		D3D11_BUFFER_DESC  bd = {};
-		bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-		bd.Usage = D3D11_USAGE_DEFAULT;
-		bd.CPUAccessFlags = 0u;
-		bd.MiscFlags = 0u;
-		bd.ByteWidth = sizeof(vertices);
-		bd.StructureByteStride = sizeof(Vertex);
-		D3D11_SUBRESOURCE_DATA sd = {};
-		sd.pSysMem = vertices;
-		FPL_GFX_THROW_INFO(_mpDevice->CreateBuffer(&bd, &sd, &pVertexBuffer));
-	
-		
-		
-		struct ConstantBuffer
-		{
-			DirectX::XMMATRIX transform;
-		};
-		const ConstantBuffer cb =
-		{
-			{
-				DirectX::XMMatrixTranspose(
-				DirectX::XMMatrixRotationZ(angle) *
-				DirectX::XMMatrixRotationX(angle) *
-				DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 10.0f))
-			}	
-		};
-
-	
-
-		Microsoft::WRL::ComPtr<ID3D11Buffer> pConstantBuffer2;
-		D3D11_BUFFER_DESC cbd2;
-		cbd2.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-		cbd2.Usage = D3D11_USAGE_DEFAULT;
-		cbd2.CPUAccessFlags = 0u;
-		cbd2.MiscFlags = 0u;
-		cbd2.ByteWidth = sizeof(cb2);
-		cbd2.StructureByteStride = 0u;
-		D3D11_SUBRESOURCE_DATA csd2 = {};
-		csd2.pSysMem = &cb2;
-		FPL_GFX_THROW_INFO(_mpDevice->CreateBuffer(&cbd2, &csd2, &pConstantBuffer2));
-		_mpContext->VSSetConstantBuffers(0u, 1u, pConstantBuffer2.GetAddressOf());
-
-		//create pixel shader
-		Microsoft::WRL::ComPtr<ID3D11PixelShader> pPixelShader;
-		Microsoft::WRL::ComPtr<ID3DBlob>pBlob;
-		FPL_GFX_THROW_INFO(D3DReadFileToBlob(L"PixelShader.cso", &pBlob));
-		FPL_GFX_THROW_INFO(_mpDevice->CreatePixelShader(pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &pPixelShader));
-	
-		_mpContext->PSSetShader(pPixelShader.Get(), 0, 0);
-
-		//create vertex shader
-		Microsoft::WRL::ComPtr<ID3D11VertexShader>pVertexShader;
-		FPL_GFX_THROW_INFO(D3DReadFileToBlob(L"VertexShader.cso", &pBlob));
-		FPL_GFX_THROW_INFO(_mpDevice->CreateVertexShader(pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &pVertexShader));
-		
-		_mpContext->VSSetShader(pVertexShader.Get(), 0, 0);
-		
-		//input (vertex) layout (2d position only)
-		Microsoft::WRL::ComPtr<ID3D11InputLayout> pInputLayout;
-
-	
-		_mpDevice->CreateInputLayout(IelementDesc, 
-			(UINT)std::size(IelementDesc), 
-			pBlob->GetBufferPointer(), 
-			pBlob->GetBufferSize(), &pInputLayout);
-
-
-		_mpContext->IASetInputLayout(pInputLayout.Get());
-
-		_mpContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		D3D11_VIEWPORT vp;
-		vp.Width = 800;
-		vp.Height = 600;
-		vp.MinDepth = 0;
-		vp.MaxDepth = 1;
-		vp.TopLeftX = 0;
-		vp.TopLeftY = 0;
-		_mpContext->RSSetViewports(1u, &vp);
-		_mpContext->DrawIndexed((UINT)std::size(indices), 0u,0u);
-	}
-	*/
 	FraplesDev::Graphics::InfoException::InfoException(int line, const char* file, std::vector<std::string> infoMsgs) noexcept : Exception(line, file)
 	{
 		//join all info messages with newlines into single string
