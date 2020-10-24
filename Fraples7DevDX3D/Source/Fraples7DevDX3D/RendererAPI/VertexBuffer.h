@@ -2,6 +2,7 @@
 
 #include "GFXContext.h"
 #include "../Core/Debugging/Exceptions/Macros/GraphicsThrowMacros.h"
+#include "../Core/MetaProgramming/Vertex.h"
 
 namespace FraplesDev
 {
@@ -26,6 +27,21 @@ namespace FraplesDev
 			FPL_GFX_THROW_INFO(GetDevice(gfx)->CreateBuffer(&bd, &sd, &_mpVertexBuffer));
 
 
+		}
+		VertexBuffer(Graphics& gfx, const MP::VertexBuffer& vbuf) 
+			: _mStride((UINT)vbuf.GetLayout().Size())
+		{
+			INFOMAN(gfx);
+			D3D11_BUFFER_DESC bd = {};
+			bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+			bd.Usage = D3D11_USAGE_DEFAULT;
+			bd.CPUAccessFlags = 0u;
+			bd.MiscFlags = 0u;
+			bd.ByteWidth = UINT(vbuf.SizeOfBytes());
+			bd.StructureByteStride = _mStride;
+			D3D11_SUBRESOURCE_DATA sd = {};
+			sd.pSysMem = vbuf.GetData();
+			FPL_GFX_THROW_INFO(GetDevice(gfx)->CreateBuffer(&bd, &sd, &_mpVertexBuffer));
 		}
 		void Bind(Graphics& gfx)noexcept override;
 	private:

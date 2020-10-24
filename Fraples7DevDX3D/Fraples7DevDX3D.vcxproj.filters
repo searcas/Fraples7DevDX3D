@@ -311,7 +311,7 @@
     <ClInclude Include="Source\Fraples7DevDX3D\Objects\AssetTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Fraples7DevDX3D\Core\MetaProgramming\VertexLayout.h">
+    <ClInclude Include="Source\Fraples7DevDX3D\Core\MetaProgramming\Vertex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

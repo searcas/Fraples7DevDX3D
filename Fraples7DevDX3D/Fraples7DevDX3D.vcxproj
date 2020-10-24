@@ -156,7 +156,7 @@
     <ClInclude Include="Source\Fraples7DevDX3D\Core\GDIPlusManager.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\IndexedList.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Math\Math.h" />
-    <ClInclude Include="Source\Fraples7DevDX3D\Core\MetaProgramming\VertexLayout.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\Core\MetaProgramming\Vertex.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Surface.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Texture\Texture.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\GraphicAPI\Graphics.h" />

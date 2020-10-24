@@ -3,6 +3,7 @@
 #include "assimp/scene.h"
 #include "assimp/postprocess.h"
 #include "RendererAPI/GFXContextBase.h"
+#include "../Core/MetaProgramming/Vertex.h"
 namespace FraplesDev
 {
 	Asset::Asset(Graphics& gfx, 
@@ -15,24 +16,19 @@ namespace FraplesDev
 	{
 		if (!IsStaticInitialized())
 		{
-			struct Vertex
-			{
-				DirectX::XMFLOAT3 pos;
-				DirectX::XMFLOAT3 n;
-			};
+			MP::VertexBuffer vbuf(std::move(MP::VertexLayout{}.
+				Append<MP::VertexLayout::Position3D>().
+				Append<MP::VertexLayout::Normal>()));
+
 			Assimp::Importer imp;
 			auto pModel = imp.ReadFile("models\\FinalBaseMesh.obj", aiProcess_Triangulate | aiProcess_JoinIdenticalVertices);
 			const auto pMesh = pModel->mMeshes[0];
 			
-			std::vector<Vertex> vertices;
-
-			vertices.reserve(pMesh->mNumVertices);
-
 			for (unsigned int i = 0; i < pMesh->mNumVertices; i++)
 			{
-				vertices.push_back({ {pMesh->mVertices[i].x * scale,pMesh->mVertices[i].y * scale,pMesh->mVertices[i].z * scale },
-					*reinterpret_cast<DirectX::XMFLOAT3*>(&pMesh->mNormals[i]) } );
-
+				vbuf.EmplaceBack((
+					DirectX::XMFLOAT3 {pMesh->mVertices[i].x * scale, pMesh->mVertices[i].y * scale,pMesh->mVertices[i].z * scale },
+					*reinterpret_cast<DirectX::XMFLOAT3*>(&pMesh->mNormals[i])));
 			}
 			std::vector<unsigned short> indices;
 			indices.reserve(pMesh->mNumFaces * 3);
@@ -44,7 +40,7 @@ namespace FraplesDev
 				indices.push_back(face.mIndices[1]);
 				indices.push_back(face.mIndices[2]);
 			}
-			AddStaticBind(std::make_unique<VertexBuffer>(gfx, vertices));
+			AddStaticBind(std::make_unique<VertexBuffer>(gfx, vbuf));
 
 			AddStaticIndexBuffer(std::make_unique<IndexBuffer>(gfx, indices));
 			auto pvs = std::make_unique<VertexShader>(gfx, L"PhongVS.cso");
