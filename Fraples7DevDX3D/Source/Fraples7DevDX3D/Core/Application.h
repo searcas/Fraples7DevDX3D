@@ -4,9 +4,8 @@
 #include "../Core/Debugging/Timer.h"
 #include "../RendererAPI/Camera.h"
 #include "../Objects/PointLight.h"
-
-
 #include <set>
+
 namespace FraplesDev
 {
 

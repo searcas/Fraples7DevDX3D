@@ -21,7 +21,7 @@ namespace FraplesDev
 				DirectX::XMFLOAT3 n;
 			};
 			Assimp::Importer imp;
-			auto pModel = imp.ReadFile("models\\suzanne.obj", aiProcess_Triangulate | aiProcess_JoinIdenticalVertices);
+			auto pModel = imp.ReadFile("models\\FinalBaseMesh.obj", aiProcess_Triangulate | aiProcess_JoinIdenticalVertices);
 			const auto pMesh = pModel->mMeshes[0];
 			
 			std::vector<Vertex> vertices;

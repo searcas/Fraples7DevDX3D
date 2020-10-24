@@ -18,14 +18,25 @@
 #include "imgui_impl_dx11.h"
 #include "imgui_impl_win32.h"
 #include <algorithm>
+#include "Core/MetaProgramming/VertexLayout.h"
 namespace FraplesDev
 {
 	GDIPlusManager gdipm;
 
+	void f()
+	{
+		VertexLayout vl;
+		vl.Append<VertexLayout::Position3D>()
+			.Append<VertexLayout::Normal>();
+		VertexBuffer vb(std::move(vl));
+		vb.EmplaceBack(DirectX::XMFLOAT3{ 1.0f,1.0f,5.0f }, DirectX::XMFLOAT3{ 2.0f,1.0f,4.0f });
+		auto pos = vb[0].Attr<VertexLayout::Position3D>();
+	}
+
 	Application::Application(const char* name, int width, int height)
 		:_mWin(name, width, height),light(_mWin.GetGFX())
 	{
-	
+		f();
 		class Factory
 		{
 		public:
@@ -53,7 +64,7 @@ namespace FraplesDev
 				case  3:
 					return std::make_unique<SkinnedBox>(_mGfx, rng, adist, ddist, odist, rdist);
 				case 4:
-					return std::make_unique<Asset>(_mGfx, rng, adist, ddist, odist, rdist,mat,1.5f);
+					return std::make_unique<Asset>(_mGfx, rng, adist, ddist, odist, rdist,mat,0.2f);
 
 				default:
 					assert(false && "Impossible drawable option in factory");
