@@ -34,45 +34,39 @@ namespace FraplesDev
 				 static constexpr DXGI_FORMAT dxgiFormat = DXGI_FORMAT_R32G32_FLOAT;
 				 static constexpr const char* semantic = "Position";
 			};
-			template<ElementType> struct Map;
 			template<>struct Map<Position3D>
 			{
 				using SysType = DirectX::XMFLOAT3;
 				static constexpr DXGI_FORMAT dxgiFormat = DXGI_FORMAT_R32G32B32_FLOAT;
 				static constexpr const char* semantic = "Position";
 			};
-			template<ElementType> struct Map;
 			template<>struct Map<Texture2D>
 			{
 				using SysType = DirectX::XMFLOAT2;
 				static constexpr DXGI_FORMAT dxgiFormat = DXGI_FORMAT_R32G32_FLOAT;
 				static constexpr const char* semantic = "Texcoord";
 			};
-			template<ElementType> struct Map;
 			template<>struct Map<Normal>
 			{
 				using SysType = DirectX::XMFLOAT3;
-				static constexpr 	DXGI_FORMAT dxgiFormat = DXGI_FORMAT_R32G32B32_FLOAT;
+				static constexpr DXGI_FORMAT dxgiFormat = DXGI_FORMAT_R32G32B32_FLOAT;
 				static constexpr const char* semantic = "Normal";
 			};
-			template<ElementType> struct Map;
 			template<>struct Map<Float3Color>
 			{
 				using SysType = DirectX::XMFLOAT3;
 				static constexpr DXGI_FORMAT dxgiFormat = DXGI_FORMAT_R32G32B32_FLOAT;
 				static constexpr const char* semantic = "Color";
 			};
-			template<ElementType> struct Map;
 			template<>struct Map<Float4Color>
 			{
-				using SysType = DirectX::XMFLOAT3;
+				using SysType = DirectX::XMFLOAT4;
 				static constexpr DXGI_FORMAT dxgiFormat = DXGI_FORMAT_R32G32B32A32_FLOAT;
 				static constexpr const char* semantic = "Color";
 			};
-			template<ElementType> struct Map;
 			template<>struct Map<BGRAColor>
 			{
-				using SysType = DirectX::XMFLOAT3;
+				using SysType = MP::BGRAColorX;
 				static constexpr DXGI_FORMAT dxgiFormat = DXGI_FORMAT_R8G8B8A8_UNORM;
 				static constexpr const char* semantic = "Color";
 			};
@@ -98,7 +92,6 @@ namespace FraplesDev
 				}
 				static constexpr size_t SizeOf(ElementType type)noexcept(!IS_DEBUG)
 				{
-					using namespace DirectX;
 
 					switch (type)
 					{
@@ -146,7 +139,7 @@ namespace FraplesDev
 						return GenerateDesc<Position2D>(GetOffset());
 						break;
 					case FraplesDev::MP::VertexLayout::Position3D:
-						return GenerateDesc<Position2D>(GetOffset());
+						return GenerateDesc<Position3D>(GetOffset());
 						break;
 					case FraplesDev::MP::VertexLayout::Texture2D:
 						return GenerateDesc<Texture2D>(GetOffset());

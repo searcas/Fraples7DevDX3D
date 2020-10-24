@@ -138,7 +138,8 @@ namespace FraplesDev
 		}
 		std::unique_ptr<Node>ParseNode(const aiNode& node)
 		{
-			const auto transform = DirectX::XMMatrixTranspose(DirectX::XMLoadFloat4x4(reinterpret_cast<const DirectX::XMFLOAT4X4*>(&node.mTransformation)));
+			const auto transform = DirectX::XMMatrixTranspose
+			(DirectX::XMLoadFloat4x4(reinterpret_cast<const DirectX::XMFLOAT4X4*>(&node.mTransformation)));
 			std::vector<Mesh*> curMeshPtrs;
 			curMeshPtrs.reserve(node.mNumMeshes);
 
