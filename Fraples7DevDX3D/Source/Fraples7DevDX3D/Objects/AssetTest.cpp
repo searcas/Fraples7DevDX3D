@@ -17,8 +17,8 @@ namespace FraplesDev
 		if (!IsStaticInitialized())
 		{
 			MP::VertexBuffer vbuf(std::move(MP::VertexLayout{}.
-				Append<MP::VertexLayout::Position3D>().
-				Append<MP::VertexLayout::Normal>()));
+				Append(MP::VertexLayout::Position3D).
+				Append(MP::VertexLayout::Normal) ));
 
 			Assimp::Importer imp;
 			auto pModel = imp.ReadFile("models\\FinalBaseMesh.obj", aiProcess_Triangulate | aiProcess_JoinIdenticalVertices);
@@ -26,9 +26,9 @@ namespace FraplesDev
 			
 			for (unsigned int i = 0; i < pMesh->mNumVertices; i++)
 			{
-				vbuf.EmplaceBack((
-					DirectX::XMFLOAT3 {pMesh->mVertices[i].x * scale, pMesh->mVertices[i].y * scale,pMesh->mVertices[i].z * scale },
-					*reinterpret_cast<DirectX::XMFLOAT3*>(&pMesh->mNormals[i])));
+				vbuf.EmplaceBack(
+					DirectX::XMFLOAT3{pMesh->mVertices[i].x * scale, pMesh->mVertices[i].y * scale,pMesh->mVertices[i].z * scale },
+					*reinterpret_cast<DirectX::XMFLOAT3*>(&pMesh->mNormals[i]));
 			}
 			std::vector<unsigned short> indices;
 			indices.reserve(pMesh->mNumFaces * 3);
@@ -50,12 +50,7 @@ namespace FraplesDev
 
 			AddStaticBind(std::make_unique<PixelShader>(gfx, L"PhongPS.cso"));
 
-			const std::vector<D3D11_INPUT_ELEMENT_DESC>ied =
-			{
-				{"Position",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0},
-				{"Normal",0,DXGI_FORMAT_R32G32B32_FLOAT,0,12,D3D11_INPUT_PER_VERTEX_DATA,0},
-			};
-			AddStaticBind(std::make_unique<InputLayout>(gfx, ied, pvsbyte));
+			AddStaticBind(std::make_unique<InputLayout>(gfx, vbuf.GetLayout().GetD3DLayout(), pvsbyte));
 			AddStaticBind(std::make_unique<Topology>(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 			
 			struct PSMaterialConstant
