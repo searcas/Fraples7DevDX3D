@@ -314,6 +314,9 @@
     <ClInclude Include="Source\Fraples7DevDX3D\Core\MetaProgramming\Vertex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\Model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Fraples7DevDX3D.rc">

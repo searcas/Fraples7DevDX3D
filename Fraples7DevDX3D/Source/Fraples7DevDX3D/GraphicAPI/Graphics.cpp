@@ -85,7 +85,7 @@ namespace FraplesDev {
 
 		_mpContext->OMSetRenderTargets(1u, _mpTarget.GetAddressOf(), _mpDSV.Get());
 
-		D3D11_VIEWPORT vp;
+		D3D11_VIEWPORT vp = {};
 		vp.Width = 1200.0f;
 		vp.Height = 900.0f;
 		vp.MinDepth = 0.0f;
@@ -183,7 +183,7 @@ namespace FraplesDev {
 #endif // !_DEBUG
 
 		//Disabled Vysnc
-		if (FAILED(hr = _mpSwap->Present(0u, 0u)))
+		if (FAILED(hr = _mpSwap->Present(1u, 0u)))
 		{
 			if (hr == DXGI_ERROR_DEVICE_REMOVED)
 			{

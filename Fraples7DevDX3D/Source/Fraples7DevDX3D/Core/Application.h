@@ -4,6 +4,7 @@
 #include "../Core/Debugging/Timer.h"
 #include "../RendererAPI/Camera.h"
 #include "../Objects/PointLight.h"
+#include "RendererAPI/Mesh/Model.h"
 #include <set>
 
 namespace FraplesDev
@@ -35,6 +36,8 @@ namespace FraplesDev
 		PointLight light;
 		std::optional<int>comboBoxIndex;
 		std::set<int> boxControlIds;
+		Model _mNano{ _mWin.GetGFX(),"Models\\nanosuit.obj" };
+		
 	};
 
 }

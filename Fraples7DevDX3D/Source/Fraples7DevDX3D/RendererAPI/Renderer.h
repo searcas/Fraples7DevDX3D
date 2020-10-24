@@ -21,7 +21,7 @@ namespace FraplesDev
 		void AddIndexBuffer(std::unique_ptr<class IndexBuffer>ibuf)noexcept(!IS_DEBUG);
 	public:
 		virtual const DirectX::XMMATRIX GetTransformXM()const noexcept = 0;
-		virtual void Update(float diff) noexcept = 0;
+		virtual void Update(float diff) {};
 		virtual ~Renderer() = default;
 		virtual const std::vector<std::unique_ptr<GfxContext>>& GetStaticBinds() const noexcept = 0;
 	protected:
