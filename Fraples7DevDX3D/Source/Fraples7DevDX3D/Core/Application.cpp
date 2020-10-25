@@ -2,11 +2,6 @@
 #include "Debugging/Exceptions/Macros/WindowsThrowMacros.h"
 #include "Debugging/Timer.h"
 // ########## Objects ################
-#include "../Objects/Box.h"
-#include "../Objects/Cylinder.h"
-#include "../Objects/Pyramid.h"
-#include "../Objects/SkinnedBox.h"
-#include "../Objects/AssetTest.h"
 //#include "../Objects/Sphere.h"
 //#include "../Objects/Melon.h"
 //#include "../Objects/Sheet.h"
@@ -64,13 +59,14 @@ namespace FraplesDev
 		_mWin.GetGFX().BeginFrame(0.07f, 0.017f, 0.021f);
 		_mWin.GetGFX().SetCamera(_mCamera.GetMatrix());
 		light.Bind(_mWin.GetGFX(), _mCamera.GetMatrix());
+		const auto transform = DirectX::XMMatrixRotationRollPitchYaw(pos.roll, pos.pitch, pos.yaw) * DirectX::XMMatrixTranslation(pos.x, pos.y, pos.z);
 		
-		_mNano.Render(_mWin.GetGFX());
-
+		_mNano.Render(_mWin.GetGFX(),transform);
 		light.Render(_mWin.GetGFX());
 
 		_mCamera.SpawnControllWindow();
 		light.SpawnControlWindow();
+		ShowModelInfo();
 		_mWin.GetGFX().EndFrame();
 	}
 
@@ -135,5 +131,30 @@ namespace FraplesDev
 		}
 		_mWin.GetGFX().EndFrame();
 	}
+	void Application::ShowModelInfo()
+	{
+		if (ImGui::Begin("Model"))
+		{
+			ImGui::Text("Application Average %.3f ms/frame (%.1f Fps)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+
+			using namespace std::string_literals;
+
+			ImGui::Text("Orientation");
+			ImGui::SliderAngle("Roll", &pos.roll, -180.0f, 180.0f);
+			ImGui::SliderAngle("Pitch", &pos.pitch, -180.0f, 180.0f);
+			ImGui::SliderAngle("Yaw", &pos.yaw, -180.0f, 180.0f);
+
+			ImGui::Text("Position");
+			ImGui::SliderFloat("X", &pos.x, -20.0f, 20.0f);
+			ImGui::SliderFloat("Y", &pos.y, -20.0f, 20.0f);
+			ImGui::SliderFloat("Z", &pos.z, -20.0f, 20.0f);
+
+			if (ImGui::Button("Reset"))
+			{
+				pos = { };
+			}
+		}
+		ImGui::End();
 	}
+}
 

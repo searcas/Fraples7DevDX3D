@@ -6,7 +6,8 @@
 #include "../Objects/PointLight.h"
 #include "RendererAPI/Mesh/Model.h"
 #include <set>
-
+#include "Math/Math.h"
+#include "Objects/Box.h"
 namespace FraplesDev
 {
 
@@ -23,6 +24,7 @@ namespace FraplesDev
 		void SpawnSimulationWindow() noexcept;
 		void SpawnBoxWindowManagerWindow() noexcept;
 		void SpawnBoxWindows() noexcept;
+		void ShowModelInfo();
 	private:
 		std::vector<class Box*>boxes;
 		FraplesDev::Window _mWin;
@@ -37,6 +39,16 @@ namespace FraplesDev
 		std::optional<int>comboBoxIndex;
 		std::set<int> boxControlIds;
 		Model _mNano{ _mWin.GetGFX(),"Models\\nanosuit.obj" };
+
+		struct 
+		{
+			float roll = 0.0f;
+			float pitch = PI;
+			float yaw = 0.0f;
+			float x = 0.0f;
+			float y = 0.0f;
+			float z = 0.0f;
+		}pos;
 		
 	};
 

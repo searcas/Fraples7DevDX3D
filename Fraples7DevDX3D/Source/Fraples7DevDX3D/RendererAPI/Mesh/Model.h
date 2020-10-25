@@ -94,6 +94,10 @@ namespace FraplesDev
 			}
 			_mRoot = ParseNode(*pScene->mRootNode);
 		}
+		void Render(Graphics& gfx,DirectX::FXMMATRIX transform)const
+		{
+			_mRoot->Render(gfx, transform);
+		}
 		static std::unique_ptr<Mesh>ParseMesh(Graphics& gfx, const aiMesh& mesh)
 		{
 			using MP::VertexLayout;
@@ -155,10 +159,7 @@ namespace FraplesDev
 			}
 			return pNode;
 		}
-		void Render(Graphics& gfx)const
-		{
-			_mRoot->Render(gfx, DirectX::XMMatrixIdentity());
-		}
+	
 	private:
 		std::unique_ptr<Node>_mRoot;
 		std::vector<std::unique_ptr<Mesh>>_mMeshPtrs;
