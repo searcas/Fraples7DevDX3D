@@ -99,7 +99,7 @@ namespace FraplesDev {
 
 	void Mouse::OnRawDelta(int dx, int dy) noexcept
 	{
-		_mRawDeltaBuffer.push({ dx,dy });
+		_mRawDeltaBuffer.push({ dx, dy });
 		TrimBuffer();
 	}
 

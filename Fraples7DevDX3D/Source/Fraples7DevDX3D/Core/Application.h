@@ -23,25 +23,28 @@ namespace FraplesDev
 		void DoFrame();
 		void ShowImguiDemoWindow();
 		void SpawnAppInfoWindow() noexcept;
-		void SpawnBoxWindowManagerWindow() noexcept;
-		void SpawnBoxWindows() noexcept;
+		//	Not in use anymore
+		//	void SpawnBoxWindowManagerWindow() noexcept;
+		//	void SpawnBoxWindows() noexcept;
+		void ShowRawInputWindow()noexcept;
 	private:
-		std::vector<class Box*>boxes;
 		FraplesDev::Window _mWin;
-		FraplesDev::Timer _mTimer;
-		float _mSpeedFactor = 1.0f;
-		std::vector<std::unique_ptr<class Renderer>>_mrenderable;
-		static constexpr size_t nDrawables = 180;
-		bool show_demo_window = true;
-		float speed_accelerator = 1.500f;
+	private:
+		//mouse
+		int _mX = 0, _mY = 0;
+		bool _mCursorEnabled = true;
+
+	private:
+		//objects
 		Camera _mCamera;
 		PointLight light;
-		std::optional<int>comboBoxIndex;
-		std::set<int> boxControlIds;
 		Model _mNano{ _mWin.GetGFX(),"Models\\nano_hierarchy.gltf" };
-
+	private:
+		FraplesDev::Timer _mTimer;
+		float _mSpeedFactor = 1.0f;
+		bool show_demo_window = true;
+		float speed_accelerator = 1.500f;
 	
-		
 	};
 
 }

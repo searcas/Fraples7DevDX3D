@@ -21,7 +21,6 @@ namespace FraplesDev
 	Application::Application(const char* name, int width, int height)
 		:_mWin(name, width, height), light(_mWin.GetGFX())
 	{
-		_mWin.DisableCursor();
 		_mWin.GetGFX().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
 	}
 
@@ -63,9 +62,26 @@ namespace FraplesDev
 		_mNano.Render(_mWin.GetGFX());
 		light.Render(_mWin.GetGFX());
 
+		while (const auto e = _mWin._mKey.Readkey())
+		{
+			if (e->isPressed() && e->GetCode() == VK_INSERT)
+			{
+				if (_mCursorEnabled)
+				{
+					_mWin.DisableCursor();
+					_mCursorEnabled = false;
+				}
+				else
+				{
+					_mWin.EnableCursor();
+					_mCursorEnabled = true;
+				}
+			}
+		}
 		_mCamera.SpawnControllWindow();
 		light.SpawnControlWindow();
 		_mNano.ShowModelInfo("Model");
+		ShowRawInputWindow();
 		SpawnAppInfoWindow();
 		_mWin.GetGFX().EndFrame();
 	}
@@ -87,6 +103,7 @@ namespace FraplesDev
 		}
 		ImGui::End();
 	}
+	/*
 	void Application::SpawnBoxWindowManagerWindow()noexcept
 	{
 
@@ -118,7 +135,8 @@ namespace FraplesDev
 		}
 		ImGui::End();
 	}
-	
+	*/
+	/*
 	//imgui box attribute control windows
 	void Application::SpawnBoxWindows() noexcept
 	{
@@ -134,6 +152,21 @@ namespace FraplesDev
 			}
 		}
 		_mWin.GetGFX().EndFrame();
+	}
+	*/
+	void Application::ShowRawInputWindow() noexcept
+	{
+		while (const auto d = _mWin._mMouse.ReadRawDelta())
+		{
+			_mX += d->x;
+			_mY += d->y;
+		}
+		if (ImGui::Begin("Raw Input"))
+		{
+			ImGui::Text("(X, Y): (%d, %d)", _mX, _mY);
+			ImGui::Text("Cursor: %s", _mCursorEnabled ? "Enabled" : "Disabled");
+		}
+		ImGui::End();
 	}
 	
 }
