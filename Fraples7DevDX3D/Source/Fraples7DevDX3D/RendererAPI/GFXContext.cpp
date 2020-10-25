@@ -1,5 +1,5 @@
 #include "GFXContext.h"
-
+#include <stdexcept>
 namespace FraplesDev
 {
 
@@ -13,12 +13,12 @@ namespace FraplesDev
 		return gfx._mpDevice.Get();
 	}
 
-	DxgiInfoManager& GfxContext::GetInfoManager(Graphics& gfx)noexcept(!IS_DEBUG)
+	DxgiInfoManager& GfxContext::GetInfoManager(Graphics& gfx)noexcept(IS_DEBUG)
 	{
 #ifndef NDEBUG
 		return gfx.infoManager;
 #else
-		//throw std::logic_error("YouFuckedUp! (tried to access gfx.infoManager in Release config)");
+		throw std::logic_error("YouFuckedUp! (tried to access gfx.infoManager in Release config)");
 #endif
 	}
 }

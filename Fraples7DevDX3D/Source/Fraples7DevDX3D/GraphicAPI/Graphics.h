@@ -61,7 +61,7 @@ namespace FraplesDev
 		void EndFrame();
 		//clear buffer
 		void BeginFrame(float red, float green, float blue) noexcept;
-		void RenderIndexed(UINT count)noexcept;
+		void RenderIndexed(UINT count)noexcept(!IS_DEBUG);
 		void SetProjection(DirectX::FXMMATRIX proj) noexcept;
 		const DirectX::XMMATRIX& GetProjection() const noexcept;
 		void SetCamera(DirectX::FXMMATRIX cameraView) noexcept;
@@ -77,18 +77,19 @@ namespace FraplesDev
 			return IsImGuiEnabled;
 		};
 	private:
-		Microsoft::WRL::ComPtr<ID3D11Device> _mpDevice = nullptr;
-		Microsoft::WRL::ComPtr<IDXGISwapChain> _mpSwap = nullptr;
-		Microsoft::WRL::ComPtr<ID3D11DeviceContext> _mpContext = nullptr;
-		Microsoft::WRL::ComPtr<ID3D11RenderTargetView> _mpTarget = nullptr;
+#ifndef NDEBUG
+		DxgiInfoManager infoManager;
+#endif // NDEBUG
+		Microsoft::WRL::ComPtr<ID3D11Device> _mpDevice;
+		Microsoft::WRL::ComPtr<IDXGISwapChain> _mpSwap;
+		Microsoft::WRL::ComPtr<ID3D11DeviceContext> _mpContext;
+		Microsoft::WRL::ComPtr<ID3D11RenderTargetView> _mpTarget;
 		Microsoft::WRL::ComPtr<ID3D11DepthStencilView> _mpDSV;
 		DirectX::XMMATRIX _mProjection;
 		DirectX::XMMATRIX _mCamera;
 		bool IsImGuiEnabled = true;
 
-#ifndef NDEBUG
-		DxgiInfoManager infoManager;
-#endif // NDEBUG
+
 
 	};
 

@@ -12,7 +12,6 @@ namespace FraplesDev {
 	FraplesDev::Graphics::Graphics(HWND hWnd)
 	{
 		DXGI_SWAP_CHAIN_DESC swap;
-		HRESULT hr;
 		swap.BufferDesc.Width = 0;
 		swap.BufferDesc.Height = 0;
 		swap.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
@@ -33,20 +32,21 @@ namespace FraplesDev {
 #ifndef NDEBUG
 		swapCreateFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif // !NDEBUG
+		HRESULT hr;
 
 		FPL_GFX_THROW_INFO(D3D11CreateDeviceAndSwapChain(
-			nullptr, 
-			D3D_DRIVER_TYPE_HARDWARE, 
 			nullptr,
-			0, 
-			nullptr, 
-			0, 
-			D3D11_SDK_VERSION, 
-			&swap, 
-			&_mpSwap, 
-			&_mpDevice, 
-			nullptr, 
-			&_mpContext
+			D3D_DRIVER_TYPE_HARDWARE,
+			nullptr,
+			swapCreateFlags,
+			nullptr,
+			0,
+			D3D11_SDK_VERSION,
+			&swap,
+			&_mpSwap,
+			&_mpDevice,
+			nullptr,
+			_mpContext.GetAddressOf()
 		));
 		
 		Microsoft::WRL::ComPtr<ID3D11Resource> pBackBuffer;
@@ -60,7 +60,7 @@ namespace FraplesDev {
 		Microsoft::WRL::ComPtr<ID3D11DepthStencilState> pDSState;
 		FPL_GFX_THROW_INFO(_mpDevice->CreateDepthStencilState(&ddsd, &pDSState));
 
-		//bind depth state
+		//bind depth state 
 		_mpContext->OMSetDepthStencilState(pDSState.Get(), 1u);
 
 		Microsoft::WRL::ComPtr<ID3D11Texture2D> pDepthStencil;
@@ -199,7 +199,7 @@ namespace FraplesDev {
 
 
 
-	void Graphics::RenderIndexed(UINT count)noexcept
+	void Graphics::RenderIndexed(UINT count)noexcept(!IS_DEBUG)
 	{
 		_mpContext->DrawIndexed(count, 0u, 0u);
 	}
