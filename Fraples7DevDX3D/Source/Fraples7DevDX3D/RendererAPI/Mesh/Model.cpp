@@ -1,5 +1,6 @@
 #include "Model.h"
 #include <memory>
+#include <sstream>
 namespace FraplesDev
 {
 	
@@ -65,7 +66,11 @@ namespace FraplesDev
 	Model::Model(Graphics& gfx, const std::string fileName) : _mpWindow(std::make_unique<ModelWindow>())
 	{
 		Assimp::Importer imp;
-		const auto pScene = imp.ReadFile(fileName.c_str(), aiProcess_Triangulate | aiProcess_JoinIdenticalVertices);
+		const auto pScene = imp.ReadFile(fileName.c_str(), aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_ConvertToLeftHanded | aiProcess_GenNormals);
+		if (pScene==nullptr)
+		{
+			throw ModelException(imp.GetErrorString(), __LINE__, __FILE__);
+		}
 		for (int i = 0; i < pScene->mNumMeshes; i++)
 		{
 			_mMeshPtrs.push_back(ParseMesh(gfx, *pScene->mMeshes[i]));
@@ -194,5 +199,25 @@ namespace FraplesDev
 	Node* Model::ModelWindow::GetSelectedNode()	const noexcept
 	{
 		return _mPselectedNode;
+	}
+	Model::ModelException::ModelException(std::string note, int line, const char* file) 
+		: FraplesException(line,file), note(std::move(note))
+	{
+
+	}
+	const char* Model::ModelException::what() const noexcept
+	{
+		std::ostringstream oss;
+		oss << FraplesException::what() << std::endl << "[Note] " << GetNote();
+		_mWhatBuffer = oss.str();
+		return _mWhatBuffer.c_str();
+	}
+	const char* Model::ModelException::GetType() const noexcept
+	{
+		return "Fraples7 Studio Engine Exception";
+	}
+	const std::string& Model::ModelException::GetNote() const noexcept
+	{
+		return note;
 	}
 }

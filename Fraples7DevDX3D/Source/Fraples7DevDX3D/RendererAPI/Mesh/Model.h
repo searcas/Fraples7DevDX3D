@@ -6,6 +6,7 @@
 #include "Core/Math/Math.h"
 #include "ImGui/imgui.h"
 #include "Mesh.h"
+#include "Core/Debugging/Exceptions/FraplesException.h"
 #include <unordered_map>
 #include <optional>
 namespace FraplesDev
@@ -34,6 +35,16 @@ namespace FraplesDev
 	class Model
 	{
 	public:
+		class ModelException : public FraplesException
+		{
+		public:
+			ModelException(std::string note, int line, const char* file);
+			const char* what() const noexcept override;
+			const char* GetType()const noexcept override;
+			const std::string& GetNote()const noexcept;
+		private:
+			std::string note;
+		};
 		class ModelWindow
 		{
 		public:

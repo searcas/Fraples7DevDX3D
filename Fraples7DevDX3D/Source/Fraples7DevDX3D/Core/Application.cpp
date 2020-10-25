@@ -54,7 +54,7 @@ namespace FraplesDev
 	void Application::DoFrame()
 	{
 		const auto dt = _mTimer.Get() * speed_accelerator;
-		_mWin.GetGFX().BeginFrame(0.07f, 0.017f, 0.021f);
+		_mWin.GetGFX().BeginFrame(0.19f, 0.19f, 0.19f);
 		_mWin.GetGFX().SetCamera(_mCamera.GetMatrix());
 		light.Bind(_mWin.GetGFX(), _mCamera.GetMatrix());
 		

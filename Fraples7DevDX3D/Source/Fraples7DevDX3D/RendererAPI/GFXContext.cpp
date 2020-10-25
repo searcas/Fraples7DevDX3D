@@ -13,7 +13,7 @@ namespace FraplesDev
 		return gfx._mpDevice.Get();
 	}
 
-	DxgiInfoManager& GfxContext::GetInfoManager(Graphics& gfx)noexcept(IS_DEBUG)
+	DxgiInfoManager& GfxContext::GetInfoManager(Graphics& gfx)
 	{
 #ifndef NDEBUG
 		return gfx.infoManager;
