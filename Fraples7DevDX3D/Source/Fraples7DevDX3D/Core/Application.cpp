@@ -21,6 +21,7 @@ namespace FraplesDev
 	Application::Application(const char* name, int width, int height)
 		:_mWin(name, width, height), light(_mWin.GetGFX())
 	{
+		_mWin.DisableCursor();
 		_mWin.GetGFX().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
 	}
 

@@ -13,7 +13,7 @@ namespace FraplesDev
 	void Node::Render(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform)const noexcept(!IS_DEBUG)
 	{
 		
-		const auto built = DirectX::XMLoadFloat4x4(&appliedTransform) * DirectX::XMLoadFloat4x4(_mTransform) * accumulatedTransform;
+		const auto built = DirectX::XMLoadFloat4x4(&appliedTransform) * DirectX::XMLoadFloat4x4(&_mTransform) * accumulatedTransform;
 
 		for (const auto pm : _mMeshPtrs)
 		{

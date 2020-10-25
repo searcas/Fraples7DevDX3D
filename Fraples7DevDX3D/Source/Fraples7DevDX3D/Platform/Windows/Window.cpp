@@ -124,7 +124,7 @@ namespace FraplesDev {
 		}
 		ShowWindow(_mHwnd, SW_SHOWDEFAULT);
 		ImGui_ImplWin32_Init(_mHwnd);
-		_mpGFX = std::make_unique<Graphics>(_mHwnd);
+		_mpGFX = std::make_unique<Graphics>(_mHwnd,width,height);
 	}
 
 
@@ -161,6 +161,16 @@ namespace FraplesDev {
 		}
 		return *_mpGFX;
 	}
+	void Window::EnableCursor()
+	{
+		_mCursorEnabled = true;
+		ShowCursor();
+	}
+	void Window::DisableCursor()
+	{
+		_mCursorEnabled = false;
+		HideCursor();
+	}
 	void Window::ConfineCursor() noexcept
 	{
 		RECT rect;
@@ -176,12 +186,12 @@ namespace FraplesDev {
 
 	void Window::ShowCursor() noexcept
 	{
-		while (::ShowCursor(FALSE) >= 0);
+		while (::ShowCursor(TRUE) < 0);
 	}
 
 	void Window::HideCursor() noexcept
 	{
-		while (::ShowCursor(true) < 0);
+		while (::ShowCursor(FALSE) >= 0);
 	}
 
 	LRESULT Window::HandleMsgSetup(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -264,14 +274,9 @@ namespace FraplesDev {
 			}
 			_mKey.OnChar(static_cast<unsigned char>(wParam));
 			break;
+//############### MOUSE MESSAGES ########################################
 		case WM_MOUSEMOVE:
 		{
-			if (imIo.WantCaptureMouse)
-			{
-				break;
-			}
-			const POINTS pt = MAKEPOINTS(lparam);
-			//cursorless exclusive gets first dibs
 			if (!_mCursorEnabled)
 			{
 				if (!_mMouse.IsInWindow())
@@ -282,6 +287,12 @@ namespace FraplesDev {
 				}
 				break;
 			}
+			if (imIo.WantCaptureMouse)
+			{
+				break;
+			}
+			const POINTS pt = MAKEPOINTS(lparam);
+			//cursorless exclusive gets first dibs
 			if (pt.x >= 0 && pt.x < _mWidth && pt.y >= 0 && pt.y < _mHeight)
 			{
 				_mMouse.OnMouseMove(pt.x, pt.y);

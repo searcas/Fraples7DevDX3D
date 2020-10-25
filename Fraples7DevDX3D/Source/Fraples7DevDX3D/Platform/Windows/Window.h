@@ -58,6 +58,8 @@ namespace FraplesDev {
 		Window& operator =(const Window&) = delete;
 		static std::optional<int>ProcessMessages()noexcept;
 		Graphics& GetGFX();
+		void EnableCursor();
+		void DisableCursor();
 	public:
 		 Keyboard _mKey;
 		 Mouse _mMouse;
@@ -66,13 +68,14 @@ namespace FraplesDev {
 		void FreeCursor() noexcept;
 		void ShowCursor() noexcept;
 		void HideCursor() noexcept;
+		
 
 		static LRESULT CALLBACK HandleMsgSetup(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 		static LRESULT CALLBACK HandleMsgThunk(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 		LRESULT HandleMsg(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lparam) noexcept;
 	private:
 		ImGuiMgr mgr;
-		bool _mCursorEnabled = true;
+		bool _mCursorEnabled = false;
 		int _mWidth;
 		int _mHeight;
 		HWND _mHwnd;

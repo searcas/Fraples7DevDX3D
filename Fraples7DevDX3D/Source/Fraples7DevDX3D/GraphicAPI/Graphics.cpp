@@ -9,11 +9,11 @@
 #pragma comment(lib,"d3d11.lib")
 
 namespace FraplesDev {
-	FraplesDev::Graphics::Graphics(HWND hWnd)
+	FraplesDev::Graphics::Graphics(HWND hWnd,int width,int height)
 	{
 		DXGI_SWAP_CHAIN_DESC swap;
-		swap.BufferDesc.Width = 0;
-		swap.BufferDesc.Height = 0;
+		swap.BufferDesc.Width = width;
+		swap.BufferDesc.Height = height;
 		swap.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
 		swap.BufferDesc.RefreshRate.Numerator = 0;
 		swap.BufferDesc.RefreshRate.Denominator = 0;
@@ -65,8 +65,8 @@ namespace FraplesDev {
 
 		Microsoft::WRL::ComPtr<ID3D11Texture2D> pDepthStencil;
 		D3D11_TEXTURE2D_DESC descDepth = {};
-		descDepth.Width = 1200u;
-		descDepth.Height = 900u;
+		descDepth.Width = width;
+		descDepth.Height = height;
 		descDepth.MipLevels = 1u;
 		descDepth.ArraySize = 1u;
 		descDepth.Format = DXGI_FORMAT_D32_FLOAT;
@@ -86,8 +86,8 @@ namespace FraplesDev {
 		_mpContext->OMSetRenderTargets(1u, _mpTarget.GetAddressOf(), _mpDSV.Get());
 
 		D3D11_VIEWPORT vp = {};
-		vp.Width = 1200.0f;
-		vp.Height = 900.0f;
+		vp.Width = (float)width;
+		vp.Height = (float)height;
 		vp.MinDepth = 0.0f;
 		vp.MaxDepth = 1.0f;
 		vp.TopLeftX = 0.0f;
