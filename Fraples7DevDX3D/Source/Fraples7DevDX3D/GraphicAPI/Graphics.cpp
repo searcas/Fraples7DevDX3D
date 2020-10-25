@@ -46,7 +46,7 @@ namespace FraplesDev {
 			&_mpSwap,
 			&_mpDevice,
 			nullptr,
-			_mpContext.GetAddressOf()
+			&_mpContext
 		));
 		
 		Microsoft::WRL::ComPtr<ID3D11Resource> pBackBuffer;

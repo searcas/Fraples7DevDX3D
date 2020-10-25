@@ -21,10 +21,10 @@ namespace FraplesDev
 		int StartApp();
 	private:
 		void DoFrame();
-		void SpawnSimulationWindow() noexcept;
+		void ShowImguiDemoWindow();
+		void SpawnAppInfoWindow() noexcept;
 		void SpawnBoxWindowManagerWindow() noexcept;
 		void SpawnBoxWindows() noexcept;
-		void ShowModelInfo();
 	private:
 		std::vector<class Box*>boxes;
 		FraplesDev::Window _mWin;
@@ -38,17 +38,9 @@ namespace FraplesDev
 		PointLight light;
 		std::optional<int>comboBoxIndex;
 		std::set<int> boxControlIds;
-		Model _mNano{ _mWin.GetGFX(),"Models\\nanosuit.obj" };
+		Model _mNano{ _mWin.GetGFX(),"Models\\nano_hierarchy.gltf" };
 
-		struct 
-		{
-			float roll = 0.0f;
-			float pitch = PI;
-			float yaw = 0.0f;
-			float x = 0.0f;
-			float y = 0.0f;
-			float z = 0.0f;
-		}pos;
+	
 		
 	};
 

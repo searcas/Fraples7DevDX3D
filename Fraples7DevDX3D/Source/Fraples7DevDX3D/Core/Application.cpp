@@ -6,7 +6,6 @@
 //#include "../Objects/Melon.h"
 //#include "../Objects/Sheet.h"
 //########### End Objects ###########
-#include "Math/Math.h"
 #include "Surface.h"
 #include "GDIPlusManager.h"
 #include "imgui.h"
@@ -22,7 +21,6 @@ namespace FraplesDev
 	Application::Application(const char* name, int width, int height)
 		:_mWin(name, width, height), light(_mWin.GetGFX())
 	{
-	
 		_mWin.GetGFX().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
 	}
 
@@ -59,27 +57,32 @@ namespace FraplesDev
 		_mWin.GetGFX().BeginFrame(0.07f, 0.017f, 0.021f);
 		_mWin.GetGFX().SetCamera(_mCamera.GetMatrix());
 		light.Bind(_mWin.GetGFX(), _mCamera.GetMatrix());
-		const auto transform = DirectX::XMMatrixRotationRollPitchYaw(pos.roll, pos.pitch, pos.yaw) * DirectX::XMMatrixTranslation(pos.x, pos.y, pos.z);
 		
-		_mNano.Render(_mWin.GetGFX(),transform);
+		
+		_mNano.Render(_mWin.GetGFX());
 		light.Render(_mWin.GetGFX());
 
 		_mCamera.SpawnControllWindow();
 		light.SpawnControlWindow();
-		ShowModelInfo();
+		_mNano.ShowModelInfo("Model");
+		SpawnAppInfoWindow();
 		_mWin.GetGFX().EndFrame();
 	}
 
-	void Application::SpawnSimulationWindow()noexcept
+	void Application::ShowImguiDemoWindow()
 	{
-		static char buffer[1024];
-
-		if (ImGui::Begin("Speed Controller"))
+		static bool show_demo_window = true;
+		if (show_demo_window)
 		{
-			ImGui::SliderFloat("Speed Factor", &speed_accelerator, 0.0f, 6.0f, "%.4f", ImGuiSliderFlags_Logarithmic);
-			ImGui::Text("Application Average %.3f ms/frame (%.1f Fps)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-			ImGui::InputText("Commands: ", buffer, 1024);
+			ImGui::ShowDemoWindow(&show_demo_window);
+		}
+	}
 
+	void Application::SpawnAppInfoWindow()noexcept
+	{
+		if (ImGui::Begin("Perfomance"))
+		{
+			ImGui::BulletText("Application Average %.3f ms/frame (%.1f Fps)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 		}
 		ImGui::End();
 	}
@@ -131,30 +134,6 @@ namespace FraplesDev
 		}
 		_mWin.GetGFX().EndFrame();
 	}
-	void Application::ShowModelInfo()
-	{
-		if (ImGui::Begin("Model"))
-		{
-			ImGui::Text("Application Average %.3f ms/frame (%.1f Fps)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-
-			using namespace std::string_literals;
-
-			ImGui::Text("Orientation");
-			ImGui::SliderAngle("Roll", &pos.roll, -180.0f, 180.0f);
-			ImGui::SliderAngle("Pitch", &pos.pitch, -180.0f, 180.0f);
-			ImGui::SliderAngle("Yaw", &pos.yaw, -180.0f, 180.0f);
-
-			ImGui::Text("Position");
-			ImGui::SliderFloat("X", &pos.x, -20.0f, 20.0f);
-			ImGui::SliderFloat("Y", &pos.y, -20.0f, 20.0f);
-			ImGui::SliderFloat("Z", &pos.z, -20.0f, 20.0f);
-
-			if (ImGui::Button("Reset"))
-			{
-				pos = { };
-			}
-		}
-		ImGui::End();
-	}
+	
 }
 

@@ -88,9 +88,6 @@ namespace FraplesDev
 		DirectX::XMMATRIX _mProjection;
 		DirectX::XMMATRIX _mCamera;
 		bool IsImGuiEnabled = true;
-
-
-
 	};
 
 	
