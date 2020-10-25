@@ -13,7 +13,7 @@ namespace FraplesDev
 	void Node::Render(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform)const noexcept(!IS_DEBUG)
 	{
 		
-		const auto built = DirectX::XMLoadFloat4x4(&_mTransform) * DirectX::XMLoadFloat4x4(&appliedTransform) * accumulatedTransform;
+		const auto built = DirectX::XMLoadFloat4x4(&appliedTransform) * DirectX::XMLoadFloat4x4(_mTransform) * accumulatedTransform;
 
 		for (const auto pm : _mMeshPtrs)
 		{
@@ -41,20 +41,22 @@ namespace FraplesDev
 				((_mChildPtrs.size() == 0) ? ImGuiTreeNodeFlags_Leaf : 0);
 
 		//if tree node expanded, recurively render all children
-
-		if (ImGui::TreeNodeEx((void*)(intptr_t)nodeIndex,node_flags,_mName.c_str()))
-		{
+		auto ifClicked = ImGui::TreeNodeEx((void*)(intptr_t)nodeIndex, node_flags, _mName.c_str());
+		
+		
 			if (ImGui::IsItemClicked())
 			{
 				selectedIndex = currentNodeIndex;
 				pSelectedNode = const_cast<Node*>(this);
 			}
-			for (const auto& pChild : _mChildPtrs)
+			if (ifClicked)
 			{
-				pChild->RenderTree(nodeIndex,selectedIndex,pSelectedNode);
+				for (const auto& pChild : _mChildPtrs)
+				{
+					pChild->RenderTree(nodeIndex, selectedIndex, pSelectedNode);
+				}
+				ImGui::TreePop();
 			}
-			ImGui::TreePop();
-		}
 	}
 
 	void Node::AddChild(std::unique_ptr<Node>pChild)noexcept(!IS_DEBUG)
