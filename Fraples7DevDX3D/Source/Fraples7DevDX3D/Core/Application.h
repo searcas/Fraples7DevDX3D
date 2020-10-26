@@ -32,7 +32,6 @@ namespace FraplesDev
 	private:
 		//mouse
 		int _mX = 0, _mY = 0;
-		bool _mCursorEnabled = true;
 
 	private:
 		//objects

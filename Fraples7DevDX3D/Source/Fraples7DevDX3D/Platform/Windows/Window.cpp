@@ -433,6 +433,10 @@ namespace FraplesDev {
 			// ########### RAW MOUSE MESSAGES ######################//
 			case WM_INPUT:
 			{
+				if (!_mMouse.RawEnabled())
+				{
+					break;
+				}
 				UINT size;
 				if (GetRawInputData(reinterpret_cast<HRAWINPUT>(lparam), RID_INPUT, nullptr, &size, sizeof(RAWINPUTHEADER)) == -1)
 				{

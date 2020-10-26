@@ -64,25 +64,71 @@ namespace FraplesDev
 
 		while (const auto e = _mWin._mKey.Readkey())
 		{
-			if (e->isPressed() && e->GetCode() == VK_INSERT)
+			if (!e->isPressed())
+				continue;
+			
+			switch (e->GetCode())
 			{
-				if (_mCursorEnabled)
+			case VK_ESCAPE:
+				if (_mWin.IsCursorEnabled())
 				{
 					_mWin.DisableCursor();
-					_mCursorEnabled = false;
+					_mWin._mMouse.EnableRaw();
 				}
 				else
 				{
 					_mWin.EnableCursor();
-					_mCursorEnabled = true;
+					_mWin._mMouse.DisableRaw();
 				}
+				break;
+			case VK_F1:
+				show_demo_window = true;
+				break;
 			}
+		}
+		if (!_mWin.IsCursorEnabled())
+		{
+			if (_mWin._mKey.KeyIsPressed('W'))
+			{
+				_mCamera.Translate({ 0.0f, 0.0f, dt });
+			}
+			if (_mWin._mKey.KeyIsPressed('S'))
+			{
+				_mCamera.Translate({ 0.0f, 0.0f, -dt });
+			}
+			if (_mWin._mKey.KeyIsPressed('A'))
+			{
+				_mCamera.Translate({ -dt, 0.0f, 0.0f });
+			}
+			if (_mWin._mKey.KeyIsPressed('D'))
+			{
+				_mCamera.Translate({ dt, 0.0f, 0.0f });
+			}
+			if (_mWin._mKey.KeyIsPressed(VK_SPACE))
+			{
+				_mCamera.Translate({ 0.0f, dt, 0.0f });
+			}
+			if (_mWin._mKey.KeyIsPressed('F'))
+			{
+				_mCamera.Translate({ 0.0f, -dt, 0.0f });
+			}
+			
+		}
+
+		while (const auto delta = _mWin._mMouse.ReadRawDelta())
+		{
+			if (!_mWin.IsCursorEnabled())
+			{
+				_mCamera.Rotate(delta->x, delta->y);
+			}
+
 		}
 		_mCamera.SpawnControllWindow();
 		light.SpawnControlWindow();
 		_mNano.ShowModelInfo("Model");
-		ShowRawInputWindow();
 		SpawnAppInfoWindow();
+		ShowRawInputWindow();
+
 		_mWin.GetGFX().EndFrame();
 	}
 
@@ -164,7 +210,7 @@ namespace FraplesDev
 		if (ImGui::Begin("Raw Input"))
 		{
 			ImGui::Text("(X, Y): (%d, %d)", _mX, _mY);
-			ImGui::Text("Cursor: %s", _mCursorEnabled ? "Enabled" : "Disabled");
+			ImGui::Text("Cursor: %s", _mWin.IsCursorEnabled() ? "Enabled" : "Disabled");
 		}
 		ImGui::End();
 	}
