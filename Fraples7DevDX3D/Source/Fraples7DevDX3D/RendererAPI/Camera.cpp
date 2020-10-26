@@ -38,8 +38,19 @@ namespace FraplesDev
 	
 	DirectX::XMMATRIX Camera::GetMatrix() const noexcept
 	{
-		return DirectX::XMMatrixTranslation(-pos.x, -pos.y, -pos.z) * DirectX::XMMatrixRotationRollPitchYaw(-pitch, -yaw, 0.0f);
+		using namespace DirectX;
+		const DirectX::XMVECTOR forwardBaseVector = DirectX::XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
+		//apply the camera rotations to a base vector
 
+		const auto lookVector = DirectX::XMVector3Transform(forwardBaseVector, DirectX::XMMatrixRotationRollPitchYaw(pitch, yaw, 0.0f));
+
+		//generate camera transform (applied to all objects to arrange them relative
+		//to camera position/orientation in world from cam position and direction
+		//camera top always faces towards +Y (Cannot do a barrel roll)
+		const auto camPosition = DirectX::XMLoadFloat3(&pos);
+		const auto camTarget = camPosition + lookVector;
+
+		return XMMatrixLookAtLH(camPosition, camTarget, XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f));
 	}
 	void Camera::Rotate(float dx, float dy) noexcept
 	{
