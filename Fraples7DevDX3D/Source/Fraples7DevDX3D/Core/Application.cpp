@@ -119,7 +119,7 @@ namespace FraplesDev
 		{
 			if (!_mWin.IsCursorEnabled())
 			{
-				_mCamera.Rotate(delta->x, delta->y);
+				_mCamera.Rotate((float)delta->x, (float)delta->y);
 			}
 
 		}

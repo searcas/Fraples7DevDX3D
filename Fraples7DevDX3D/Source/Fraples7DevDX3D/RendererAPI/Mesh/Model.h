@@ -17,14 +17,18 @@ namespace FraplesDev
 	{
 		friend class Model;
 	public:
-		Node(const std::string& name,std::vector<Mesh*>meshPtrs, const DirectX::XMMATRIX& transform)noexcept(!IS_DEBUG);
+		Node(int id,const std::string& name,std::vector<Mesh*>meshPtrs, const DirectX::XMMATRIX& transform)noexcept(!IS_DEBUG);
 		void Render(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform)const noexcept(!IS_DEBUG);
 		void SetAppliedTransform(DirectX::FXMMATRIX transform)noexcept;
-		void RenderTree(int& nodeIndex, std::optional<int>& selectedIndex,Node*& pSelectedNode) const noexcept;
-
+		void RenderTree(std::optional<int>& selectedIndex,Node*& pSelectedNode) const noexcept;
+		inline const int GetId()const noexcept
+		{
+			return _mID;
+ 		}
 	private:
 		void AddChild(std::unique_ptr<Node>pChild)noexcept(!IS_DEBUG);
 	private:
+		int _mID;
 		std::string _mName;
 		std::vector<std::unique_ptr<Node>>_mChildPtrs;
 		std::vector<Mesh*>_mMeshPtrs;
@@ -70,7 +74,7 @@ namespace FraplesDev
 		Model(Graphics& gfx, const std::string fileName);
 		void Render(Graphics& gfx) const;
 		static std::unique_ptr<Mesh>ParseMesh(Graphics& gfx, const aiMesh& mesh);
-		std::unique_ptr<Node>ParseNode(const aiNode& node)noexcept;
+		std::unique_ptr<Node>ParseNode(int& nextId,const aiNode& node)noexcept;
 		
 		~Model();
 		void ShowModelInfo(const char* windowName);

@@ -4,8 +4,8 @@
 namespace FraplesDev
 {
 	
-	Node::Node(const std::string&name,std::vector<Mesh*>meshPtrs, const DirectX::XMMATRIX& transform)noexcept(!IS_DEBUG)
-		:_mName(name),_mMeshPtrs(std::move(meshPtrs))
+	Node::Node(int id, const std::string&name,std::vector<Mesh*>meshPtrs, const DirectX::XMMATRIX& transform)noexcept(!IS_DEBUG)
+		:_mName(name),_mMeshPtrs(std::move(meshPtrs)),_mID(id)
 	{
 		DirectX::XMStoreFloat4x4(&_mTransform, transform);
 		DirectX::XMStoreFloat4x4(&appliedTransform, DirectX::XMMatrixIdentity());
@@ -30,30 +30,28 @@ namespace FraplesDev
 		DirectX::XMStoreFloat4x4(&appliedTransform, transform);
 	}
 
-	void Node::RenderTree(int& nodeIndex, std::optional<int>& selectedIndex, Node*& pSelectedNode) const noexcept
+	void Node::RenderTree(std::optional<int>& selectedIndex, Node*& pSelectedNode) const noexcept
 	{
 		//noindex serves as the uid for gui tree nodes, incremented troughout recursion
-		const int currentNodeIndex = nodeIndex;
-		nodeIndex++;
 		const auto node_flags = ImGuiTreeNodeFlags_OpenOnArrow | 
-			((currentNodeIndex == selectedIndex.value_or(-1)) ? 
+			((GetId() == selectedIndex.value_or(-1)) ? 
 				ImGuiTreeNodeFlags_Selected : 0) | 
 				((_mChildPtrs.size() == 0) ? ImGuiTreeNodeFlags_Leaf : 0);
 
 		//if tree node expanded, recurively render all children
-		auto ifClicked = ImGui::TreeNodeEx((void*)(intptr_t)nodeIndex, node_flags, _mName.c_str());
+		auto ifClicked = ImGui::TreeNodeEx((void*)GetId(), node_flags, _mName.c_str());
 		
 		
 			if (ImGui::IsItemClicked())
 			{
-				selectedIndex = currentNodeIndex;
+				selectedIndex = GetId();
 				pSelectedNode = const_cast<Node*>(this);
 			}
 			if (ifClicked)
 			{
 				for (const auto& pChild : _mChildPtrs)
 				{
-					pChild->RenderTree(nodeIndex, selectedIndex, pSelectedNode);
+					pChild->RenderTree(selectedIndex, pSelectedNode);
 				}
 				ImGui::TreePop();
 			}
@@ -77,7 +75,8 @@ namespace FraplesDev
 		{
 			_mMeshPtrs.push_back(ParseMesh(gfx, *pScene->mMeshes[i]));
 		}
-		_mRoot = ParseNode(*pScene->mRootNode);
+		int nextId;
+		_mRoot = ParseNode(nextId,*pScene->mRootNode);
 	}
 
 	void Model::Render(Graphics& gfx) const
@@ -129,7 +128,7 @@ namespace FraplesDev
 		bindablePtrs.push_back(std::make_unique<PixelConstantBuffer<PSMaterialConstant>>(gfx, pixelShaderMaterialConstant, 1u));
 		return std::make_unique<Mesh>(gfx, std::move(bindablePtrs));
 	}
-	std::unique_ptr<Node>Model::ParseNode(const aiNode& node)noexcept
+	std::unique_ptr<Node>Model::ParseNode(int& nextId, const aiNode& node)noexcept
 	{
 		const auto transform = DirectX::XMMatrixTranspose
 		(DirectX::XMLoadFloat4x4(reinterpret_cast<const DirectX::XMFLOAT4X4*>(&node.mTransformation)));
@@ -141,10 +140,10 @@ namespace FraplesDev
 			const auto meshIdx = node.mMeshes[i];
 			curMeshPtrs.push_back(_mMeshPtrs.at(meshIdx).get());
 		}
-		auto pNode = std::make_unique<Node>(node.mName.C_Str(), std::move(curMeshPtrs), transform);
+		auto pNode = std::make_unique<Node>(nextId++,node.mName.C_Str(), std::move(curMeshPtrs), transform);
 		for (size_t i = 0; i < node.mNumChildren; i++)
 		{
-			pNode->AddChild(ParseNode(*node.mChildren[i]));
+			pNode->AddChild(ParseNode(nextId, *node.mChildren[i]));
 		}
 		return pNode;
 	}
@@ -166,7 +165,7 @@ namespace FraplesDev
 		{
 			ImGui::Columns(2, nullptr, true);
 
-			root.RenderTree(nodeIndexTracker, _mSelectedIndex, _mPselectedNode);
+			root.RenderTree(_mSelectedIndex, _mPselectedNode);
 
 			ImGui::NextColumn();
 			if (_mPselectedNode != nullptr)
