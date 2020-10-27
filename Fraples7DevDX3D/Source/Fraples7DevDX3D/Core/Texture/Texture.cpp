@@ -1,7 +1,7 @@
 #include "Texture.h"
 #include "../Surface.h"
 #include "../Debugging/Exceptions/Macros/GraphicsThrowMacros.h"
-FraplesDev::Texture::Texture(Graphics& gfx, const Surface& surfcae)
+FraplesDev::Texture::Texture(Graphics& gfx, const Surface& surfcae,unsigned slot) :_mSlot(slot)
 {
 	INFOMAN(gfx);
 
@@ -35,5 +35,5 @@ FraplesDev::Texture::Texture(Graphics& gfx, const Surface& surfcae)
 
 void FraplesDev::Texture::Bind(Graphics& gfx) noexcept
 {
-	GetContext(gfx)->PSSetShaderResources(0u, 1u, _mpTextureView.GetAddressOf());
+	GetContext(gfx)->PSSetShaderResources(_mSlot, 1u, _mpTextureView.GetAddressOf());
 }

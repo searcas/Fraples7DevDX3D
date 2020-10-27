@@ -113,13 +113,23 @@ namespace FraplesDev
 		}
 
 		std::vector<std::unique_ptr<GfxContext>>bindablePtrs;
+		bool hasSpecularMap = false;
 		if (mesh.mMaterialIndex >=0)
 		{
-			using namespace std::string_literals;
 			auto& material = *pMaterials[mesh.mMaterialIndex];
+
+			using namespace std::string_literals;
+			const auto base = "Models\\nano_textured\\"s;
 			aiString texFileName;
 			material.GetTexture(aiTextureType_DIFFUSE, 0, &texFileName);
-			bindablePtrs.push_back(std::make_unique<Texture>(gfx, Surface::FromFile("Models\\nano_textured\\"s + texFileName.C_Str())));
+			bindablePtrs.push_back(std::make_unique<Texture>(gfx, Surface::FromFile(base + texFileName.C_Str())));
+
+			if (material.GetTexture(aiTextureType_SPECULAR, 0, &texFileName) == aiReturn_SUCCESS)
+			{
+				bindablePtrs.push_back(std::make_unique<Texture>(gfx, Surface::FromFile(base + texFileName.C_Str()), 1));
+				hasSpecularMap = true;
+			}
+
 			bindablePtrs.push_back(std::make_unique<Sampler>(gfx));
 		}
 		bindablePtrs.push_back(std::make_unique<VertexBuffer>(gfx, vBuf));
@@ -130,7 +140,23 @@ namespace FraplesDev
 		bindablePtrs.push_back(std::move(pvs));
 		bindablePtrs.push_back(std::make_unique<PixelShader>(gfx, L"PhongPS.cso"));
 		bindablePtrs.push_back(std::make_unique<InputLayout>(gfx, vBuf.GetLayout().GetD3DLayout(), pvsByte));
+		if (hasSpecularMap)
+		{
+			bindablePtrs.push_back(std::make_unique<PixelShader>(gfx, L"PhongPSSpecMap.cso"));
+		}
+		else
+		{
+			bindablePtrs.push_back(std::make_unique<PixelShader>(gfx, L"PhongPS.cso"));
 
+			struct PSMaterialConstant
+			{
+				float specularIntensity = 0.8f;
+
+				float specularPower = 40.0f;
+				float padding[2];
+			}pmc;
+			std::make_unique<PixelConstantBuffer<PSMaterialConstant>>(gfx, pmc, 1u);
+		}
 		struct PSMaterialConstant
 		{
 			DirectX::XMFLOAT3 color = { 0.6f,0.6f,0.8f };
