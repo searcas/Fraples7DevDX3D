@@ -13,15 +13,13 @@ namespace FraplesDev
 		std::uniform_real_distribution<float>& rdist,
 		std::uniform_int_distribution<int>& tdist) : BaseObject(gfx, rng, adist, ddist, odist, rdist)
 	{
-		namespace dx = DirectX;
-
-		if (!IsStaticInitialized())
-		{
-			auto pvs = std::make_unique<VertexShader>(gfx, L"BlendedPhongVS.cso");
+			namespace dx = DirectX;
+		
+			auto pvs = std::make_shared<VertexShader>(gfx, L"BlendedPhongVS.cso");
 			auto pvsbc = pvs->GetBytecode();
-			AddStaticBind(std::move(pvs));
+			AddBind(std::move(pvs));
 
-			AddStaticBind(std::make_unique<PixelShader>(gfx, L"BlendedPhongPS.cso"));
+			AddBind(std::make_shared<PixelShader>(gfx, L"BlendedPhongPS.cso"));
 
 			
 
@@ -31,17 +29,16 @@ namespace FraplesDev
 				{ "Normal",0, DXGI_FORMAT_R32G32B32_FLOAT,0,12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 				{ "Color",0, DXGI_FORMAT_R8G8B8A8_UNORM,0,24, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 			};
-			AddStaticBind(std::make_unique<InputLayout>(gfx, ied, pvsbc));
+			AddBind(std::make_shared<InputLayout>(gfx, ied, pvsbc));
 
-			AddStaticBind(std::make_unique<Topology>(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
+			AddBind(std::make_shared<Topology>(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 			struct  PSMaterialConstant
 			{
 				float specularIntensity = 0.6f;
 				float specularPower = 30.0f;
 				float padding[2];
 			}colorConst;
-			std::make_unique<PixelConstantBuffer<PSMaterialConstant>>(gfx, colorConst, 1u);
-		}
+			std::make_shared<PixelConstantBuffer<PSMaterialConstant>>(gfx, colorConst, 1u);
 
 		struct Vertex
 		{
@@ -65,10 +62,9 @@ namespace FraplesDev
 		}
 		model.Transform(dx::XMMatrixScaling(1.0f, 1.0f, 0.7f));
 		model.SetNormalsIndependentFlat();
-		AddBind(std::make_unique<VertexBuffer>(gfx, model._mVertices));
-		AddIndexBuffer(std::make_unique<IndexBuffer>(gfx, model._mIndices));
+		AddBind(std::make_shared<VertexBuffer>(gfx, model._mVertices));
 
-		AddBind(std::make_unique<TransformCBuf>(gfx, *this));
+		AddBind(std::make_shared<TransformCBuf>(gfx, *this));
 	}
 
 

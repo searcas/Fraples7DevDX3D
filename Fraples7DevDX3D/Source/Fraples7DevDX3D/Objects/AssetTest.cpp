@@ -14,8 +14,7 @@ namespace FraplesDev
 		std::uniform_real_distribution<float>& rdist, 
 		DirectX::XMFLOAT3 material, float scale) : BaseObject(gfx,rng,adist,ddist,odist,rdist)
 	{
-		if (!IsStaticInitialized())
-		{
+	
 			MP::VertexBuffer vbuf(std::move(MP::VertexLayout{}.
 				Append(MP::VertexLayout::Position3D).
 				Append(MP::VertexLayout::Normal) ));
@@ -40,18 +39,18 @@ namespace FraplesDev
 				indices.push_back(face.mIndices[1]);
 				indices.push_back(face.mIndices[2]);
 			}
-			AddStaticBind(std::make_unique<VertexBuffer>(gfx, vbuf));
+			AddBind(std::make_shared<VertexBuffer>(gfx, vbuf));
 
-			AddStaticIndexBuffer(std::make_unique<IndexBuffer>(gfx, indices));
-			auto pvs = std::make_unique<VertexShader>(gfx, L"PhongVS.cso");
+			AddBind(std::make_shared<IndexBuffer>(gfx, indices));
+			auto pvs = std::make_shared<VertexShader>(gfx, L"PhongVS.cso");
 			auto pvsbyte = pvs->GetBytecode();
 
-			AddStaticBind(std::move(pvs));
+			AddBind(std::move(pvs));
 
-			AddStaticBind(std::make_unique<PixelShader>(gfx, L"PhongPS.cso"));
+			AddBind(std::make_shared<PixelShader>(gfx, L"PhongPS.cso"));
 
-			AddStaticBind(std::make_unique<InputLayout>(gfx, vbuf.GetLayout().GetD3DLayout(), pvsbyte));
-			AddStaticBind(std::make_unique<Topology>(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
+			AddBind(std::make_shared<InputLayout>(gfx, vbuf.GetLayout().GetD3DLayout(), pvsbyte));
+			AddBind(std::make_shared<Topology>(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 			
 			struct PSMaterialConstant
 			{
@@ -61,12 +60,7 @@ namespace FraplesDev
 				float padding[3];
 			}pixelShaderMaterialConstant;
 			pixelShaderMaterialConstant.color = material;
-			AddStaticBind(std::make_unique<PixelConstantBuffer<PSMaterialConstant>>(gfx, pixelShaderMaterialConstant, 1u));
-		}
-		else
-		{
-			SetIndexFromStatic();
-		}
-		AddBind(std::make_unique<TransformCBuf>(gfx, *this));
+			AddBind(std::make_shared<PixelConstantBuffer<PSMaterialConstant>>(gfx, pixelShaderMaterialConstant, 1u));
+		AddBind(std::make_shared<TransformCBuf>(gfx, *this));
 	}
 }

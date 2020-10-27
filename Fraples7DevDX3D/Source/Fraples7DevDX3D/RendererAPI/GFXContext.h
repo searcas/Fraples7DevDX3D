@@ -8,7 +8,11 @@ namespace FraplesDev
     public:
         virtual void Bind(Graphics& gfx) noexcept = 0;
         virtual ~GfxContext() = default;
-
+        virtual std::string GetUID()const noexcept
+        {
+            assert(false);
+            return "";
+        }
     protected:
         static ID3D11DeviceContext* GetContext(Graphics& gfx) noexcept;
         static ID3D11Device* GetDevice(Graphics& gfx)noexcept;

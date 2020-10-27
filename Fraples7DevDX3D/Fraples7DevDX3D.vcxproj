@@ -79,16 +79,17 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)Fraples7DevDX3D\ImGui;$(SolutionDir)Fraples7DevDX3D\Source\Fraples7DevDX3D;$(SolutionDir)Fraples7DevDX3D\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DebugInformationFormat>None</DebugInformationFormat>
       <Optimization>MaxSpeed</Optimization>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
+      <EnableCOMDATFolding>false</EnableCOMDATFolding>
+      <OptimizeReferences>false</OptimizeReferences>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
       <AdditionalDependencies>d3d11.lib;assimp-vc140-mt.lib;dxguid.lib;D3DCompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\assimp-lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -112,11 +113,7 @@
     <ClCompile Include="Source\Fraples7DevDX3D\ImGuiMgr\ImGuiMgr.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Input Events\KeyboardEvent.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Input Events\MouseEvents.cpp" />
-    <ClCompile Include="Source\Fraples7DevDX3D\Objects\AssetTest.cpp" />
-    <ClCompile Include="Source\Fraples7DevDX3D\Objects\Cylinder.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Objects\PointLight.cpp" />
-    <ClCompile Include="Source\Fraples7DevDX3D\Objects\Sheet.cpp" />
-    <ClCompile Include="Source\Fraples7DevDX3D\Objects\SkinnedBox.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Objects\SolidSphere.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Platform\Windows\Window.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Camera.cpp" />
@@ -129,11 +126,8 @@
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\TransformCBuf.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\VertexBuffer.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\VertexShader.cpp" />
-    <ClCompile Include="Source\Fraples7DevDX3D\Objects\Box.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\GFXContext.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Renderer.cpp" />
-    <ClCompile Include="Source\Fraples7DevDX3D\Objects\Melon.cpp" />
-    <ClCompile Include="Source\Fraples7DevDX3D\Objects\Pyramid.cpp" />
     <ClCompile Include="WinEntryPoint.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -165,16 +159,13 @@
     <ClInclude Include="Source\Fraples7DevDX3D\ImGuiMgr\ImGuiMgr.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Input Events\KeyboardEvent.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Input Events\MouseEvents.h" />
-    <ClInclude Include="Source\Fraples7DevDX3D\Objects\AssetTest.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Objects\BaseObject.h" />
-    <ClInclude Include="Source\Fraples7DevDX3D\Objects\Cylinder.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Objects\PointLight.h" />
-    <ClInclude Include="Source\Fraples7DevDX3D\Objects\Sheet.h" />
-    <ClInclude Include="Source\Fraples7DevDX3D\Objects\SkinnedBox.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Objects\SolidSphere.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Platform\Windows\Window.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Camera.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\GFXContextBase.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\GFXContextCodex.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\IndexBuffer.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\InputLayout.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\Mesh.h" />
@@ -186,16 +177,9 @@
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\TransformCBuf.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\VertexBuffer.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\VertexShader.h" />
-    <ClInclude Include="Source\Fraples7DevDX3D\Objects\Box.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\ConstantBuffers.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\GFXContext.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Renderer.h" />
-    <ClInclude Include="Source\Fraples7DevDX3D\Objects\Cone.h" />
-    <ClInclude Include="Source\Fraples7DevDX3D\Objects\Cube.h" />
-    <ClInclude Include="Source\Fraples7DevDX3D\Objects\Melon.h" />
-    <ClInclude Include="Source\Fraples7DevDX3D\Objects\Plane.h" />
-    <ClInclude Include="Source\Fraples7DevDX3D\Objects\Prism.h" />
-    <ClInclude Include="Source\Fraples7DevDX3D\Objects\Pyramid.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Objects\Sphere.h" />
   </ItemGroup>
   <ItemGroup>

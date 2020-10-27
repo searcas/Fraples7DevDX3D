@@ -81,22 +81,7 @@
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Texture\Texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Fraples7DevDX3D\Objects\Box.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Fraples7DevDX3D\Objects\Melon.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Fraples7DevDX3D\Objects\Pyramid.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Fraples7DevDX3D\Objects\Sheet.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Sampler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Fraples7DevDX3D\Objects\SkinnedBox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\imgui.cpp">
@@ -130,12 +115,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Fraples7DevDX3D\Objects\PointLight.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Fraples7DevDX3D\Objects\Cylinder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Fraples7DevDX3D\Objects\AssetTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\Model.cpp">
@@ -236,37 +215,10 @@
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Texture\Texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Fraples7DevDX3D\Objects\Box.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Fraples7DevDX3D\Objects\Cone.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Fraples7DevDX3D\Objects\Cube.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Fraples7DevDX3D\Objects\Melon.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Fraples7DevDX3D\Objects\Plane.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Fraples7DevDX3D\Objects\Prism.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Fraples7DevDX3D\Objects\Pyramid.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Fraples7DevDX3D\Objects\Sphere.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Fraples7DevDX3D\Objects\Sheet.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Sampler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Fraples7DevDX3D\Objects\SkinnedBox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\imconfig.h">
@@ -311,12 +263,6 @@
     <ClInclude Include="Source\Fraples7DevDX3D\Objects\BaseObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Fraples7DevDX3D\Objects\Cylinder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Fraples7DevDX3D\Objects\AssetTest.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Fraples7DevDX3D\Core\MetaProgramming\Vertex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -324,6 +270,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\Mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\GFXContextCodex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

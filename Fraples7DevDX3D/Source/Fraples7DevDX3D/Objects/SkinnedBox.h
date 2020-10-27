@@ -2,7 +2,7 @@
 #include "BaseObject.h"
 namespace FraplesDev
 {
-	class SkinnedBox : public BaseObject<SkinnedBox>
+	class SkinnedBox : public BaseObject
 	{
 	public:
 		SkinnedBox(Graphics& gfx, std::mt19937& rng,

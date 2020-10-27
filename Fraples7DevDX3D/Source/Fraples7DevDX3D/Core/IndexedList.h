@@ -1,17 +1,17 @@
 #pragma once
 #include <vector>
 #include <DirectXMath.h>
-
+#include "Core/MetaProgramming/Vertex.h"
 
 namespace FraplesDev
 {
-	template<typename T>
 	class IndexedList
 	{
 	public:
 		IndexedList() = default;
-		IndexedList(std::vector<T>vertices, std::vector<unsigned short>indices);
+		IndexedList(MP::VertexBuffer verts_in, std::vector<unsigned short>indices);
 		void Transform(DirectX::FXMMATRIX matrix);
+		/*
 		void SetNormalsIndependentFlat() noexcept(!IS_DEBUG)
 		{
 			using namespace DirectX;
@@ -33,25 +33,26 @@ namespace FraplesDev
 				DirectX::XMStoreFloat3(&v2.normal, n);
 			}
 		}
+		*/
 	public:
-		std::vector<T> _mVertices;
+		MP::VertexBuffer _mVertices;
 		std::vector<unsigned short>_mIndices;
 	};
 
-	template<typename T>
-	IndexedList<T>::IndexedList(std::vector<T>vertices, std::vector<unsigned short>indices)
+	IndexedList::IndexedList(MP::VertexBuffer vertices, std::vector<unsigned short>indices)
 		: _mVertices(std::move(vertices)), _mIndices(std::move(indices))
 	{
-		assert(_mVertices.size() > 2);
+		assert(_mVertices.Size() > 2);
 		assert(_mIndices.size() % 3 == 0);
 	}
-	template<typename T>
-	void IndexedList<T>::Transform(DirectX::FXMMATRIX matrix)
+
+	void IndexedList::Transform(DirectX::FXMMATRIX matrix)
 	{
-		for (auto& v : _mVertices)
+		using Elements = MP::VertexLayout::ElementType;
+		for (int i = 0; i < _mVertices.Size(); i++)
 		{
-			const DirectX::XMVECTOR pos = DirectX::XMLoadFloat3(&v.pos);
-			DirectX::XMStoreFloat3(&v.pos, DirectX::XMVector3Transform(pos, matrix));
+			auto& pos = _mVertices[i].Attr<Elements::Position3D>();
+			DirectX::XMStoreFloat3(&pos,DirectX::XMVector3Transform(DirectX::XMLoadFloat3(&pos), matrix));
 		}
 	}
 	

@@ -1,11 +1,12 @@
 #pragma once
 #include "../RendererAPI/RendererBase.h"
+#include "BaseObject.h"
 #include <random>
 
 
 namespace FraplesDev
 {
-	class Sheet : public RendererBase<Sheet>
+	class Sheet : public BaseObject
 	{
 	public:
 		Sheet(Graphics& gfx, std::mt19937& rng,
@@ -13,24 +14,8 @@ namespace FraplesDev
 			std::uniform_real_distribution<float>& ddist,
 			std::uniform_real_distribution<float>& odist,
 			std::uniform_real_distribution<float>& rdist);
-		void Update(float dt) noexcept override;
-		const DirectX::XMMATRIX GetTransformXM() const noexcept override;
 	private:
-		float r;
-		float roll = 0.0f;
-		float pitch = 0.0f;
-		float yaw = 0.0f;
-		float theta;
-		float phi;
-		float chi;
-		// speed (delta/s)
-		float droll;
-		float dpitch;
-		float dyaw;
-		float dtheta;
-		float dphi;
-		float dchi;
-	};
+
 
 
 }

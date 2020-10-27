@@ -5,8 +5,7 @@
 #include "../Core/Math/Math.h"
 namespace FraplesDev
 {
-	template<typename T>
-	class BaseObject : public RendererBase<T>
+	class BaseObject : public Renderer
 	{
 	public:
 		BaseObject(Graphics& gfx, std::mt19937& rng,
@@ -28,16 +27,7 @@ namespace FraplesDev
 		{
 
 		}
-		void Update(float diff)noexcept override
-		{
-			roll = wrap_angle(roll + droll * diff);
-			pitch = wrap_angle(pitch + dpitch * diff);
-			yaw = wrap_angle(yaw + dyaw * diff);
-			theta = wrap_angle(theta + dtheta * diff);
-			phi = wrap_angle(phi + dphi * diff);
-			chi = wrap_angle(chi + dchi * diff);
-		}
-
+	
 		const DirectX::XMMATRIX GetTransformXM() const noexcept
 		{
 			return std::move(

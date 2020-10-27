@@ -3,7 +3,7 @@
 
 namespace FraplesDev
 {
-	class Pyramid : public BaseObject<Pyramid>
+	class Pyramid : public BaseObject
 	{
 	public:
 		Pyramid(Graphics& gfx, std::mt19937& rng,

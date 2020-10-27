@@ -13,14 +13,12 @@ namespace FraplesDev
 		std::uniform_int_distribution<int>& tdist)
 		:BaseObject(gfx, rng, adist, ddist, odist, rdist)
 	{
-		if (!IsStaticInitialized())
-		{
-			
-			auto pvs = std::make_unique<VertexShader>(gfx, L"PhongVS.cso");
+		
+			auto pvs = std::make_shared<VertexShader>(gfx, L"PhongVS.cso");
 			auto pvsbyteCode = pvs->GetBytecode();
-			AddStaticBind(std::move(pvs));
+			AddBind(std::move(pvs));
 
-			AddStaticBind(std::make_unique<PixelShader>(gfx, L"IndexedPhongPS.cso"));
+			AddBind(std::make_shared<PixelShader>(gfx, L"IndexedPhongPS.cso"));
 
 
 			const std::vector<D3D11_INPUT_ELEMENT_DESC>ied
@@ -28,8 +26,8 @@ namespace FraplesDev
 				{"Position", 0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0 },
 				{"Normal", 0,DXGI_FORMAT_R32G32B32_FLOAT,0,12,D3D11_INPUT_PER_VERTEX_DATA,0 },
 			};
-			AddStaticBind(std::make_unique<InputLayout>(gfx,ied,pvsbyteCode));
-			AddStaticBind(std::make_unique<Topology>(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
+			AddBind(std::make_shared<InputLayout>(gfx,ied,pvsbyteCode));
+			AddBind(std::make_shared<Topology>(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 
 			struct PSMaterialConstant
 			{
@@ -44,8 +42,8 @@ namespace FraplesDev
 				float specularIntensity = 0.6f;
 				float specularPower = 30.0f;
 			}matConst;
-			AddStaticBind(std::make_unique<PixelConstantBuffer<PSMaterialConstant>>(gfx, matConst, 1u));
-		}
+			AddBind(std::make_shared<PixelConstantBuffer<PSMaterialConstant>>(gfx, matConst, 1u));
+		
 		struct Vertex
 		{
 			DirectX::XMFLOAT3 pos;
@@ -54,9 +52,8 @@ namespace FraplesDev
 
 		auto model = Prism::MakeTessellatedIndependentCapNormals<Vertex>(tdist(rng));
 
-		AddBind(std::make_unique<VertexBuffer>(gfx, model._mVertices));
-		AddIndexBuffer(std::make_unique<IndexBuffer>(gfx, model._mIndices));
+		AddBind(std::make_shared<VertexBuffer>(gfx, model._mVertices));
 
-		AddBind(std::make_unique<TransformCBuf>(gfx, *this));
+		AddBind(std::make_shared<TransformCBuf>(gfx, *this));
 	}
 }

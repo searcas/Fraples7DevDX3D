@@ -5,7 +5,7 @@
 #include <random>
 namespace FraplesDev
 {
-	class Box : public BaseObject<Box>
+	class Box : public BaseObject
 	{
 	public:
 		Box(Graphics& gfx, std::mt19937& rng,

@@ -12,10 +12,7 @@ namespace FraplesDev
 		std::uniform_real_distribution<float>& rdist,
 		std::uniform_real_distribution<float>& bdist,
 		DirectX::XMFLOAT3 material) 
-		: BaseObject(gfx,rng,adist,ddist,odist,rdist)
 	{
-		if (!IsStaticInitialized())
-		{
 			struct Vertex
 			{
 				DirectX::XMFLOAT3 pos;
@@ -24,16 +21,16 @@ namespace FraplesDev
 
 			auto model = Cube::MakeIndependent<Vertex>();
 			model.SetNormalsIndependentFlat();
-			AddStaticBind(std::make_unique<VertexBuffer>(gfx, model._mVertices));
+			AddBind(std::make_shared<VertexBuffer>(gfx, model._mVertices));
 
-			auto pvs = std::make_unique<VertexShader>(gfx, L"PhongVS.cso");
+			auto pvs = std::make_shared<VertexShader>(gfx, L"PhongVS.cso");
 			auto pvsbc = pvs->GetBytecode();
 
 
-			AddStaticBind(std::move(pvs));
-			AddStaticBind(std::make_unique<PixelShader>(gfx, L"PhongPS.cso"));
+			AddBind(std::move(pvs));
+			AddBind(std::make_shared<PixelShader>(gfx, L"PhongPS.cso"));
 
-			AddStaticIndexBuffer(std::make_unique<IndexBuffer>(gfx, model._mIndices));
+			AddBind(std::make_shared<IndexBuffer>(gfx, model._mIndices));
 
 
 			const std::vector<D3D11_INPUT_ELEMENT_DESC>IelementDesc =
@@ -41,18 +38,14 @@ namespace FraplesDev
 				{"Position", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
 				{"Normal", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,12, D3D11_INPUT_PER_VERTEX_DATA, 0},
 			};
-			AddStaticBind(std::make_unique<InputLayout>(gfx, IelementDesc, pvsbc));
-			AddStaticBind(std::make_unique<Topology>(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
+			AddBind(std::make_shared<InputLayout>(gfx, IelementDesc, pvsbc));
+			AddBind(std::make_shared<Topology>(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 
-		}
-		else
-		{
-			SetIndexFromStatic();
-		}
-		AddBind(std::make_unique<TransformCBuf>(gfx, *this));
+	
+		AddBind(std::make_shared<TransformCBuf>(gfx, *this));
 
 		materialConstants.color = material;
-		AddBind(std::make_unique<MaterialCbuf>(gfx, materialConstants, 1u));
+		AddBind(std::make_shared<MaterialCbuf>(gfx, materialConstants, 1u));
 		DirectX::XMStoreFloat3x3(&mt, DirectX::XMMatrixScaling(1.0f, 1.0f, bdist(rng)));
 
 	}

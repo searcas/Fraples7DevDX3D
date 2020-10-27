@@ -10,20 +10,16 @@ namespace FraplesDev
 
 	class Renderer
 	{
-		template<typename T>
-		friend class RendererBase;
+
 	public:
 		void Render(Graphics& gfx) const noexcept;
 		Renderer() = default;
 		Renderer(const Renderer&) = delete;
 	protected:
-		void AddBind(std::unique_ptr<class GfxContext>bind) noexcept(!IS_DEBUG);
-		void AddIndexBuffer(std::unique_ptr<class IndexBuffer>ibuf)noexcept(!IS_DEBUG);
+		void AddBind(std::shared_ptr<class GfxContext>bind) noexcept(!IS_DEBUG);
 	public:
 		virtual const DirectX::XMMATRIX GetTransformXM()const noexcept = 0;
-		virtual void Update(float diff) {};
 		virtual ~Renderer() = default;
-		virtual const std::vector<std::unique_ptr<GfxContext>>& GetStaticBinds() const noexcept = 0;
 	protected:
 		template <class T>
 		T* QueryBindable()noexcept
@@ -39,6 +35,6 @@ namespace FraplesDev
 		}
 	private:
 		const IndexBuffer* _mpIndexBuffer = nullptr;
-		std::vector<std::unique_ptr<class GfxContext>>_mBinds;
+		std::vector<std::shared_ptr<class GfxContext>>_mBinds;
 	};
 }

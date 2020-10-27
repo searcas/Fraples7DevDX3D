@@ -2,30 +2,23 @@
 #include "../Objects/Sphere.h"
 #include "../Core/Debugging/Exceptions/Macros/GraphicsThrowMacros.h"
 #include "../RendererAPI/GFXContextBase.h"
+#include "Core/MetaProgramming/Vertex.h"
 
 namespace FraplesDev
 {
 	SolidSphere::SolidSphere(Graphics& gfx, float radius)
 	{
-		
-		if (!IsStaticInitialized())
-		{
-			struct Vertex
-			{
-				DirectX::XMFLOAT3 pos;
-			};
-
-			auto model = Sphere::Make<Vertex>();
-
+			auto model = Sphere::Make();
 			model.Transform(DirectX::XMMatrixScaling(radius, radius, radius));
-			AddBind(std::make_unique<VertexBuffer>(gfx, model._mVertices));
-			AddIndexBuffer(std::make_unique<IndexBuffer>(gfx, model._mIndices));
-			auto pvs = std::make_unique<VertexShader>(gfx, L"SolidVS.cso");
+			AddBind(std::make_shared<VertexBuffer>(gfx, model._mVertices));
+			AddBind(std::make_shared<IndexBuffer>(gfx, model._mIndices));
+
+			auto pvs = std::make_shared<VertexShader>(gfx, "SolidVS.cso");
 			auto pvsbyte = pvs->GetBytecode();
 
-			AddStaticBind(std::move(pvs));
+			AddBind(std::move(pvs));
 
-			AddStaticBind(std::make_unique<PixelShader>(gfx, L"SolidPS.cso"));
+			AddBind(std::make_unique<PixelShader>(gfx, L"SolidPS.cso"));
 
 			struct PSColorConstant
 			{
@@ -33,28 +26,17 @@ namespace FraplesDev
 				float padding;
 			}colorConst;
 
-			AddStaticBind(std::make_unique<PixelConstantBuffer<PSColorConstant>>(gfx, colorConst));
-			const std::vector<D3D11_INPUT_ELEMENT_DESC> ied =
-			{
-				{ "Position",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0 },
-			};
+			AddBind(std::make_unique<PixelConstantBuffer<PSColorConstant>>(gfx, colorConst));
+			
+			AddBind(std::make_shared<InputLayout>(gfx, model._mVertices.GetLayout().GetD3DLayout(), pvsbyte));
 
-			AddStaticBind(std::make_unique<InputLayout>(gfx, ied, pvsbyte));
 
-			AddStaticBind(std::make_unique<Topology>(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
+			AddBind(std::make_unique<Topology>(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 
-		}
-		else
-		{
-			SetIndexFromStatic();
-		}
-		AddBind(std::make_unique<TransformCBuf>(gfx, *this));
+			AddBind(std::make_unique<TransformCBuf>(gfx, *this));
 	}
 
-	void SolidSphere::Update(float diff)noexcept
-	{
 
-	}
 	void SolidSphere::SetPos(DirectX::XMFLOAT3 pos)noexcept
 	{
 		_mPos = pos;

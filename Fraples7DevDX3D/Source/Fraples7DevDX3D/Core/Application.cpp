@@ -13,6 +13,7 @@
 #include "imgui_impl_win32.h"
 #include <algorithm>
 #include "Core/MetaProgramming/Vertex.h"
+#include "RendererAPI/VertexBuffer.h"
 namespace FraplesDev
 {
 	GDIPlusManager gdipm;
@@ -21,7 +22,11 @@ namespace FraplesDev
 	Application::Application(const char* name, int width, int height)
 		:_mWin(name, width, height), light(_mWin.GetGFX())
 	{
+
 		_mWin.GetGFX().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
+		auto a = VertexShader::Resolve(_mWin.GetGFX(), "PhongVS.cso");
+		auto b = Sampler::Resolve(_mWin.GetGFX());
+		auto c = Sampler::Resolve(_mWin.GetGFX());
 	}
 
 

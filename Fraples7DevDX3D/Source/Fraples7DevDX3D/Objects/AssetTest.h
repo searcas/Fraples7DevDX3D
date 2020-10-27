@@ -6,7 +6,7 @@
 
 namespace FraplesDev
 {
-	class Asset : public BaseObject<Asset>
+	class Asset : public BaseObject
 	{
 	public:
 		Asset(Graphics& gfx, std::mt19937& rng,

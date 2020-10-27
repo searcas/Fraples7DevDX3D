@@ -1,10 +1,11 @@
 #pragma once
 
-#include "../Core/Math/Math.h"
 #include <DirectXMath.h>
 #include <vector>
+#include <optional>
 #include "../Core/IndexedList.h"
-
+#include "../Core/Math/Math.h"
+#include "Core/MetaProgramming/Vertex.h"
 
 
 namespace FraplesDev
@@ -12,9 +13,7 @@ namespace FraplesDev
 	struct Sphere
 	{
 	public:
-
-		template<class T>
-		static IndexedList<T> MakeTessellated(int latDiv, int longDiv)
+		static IndexedList MakeTessellated(MP::VertexLayout layout,int latDiv, int longDiv)
 		{
 			assert(latDiv >= 3);
 			assert(longDiv >= 3);
@@ -24,27 +23,34 @@ namespace FraplesDev
 			const float lattitudeAngle = PI / latDiv;
 			const float longitudeAngle = 2.0f * PI / longDiv;
 
-			std::vector<T> vertices;
 
+			MP::VertexBuffer vb{ std::move(layout) };
 			for (int iLat = 1; iLat < latDiv; iLat++)
 			{
+
 				const auto latBase = DirectX::XMVector3Transform(base, DirectX::XMMatrixRotationX(lattitudeAngle * iLat));
 				for (int  iLong = 0; iLong < longDiv; iLong++)
 				{
-					vertices.emplace_back();
+					DirectX::XMFLOAT3 calculatedPos;
 					auto v = DirectX::XMVector3Transform(latBase, DirectX::XMMatrixRotationZ(longitudeAngle * iLong));
-					DirectX::XMStoreFloat3(&vertices.back().pos, v);
+					DirectX::XMStoreFloat3(&calculatedPos, v);
+					vb.EmplaceBack(calculatedPos);
 				}
 			}
-			const auto iNorthPole = static_cast<unsigned short>(vertices.size());
-			vertices.emplace_back();
+			const auto iNorthPole = static_cast<unsigned short>(vb.Size());
+			{
 
-			DirectX::XMStoreFloat3(&vertices.back().pos, base);
+				DirectX::XMFLOAT3 northPos;
+				DirectX::XMStoreFloat3(&northPos, base);
+				vb.EmplaceBack(northPos);
+			}
+			const auto iSouthPole = static_cast<unsigned short>(vb.Size());
+			{
+				DirectX::XMFLOAT3 southPos;
+				DirectX::XMStoreFloat3(&southPos, DirectX::XMVectorNegate(base));
+				vb.EmplaceBack(southPos);
+			}
 
-			const auto iSouthPole = static_cast<unsigned short>(vertices.size());
-			vertices.emplace_back();
-
-			DirectX::XMStoreFloat3(&vertices.back().pos, DirectX::XMVectorNegate(base));
 			
 			const auto calcIdx = [latDiv, longDiv](unsigned short iLat, unsigned short iLong)
 			{
@@ -91,13 +97,17 @@ namespace FraplesDev
 			indices.push_back(calcIdx(latDiv - 2, longDiv - 1));
 			indices.push_back(iSouthPole);
 
-			return { std::move(vertices), std::move(indices) };
+			return { std::move(vb), std::move(indices) };
 		}
 
-		template<class V>
-		static IndexedList<V>Make()
+		static IndexedList Make(std::optional<MP::VertexLayout>layout = std::nullopt)
 		{
-			return MakeTessellated<V>(12, 24);
+			using Element = MP::VertexLayout::ElementType;
+			if (!layout)
+			{
+				layout = MP::VertexLayout{}.Append(Element::Position3D);
+			}
+			return MakeTessellated(std::move(*layout), 12, 24);
 		}
 
 	};

@@ -1,12 +1,12 @@
 #pragma once
 #include "RendererAPI/GFXContextBase.h"
-#include "RendererAPI/RendererBase.h"
+#include "RendererAPI/renderer.h"
 
 namespace FraplesDev {
-	class Mesh : public RendererBase<Mesh>
+	class Mesh : public Renderer
 	{
 	public:
-		Mesh(Graphics& gfx, std::vector<std::unique_ptr<GfxContext>>bindPtrs);
+		Mesh(Graphics& gfx, std::vector<std::shared_ptr<GfxContext>>bindPtrs);
 		void Render(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform)const noexcept(!IS_DEBUG);
 		const DirectX::XMMATRIX GetTransformXM()const noexcept override;
 

@@ -3,7 +3,7 @@
 
 namespace FraplesDev
 {
-	class Cylinder : public BaseObject<Cylinder>
+	class Cylinder : public BaseObject
 	{
 	public:
 	

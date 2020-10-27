@@ -7,8 +7,6 @@ namespace FraplesDev
 	SkinnedBox::SkinnedBox(Graphics& gfx, std::mt19937& rng, std::uniform_real_distribution<float>& adist, std::uniform_real_distribution<float>& ddist, std::uniform_real_distribution<float>& odist, std::uniform_real_distribution<float>& rdist)
 		:BaseObject(gfx,rng,adist,ddist,odist,rdist)
 	{
-		if (!IsStaticInitialized())
-		{
 			struct Vertex
 			{
 				DirectX::XMFLOAT3 pos;
@@ -19,17 +17,16 @@ namespace FraplesDev
 			auto model = Cube::MakeIndependentTextured<Vertex>();
 			model.SetNormalsIndependentFlat();
 	
-			AddStaticBind(std::make_unique<VertexBuffer>(gfx, model._mVertices));
+			AddBind(std::make_shared<VertexBuffer>(gfx, model._mVertices));
 
-			AddStaticBind(std::make_unique<Texture>(gfx, Surface::FromFile("Images\\kappa50.png")));
+			AddBind(std::make_shared<Texture>(gfx, Surface::FromFile("Images\\kappa50.png")));
 
-			AddStaticBind(std::make_unique<Sampler>(gfx));
-			auto pvs = std::make_unique<VertexShader>(gfx, L"TexturePhongVS.cso");
+			AddBind(std::make_shared<Sampler>(gfx));
+			auto pvs = std::make_shared<VertexShader>(gfx, L"TexturePhongVS.cso");
 			auto pvsbyte = pvs->GetBytecode();
-			AddStaticBind(std::move(pvs));
+			AddBind(std::move(pvs));
 
-			AddStaticBind(std::make_unique<PixelShader>(gfx, L"TexturePhongPS.cso"));
-			AddStaticIndexBuffer(std::make_unique<IndexBuffer>(gfx, model._mIndices));
+			AddBind(std::make_shared<PixelShader>(gfx, L"TexturePhongPS.cso"));
 
 			const std::vector<D3D11_INPUT_ELEMENT_DESC> ied =
 			{
@@ -37,22 +34,18 @@ namespace FraplesDev
 				{"Normal", 0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0},
 				{"TexCoord", 0,DXGI_FORMAT_R32G32_FLOAT,0,24,D3D11_INPUT_PER_VERTEX_DATA,0},
 			};
-			AddStaticBind(std::make_unique<InputLayout>(gfx, ied, pvsbyte));
-			AddStaticBind(std::make_unique<Topology>(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
+			AddBind(std::make_shared<InputLayout>(gfx, ied, pvsbyte));
+			AddBind(std::make_shared<Topology>(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 			struct PSMaterialConstant
 			{
 				float specularIntensity = 0.6f;
 				float specularPower = 30.0f;
 				float padding[2];
 			}colorConst;
-			AddStaticBind(std::make_unique<PixelConstantBuffer<PSMaterialConstant>>(gfx, colorConst, 1u));
-		}
-		else
-		{
-			SetIndexFromStatic();
-		}
+			AddBind(std::make_shared<PixelConstantBuffer<PSMaterialConstant>>(gfx, colorConst, 1u));
+	
 
-		AddBind(std::make_unique<TransformCBuf>(gfx, *this));
+		AddBind(std::make_shared<TransformCBuf>(gfx, *this));
 	}
 
 }

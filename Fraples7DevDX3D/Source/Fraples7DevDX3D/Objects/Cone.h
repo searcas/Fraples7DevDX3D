@@ -2,14 +2,13 @@
 #include "../Core/Math/Math.h"
 #include <DirectXMath.h>
 #include "../Core/IndexedList.h"
-
+#include "Core/MetaProgramming/Vertex.h"
 namespace FraplesDev
 {
 	class Cone
 	{
 	public:
-		template<class V>
-		static IndexedList<V> MakeTesselated(int longDiv)
+		static IndexedList MakeTesselated(int longDiv)
 		{
 			namespace dx = DirectX;
 			assert(longDiv >= 3);
@@ -18,10 +17,10 @@ namespace FraplesDev
 			const float longitudeAngle = 2.0f * PI / longDiv;
 
 			// base vertices
-			std::vector<V> vertices;
+			MP::VertexLayout vertex;
 			for (int iLong = 0; iLong < longDiv; iLong++)
 			{
-				vertices.emplace_back();
+				
 				auto v = dx::XMVector3Transform(
 					base,
 					dx::XMMatrixRotationZ(longitudeAngle * iLong)
@@ -57,8 +56,7 @@ namespace FraplesDev
 
 			return { std::move(vertices),std::move(indices) };
 		}
-		template <class V>
-		static IndexedList<V>MakeTessellatedIndependentFaces(int longDiv)
+		static IndexedList MakeTessellatedIndependentFaces(int longDiv)
 		{
 			assert(longDiv >= 3);
 			const auto base = DirectX::XMVectorSet(1.0f, 0.0f, -1.0f, 0.0f);
