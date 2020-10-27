@@ -114,6 +114,7 @@ namespace FraplesDev
 
 		std::vector<std::unique_ptr<GfxContext>>bindablePtrs;
 		bool hasSpecularMap = false;
+		float shininess = 35.0f;
 		if (mesh.mMaterialIndex >=0)
 		{
 			auto& material = *pMaterials[mesh.mMaterialIndex];
@@ -128,6 +129,10 @@ namespace FraplesDev
 			{
 				bindablePtrs.push_back(std::make_unique<Texture>(gfx, Surface::FromFile(base + texFileName.C_Str()), 1));
 				hasSpecularMap = true;
+			}
+			else
+			{
+				material.Get(AI_MATKEY_SHININESS, shininess);
 			}
 
 			bindablePtrs.push_back(std::make_unique<Sampler>(gfx));
@@ -152,9 +157,10 @@ namespace FraplesDev
 			{
 				float specularIntensity = 0.8f;
 
-				float specularPower = 40.0f;
+				float specularPower;
 				float padding[2];
 			}pmc;
+			pmc.specularPower = shininess;
 			std::make_unique<PixelConstantBuffer<PSMaterialConstant>>(gfx, pmc, 1u);
 		}
 		struct PSMaterialConstant
