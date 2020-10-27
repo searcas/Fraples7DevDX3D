@@ -74,7 +74,7 @@ namespace FraplesDev
 		}
 		for (int i = 0; i < pScene->mNumMeshes; i++)
 		{
-			_mMeshPtrs.push_back(ParseMesh(gfx, *pScene->mMeshes[i]));
+			_mMeshPtrs.push_back(ParseMesh(gfx, *pScene->mMeshes[i],pScene->mMaterials));
 		}
 		int nextId;
 		_mRoot = ParseNode(nextId,*pScene->mRootNode);
@@ -88,11 +88,12 @@ namespace FraplesDev
 		}
 		_mRoot->Render(gfx, DirectX::XMMatrixIdentity());
 	}
-	std::unique_ptr<Mesh>Model::ParseMesh(Graphics& gfx, const aiMesh& mesh)
+	std::unique_ptr<Mesh>Model::ParseMesh(Graphics& gfx, const aiMesh& mesh, const aiMaterial* const* pMaterials)
 	{
 		using MP::VertexLayout;
 		MP::VertexBuffer vBuf(std::move(VertexLayout{}.Append(VertexLayout::Position3D).Append(VertexLayout::Normal)));
 
+		auto& material = *pMaterials[mesh.mMaterialIndex];
 		for (unsigned int i = 0; i < mesh.mNumVertices; i++)
 		{
 			vBuf.EmplaceBack(*reinterpret_cast<DirectX::XMFLOAT3*>(&mesh.mVertices[i]),

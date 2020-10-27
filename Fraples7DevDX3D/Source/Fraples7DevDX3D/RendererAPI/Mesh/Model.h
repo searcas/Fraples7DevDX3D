@@ -20,13 +20,13 @@ namespace FraplesDev
 		Node(int id,const std::string& name,std::vector<Mesh*>meshPtrs, const DirectX::XMMATRIX& transform)noexcept(!IS_DEBUG);
 		void Render(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform)const noexcept(!IS_DEBUG);
 		void SetAppliedTransform(DirectX::FXMMATRIX transform)noexcept;
-		void RenderTree(Node*& pSelectedNode) const noexcept;
 		inline const int GetId()const noexcept
 		{
 			return _mID;
- 		}
+		}
 	private:
 		void AddChild(std::unique_ptr<Node>pChild)noexcept(!IS_DEBUG);
+		void RenderTree(Node*& pSelectedNode) const noexcept;
 	private:
 		int _mID;
 		std::string _mName;
@@ -72,7 +72,7 @@ namespace FraplesDev
 
 		Model(Graphics& gfx, const std::string fileName);
 		void Render(Graphics& gfx) const;
-		static std::unique_ptr<Mesh>ParseMesh(Graphics& gfx, const aiMesh& mesh);
+		static std::unique_ptr<Mesh>ParseMesh(Graphics& gfx, const aiMesh& mesh, const aiMaterial* const* pMaterials);
 		std::unique_ptr<Node>ParseNode(int& nextId,const aiNode& node)noexcept;
 		
 		~Model();

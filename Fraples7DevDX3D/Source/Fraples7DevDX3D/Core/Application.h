@@ -37,7 +37,7 @@ namespace FraplesDev
 		//objects
 		Camera _mCamera;
 		PointLight light;
-		Model _mNano{ _mWin.GetGFX(),"Models\\nano_hierarchy.gltf" };
+		Model _mNano{ _mWin.GetGFX(),"Models\\nanosuit.obj" };
 	private:
 		FraplesDev::Timer _mTimer;
 		float _mSpeedFactor = 1.0f;
