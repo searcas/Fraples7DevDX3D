@@ -20,7 +20,7 @@ namespace FraplesDev
 		Node(int id,const std::string& name,std::vector<Mesh*>meshPtrs, const DirectX::XMMATRIX& transform)noexcept(!IS_DEBUG);
 		void Render(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform)const noexcept(!IS_DEBUG);
 		void SetAppliedTransform(DirectX::FXMMATRIX transform)noexcept;
-		void RenderTree(std::optional<int>& selectedIndex,Node*& pSelectedNode) const noexcept;
+		void RenderTree(Node*& pSelectedNode) const noexcept;
 		inline const int GetId()const noexcept
 		{
 			return _mID;
@@ -68,7 +68,6 @@ namespace FraplesDev
 				float z = 0.0f;
 			};
 			std::unordered_map<int, TransformParameters>_mTransforms;
-			std::optional<int>_mSelectedIndex;
 		};
 
 		Model(Graphics& gfx, const std::string fileName);

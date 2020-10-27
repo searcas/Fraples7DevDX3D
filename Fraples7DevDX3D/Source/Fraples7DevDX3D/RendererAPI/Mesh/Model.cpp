@@ -30,11 +30,13 @@ namespace FraplesDev
 		DirectX::XMStoreFloat4x4(&appliedTransform, transform);
 	}
 
-	void Node::RenderTree(std::optional<int>& selectedIndex, Node*& pSelectedNode) const noexcept
+	void Node::RenderTree(Node*& pSelectedNode) const noexcept
 	{
+		//if there is no selected node, set selectedId to an impossible value
+		const int selectedId = (pSelectedNode == nullptr) ? -1 : pSelectedNode->GetId();
 		//noindex serves as the uid for gui tree nodes, incremented troughout recursion
 		const auto node_flags = ImGuiTreeNodeFlags_OpenOnArrow | 
-			((GetId() == selectedIndex.value_or(-1)) ? 
+			((GetId() == selectedId) ? 
 				ImGuiTreeNodeFlags_Selected : 0) | 
 				((_mChildPtrs.size() == 0) ? ImGuiTreeNodeFlags_Leaf : 0);
 
@@ -44,14 +46,13 @@ namespace FraplesDev
 		
 			if (ImGui::IsItemClicked())
 			{
-				selectedIndex = GetId();
 				pSelectedNode = const_cast<Node*>(this);
 			}
 			if (ifClicked)
 			{
 				for (const auto& pChild : _mChildPtrs)
 				{
-					pChild->RenderTree(selectedIndex, pSelectedNode);
+					pChild->RenderTree(pSelectedNode);
 				}
 				ImGui::TreePop();
 			}
@@ -165,12 +166,12 @@ namespace FraplesDev
 		{
 			ImGui::Columns(2, nullptr, true);
 
-			root.RenderTree(_mSelectedIndex, _mPselectedNode);
+			root.RenderTree(_mPselectedNode);
 
 			ImGui::NextColumn();
 			if (_mPselectedNode != nullptr)
 			{
-				auto& transform = _mTransforms[*_mSelectedIndex];
+				auto& transform = _mTransforms[_mPselectedNode->GetId()];
 
 				ImGui::Text("Orientation");
 				ImGui::SliderAngle("Roll", &transform.roll, -180.0f, 180.0f);
@@ -193,7 +194,9 @@ namespace FraplesDev
 
 	DirectX::XMMATRIX Model::ModelWindow::GetTransform() const noexcept
 	{
-		const auto& transform = _mTransforms.at(*_mSelectedIndex);
+		assert(_mPselectedNode != nullptr);
+
+		const auto& transform = _mTransforms.at(_mPselectedNode->GetId());
 		return DirectX::XMMatrixRotationRollPitchYaw(transform.roll, transform.pitch, transform.yaw) *
 			DirectX::XMMatrixTranslation(transform.x, transform.y, transform.z);
 	}
