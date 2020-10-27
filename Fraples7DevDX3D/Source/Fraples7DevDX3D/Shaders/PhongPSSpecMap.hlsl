@@ -26,7 +26,6 @@ Texture2D tex;
 Texture2D spec;
 SamplerState samplr;
 
-static const float specularPowerFactor = 100.0f;
 float4 main(float3 worldPos : Position, float3 n : Normal, float2 tc : Texcoord) : SV_TARGET
 {
 
@@ -49,7 +48,7 @@ float4 main(float3 worldPos : Position, float3 n : Normal, float2 tc : Texcoord)
     const float4 specularSample = spec.Sample(samplr, tc);
     
     const float3 specularReflectionColor = specularSample.rgb;
-    const float specularPower = specularSample.a * specularPowerFactor;
+    const float specularPower = pow(2.0f, specularSample.a * 13.0f);
     const float3 specular = att * (diffuseColor * diffuseIntensity) * pow(max(0.0f, dot(normalize(-r), normalize(worldPos))), specularPower);
     //final color
     return float4(saturate((diffuse + ambient) * tex.Sample(samplr, tc).rgb + specular * specularReflectionColor), 1.0f);
