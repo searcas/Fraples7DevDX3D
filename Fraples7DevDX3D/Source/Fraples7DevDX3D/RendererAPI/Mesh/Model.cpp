@@ -1,6 +1,7 @@
 #include "Model.h"
 #include <memory>
 #include <sstream>
+#include "RendererAPI/GFXContextBase.h"
 namespace FraplesDev
 {
 	
@@ -91,13 +92,14 @@ namespace FraplesDev
 	std::unique_ptr<Mesh>Model::ParseMesh(Graphics& gfx, const aiMesh& mesh, const aiMaterial* const* pMaterials)
 	{
 		using MP::VertexLayout;
-		MP::VertexBuffer vBuf(std::move(VertexLayout{}.Append(VertexLayout::Position3D).Append(VertexLayout::Normal)));
+		MP::VertexBuffer vBuf(std::move(VertexLayout{}.Append(VertexLayout::Position3D).Append(VertexLayout::Normal).Append(VertexLayout::Texture2D)));
+
 
 		auto& material = *pMaterials[mesh.mMaterialIndex];
 		for (unsigned int i = 0; i < mesh.mNumVertices; i++)
 		{
 			vBuf.EmplaceBack(*reinterpret_cast<DirectX::XMFLOAT3*>(&mesh.mVertices[i]),
-				*reinterpret_cast<DirectX::XMFLOAT3*>(&mesh.mNormals[i]));
+				*reinterpret_cast<DirectX::XMFLOAT3*>(&mesh.mNormals[i]), *reinterpret_cast<DirectX::XMFLOAT2*>(&mesh.mTextureCoords[0][i]));
 		}
 		std::vector<unsigned short> indices;
 		indices.reserve(mesh.mNumFaces * 3);
@@ -111,6 +113,15 @@ namespace FraplesDev
 		}
 
 		std::vector<std::unique_ptr<GfxContext>>bindablePtrs;
+		if (mesh.mMaterialIndex >=0)
+		{
+			using namespace std::string_literals;
+			auto& material = *pMaterials[mesh.mMaterialIndex];
+			aiString texFileName;
+			material.GetTexture(aiTextureType_DIFFUSE, 0, &texFileName);
+			bindablePtrs.push_back(std::make_unique<Texture>(gfx, Surface::FromFile("Models\\nano_textured\\"s + texFileName.C_Str())));
+			bindablePtrs.push_back(std::make_unique<Sampler>(gfx));
+		}
 		bindablePtrs.push_back(std::make_unique<VertexBuffer>(gfx, vBuf));
 		bindablePtrs.push_back(std::make_unique<IndexBuffer>(gfx, indices));
 

@@ -26,7 +26,7 @@ namespace FraplesDev
 			DirectX::XMFLOAT3 color;
 			float specularIntensity = 0.6f;
 			float specularPower = 30.0f;
-			float padding[3];
+			float padding[2];
 		}materialConstants;
 		using MaterialCbuf = PixelConstantBuffer<PSMaterialConstant>;
 	private:
