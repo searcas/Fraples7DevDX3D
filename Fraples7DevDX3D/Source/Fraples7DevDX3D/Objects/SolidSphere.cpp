@@ -1,7 +1,7 @@
 #include "SolidSphere.h"
-#include "../Objects/Sphere.h"
-#include "../Core/Debugging/Exceptions/Macros/GraphicsThrowMacros.h"
-#include "../RendererAPI/GFXContextBase.h"
+#include "Objects/Sphere.h"
+#include "Core/Debugging/Exceptions/Macros/GraphicsThrowMacros.h"
+#include "RendererAPI/GFXContextBase.h"
 #include "Core/MetaProgramming/Vertex.h"
 
 namespace FraplesDev
@@ -27,7 +27,7 @@ namespace FraplesDev
 				float padding;
 			}colorConst;
 
-			AddBind(PixelConstantBuffer<PSColorConstant>::Resolve(gfx, colorConst));
+			AddBind(PixelConstantBuffer<PSColorConstant>::Resolve(gfx, colorConst,1u));
 			
 			AddBind(InputLayout::Resolve(gfx, model._mVertices.GetLayout(), pvsbyte));
 

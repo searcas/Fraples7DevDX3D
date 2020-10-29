@@ -6,33 +6,27 @@
 //#include "../Objects/Melon.h"
 //#include "../Objects/Sheet.h"
 //########### End Objects ###########
-#include "Surface.h"
 #include "GDIPlusManager.h"
 #include "imgui.h"
 #include "imgui_impl_dx11.h"
 #include "imgui_impl_win32.h"
-#include <algorithm>
 #include "Core/MetaProgramming/Vertex.h"
 #include "RendererAPI/VertexBuffer.h"
+#include <algorithm>
 namespace FraplesDev
 {
 	GDIPlusManager gdipm;
 
 
 	Application::Application(const char* name, int width, int height)
-		:_mWin(name, width, height), light(_mWin.GetGFX())
+		:_mWin(name, width, height), light(_mWin.GetGFX()), plane(_mWin.GetGFX(), 3.0f)
 	{
-
+		plane.SetPosXYZ({ 1.0f,17.0f,-1.0f });
 		_mWin.GetGFX().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
 
 	}
 
 
-	Application::Application()
-		: _mWin("Fraples7 Engine Studio", 1920, 1080),light(_mWin.GetGFX())
-	{
-
-	}
 
 	Application::~Application()
 	{
@@ -64,7 +58,9 @@ namespace FraplesDev
 		
 		
 		_mNano.Render(_mWin.GetGFX());
-	//	_mNano2.Render(_mWin.GetGFX());
+		_mNano2.Render(_mWin.GetGFX());
+		plane.Render(_mWin.GetGFX());
+
 		light.Render(_mWin.GetGFX());
 
 		while (const auto e = _mWin._mKey.Readkey())

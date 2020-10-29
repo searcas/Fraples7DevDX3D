@@ -1,7 +1,6 @@
 #pragma once
-
-#include "../RendererAPI/RendererBase.h"
 #include <random>
+#include "../RendererAPI/RendererBase.h"
 #include "../Core/Math/Math.h"
 namespace FraplesDev
 {

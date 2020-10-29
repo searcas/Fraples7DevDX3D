@@ -9,8 +9,23 @@ namespace FraplesDev
 	{
 	public:
 		IndexedList() = default;
-		IndexedList(MP::VertexBuffer verts_in, std::vector<unsigned short>indices);
-		void Transform(DirectX::FXMMATRIX matrix);
+
+		IndexedList(MP::VertexBuffer vertices, std::vector<unsigned short>indices)
+			: _mVertices(std::move(vertices)), _mIndices(std::move(indices))
+		{
+			assert(_mVertices.Size() > 2);
+			assert(_mIndices.size() % 3 == 0);
+		}
+
+		void Transform(DirectX::FXMMATRIX matrix)
+		{
+			using Elements = MP::VertexLayout::ElementType;
+			for (int i = 0; i < _mVertices.Size(); i++)
+			{
+				auto& pos = _mVertices[i].Attr<Elements::Position3D>();
+				DirectX::XMStoreFloat3(&pos, DirectX::XMVector3Transform(DirectX::XMLoadFloat3(&pos), matrix));
+			}
+		}
 		/*
 		void SetNormalsIndependentFlat() noexcept(!IS_DEBUG)
 		{
@@ -39,21 +54,6 @@ namespace FraplesDev
 		std::vector<unsigned short>_mIndices;
 	};
 
-	IndexedList::IndexedList(MP::VertexBuffer vertices, std::vector<unsigned short>indices)
-		: _mVertices(std::move(vertices)), _mIndices(std::move(indices))
-	{
-		assert(_mVertices.Size() > 2);
-		assert(_mIndices.size() % 3 == 0);
-	}
 
-	void IndexedList::Transform(DirectX::FXMMATRIX matrix)
-	{
-		using Elements = MP::VertexLayout::ElementType;
-		for (int i = 0; i < _mVertices.Size(); i++)
-		{
-			auto& pos = _mVertices[i].Attr<Elements::Position3D>();
-			DirectX::XMStoreFloat3(&pos,DirectX::XMVector3Transform(DirectX::XMLoadFloat3(&pos), matrix));
-		}
-	}
 	
 }

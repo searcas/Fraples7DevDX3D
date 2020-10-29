@@ -114,6 +114,7 @@
     <ClCompile Include="Source\Fraples7DevDX3D\ImGuiMgr\ImGuiMgr.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Input Events\KeyboardEvent.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Input Events\MouseEvents.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\Objects\BasePlane.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Objects\PointLight.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Objects\SolidSphere.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Platform\Windows\Window.cpp" />
@@ -161,8 +162,11 @@
     <ClInclude Include="Source\Fraples7DevDX3D\Input Events\KeyboardEvent.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Input Events\MouseEvents.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Objects\BaseObject.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\Objects\BasePlane.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\Objects\Plane.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Objects\PointLight.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Objects\SolidSphere.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\Objects\Sphere.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Platform\Windows\Window.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Camera.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\GFXContextBase.h" />
@@ -181,7 +185,6 @@
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\ConstantBuffers.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\GFXContext.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Renderer.h" />
-    <ClInclude Include="Source\Fraples7DevDX3D\Objects\Sphere.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Fraples7DevDX3D.rc" />

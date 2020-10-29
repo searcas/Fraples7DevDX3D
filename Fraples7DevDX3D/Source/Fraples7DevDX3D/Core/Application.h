@@ -1,13 +1,12 @@
 #pragma once
-
-#include "../Platform/Windows/Window.h"
-#include "../Core/Debugging/Timer.h"
-#include "../RendererAPI/Camera.h"
-#include "../Objects/PointLight.h"
+#include "Platform/Windows/Window.h"
+#include "Core/Debugging/Timer.h"
+#include "RendererAPI/Camera.h"
 #include "RendererAPI/Mesh/Model.h"
-#include <set>
 #include "Math/Math.h"
-#include "Objects/Box.h"
+#include "Objects/BasePlane.h"
+#include "Objects/PointLight.h"
+#include <set>
 namespace FraplesDev
 {
 
@@ -16,7 +15,6 @@ namespace FraplesDev
 	{
 	public:
 		Application(const char* name, int width, int height);
-		Application();
 		~Application();
 		int StartApp();
 	private:
@@ -35,10 +33,11 @@ namespace FraplesDev
 
 	private:
 		//objects
-		Camera _mCamera;
 		PointLight light;
+		Camera _mCamera;
+		BasePlane plane;
 		Model _mNano{ _mWin.GetGFX(),"Models\\nano_textured\\nanosuit.obj" };
-		//Model _mNano2{ _mWin.GetGFX(),"Models\\nano_textured\\nanosuit.obj" };
+		Model _mNano2{ _mWin.GetGFX(),"Models\\nano_textured\\nanosuit.obj" };
 	private:
 		FraplesDev::Timer _mTimer;
 		float _mSpeedFactor = 1.0f;

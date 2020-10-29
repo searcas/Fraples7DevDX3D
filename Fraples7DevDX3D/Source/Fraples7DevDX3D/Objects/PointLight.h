@@ -1,7 +1,7 @@
 #pragma once
-#include "../GraphicAPI/Graphics.h"
+#include "GraphicAPI/Graphics.h"
+#include "RendererAPI/ConstantBuffers.h"
 #include "SolidSphere.h"
-#include "../RendererAPI/ConstantBuffers.h"
 
 
 

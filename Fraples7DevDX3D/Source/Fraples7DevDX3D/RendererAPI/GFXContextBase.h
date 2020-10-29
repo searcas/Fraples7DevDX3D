@@ -8,5 +8,5 @@
 #include "VertexBuffer.h"
 #include "VertexShader.h"
 #include "TransformCBuf.h"
-#include "../Core/Sampler.h"
-#include "../Core/Texture/Texture.h"
+#include "Core/Sampler.h"
+#include "Core/Texture/Texture.h"
