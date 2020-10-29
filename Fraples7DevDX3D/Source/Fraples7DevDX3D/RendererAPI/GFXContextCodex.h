@@ -3,7 +3,7 @@
 #include "GFXContext.h"
 #include <memory>
 #include <unordered_map>
-
+#include <type_traits>
 
 
 namespace FraplesDev
@@ -14,6 +14,7 @@ namespace FraplesDev
 		template <class T, typename... Args>
 		static std::shared_ptr<GfxContext>Resolve(Graphics& gfx, Args&& ...args)noexcept(IS_DEBUG)
 		{
+			static_assert(std::is_base_of<GfxContext, T>::value, "Can only resolve classes derived from Bindable");
 			return Get().Resolve_<T>(gfx,std::forward<Args>(args)...);
 		}
 
@@ -31,6 +32,7 @@ namespace FraplesDev
 			}
 			else
 			{
+
 				return i->second;
 			}
 		}

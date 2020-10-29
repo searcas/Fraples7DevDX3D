@@ -3,37 +3,28 @@
 #include "GFXContext.h"
 #include "../Core/Debugging/Exceptions/Macros/GraphicsThrowMacros.h"
 #include "../Core/MetaProgramming/Vertex.h"
-
+#include <memory>
 namespace FraplesDev
 {
 	class VertexBuffer : public GfxContext
 	{
 	public:
-		template<class V>
-		VertexBuffer(Graphics& gfx, const std::vector<V>& vertices)
-			:_mStride(sizeof(V))
-		{
-			
+		VertexBuffer(Graphics& gfx, const MP::VertexBuffer& vbuf);
+
+		VertexBuffer(Graphics& gfx, const std::string& tag, const MP::VertexBuffer& vbuf);
 
 
-		}
-		VertexBuffer(Graphics& gfx, const MP::VertexBuffer& vbuf) 
-			: _mStride((UINT)vbuf.GetLayout().Size())
-		{
-			INFOMAN(gfx);
-			D3D11_BUFFER_DESC bd = {};
-			bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-			bd.Usage = D3D11_USAGE_DEFAULT;
-			bd.CPUAccessFlags = 0u;
-			bd.MiscFlags = 0u;
-			bd.ByteWidth = UINT(vbuf.SizeOfBytes());
-			bd.StructureByteStride = _mStride;
-			D3D11_SUBRESOURCE_DATA sd = {};
-			sd.pSysMem = vbuf.GetData();
-			FPL_GFX_THROW_INFO(GetDevice(gfx)->CreateBuffer(&bd, &sd, &_mpVertexBuffer));
-		}
 		void Bind(Graphics& gfx)noexcept override;
+		static std::shared_ptr<GfxContext>Resolve(Graphics& gfx, const std::string& tag, const MP::VertexBuffer& vbuf);
+		template <typename... Ignore>
+		static std::string GenerateUID(const std::string& tag, Ignore&&...ignore)
+		{
+			return GenerateUID_(tag);
+		}
+		std::string GetUID()const noexcept override;
+		static std::string GenerateUID_(const std::string& tag);
 	private:
+		std::string _mTag;
 		UINT _mStride;
 		Microsoft::WRL::ComPtr<ID3D11Buffer> _mpVertexBuffer;
 

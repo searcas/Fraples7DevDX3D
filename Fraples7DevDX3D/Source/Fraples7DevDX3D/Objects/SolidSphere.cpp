@@ -18,7 +18,7 @@ namespace FraplesDev
 
 			AddBind(std::move(pvs));
 
-			AddBind(std::make_unique<PixelShader>(gfx, L"SolidPS.cso"));
+			AddBind(std::make_unique<PixelShader>(gfx, "SolidPS.cso"));
 
 			struct PSColorConstant
 			{
@@ -28,7 +28,7 @@ namespace FraplesDev
 
 			AddBind(std::make_unique<PixelConstantBuffer<PSColorConstant>>(gfx, colorConst));
 			
-			AddBind(std::make_shared<InputLayout>(gfx, model._mVertices.GetLayout().GetD3DLayout(), pvsbyte));
+			AddBind(std::make_shared<InputLayout>(gfx, model._mVertices.GetLayout(), pvsbyte));
 
 
 			AddBind(std::make_unique<Topology>(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));

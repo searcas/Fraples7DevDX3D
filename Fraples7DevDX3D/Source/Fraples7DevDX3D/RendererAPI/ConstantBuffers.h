@@ -1,7 +1,7 @@
 #pragma once
 #include "GFXContext.h"
-#include "../Core/Debugging/Exceptions/Macros/GraphicsThrowMacros.h"
-
+#include "Core/Debugging/Exceptions/Macros/GraphicsThrowMacros.h"
+#include "GFXContextCodex.h"
 namespace FraplesDev
 {
 	template<typename C>
@@ -63,6 +63,18 @@ namespace FraplesDev
 		{
 			GetContext(gfx)->VSSetConstantBuffers(_mSlot, 1u, _mpConstantBuffer.GetAddressOf());
 		}
+		std::shared_ptr<GfxContext>Resolve(Graphics& gfx)
+		{
+			return Codex::Resolve<VertexConstantBuffer>(gfx);
+		}
+		static std::string GenerateUID()
+		{
+			return typeid(VertexConstantBuffer).name();
+		}
+		std::string GetUID()const noexcept override
+		{
+			return GenerateUID();
+		}
 	};
 
 	template<typename C>
@@ -79,6 +91,19 @@ namespace FraplesDev
 		{
 			//or use this->
 			GetContext(gfx)->PSSetConstantBuffers(_mSlot, 1u, _mpConstantBuffer.GetAddressOf());
+
+		}
+		std::shared_ptr<GfxContext>Resolve(Graphics& gfx)
+		{
+			return Codex::Resolve<PixelConstantBuffer>(gfx);
+		}
+		static std::string GenerateUID()
+		{
+			return typeid(PixelConstantBuffer).name();
+		}
+		std::string GetUID()const noexcept override
+		{
+			return GenerateUID();
 		}
 	};
 }

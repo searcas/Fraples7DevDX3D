@@ -106,6 +106,7 @@
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Debugging\WindowsMessageMap.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Debugging\Exceptions\FraplesException.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\GDIPlusManager.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\Core\MetaProgramming\Vertex.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Sampler.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Surface.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Texture\Texture.cpp" />

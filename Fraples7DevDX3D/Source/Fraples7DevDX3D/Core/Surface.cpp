@@ -71,7 +71,7 @@ namespace FraplesDev
 		return _mPBuffer.get();
 	}
 	Surface Surface::FromFile(const std::string& name)
- 	{
+	{
 		unsigned int  width = 0;
 		unsigned int  height = 0;
 

@@ -1,12 +1,18 @@
 #include "IndexBuffer.h"
-#include "../Core/Debugging/Exceptions/Macros/GraphicsThrowMacros.h"
+#include "Core/Debugging/Exceptions/Macros/GraphicsThrowMacros.h"
+#include "GFXContextCodex.h"
 
 namespace FraplesDev
 {
-	IndexBuffer::IndexBuffer(Graphics& gfx,const std::vector<unsigned short>& indices)
-		:_mCount((UINT)indices.size())
+	IndexBuffer::IndexBuffer(Graphics& gfx, const std::vector<unsigned short>& indices)
+		:IndexBuffer(gfx, "?", indices)
 	{
 		
+		
+	}
+	IndexBuffer::IndexBuffer(Graphics& gfx, std::string tag, const std::vector<unsigned short>& indices)
+		:_mTag(tag),_mCount((UINT)indices.size())
+	{
 		INFOMAN(gfx);
 		D3D11_BUFFER_DESC ibd = {};
 		ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
@@ -27,5 +33,18 @@ namespace FraplesDev
 	UINT IndexBuffer::GetCount() const noexcept
 	{
 		return _mCount;
+	}
+	std::shared_ptr<GfxContext> IndexBuffer::Resolve(Graphics& gfx, const std::string& tag, std::vector<unsigned short>& indices)
+	{
+		return Codex::Resolve<IndexBuffer>(gfx, tag, indices);
+	}
+	std::string IndexBuffer::GetUID() const noexcept
+	{
+		return  GenerateUID_(_mTag);
+	}
+	std::string IndexBuffer::GenerateUID_(const std::string& tag)
+	{
+		using namespace std::string_literals;
+		return typeid(IndexBuffer).name() + "#"s + tag;
 	}
 }

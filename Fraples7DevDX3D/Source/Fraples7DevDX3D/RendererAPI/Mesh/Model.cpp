@@ -123,11 +123,11 @@ namespace FraplesDev
 			const auto base = "Models\\nano_textured\\"s;
 			aiString texFileName;
 			material.GetTexture(aiTextureType_DIFFUSE, 0, &texFileName);
-			bindablePtrs.push_back(std::make_shared<Texture>(gfx, Surface::FromFile(base + texFileName.C_Str())));
+			bindablePtrs.push_back(std::make_shared<Texture>(gfx, base + texFileName.C_Str()));
 
 			if (material.GetTexture(aiTextureType_SPECULAR, 0, &texFileName) == aiReturn_SUCCESS)
 			{
-				bindablePtrs.push_back(std::make_shared<Texture>(gfx, Surface::FromFile(base + texFileName.C_Str()), 1));
+				bindablePtrs.push_back(std::make_shared<Texture>(gfx, base + texFileName.C_Str(), 1));
 				hasSpecularMap = true;
 			}
 			else
@@ -143,15 +143,15 @@ namespace FraplesDev
 		auto pvs = std::make_shared<VertexShader>(gfx, "PhongVS.cso");
 		auto pvsByte = pvs->GetBytecode();
 		bindablePtrs.push_back(std::move(pvs));
-		bindablePtrs.push_back(std::make_shared<PixelShader>(gfx, L"PhongPS.cso"));
-		bindablePtrs.push_back(std::make_shared<InputLayout>(gfx, vBuf.GetLayout().GetD3DLayout(), pvsByte));
+
+		bindablePtrs.push_back(std::make_shared<InputLayout>(gfx, vBuf.GetLayout(), pvsByte));
 		if (hasSpecularMap)
 		{
-			bindablePtrs.push_back(std::make_shared<PixelShader>(gfx, L"PhongPSSpecMap.cso"));
+			bindablePtrs.push_back(std::make_shared<PixelShader>(gfx, "PhongPSSpecMap.cso"));
 		}
 		else
 		{
-			bindablePtrs.push_back(std::make_shared<PixelShader>(gfx, L"PhongPS.cso"));
+			bindablePtrs.push_back(std::make_shared<PixelShader>(gfx, "PhongPS.cso"));
 
 			struct PSMaterialConstant
 			{

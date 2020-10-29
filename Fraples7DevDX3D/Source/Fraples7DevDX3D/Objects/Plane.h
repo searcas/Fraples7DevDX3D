@@ -11,8 +11,7 @@ namespace FraplesDev
 	class Plane
 	{
 	public:
-		template<class V>
-		static IndexedList<V> MakeTesselated(int divisions_x, int divisions_y)
+		static IndexedList MakeTesselated(int divisions_x, int divisions_y)
 		{
 			namespace dx = DirectX;
 			assert(divisions_x >= 1);
