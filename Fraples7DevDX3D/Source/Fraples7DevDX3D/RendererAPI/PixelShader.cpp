@@ -22,7 +22,7 @@ namespace FraplesDev
 		GetContext(gfx)->PSSetShader(_mPixelShader.Get(), nullptr, 0u);
 	}
 
-	std::shared_ptr<GfxContext> PixelShader::Resolve(Graphics& gfx, const std::string& path)
+	std::shared_ptr<PixelShader> PixelShader::Resolve(Graphics& gfx, const std::string& path)
 	{
 		return Codex::Resolve<PixelShader>(gfx,path	);
 	}

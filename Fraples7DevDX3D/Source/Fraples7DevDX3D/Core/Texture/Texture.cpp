@@ -45,7 +45,7 @@ namespace FraplesDev
 		GetContext(gfx)->PSSetShaderResources(_mSlot, 1u, _mpTextureView.GetAddressOf());
 	}
 
-	std::shared_ptr<GfxContext> FraplesDev::Texture::Resolve(Graphics& gfx, const std::string& path, UINT slot)
+	std::shared_ptr<Texture> FraplesDev::Texture::Resolve(Graphics& gfx, const std::string& path, UINT slot)
 	{
 		return Codex::Resolve<Texture>(gfx, path, slot);
 	}

@@ -12,15 +12,15 @@ namespace FraplesDev
 	{
 	public:
 		template <class T, typename... Args>
-		static std::shared_ptr<GfxContext>Resolve(Graphics& gfx, Args&& ...args)noexcept(IS_DEBUG)
+		static std::shared_ptr<T>Resolve(Graphics& gfx, Args&& ...args)noexcept(IS_DEBUG)
 		{
-			static_assert(std::is_base_of<GfxContext, T>::value, "Can only resolve classes derived from Bindable");
+			static_assert(std::is_base_of<GfxContext,T>::value, "Can only resolve classes derived from Bindable");
 			return Get().Resolve_<T>(gfx,std::forward<Args>(args)...);
 		}
 
 	private:
 		template <class T, typename... Args>
-		std::shared_ptr<GfxContext>Resolve_(Graphics& gfx,Args&&...args) noexcept(!IS_DEBUG)
+		std::shared_ptr<T>Resolve_(Graphics& gfx,Args&&...args) noexcept(!IS_DEBUG)
 		{
 			const auto key = T::GenerateUID(std::forward<Args>(args)...);
 			const auto i = _mBinds.find(key);
@@ -33,7 +33,7 @@ namespace FraplesDev
 			else
 			{
 
-				return i->second;
+				return std::static_pointer_cast<T>(i->second);
 			}
 		}
 

@@ -15,7 +15,7 @@ namespace FraplesDev
 
 
 		void Bind(Graphics& gfx)noexcept override;
-		static std::shared_ptr<GfxContext>Resolve(Graphics& gfx, const std::string& tag, const MP::VertexBuffer& vbuf);
+		static std::shared_ptr<VertexBuffer>Resolve(Graphics& gfx, const std::string& tag, const MP::VertexBuffer& vbuf);
 		template <typename... Ignore>
 		static std::string GenerateUID(const std::string& tag, Ignore&&...ignore)
 		{

@@ -15,7 +15,7 @@ namespace FraplesDev
 			AddBind(IndexBuffer::Resolve(gfx, geometryTag,model._mIndices));
 
 			auto pvs = VertexShader::Resolve(gfx, "SolidVS.cso");
-			auto pvsbyte = static_cast<VertexShader&>(*pvs).GetBytecode();
+			auto pvsbyte = pvs->GetBytecode();
 
 			AddBind(std::move(pvs));
 
@@ -27,7 +27,7 @@ namespace FraplesDev
 				float padding;
 			}colorConst;
 
-			//AddBind(PixelConstantBuffer<PSColorConstant>::Resolve(gfx, colorConst));
+			AddBind(PixelConstantBuffer<PSColorConstant>::Resolve(gfx, colorConst));
 			
 			AddBind(InputLayout::Resolve(gfx, model._mVertices.GetLayout(), pvsbyte));
 

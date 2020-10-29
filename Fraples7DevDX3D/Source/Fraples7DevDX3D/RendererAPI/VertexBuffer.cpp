@@ -29,7 +29,7 @@ namespace FraplesDev
 		GetContext(gfx)->IASetVertexBuffers(0u, 1u, _mpVertexBuffer.GetAddressOf(), &_mStride, &offset);
 	}
 
-	std::shared_ptr<GfxContext> FraplesDev::VertexBuffer::Resolve(Graphics& gfx, const std::string& tag, const MP::VertexBuffer& vbuf)
+	std::shared_ptr<VertexBuffer> FraplesDev::VertexBuffer::Resolve(Graphics& gfx, const std::string& tag, const MP::VertexBuffer& vbuf)
 	{
 		return Codex::Resolve<VertexBuffer>(gfx, tag, vbuf);
 	}

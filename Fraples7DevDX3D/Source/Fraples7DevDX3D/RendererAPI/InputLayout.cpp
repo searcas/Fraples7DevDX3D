@@ -11,7 +11,7 @@ namespace FraplesDev
 	InputLayout::InputLayout(Graphics& gfx, MP::VertexLayout layout, ID3DBlob* pVertexShaderByteCode):_mLayout(std::move(layout))
 	{
 		INFOMAN(gfx);
-		const auto d3dLayout = layout.GetD3DLayout();
+		const auto d3dLayout = _mLayout.GetD3DLayout();
 		FPL_GFX_THROW_INFO(GetDevice(gfx)->CreateInputLayout(
 			 d3dLayout.data(), (UINT)d3dLayout.size(),
 			pVertexShaderByteCode->GetBufferPointer(),
@@ -24,7 +24,7 @@ namespace FraplesDev
 	{
 		GetContext(gfx)->IASetInputLayout(_mInputLayout.Get());
 	}
-	std::shared_ptr<GfxContext> InputLayout::Resolve(Graphics& gfx,const MP::VertexLayout& layout, ID3DBlob* pVertexShaderByteCode)
+	std::shared_ptr<InputLayout> InputLayout::Resolve(Graphics& gfx,const MP::VertexLayout& layout, ID3DBlob* pVertexShaderByteCode)
 	{
 		return Codex::Resolve<InputLayout>(gfx, layout, pVertexShaderByteCode);
 	}

@@ -143,7 +143,7 @@ namespace FraplesDev
 		bindablePtrs.push_back(IndexBuffer::Resolve(gfx, meshTag, indices));
 
 		auto pvs = VertexShader::Resolve(gfx, "PhongVS.cso");
-		auto pvsByte = static_cast<VertexShader&>(*pvs).GetBytecode();
+		auto pvsByte = pvs->GetBytecode();
 		bindablePtrs.push_back(std::move(pvs));
 
 		bindablePtrs.push_back(InputLayout::Resolve(gfx, vBuf.GetLayout(), pvsByte));
@@ -175,6 +175,7 @@ namespace FraplesDev
 			float padding[3];
 		}pixelShaderMaterialConstant;
 		bindablePtrs.push_back(std::make_unique<PixelConstantBuffer<PSMaterialConstant>>(gfx, pixelShaderMaterialConstant, 1u));
+
 		return std::make_unique<Mesh>(gfx, std::move(bindablePtrs));
 	}
 	std::unique_ptr<Node>Model::ParseNode(int& nextId, const aiNode& node)noexcept

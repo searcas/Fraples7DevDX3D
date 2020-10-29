@@ -15,7 +15,7 @@ namespace FraplesDev
 		GetContext(gfx)->IASetPrimitiveTopology(_mType);
 	}
 
-	std::shared_ptr<GfxContext> FraplesDev::Topology::Resolve(Graphics& gfx, D3D11_PRIMITIVE_TOPOLOGY type)
+	std::shared_ptr<Topology> FraplesDev::Topology::Resolve(Graphics& gfx, D3D11_PRIMITIVE_TOPOLOGY type)
 	{
 		return Codex::Resolve<Topology>(gfx, type);
 	}

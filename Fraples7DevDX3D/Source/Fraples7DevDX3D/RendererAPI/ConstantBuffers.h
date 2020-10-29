@@ -63,15 +63,15 @@ namespace FraplesDev
 		{
 			GetContext(gfx)->VSSetConstantBuffers(_mSlot, 1u, _mpConstantBuffer.GetAddressOf());
 		}
-		static std::shared_ptr<GfxContext>Resolve(Graphics& gfx)
+		static std::shared_ptr<VertexConstantBuffer>Resolve(Graphics& gfx)
 		{
 			return Codex::Resolve<VertexConstantBuffer>(gfx);
 		}
-		static std::shared_ptr<GfxContext>Resolve(Graphics& gfx,UINT slot = 0)
+		static std::shared_ptr<VertexConstantBuffer>Resolve(Graphics& gfx,UINT slot = 0)
 		{
 			return Codex::Resolve<VertexConstantBuffer>(gfx,slot);
 		}
-		static std::shared_ptr<GfxContext>Resolve(Graphics& gfx,const C& consts, UINT slot = 0)
+		static std::shared_ptr<VertexConstantBuffer>Resolve(Graphics& gfx,const C& consts, UINT slot = 0)
 		{
 			return Codex::Resolve<VertexConstantBuffer>(gfx, consts, slot);
 		}
@@ -106,15 +106,15 @@ namespace FraplesDev
 			GetContext(gfx)->PSSetConstantBuffers(_mSlot, 1u, _mpConstantBuffer.GetAddressOf());
 
 		}
-		static std::shared_ptr<GfxContext>Resolve(Graphics& gfx)
+		static std::shared_ptr<PixelConstantBuffer>Resolve(Graphics& gfx)
 		{
 			return Codex::Resolve<PixelConstantBuffer>(gfx);
 		}
-		static std::shared_ptr<GfxContext>Resolve(Graphics& gfx, UINT slot = 0)
+		static std::shared_ptr<PixelConstantBuffer>Resolve(Graphics& gfx, UINT slot = 0)
 		{
 			return Codex::Resolve<PixelConstantBuffer>(gfx, slot);
 		}
-		static std::shared_ptr<GfxContext>Resolve(Graphics& gfx,const C& consts, UINT slot = 0)
+		static std::shared_ptr<PixelConstantBuffer>Resolve(Graphics& gfx,const C& consts, UINT slot = 0)
 		{
 			return Codex::Resolve<PixelConstantBuffer>(gfx,consts,slot);
 		}

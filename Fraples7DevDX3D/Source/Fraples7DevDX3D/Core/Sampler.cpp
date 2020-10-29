@@ -19,7 +19,7 @@ namespace FraplesDev
 	{
 		GetContext(gfx)->PSSetSamplers(0, 1, pSampler.GetAddressOf());
 	}
-	std::shared_ptr<GfxContext> Sampler::Resolve(Graphics& gfx)
+	std::shared_ptr<Sampler> Sampler::Resolve(Graphics& gfx)
 	{
 		return Codex::Resolve<Sampler>(gfx);
 	}
