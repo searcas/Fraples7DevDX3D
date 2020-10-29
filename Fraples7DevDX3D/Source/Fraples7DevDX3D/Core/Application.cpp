@@ -64,6 +64,7 @@ namespace FraplesDev
 		
 		
 		_mNano.Render(_mWin.GetGFX());
+	//	_mNano2.Render(_mWin.GetGFX());
 		light.Render(_mWin.GetGFX());
 
 		while (const auto e = _mWin._mKey.Readkey())
@@ -130,6 +131,7 @@ namespace FraplesDev
 		_mCamera.SpawnControllWindow();
 		light.SpawnControlWindow();
 		_mNano.ShowModelInfo("Model");
+	//	_mNano2.ShowModelInfo("Model Friend");
 		SpawnAppInfoWindow();
 		ShowRawInputWindow();
 

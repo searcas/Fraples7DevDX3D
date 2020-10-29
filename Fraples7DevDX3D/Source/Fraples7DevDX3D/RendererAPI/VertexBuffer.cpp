@@ -31,6 +31,7 @@ namespace FraplesDev
 
 	std::shared_ptr<VertexBuffer> FraplesDev::VertexBuffer::Resolve(Graphics& gfx, const std::string& tag, const MP::VertexBuffer& vbuf)
 	{
+		assert(tag != "?");
 		return Codex::Resolve<VertexBuffer>(gfx, tag, vbuf);
 	}
 

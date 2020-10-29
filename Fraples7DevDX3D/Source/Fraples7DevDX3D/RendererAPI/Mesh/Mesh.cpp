@@ -5,8 +5,7 @@ namespace FraplesDev
 {
 	Mesh::Mesh(Graphics& gfx, std::vector<std::shared_ptr<GfxContext>>bindPtrs)
 	{
-		
-		AddBind(std::make_shared<Topology>(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
+		AddBind(Topology::Resolve(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 		for (auto& pb : bindPtrs)
 		{
 			AddBind(std::move(pb));
