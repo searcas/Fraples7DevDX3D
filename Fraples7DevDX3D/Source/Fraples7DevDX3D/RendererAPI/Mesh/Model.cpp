@@ -115,19 +115,20 @@ namespace FraplesDev
 		std::vector<std::shared_ptr<GfxContext>>bindablePtrs;
 		bool hasSpecularMap = false;
 		float shininess = 35.0f;
+		using namespace std::string_literals;
+		const auto base = "Models\\nano_textured\\"s;
 		if (mesh.mMaterialIndex >=0)
 		{
 			auto& material = *pMaterials[mesh.mMaterialIndex];
 
-			using namespace std::string_literals;
-			const auto base = "Models\\nano_textured\\"s;
+		
 			aiString texFileName;
 			material.GetTexture(aiTextureType_DIFFUSE, 0, &texFileName);
-			bindablePtrs.push_back(std::make_shared<Texture>(gfx, base + texFileName.C_Str()));
+			bindablePtrs.push_back(Texture::Resolve(gfx, base + texFileName.C_Str()));
 
 			if (material.GetTexture(aiTextureType_SPECULAR, 0, &texFileName) == aiReturn_SUCCESS)
 			{
-				bindablePtrs.push_back(std::make_shared<Texture>(gfx, base + texFileName.C_Str(), 1));
+				bindablePtrs.push_back(Texture::Resolve(gfx, base + texFileName.C_Str(), 1));
 				hasSpecularMap = true;
 			}
 			else
@@ -135,23 +136,24 @@ namespace FraplesDev
 				material.Get(AI_MATKEY_SHININESS, shininess);
 			}
 
-			bindablePtrs.push_back(std::make_shared<Sampler>(gfx));
+			bindablePtrs.push_back(Sampler::Resolve(gfx));
 		}
-		bindablePtrs.push_back(std::make_shared<VertexBuffer>(gfx, vBuf));
-		bindablePtrs.push_back(std::make_shared<IndexBuffer>(gfx, indices));
+		auto meshTag = base + "%" + mesh.mName.C_Str();
+		bindablePtrs.push_back(VertexBuffer::Resolve(gfx, meshTag, vBuf));
+		bindablePtrs.push_back(IndexBuffer::Resolve(gfx, meshTag, indices));
 
-		auto pvs = std::make_shared<VertexShader>(gfx, "PhongVS.cso");
-		auto pvsByte = pvs->GetBytecode();
+		auto pvs = VertexShader::Resolve(gfx, "PhongVS.cso");
+		auto pvsByte = static_cast<VertexShader&>(*pvs).GetBytecode();
 		bindablePtrs.push_back(std::move(pvs));
 
-		bindablePtrs.push_back(std::make_shared<InputLayout>(gfx, vBuf.GetLayout(), pvsByte));
+		bindablePtrs.push_back(InputLayout::Resolve(gfx, vBuf.GetLayout(), pvsByte));
 		if (hasSpecularMap)
 		{
-			bindablePtrs.push_back(std::make_shared<PixelShader>(gfx, "PhongPSSpecMap.cso"));
+			bindablePtrs.push_back(PixelShader::Resolve(gfx, "PhongPSSpecMap.cso"));
 		}
 		else
 		{
-			bindablePtrs.push_back(std::make_shared<PixelShader>(gfx, "PhongPS.cso"));
+			bindablePtrs.push_back(PixelShader::Resolve(gfx, "PhongPS.cso"));
 
 			struct PSMaterialConstant
 			{
@@ -161,7 +163,9 @@ namespace FraplesDev
 				float padding[2];
 			}pmc;
 			pmc.specularPower = shininess;
-			std::make_shared<PixelConstantBuffer<PSMaterialConstant>>(gfx, pmc, 1u);
+			//this is clearly an issue... all meshes will share same mat const, but may have different
+			//Ns (specular power) specified for each in the material properties... bad conflict
+			bindablePtrs.push_back(PixelConstantBuffer<PSMaterialConstant>::Resolve(gfx, pmc, 1u));
 		}
 		struct PSMaterialConstant
 		{

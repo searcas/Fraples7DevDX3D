@@ -63,17 +63,30 @@ namespace FraplesDev
 		{
 			GetContext(gfx)->VSSetConstantBuffers(_mSlot, 1u, _mpConstantBuffer.GetAddressOf());
 		}
-		std::shared_ptr<GfxContext>Resolve(Graphics& gfx)
+		static std::shared_ptr<GfxContext>Resolve(Graphics& gfx)
 		{
 			return Codex::Resolve<VertexConstantBuffer>(gfx);
 		}
-		static std::string GenerateUID()
+		static std::shared_ptr<GfxContext>Resolve(Graphics& gfx,UINT slot = 0)
 		{
-			return typeid(VertexConstantBuffer).name();
+			return Codex::Resolve<VertexConstantBuffer>(gfx,slot);
+		}
+		static std::shared_ptr<GfxContext>Resolve(Graphics& gfx,const C& consts, UINT slot = 0)
+		{
+			return Codex::Resolve<VertexConstantBuffer>(gfx, consts, slot);
+		}
+		static std::string GenerateUID(const C&,UINT slot)
+		{
+			return GenerateUID(slot);
+		}
+		static std::string GenerateUID(UINT slot = 0)
+		{
+			using namespace std::string_literals;
+			return typeid(VertexConstantBuffer).name()+ "#"s + std::to_string(slot);
 		}
 		std::string GetUID()const noexcept override
 		{
-			return GenerateUID();
+			return GenerateUID(_mSlot);
 		}
 	};
 
@@ -93,17 +106,31 @@ namespace FraplesDev
 			GetContext(gfx)->PSSetConstantBuffers(_mSlot, 1u, _mpConstantBuffer.GetAddressOf());
 
 		}
-		std::shared_ptr<GfxContext>Resolve(Graphics& gfx)
+		static std::shared_ptr<GfxContext>Resolve(Graphics& gfx)
 		{
 			return Codex::Resolve<PixelConstantBuffer>(gfx);
 		}
-		static std::string GenerateUID()
+		static std::shared_ptr<GfxContext>Resolve(Graphics& gfx, UINT slot = 0)
 		{
-			return typeid(PixelConstantBuffer).name();
+			return Codex::Resolve<PixelConstantBuffer>(gfx, slot);
+		}
+		static std::shared_ptr<GfxContext>Resolve(Graphics& gfx,const C& consts, UINT slot = 0)
+		{
+			return Codex::Resolve<PixelConstantBuffer>(gfx,consts,slot);
+		}
+		static std::string GenerateUID(const C&, UINT slot = 0u)
+		{
+			return GenerateUID(slot);
+		}
+		static std::string GenerateUID(UINT slot = 0u)
+		{
+			using namespace std::string_literals;
+
+			return typeid(PixelConstantBuffer).name() + "#"s + std::to_string(slot);
 		}
 		std::string GetUID()const noexcept override
 		{
-			return GenerateUID();
+			return GenerateUID(_mSlot);
 		}
 	};
 }

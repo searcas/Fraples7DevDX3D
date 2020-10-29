@@ -24,7 +24,7 @@ namespace FraplesDev
 	{
 		GetContext(gfx)->IASetInputLayout(_mInputLayout.Get());
 	}
-	std::shared_ptr<GfxContext> InputLayout::Resolve(Graphics& gfx, const MP::VertexLayout& layout, ID3DBlob* pVertexShaderByteCode)
+	std::shared_ptr<GfxContext> InputLayout::Resolve(Graphics& gfx,const MP::VertexLayout& layout, ID3DBlob* pVertexShaderByteCode)
 	{
 		return Codex::Resolve<InputLayout>(gfx, layout, pVertexShaderByteCode);
 	}

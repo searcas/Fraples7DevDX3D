@@ -24,9 +24,7 @@ namespace FraplesDev
 	{
 
 		_mWin.GetGFX().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
-		auto a = VertexShader::Resolve(_mWin.GetGFX(), "PhongVS.cso");
-		auto b = Sampler::Resolve(_mWin.GetGFX());
-		auto c = Sampler::Resolve(_mWin.GetGFX());
+
 	}
 
 
