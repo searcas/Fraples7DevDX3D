@@ -56,30 +56,30 @@ namespace FraplesDev
 		{
 			auto itl = MakeIndependent(std::move(MP::VertexLayout{}.Append(MP::ElementType::Position3D).Append(MP::ElementType::Normal).Append(MP::ElementType::Texture2D)));
 
-			itl._mVertices[0].tc = { 0.0f,0.0f };
-			itl._mVertices[1].tc = { 1.0f,0.0f };
-			itl._mVertices[2].tc = { 0.0f,1.0f };
-			itl._mVertices[3].tc = { 1.0f,1.0f };
-			itl._mVertices[4].tc = { 0.0f,0.0f };
-			itl._mVertices[5].tc = { 1.0f,0.0f };
-			itl._mVertices[6].tc = { 0.0f,1.0f };
-			itl._mVertices[7].tc = { 1.0f,1.0f };
-			itl._mVertices[8].tc = { 0.0f,0.0f };
-			itl._mVertices[9].tc = { 1.0f,0.0f };
-			itl._mVertices[10].tc = { 0.0f,1.0f };
-			itl._mVertices[11].tc = { 1.0f,1.0f };
-			itl._mVertices[12].tc = { 0.0f,0.0f };
-			itl._mVertices[13].tc = { 1.0f,0.0f };
-			itl._mVertices[14].tc = { 0.0f,1.0f };
-			itl._mVertices[15].tc = { 1.0f,1.0f };
-			itl._mVertices[16].tc = { 0.0f,0.0f };
-			itl._mVertices[17].tc = { 1.0f,0.0f };
-			itl._mVertices[18].tc = { 0.0f,1.0f };
-			itl._mVertices[19].tc = { 1.0f,1.0f };
-			itl._mVertices[20].tc = { 0.0f,0.0f };
-			itl._mVertices[21].tc = { 1.0f,0.0f };
-			itl._mVertices[22].tc = { 0.0f,1.0f };
-			itl._mVertices[23].tc = { 1.0f,1.0f };
+			itl._mVertices[0].Attr<MP::ElementType::Texture2D>() = { 0.0f,0.0f };
+			itl._mVertices[1].Attr<MP::ElementType::Texture2D>() = { 1.0f,0.0f };
+			itl._mVertices[2].Attr<MP::ElementType::Texture2D>() = { 0.0f,1.0f };
+			itl._mVertices[3].Attr<MP::ElementType::Texture2D>() = { 1.0f,1.0f };
+			itl._mVertices[4].Attr<MP::ElementType::Texture2D>() = { 0.0f,0.0f };
+			itl._mVertices[5].Attr<MP::ElementType::Texture2D>() = { 1.0f,0.0f };
+			itl._mVertices[6].Attr<MP::ElementType::Texture2D>() = { 0.0f,1.0f };
+			itl._mVertices[7].Attr<MP::ElementType::Texture2D>() = { 1.0f,1.0f };
+			itl._mVertices[8].Attr<MP::ElementType::Texture2D>() = { 0.0f,0.0f };
+			itl._mVertices[9].Attr<MP::ElementType::Texture2D>() = { 1.0f,0.0f };
+			itl._mVertices[10].Attr<MP::ElementType::Texture2D>() = { 0.0f,1.0f };
+			itl._mVertices[11].Attr<MP::ElementType::Texture2D>() = { 1.0f,1.0f };
+			itl._mVertices[12].Attr<MP::ElementType::Texture2D>() = { 0.0f,0.0f };
+			itl._mVertices[13].Attr<MP::ElementType::Texture2D>() = { 1.0f,0.0f };
+			itl._mVertices[14].Attr<MP::ElementType::Texture2D>() = { 0.0f,1.0f };
+			itl._mVertices[15].Attr<MP::ElementType::Texture2D>() = { 1.0f,1.0f };
+			itl._mVertices[16].Attr<MP::ElementType::Texture2D>() = { 0.0f,0.0f };
+			itl._mVertices[17].Attr<MP::ElementType::Texture2D>() = { 1.0f,0.0f };
+			itl._mVertices[18].Attr<MP::ElementType::Texture2D>() = { 0.0f,1.0f };
+			itl._mVertices[19].Attr<MP::ElementType::Texture2D>() = { 1.0f,1.0f };
+			itl._mVertices[20].Attr<MP::ElementType::Texture2D>() = { 0.0f,0.0f };
+			itl._mVertices[21].Attr<MP::ElementType::Texture2D>() = { 1.0f,0.0f };
+			itl._mVertices[22].Attr<MP::ElementType::Texture2D>() = { 0.0f,1.0f };
+			itl._mVertices[23].Attr<MP::ElementType::Texture2D>() = { 1.0f,1.0f };
 
 			return itl;
 		}

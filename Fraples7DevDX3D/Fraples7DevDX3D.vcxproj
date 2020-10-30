@@ -115,6 +115,7 @@
     <ClCompile Include="Source\Fraples7DevDX3D\ImGuiMgr\ImGuiMgr.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Input Events\KeyboardEvent.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Input Events\MouseEvents.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\Objects\BaseCube.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Objects\BasePlane.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Objects\PointLight.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Objects\SolidSphere.cpp" />
@@ -163,8 +164,10 @@
     <ClInclude Include="Source\Fraples7DevDX3D\ImGuiMgr\ImGuiMgr.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Input Events\KeyboardEvent.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Input Events\MouseEvents.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\Objects\BaseCube.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Objects\BaseObject.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Objects\BasePlane.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\Objects\Cube.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Objects\Plane.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Objects\PointLight.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Objects\SolidSphere.h" />

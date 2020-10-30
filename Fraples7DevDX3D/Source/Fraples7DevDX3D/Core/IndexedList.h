@@ -43,9 +43,9 @@ namespace FraplesDev
 
 				const auto n = DirectX::XMVector3Normalize(DirectX::XMVector3Cross((p1 - p0), (p2 - p0)));
 
-				DirectX::XMStoreFloat3(&v0.Attr< MP::ElementType::Normal, n);
-				DirectX::XMStoreFloat3(&v1.Attr< MP::ElementType::Normal, n);
-				DirectX::XMStoreFloat3(&v2.Attr< MP::ElementType::Normal, n);
+				DirectX::XMStoreFloat3(&v0.Attr<MP::ElementType::Normal>(),n);
+				DirectX::XMStoreFloat3(&v1.Attr<MP::ElementType::Normal>(),n);
+				DirectX::XMStoreFloat3(&v2.Attr<MP::ElementType::Normal>(),n);
 			}
 		}
 		
