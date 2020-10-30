@@ -14,8 +14,8 @@ namespace FraplesDev
 			assert(divisions_x >= 1);
 			assert(divisions_y >= 1);
 
-			constexpr float width = 1.0f;
-			constexpr float height = 1.0f;
+			constexpr float width = 2.0f;
+			constexpr float height = 2.0f;
 			const int nVertices_x = divisions_x + 1;
 			const int nVertices_y = divisions_y + 1;
 			MP::VertexBuffer vb(std::move(layout));
@@ -35,11 +35,11 @@ namespace FraplesDev
 
 				for (int y = 0, i = 0; y < nVertices_y; y++)
 				{
-					const float y_pos = float(y) * divisionSize_y;
+					const float y_pos = float(y) * divisionSize_y - side_y;
 					const float y_pos_tc = 1.0f - float(y) * divisionSize_y_tc;
 					for (int x = 0; x < nVertices_x; x++, i++)
 					{
-						const float x_pos = float(x) * divisionSize_x - 1.0f;
+						const float x_pos = float(x) * divisionSize_x - side_x;
 						const float x_pos_tc = float(x) * divisionSize_x_tc;
 						vb.EmplaceBack(DirectX::XMFLOAT3(x_pos, y_pos, 0.0f), DirectX::XMFLOAT3{ 0.0f,0.0f,-1.0f }, DirectX::XMFLOAT2{ x_pos_tc,y_pos_tc });
 					}

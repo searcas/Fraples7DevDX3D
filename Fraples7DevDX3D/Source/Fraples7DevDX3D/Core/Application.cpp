@@ -67,7 +67,7 @@ namespace FraplesDev
 
 		_mWall.Render(_mWin.GetGFX());
 	//	_mNano.Render(_mWin.GetGFX());
-		plane.Render(_mWin.GetGFX());
+	 	plane.Render(_mWin.GetGFX());
 		light.Render(_mWin.GetGFX());
 	//	cube.Render(_mWin.GetGFX());
 	}

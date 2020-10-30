@@ -159,7 +159,6 @@ namespace FraplesDev {
 	}
 	void Graphics::BeginFrame(float red, float green, float blue) noexcept
 	{
-
 		if (IsImGuiEnabled)
 		{
 			ImGui_ImplDX11_NewFrame();
@@ -194,7 +193,6 @@ namespace FraplesDev {
 				throw FPL_GFX_EXCEPT(hr);
 			}
 		}
-		
 	}
 
 
@@ -208,7 +206,6 @@ namespace FraplesDev {
 	FraplesDev::Graphics::InfoException::InfoException(int line, const char* file, std::vector<std::string> infoMsgs) noexcept : Exception(line, file)
 	{
 		//join all info messages with newlines into single string
-
 		for (const auto& m : infoMsgs)
 		{
 			_mInfo += m;
