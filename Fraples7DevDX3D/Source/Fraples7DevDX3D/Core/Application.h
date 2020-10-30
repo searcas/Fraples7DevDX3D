@@ -5,7 +5,9 @@
 #include "RendererAPI/Mesh/Model.h"
 #include "Math/Math.h"
 #include "Objects/BasePlane.h"
+#include "Objects/BaseCube.h"
 #include "Objects/PointLight.h"
+
 #include <set>
 namespace FraplesDev
 {
@@ -19,6 +21,7 @@ namespace FraplesDev
 		int StartApp();
 	private:
 		void SpawnFunc();
+		void RenderObj();
 		void DoFrame();
 		void ShowImguiDemoWindow();
 		void SpawnAppInfoWindow() noexcept;
@@ -37,8 +40,10 @@ namespace FraplesDev
 		PointLight light;
 		Camera _mCamera;
 		BasePlane plane;
-		Model _mNano{ _mWin.GetGFX(),"Models\\nano_textured\\nanosuit.obj" };
-		Model _mNano2{ _mWin.GetGFX(),"Models\\nano_textured\\nanosuit.obj" };
+		BaseCube cube;
+		//Model _mNano{ _mWin.GetGFX(),"Models\\nano_textured\\nanosuit.obj" };
+		Model _mWall{ _mWin.GetGFX(),"Models\\brick_wall\\brick_wall.obj" };
+
 	private:
 		FraplesDev::Timer _mTimer;
 		float _mSpeedFactor = 1.0f;

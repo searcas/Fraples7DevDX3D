@@ -14,7 +14,7 @@ namespace FraplesDev
 		struct PSMaterialConstant
 		{
 			float specularIntensity = 0.1f;
-			float specularPower = 19.1f;
+			float specularPower = 20.0f;
 			BOOL normalMappingEnabled = TRUE;
 			float padding[1] = {};
 		}pmc;

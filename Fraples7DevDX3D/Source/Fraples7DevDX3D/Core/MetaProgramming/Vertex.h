@@ -19,6 +19,8 @@ namespace FraplesDev
 			Position3D,
 			Texture2D,
 			Normal,
+			Tangent,
+			Bitangent,
 			Float3Color,
 			Float4Color,
 			BGRAColor,
@@ -58,6 +60,22 @@ namespace FraplesDev
 				static constexpr DXGI_FORMAT dxgiFormat = DXGI_FORMAT_R32G32B32_FLOAT;
 				static constexpr const char* semantic = "Normal";
 				static constexpr const char* code = "N";
+
+			};
+			template<>struct Map<ElementType::Tangent>
+			{
+				using SysType = DirectX::XMFLOAT3;
+				static constexpr DXGI_FORMAT dxgiFormat = DXGI_FORMAT_R32G32B32_FLOAT;
+				static constexpr const char* semantic = "Tangent";
+				static constexpr const char* code = "Nt";
+
+			};
+			template<>struct Map<ElementType::Bitangent>
+			{
+				using SysType = DirectX::XMFLOAT3;
+				static constexpr DXGI_FORMAT dxgiFormat = DXGI_FORMAT_R32G32B32_FLOAT;
+				static constexpr const char* semantic = "Bitangent";
+				static constexpr const char* code = "Nb";
 
 			};
 			template<>struct Map<ElementType::Float3Color>
@@ -118,6 +136,12 @@ namespace FraplesDev
 					case ElementType::Normal:
 						return sizeof(Map<ElementType::Normal>::SysType);
 						break;
+					case ElementType::Tangent:
+						return sizeof(Map<ElementType::Tangent>::SysType);
+						break;
+					case ElementType::Bitangent:
+						return sizeof(Map<ElementType::Bitangent>::SysType);
+						break;
 					case ElementType::Float3Color:
 						return sizeof(Map<ElementType::Float3Color>::SysType);
 						break;
@@ -157,6 +181,12 @@ namespace FraplesDev
 						break;
 					case ElementType::Normal:
 						return GenerateDesc<ElementType::Normal>(GetOffset());
+						break;
+					case ElementType::Tangent:
+						return GenerateDesc<ElementType::Tangent>(GetOffset());
+						break;
+					case ElementType::Bitangent:
+						return GenerateDesc<ElementType::Bitangent>(GetOffset());
 						break;
 					case ElementType::Float3Color:
 						return GenerateDesc<ElementType::Float3Color>(GetOffset());
@@ -259,6 +289,12 @@ namespace FraplesDev
 					break;
 				case ElementType::Normal:
 					SetAttribute<ElementType::Normal>(pAttribute, std::forward<T>(val));
+					break;
+				case ElementType::Tangent:
+					SetAttribute<ElementType::Tangent>(pAttribute, std::forward<T>(val));
+					break;
+				case ElementType::Bitangent:
+					SetAttribute<ElementType::Bitangent>(pAttribute, std::forward<T>(val));
 					break;
 				case ElementType::Float3Color:
 					SetAttribute<ElementType::Float3Color>(pAttribute, std::forward<T>(val));

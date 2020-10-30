@@ -20,7 +20,7 @@ namespace FraplesDev
 		auto pvsbc = pvs->GetBytecode();
 		AddBind(std::move(pvs));
 
-		AddBind(PixelShader::Resolve(gfx, "PhongNormalMapPS.cso"));
+		AddBind(PixelShader::Resolve(gfx, "PhongPSNormalMapObject.cso"));
 
 	
 		AddBind(PixelConstantBuffer<PSMaterialConstant>::Resolve(gfx, pmc, 1u));

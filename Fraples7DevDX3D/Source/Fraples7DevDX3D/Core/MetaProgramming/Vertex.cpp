@@ -22,6 +22,13 @@ namespace FraplesDev
 			case ElementType::Normal:
 				return Map<ElementType::Normal>::code;
 				break;
+			case ElementType::Tangent:
+				return Map<ElementType::Tangent>::code;
+				break;
+			case ElementType::Bitangent:
+				return Map<ElementType::Bitangent>::code;
+				break;
+
 			case ElementType::Float3Color:
 				return Map<ElementType::Float3Color>::code;
 				break;

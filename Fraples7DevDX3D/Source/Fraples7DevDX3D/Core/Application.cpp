@@ -17,13 +17,15 @@ namespace FraplesDev
 {
 	GDIPlusManager gdipm;
 
-
 	Application::Application(const char* name, int width, int height)
-		:_mWin(name, width, height), light(_mWin.GetGFX()),plane(_mWin.GetGFX(), 3.0f)
+		:_mWin(name, width, height), light(_mWin.GetGFX()), 
+		plane(_mWin.GetGFX(), 3.0f), cube(_mWin.GetGFX(), 4.0f)
 	{
-		plane.SetPosXYZ({ 1.0f,17.0f,-1.0f });
-		_mWin.GetGFX().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
+		_mWall.SetRootTransform(DirectX::XMMatrixTranslation(-1.5f, 0.0f, 0.0f));
 
+		plane.SetPosXYZ({ 1.5f,0.0f,0.0f });
+		cube.SetPos({ 3.0f,14.0f,-2.0f });
+		_mWin.GetGFX().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
 	}
 
 
@@ -52,11 +54,22 @@ namespace FraplesDev
 	{
 		_mCamera.SpawnControllWindow();
 		light.SpawnControlWindow();
-		_mNano.ShowModelInfo("Model");
-		_mNano2.ShowModelInfo("Model Friend");
+		//_mNano.ShowModelInfo("Model");
+		_mWall.ShowModelInfo("Model WALL");
 		plane.SpawnControlWindow(_mWin.GetGFX());
+		cube.SpawnControlWindow(_mWin.GetGFX());
 		SpawnAppInfoWindow();
 		ShowRawInputWindow();
+	}
+
+	void Application::RenderObj()
+	{
+
+		_mWall.Render(_mWin.GetGFX());
+	//	_mNano.Render(_mWin.GetGFX());
+		plane.Render(_mWin.GetGFX());
+		light.Render(_mWin.GetGFX());
+		cube.Render(_mWin.GetGFX());
 	}
 
 	void Application::DoFrame()
@@ -67,12 +80,7 @@ namespace FraplesDev
 		_mWin.GetGFX().SetCamera(_mCamera.GetMatrix());
 		light.Bind(_mWin.GetGFX(), _mCamera.GetMatrix());
 		
-		
-		_mNano.Render(_mWin.GetGFX());
-		_mNano2.Render(_mWin.GetGFX());
-		plane.Render(_mWin.GetGFX());
-
-		light.Render(_mWin.GetGFX());
+		RenderObj();
 
 		while (const auto e = _mWin._mKey.Readkey())
 		{
@@ -120,7 +128,7 @@ namespace FraplesDev
 			{
 				_mCamera.Translate({ 0.0f, dt, 0.0f });
 			}
-			if (_mWin._mKey.KeyIsPressed('F'))
+			if (_mWin._mKey.KeyIsPressed(VK_CONTROL))
 			{
 				_mCamera.Translate({ 0.0f, -dt, 0.0f });
 			}

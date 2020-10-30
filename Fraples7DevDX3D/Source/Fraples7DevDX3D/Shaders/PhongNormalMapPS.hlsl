@@ -33,20 +33,23 @@ cbuffer TransformCBuf
 };
 
 Texture2D tex;
-Texture2D normalMap;
+Texture2D normalMap : register(t2);
 SamplerState samplr;
 
-float4 main(float3 worldPos : Position, float3 normal : Normal, float2 texCoord : Texcoord) : SV_TARGET
+float4 main(float3 worldPos : Position, float3 normal : Normal,float3 tangent : Tangent,float3 bitan : Bitangent, float2 texCoord : Texcoord) : SV_TARGET
 {
     
     //sample normal from map if normal mappping enabled
     if(normalMapEnabled)
     {
+        const float3x3 tanToView = float3x3(normalize(tangent), normalize(bitan), normalize(normal));
+        
         const float3 normalMapSample = normalMap.Sample(samplr, texCoord).xyz;
         normal.x = normalMapSample.x * 2.0f - 1.0f;
         normal.y = -normalMapSample.y * 2.0f + 1.0f;
-        normal.z = -normalMapSample.z;
-        normal = mul(normal, (float3x3) modelView);
+        normal.z = normalMapSample.z;
+        //bring normal from tanspace into view space
+        normal = mul(normal, tanToView);
     }
 
     //fragment to light vector data

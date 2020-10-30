@@ -68,7 +68,7 @@ namespace FraplesDev
 	Model::Model(Graphics& gfx, const std::string fileName) : _mpWindow(std::make_unique<ModelWindow>())
 	{
 		Assimp::Importer imp;
-		const auto pScene = imp.ReadFile(fileName.c_str(), aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_ConvertToLeftHanded | aiProcess_GenNormals);
+		const auto pScene = imp.ReadFile(fileName.c_str(), aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_ConvertToLeftHanded | aiProcess_GenNormals | aiProcess_CalcTangentSpace);
 		if (pScene==nullptr)
 		{
 			throw ModelException(imp.GetErrorString(), __LINE__, __FILE__);
@@ -92,13 +92,13 @@ namespace FraplesDev
 	std::unique_ptr<Mesh>Model::ParseMesh(Graphics& gfx, const aiMesh& mesh, const aiMaterial* const* pMaterials)
 	{
 		using MP::VertexLayout;
-		MP::VertexBuffer vBuf(std::move(VertexLayout{}.Append(MP::ElementType::Position3D).Append(MP::ElementType::Normal).Append(MP::ElementType::Texture2D)));
+		MP::VertexBuffer vBuf(std::move(VertexLayout{}.Append(MP::ElementType::Position3D).Append(MP::ElementType::Normal).Append(MP::ElementType::Tangent).Append(MP::ElementType::Bitangent).Append(MP::ElementType::Texture2D)));
 
 
 		for (unsigned int i = 0; i < mesh.mNumVertices; i++)
 		{
 			vBuf.EmplaceBack(*reinterpret_cast<DirectX::XMFLOAT3*>(&mesh.mVertices[i]),
-				*reinterpret_cast<DirectX::XMFLOAT3*>(&mesh.mNormals[i]), *reinterpret_cast<DirectX::XMFLOAT2*>(&mesh.mTextureCoords[0][i]));
+				*reinterpret_cast<DirectX::XMFLOAT3*>(&mesh.mNormals[i]),*reinterpret_cast<DirectX::XMFLOAT3*>(&mesh.mTangents[i]),*reinterpret_cast<DirectX::XMFLOAT3*>(&mesh.mBitangents[i]), *reinterpret_cast<DirectX::XMFLOAT2*>(&mesh.mTextureCoords[0][i]));
 		}
 		std::vector<unsigned short> indices;
 		indices.reserve(mesh.mNumFaces * 3);
@@ -115,7 +115,7 @@ namespace FraplesDev
 		bool hasSpecularMap = false;
 		float shininess = 35.0f;
 		using namespace std::string_literals;
-		const auto base = "Models\\nano_textured\\"s;
+		const auto base = "Models\\brick_wall\\"s;
 		if (mesh.mMaterialIndex >=0)
 		{
 			auto& material = *pMaterials[mesh.mMaterialIndex];
@@ -135,31 +135,41 @@ namespace FraplesDev
 				material.Get(AI_MATKEY_SHININESS, shininess);
 			}
 
+			material.GetTexture(aiTextureType_NORMALS, 0, &texFileName);
+			bindablePtrs.push_back(Texture::Resolve(gfx, base + texFileName.C_Str(), 2));
 			bindablePtrs.push_back(Sampler::Resolve(gfx));
 		}
 		auto meshTag = base + "%" + mesh.mName.C_Str();
 		bindablePtrs.push_back(VertexBuffer::Resolve(gfx, meshTag, vBuf));
 		bindablePtrs.push_back(IndexBuffer::Resolve(gfx, meshTag, indices));
 
-		auto pvs = VertexShader::Resolve(gfx, "PhongVS.cso");
+		auto pvs = VertexShader::Resolve(gfx, "PhongNormalMapVS.cso");
 		auto pvsByte = pvs->GetBytecode();
 		bindablePtrs.push_back(std::move(pvs));
 
 		bindablePtrs.push_back(InputLayout::Resolve(gfx, vBuf.GetLayout(), pvsByte));
 		if (hasSpecularMap)
 		{
-			bindablePtrs.push_back(PixelShader::Resolve(gfx, "PhongPSSpecMap.cso"));
+			bindablePtrs.push_back(PixelShader::Resolve(gfx, "PhongPSSpecNormalMap.cso"));
+			struct PSMaterialConstant
+			{
+				BOOL normalMapEnabled = TRUE;
+				float padding[3];
+			}pmc;
+		//this is clearly an issue... all meshes will share same mat const, but may have different
+			//ns (Specular power) specified for each in the material properties ...bad conflict
+			bindablePtrs.push_back(PixelConstantBuffer<PSMaterialConstant>::Resolve(gfx, pmc, 1u));
 		}
 		else
 		{
-			bindablePtrs.push_back(PixelShader::Resolve(gfx, "PhongPS.cso"));
+			bindablePtrs.push_back(PixelShader::Resolve(gfx, "PhongNormalMapPS.cso"));
 
 			struct PSMaterialConstant
 			{
-				float specularIntensity = 0.8f;
-
+				float specularIntensity = 0.18f;
 				float specularPower = 0.0f;
-				float padding[2] = {};
+				BOOL normaMapEnabled = TRUE;
+				float padding[1] = {};
 			};
 		
 			PSMaterialConstant pmc = {};
@@ -198,6 +208,10 @@ namespace FraplesDev
 			pNode->AddChild(ParseNode(nextId, *node.mChildren[i]));
 		}
 		return pNode;
+	}
+	void Model::SetRootTransform(DirectX::FXMMATRIX tf)
+	{
+		_mRoot->SetAppliedTransform(tf);
 	}
 	Model::~Model()
 	{
