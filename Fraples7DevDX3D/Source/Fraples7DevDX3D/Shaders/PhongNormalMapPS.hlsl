@@ -1,5 +1,6 @@
 //https://docs.microsoft.com/en-us/cpp/preprocessor/intrinsic?view=vs-2019
 
+
 cbuffer LightCBuf
 {
     float3 lightPos;
@@ -23,6 +24,14 @@ cbuffer ObjectCBuf
     bool normalMapEnabled;
     float padding[1];
 };
+
+cbuffer TransformCBuf
+{
+    matrix modelView;
+    matrix modelViewProj;
+    
+};
+
 Texture2D tex;
 Texture2D normalMap;
 SamplerState samplr;
@@ -37,6 +46,7 @@ float4 main(float3 worldPos : Position, float3 normal : Normal, float2 texCoord 
         normal.x = normalMapSample.x * 2.0f - 1.0f;
         normal.y = -normalMapSample.y * 2.0f + 1.0f;
         normal.z = -normalMapSample.z;
+        normal = mul(normal, (float3x3) modelView);
     }
 
     //fragment to light vector data

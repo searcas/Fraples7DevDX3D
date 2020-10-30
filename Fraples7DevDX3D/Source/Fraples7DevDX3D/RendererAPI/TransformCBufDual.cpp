@@ -20,5 +20,6 @@ namespace FraplesDev
 		_sPpCbuf->Update(gfx, tf);
 		_sPpCbuf->Bind(gfx);
 	}
+	 std::unique_ptr<PixelConstantBuffer<TransformCbufDual::Transforms>> TransformCbufDual::_sPpCbuf;
 
 }

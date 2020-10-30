@@ -327,10 +327,19 @@ namespace FraplesDev
 		class VertexBuffer
 		{
 		public:
-			VertexBuffer(VertexLayout layout)noexcept(!IS_DEBUG)
+	
+			VertexBuffer(VertexLayout layout,size_t size = 0u)noexcept(!IS_DEBUG)
 				: _mLayout(std::move(layout))
 			{
-
+				Resize(size);
+			}
+			void Resize(size_t newSize)noexcept(!IS_DEBUG)
+			{
+				const auto size = Size();
+				if (size < newSize)
+				{
+					_mBuffer.resize(_mBuffer.size() + _mLayout.Size() * (newSize - size));
+				}
 			}
 			const char* GetData()const noexcept(!IS_DEBUG)
 			{
