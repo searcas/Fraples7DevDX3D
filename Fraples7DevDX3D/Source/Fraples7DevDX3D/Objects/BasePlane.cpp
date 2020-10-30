@@ -12,7 +12,8 @@ namespace FraplesDev
 		const auto geometryTag = "$plane." + std::to_string(size);
 		AddBind(VertexBuffer::Resolve(gfx, geometryTag, model._mVertices));
 		AddBind(IndexBuffer::Resolve(gfx, geometryTag, model._mIndices));
-		AddBind(Texture::Resolve(gfx,"Images\\brickwall.jpg"));
+		AddBind(Texture::Resolve(gfx, "Images\\brickwall.jpg"));
+		AddBind(Texture::Resolve(gfx,"Images\\brickwall_normal.jpg",1u));
 
 		auto pvs = VertexShader::Resolve(gfx, "PhongVS.cso");
 		auto pvsbc = pvs->GetBytecode();
@@ -72,7 +73,7 @@ namespace FraplesDev
 				}
 				if (ImGui::Button("Reset"))
 				{
-					pos = {17.0f,1.0f,0.0f};
+					pos = {1.0f,17.0f,-1.0f};
 					roll = -0;
 					pitch = -0;
 					yaw = -0;

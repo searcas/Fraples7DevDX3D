@@ -13,14 +13,24 @@ namespace FraplesDev
 
 	void TransformCBuf::Bind(Graphics& gfx) noexcept
 	{
+		UpdateBindImpl(gfx, GetTransforms(gfx));
+		
+	}
+	void TransformCBuf::UpdateBindImpl(Graphics& gfx, const Transforms& tf) noexcept
+	{
+		_spVcbuf->Update(gfx, tf);
+		_spVcbuf->Bind(gfx);
+	}
+	TransformCBuf::Transforms TransformCBuf::GetTransforms(Graphics& gfx) noexcept
+	{
+		
 		const auto modelView = parent.GetTransformXM() * gfx.GetCamera();
-		const Transforms transforms =
+		return
 		{
 			DirectX::XMMatrixTranspose(modelView),
-			DirectX::XMMatrixTranspose(modelView *  gfx.GetProjection())
+			DirectX::XMMatrixTranspose(modelView * gfx.GetProjection())
 		};
-		_spVcbuf->Update(gfx, transforms);
-		_spVcbuf->Bind(gfx);
+
 	}
 	std::unique_ptr<VertexConstantBuffer<TransformCBuf::Transforms>> TransformCBuf::_spVcbuf;
 }

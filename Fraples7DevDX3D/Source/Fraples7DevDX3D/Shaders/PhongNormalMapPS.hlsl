@@ -33,7 +33,10 @@ float4 main(float3 worldPos : Position, float3 normal : Normal, float2 texCoord 
     //sample normal from map if normal mappping enabled
     if(normalMapEnabled)
     {
-        normal = -normalMap.Sample(samplr, texCoord).xyz;
+        const float3 normalMapSample = normalMap.Sample(samplr, texCoord).xyz;
+        normal.x = normalMapSample.x * 2.0f - 1.0f;
+        normal.y = -normalMapSample.y * 2.0f + 1.0f;
+        normal.z = -normalMapSample.z;
     }
 
     //fragment to light vector data
