@@ -5,6 +5,7 @@
 #include "PixelShader.h"
 #include "Topology.h"
 #include "TransformCbuf.h"
+#include "TransformCbufDual.h"
 #include "VertexBuffer.h"
 #include "VertexShader.h"
 #include "TransformCBuf.h"
