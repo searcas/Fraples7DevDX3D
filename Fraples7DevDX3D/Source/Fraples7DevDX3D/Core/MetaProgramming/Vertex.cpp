@@ -10,26 +10,26 @@ namespace FraplesDev
 		{
 			switch (_mType)
 			{
-			case VertexLayout::Position2D:
-				return Map<Position2D>::code;
+			case ElementType::Position2D:
+				return Map<ElementType::Position2D>::code;
 				break;
-			case VertexLayout::Position3D:
-				return Map<Position3D>::code;
+			case ElementType::Position3D:
+				return Map<ElementType::Position3D>::code;
 				break;
-			case VertexLayout::Texture2D:
-				return Map<Texture2D>::code;
+			case ElementType::Texture2D:
+				return Map<ElementType::Texture2D>::code;
 				break;
-			case VertexLayout::Normal:
-				return Map<Normal>::code;
+			case ElementType::Normal:
+				return Map<ElementType::Normal>::code;
 				break;
-			case VertexLayout::Float3Color:
-				return Map<Float3Color>::code;
+			case ElementType::Float3Color:
+				return Map<ElementType::Float3Color>::code;
 				break;
-			case VertexLayout::Float4Color:
-				return Map<Float4Color>::code;
+			case ElementType::Float4Color:
+				return Map<ElementType::Float4Color>::code;
 				break;
-			case VertexLayout::BGRAColor:
-				return Map<BGRAColor>::code;
+			case ElementType::BGRAColor:
+				return Map<ElementType::BGRAColor>::code;
 				break;
 			default:
 				assert("Invalid element type" && false);

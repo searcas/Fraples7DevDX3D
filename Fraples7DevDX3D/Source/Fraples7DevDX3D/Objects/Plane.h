@@ -74,9 +74,9 @@ namespace FraplesDev
 		static IndexedList Make()
 		{
 			MP::VertexLayout v1;
-			v1.Append(MP::VertexLayout::Position3D);
-			v1.Append(MP::VertexLayout::Normal);
-			v1.Append(MP::VertexLayout::Texture2D);
+			v1.Append(MP::ElementType::Position3D);
+			v1.Append(MP::ElementType::Normal);
+			v1.Append(MP::ElementType::Texture2D);
 			return MakeTesselatedTex(std::move(v1), 1, 1);
 		}
 	};

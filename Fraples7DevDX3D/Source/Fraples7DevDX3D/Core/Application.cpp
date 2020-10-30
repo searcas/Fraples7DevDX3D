@@ -19,7 +19,7 @@ namespace FraplesDev
 
 
 	Application::Application(const char* name, int width, int height)
-		:_mWin(name, width, height), light(_mWin.GetGFX()), plane(_mWin.GetGFX(), 3.0f)
+		:_mWin(name, width, height), light(_mWin.GetGFX()),plane(_mWin.GetGFX(), 3.0f)
 	{
 		plane.SetPosXYZ({ 1.0f,17.0f,-1.0f });
 		_mWin.GetGFX().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
@@ -46,6 +46,17 @@ namespace FraplesDev
 			// const auto timer = _mTimer.Start() * _mSpeedFactor;
 			DoFrame();
 		}
+	}
+
+	void Application::SpawnFunc()
+	{
+		_mCamera.SpawnControllWindow();
+		light.SpawnControlWindow();
+		_mNano.ShowModelInfo("Model");
+		_mNano2.ShowModelInfo("Model Friend");
+		plane.SpawnControlWindow(_mWin.GetGFX());
+		SpawnAppInfoWindow();
+		ShowRawInputWindow();
 	}
 
 	void Application::DoFrame()
@@ -124,13 +135,7 @@ namespace FraplesDev
 			}
 
 		}
-		_mCamera.SpawnControllWindow();
-		light.SpawnControlWindow();
-		_mNano.ShowModelInfo("Model");
-	//	_mNano2.ShowModelInfo("Model Friend");
-		SpawnAppInfoWindow();
-		ShowRawInputWindow();
-
+		SpawnFunc();
 		_mWin.GetGFX().EndFrame();
 	}
 

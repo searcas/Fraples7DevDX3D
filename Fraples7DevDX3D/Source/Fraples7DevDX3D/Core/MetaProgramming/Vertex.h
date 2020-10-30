@@ -13,29 +13,30 @@ namespace FraplesDev
 			unsigned char g;
 			unsigned char b;
 		};
+		enum class ElementType
+		{
+			Position2D,
+			Position3D,
+			Texture2D,
+			Normal,
+			Float3Color,
+			Float4Color,
+			BGRAColor,
+			Count
+		};
 		class VertexLayout
 		{
 		public:
-			enum ElementType
-			{
-				Position2D,
-				Position3D,
-				Texture2D,
-				Normal,
-				Float3Color,
-				Float4Color,
-				BGRAColor,
-				Count
-			};
+	
 			template<ElementType> struct Map;
-			template<>struct Map<Position2D>
+			template<>struct Map<ElementType::Position2D>
 			{
 				using SysType = DirectX::XMFLOAT2;
 				 static constexpr DXGI_FORMAT dxgiFormat = DXGI_FORMAT_R32G32_FLOAT;
 				 static constexpr const char* semantic = "Position";
 				 static constexpr const char* code = "P2";
 			};
-			template<>struct Map<Position3D>
+			template<>struct Map <ElementType::Position3D >
 			{
 				using SysType = DirectX::XMFLOAT3;
 				static constexpr DXGI_FORMAT dxgiFormat = DXGI_FORMAT_R32G32B32_FLOAT;
@@ -43,7 +44,7 @@ namespace FraplesDev
 				static constexpr const char* code = "P3";
 
 			};
-			template<>struct Map<Texture2D>
+			template<>struct Map<ElementType::Texture2D>
 			{
 				using SysType = DirectX::XMFLOAT2;
 				static constexpr DXGI_FORMAT dxgiFormat = DXGI_FORMAT_R32G32_FLOAT;
@@ -51,7 +52,7 @@ namespace FraplesDev
 				static constexpr const char* code = "TC2";
 
 			};
-			template<>struct Map<Normal>
+			template<>struct Map<ElementType::Normal>
 			{
 				using SysType = DirectX::XMFLOAT3;
 				static constexpr DXGI_FORMAT dxgiFormat = DXGI_FORMAT_R32G32B32_FLOAT;
@@ -59,21 +60,21 @@ namespace FraplesDev
 				static constexpr const char* code = "N";
 
 			};
-			template<>struct Map<Float3Color>
+			template<>struct Map<ElementType::Float3Color>
 			{
 				using SysType = DirectX::XMFLOAT3;
 				static constexpr DXGI_FORMAT dxgiFormat = DXGI_FORMAT_R32G32B32_FLOAT;
 				static constexpr const char* semantic = "Color";
 				static constexpr const char* code = "C3";
 			};
-			template<>struct Map<Float4Color>
+			template<>struct Map<ElementType::Float4Color>
 			{
 				using SysType = DirectX::XMFLOAT4;
 				static constexpr DXGI_FORMAT dxgiFormat = DXGI_FORMAT_R32G32B32A32_FLOAT;
 				static constexpr const char* semantic = "Color";
 				static constexpr const char* code = "C4";
 			};
-			template<>struct Map<BGRAColor>
+			template<>struct Map<ElementType::BGRAColor>
 			{
 				using SysType = MP::BGRAColorX;
 				static constexpr DXGI_FORMAT dxgiFormat = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -105,26 +106,26 @@ namespace FraplesDev
 
 					switch (type)
 					{
-					case VertexLayout::Position2D:
-						return sizeof(Map<Position2D>::SysType);
+					case ElementType::Position2D:
+						return sizeof(Map<ElementType::Position2D>::SysType);
 						break;
-					case VertexLayout::Position3D:
-						return sizeof(Map<Position3D>::SysType);
+					case ElementType::Position3D:
+						return sizeof(Map<ElementType::Position3D>::SysType);
 						break;
-					case VertexLayout::Texture2D:
-						return sizeof(Map<Texture2D>::SysType);
+					case ElementType::Texture2D:
+						return sizeof(Map<ElementType::Texture2D>::SysType);
 						break;
-					case VertexLayout::Normal:
-						return sizeof(Map<Normal>::SysType);
+					case ElementType::Normal:
+						return sizeof(Map<ElementType::Normal>::SysType);
 						break;
-					case VertexLayout::Float3Color:
-						return sizeof(Map<Float3Color>::SysType);
+					case ElementType::Float3Color:
+						return sizeof(Map<ElementType::Float3Color>::SysType);
 						break;
-					case VertexLayout::Float4Color:
-						return sizeof(Map<Float4Color>::SysType);
+					case ElementType::Float4Color:
+						return sizeof(Map<ElementType::Float4Color>::SysType);
 						break;
-					case VertexLayout::BGRAColor:
-						return sizeof(Map<BGRAColor>::SysType);
+					case ElementType::BGRAColor:
+						return sizeof(Map<ElementType::BGRAColor>::SysType);
 						break;
 					default:
 						assert("Invalid element type" && false);
@@ -145,32 +146,35 @@ namespace FraplesDev
 				{
 					switch (_mType)
 					{
-					case FraplesDev::MP::VertexLayout::Position2D:
-						return GenerateDesc<Position2D>(GetOffset());
+					case ElementType::Position2D:
+						return GenerateDesc<ElementType::Position2D>(GetOffset());
 						break;
-					case FraplesDev::MP::VertexLayout::Position3D:
-						return GenerateDesc<Position3D>(GetOffset());
+					case ElementType::Position3D:
+						return GenerateDesc<ElementType::Position3D>(GetOffset());
 						break;
-					case FraplesDev::MP::VertexLayout::Texture2D:
-						return GenerateDesc<Texture2D>(GetOffset());
+					case ElementType::Texture2D:
+						return GenerateDesc<ElementType::Texture2D>(GetOffset());
 						break;
-					case FraplesDev::MP::VertexLayout::Normal:
-						return GenerateDesc<Normal>(GetOffset());
+					case ElementType::Normal:
+						return GenerateDesc<ElementType::Normal>(GetOffset());
 						break;
-					case FraplesDev::MP::VertexLayout::Float3Color:
-						return GenerateDesc<Float3Color>(GetOffset());
+					case ElementType::Float3Color:
+						return GenerateDesc<ElementType::Float3Color>(GetOffset());
 						break;
-					case FraplesDev::MP::VertexLayout::Float4Color:
-						return GenerateDesc<Float4Color>(GetOffset());
+					case ElementType::Float4Color:
+						return GenerateDesc<ElementType::Float4Color>(GetOffset());
 						break;
-					case FraplesDev::MP::VertexLayout::BGRAColor:
-						return GenerateDesc<BGRAColor>(GetOffset());
+					case ElementType::BGRAColor:
+						return GenerateDesc<ElementType::BGRAColor>(GetOffset());
 						break;
 					default:
 						assert("Invalid Element type" && false);
+						return {};
 						break;
 					}
+					return {};
 				}
+
 				const char* GetCode()const noexcept;
 			private:
 				ElementType _mType;
@@ -228,7 +232,7 @@ namespace FraplesDev
 		{
 			friend class VertexBuffer;
 		public:
-			template<VertexLayout::ElementType Type>
+			template<ElementType Type>
 			auto& Attr()noexcept (!IS_DEBUG)
 			{
 				using namespace DirectX;
@@ -244,26 +248,26 @@ namespace FraplesDev
 				auto pAttribute = _mPdata + element.GetOffset();
 				switch (element.GetType())
 				{
-				case VertexLayout::Position2D:
-					SetAttribute <VertexLayout::Position2D> (pAttribute, std::forward<T>(val));
+				case ElementType::Position2D:
+					SetAttribute <ElementType::Position2D> (pAttribute, std::forward<T>(val));
 					break;
-				case VertexLayout::Position3D:
-					SetAttribute<VertexLayout::Position3D>(pAttribute, std::forward<T>(val));
+				case ElementType::Position3D:
+					SetAttribute<ElementType::Position3D>(pAttribute, std::forward<T>(val));
 					break;
-				case VertexLayout::Texture2D:
-					SetAttribute<VertexLayout::Texture2D>(pAttribute, std::forward<T>(val));
+				case ElementType::Texture2D:
+					SetAttribute<ElementType::Texture2D>(pAttribute, std::forward<T>(val));
 					break;
-				case VertexLayout::Normal:
-					SetAttribute<VertexLayout::Normal>(pAttribute, std::forward<T>(val));
+				case ElementType::Normal:
+					SetAttribute<ElementType::Normal>(pAttribute, std::forward<T>(val));
 					break;
-				case VertexLayout::Float3Color:
-					SetAttribute<VertexLayout::Float3Color>(pAttribute, std::forward<T>(val));
+				case ElementType::Float3Color:
+					SetAttribute<ElementType::Float3Color>(pAttribute, std::forward<T>(val));
 					break;
-				case VertexLayout::Float4Color:
-					SetAttribute<VertexLayout::Float4Color>(pAttribute, std::forward<T>(val));
+				case ElementType::Float4Color:
+					SetAttribute<ElementType::Float4Color>(pAttribute, std::forward<T>(val));
 					break;
-				case VertexLayout::BGRAColor:
-					SetAttribute<VertexLayout::BGRAColor>(pAttribute, std::forward<T>(val));
+				case ElementType::BGRAColor:
+					SetAttribute<ElementType::BGRAColor>(pAttribute, std::forward<T>(val));
 					break;
 				default:
 					assert("Bad element type" && false);
@@ -286,7 +290,7 @@ namespace FraplesDev
 			}
 		private:
 			//helper to reduce code duplcation in SetAtttributeByIndex
-			template<VertexLayout::ElementType DestLayoutType, typename SrcType>
+			template<ElementType DestLayoutType, typename SrcType>
 			void SetAttribute(char* pAttribute, SrcType&& val)noexcept(!IS_DEBUG)
 			{
 				using dest = typename VertexLayout::Map<DestLayoutType>::SysType;
@@ -312,7 +316,7 @@ namespace FraplesDev
 			{
 
 			}
-			template<VertexLayout::ElementType Type>
+			template<ElementType Type>
 			const auto& Attr()const noexcept(!IS_DEBUG)
 			{
 				return const_cast<Vertex&>(vertex).Attr<Type>();

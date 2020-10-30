@@ -18,6 +18,7 @@ namespace FraplesDev
 		~Application();
 		int StartApp();
 	private:
+		void SpawnFunc();
 		void DoFrame();
 		void ShowImguiDemoWindow();
 		void SpawnAppInfoWindow() noexcept;

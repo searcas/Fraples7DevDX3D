@@ -24,9 +24,9 @@ namespace FraplesDev
 			struct PSColorConstant
 			{
 				DirectX::XMFLOAT3 color = { 1.0f,1.0f,1.0f };
-				float padding;
-			}colorConst;
-
+				float padding = 0;
+			};
+			PSColorConstant colorConst = {};
 			AddBind(PixelConstantBuffer<PSColorConstant>::Resolve(gfx, colorConst,1u));
 			
 			AddBind(InputLayout::Resolve(gfx, model._mVertices.GetLayout(), pvsbyte));

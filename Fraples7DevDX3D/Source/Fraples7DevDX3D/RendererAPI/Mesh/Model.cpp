@@ -92,10 +92,9 @@ namespace FraplesDev
 	std::unique_ptr<Mesh>Model::ParseMesh(Graphics& gfx, const aiMesh& mesh, const aiMaterial* const* pMaterials)
 	{
 		using MP::VertexLayout;
-		MP::VertexBuffer vBuf(std::move(VertexLayout{}.Append(VertexLayout::Position3D).Append(VertexLayout::Normal).Append(VertexLayout::Texture2D)));
+		MP::VertexBuffer vBuf(std::move(VertexLayout{}.Append(MP::ElementType::Position3D).Append(MP::ElementType::Normal).Append(MP::ElementType::Texture2D)));
 
 
-		auto& material = *pMaterials[mesh.mMaterialIndex];
 		for (unsigned int i = 0; i < mesh.mNumVertices; i++)
 		{
 			vBuf.EmplaceBack(*reinterpret_cast<DirectX::XMFLOAT3*>(&mesh.mVertices[i]),
@@ -131,7 +130,7 @@ namespace FraplesDev
 				bindablePtrs.push_back(Texture::Resolve(gfx, base + texFileName.C_Str(), 1));
 				hasSpecularMap = true;
 			}
-			else
+			else 
 			{
 				material.Get(AI_MATKEY_SHININESS, shininess);
 			}
@@ -159,9 +158,11 @@ namespace FraplesDev
 			{
 				float specularIntensity = 0.8f;
 
-				float specularPower;
-				float padding[2];
-			}pmc;
+				float specularPower = 0.0f;
+				float padding[2] = {};
+			};
+		
+			PSMaterialConstant pmc = {};
 			pmc.specularPower = shininess;
 			//this is clearly an issue... all meshes will share same mat const, but may have different
 			//Ns (specular power) specified for each in the material properties... bad conflict
@@ -172,8 +173,9 @@ namespace FraplesDev
 			DirectX::XMFLOAT3 color = { 0.6f,0.6f,0.8f };
 			float specularIntensity = 0.6f;
 			float specularPower = 30.0f;
-			float padding[3];
-		}pixelShaderMaterialConstant;
+			float padding[3] = {};
+		};
+		PSMaterialConstant pixelShaderMaterialConstant = {};
 		bindablePtrs.push_back(std::make_unique<PixelConstantBuffer<PSMaterialConstant>>(gfx, pixelShaderMaterialConstant, 1u));
 
 		return std::make_unique<Mesh>(gfx, std::move(bindablePtrs));
@@ -210,7 +212,6 @@ namespace FraplesDev
 	{
 		windowName = windowName ? windowName : "Model";
 
-		int nodeIndexTracker = 0;
 		if (ImGui::Begin(windowName))
 		{
 			ImGui::Columns(2, nullptr, true);

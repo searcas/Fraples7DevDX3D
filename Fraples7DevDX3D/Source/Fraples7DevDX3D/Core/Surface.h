@@ -24,15 +24,18 @@ namespace FraplesDev
 			{
 
 			}
-			constexpr Color(unsigned int x, unsigned int r, unsigned int g, unsigned int b)noexcept : _mDword((x << 24u) | (r << 16u))
+			constexpr Color(unsigned int x, unsigned int r, unsigned int g, unsigned int b)noexcept : 
+				_mDword((x << 24u) | (r << 16u) | (g <<8) | b)
 			{
 
 			}
-			constexpr Color(unsigned int r, unsigned int g, unsigned int b)noexcept : _mDword((r << 16u) | (g << 8u) | b)
+			constexpr Color(unsigned int r, unsigned int g, unsigned int b)noexcept 
+				: _mDword((255u<<24u) | (r<<16u) | (g<<8u) | b)
 			{
 
 			}
-			constexpr Color(Color col, unsigned char x)noexcept : Color((x << 24u) | col._mDword)
+			constexpr Color(Color col, unsigned char x)noexcept : 
+				Color((x << 24u) | col._mDword)
 			{
 
 			}
@@ -63,7 +66,7 @@ namespace FraplesDev
 			}
 			void SetX(unsigned char x)noexcept
 			{
-				_mDword = (_mDword & 0xFFFFFFu);
+				_mDword = (_mDword & 0xFFFFFFu) | (x << 24u);
 			}
 			void SetA(unsigned char a)noexcept
 			{

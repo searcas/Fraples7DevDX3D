@@ -102,7 +102,7 @@ namespace FraplesDev
 
 		static IndexedList Make(std::optional<MP::VertexLayout>layout = std::nullopt)
 		{
-			using Element = MP::VertexLayout::ElementType;
+			using Element = MP::ElementType;
 			if (!layout)
 			{
 				layout = MP::VertexLayout{}.Append(Element::Position3D);

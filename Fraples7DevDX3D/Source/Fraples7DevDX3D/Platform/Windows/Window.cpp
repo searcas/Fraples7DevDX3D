@@ -38,7 +38,7 @@ namespace FraplesDev {
 		oss << GetType() << std::endl << "[Error Code] 0x" << std::hex << std::uppercase << GetErrorCode() << std::dec <<
 			" ( " << (unsigned long)GetErrorCode() << " )" << std::endl <<
 			"[Description] " << GetErrorDescription() << std::endl << GetOriginString();
-		_mWhatBuffer == oss.str();
+		_mWhatBuffer = oss.str();
 		return _mWhatBuffer.c_str();
 	}
 
@@ -437,7 +437,7 @@ namespace FraplesDev {
 				{
 					break;
 				}
-				UINT size;
+				UINT size = 0;
 				if (GetRawInputData(reinterpret_cast<HRAWINPUT>(lparam), RID_INPUT, nullptr, &size, sizeof(RAWINPUTHEADER)) == -1)
 				{
 					break;

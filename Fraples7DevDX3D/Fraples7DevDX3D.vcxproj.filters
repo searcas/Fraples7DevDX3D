@@ -321,5 +321,6 @@
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\TexturePhongVS.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\TexturePhongPS.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongPSSpecMap.hlsl" />
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongNormalMapPS.hlsl" />
   </ItemGroup>
 </Project>

@@ -28,12 +28,12 @@ namespace FraplesDev
 		void AddChild(std::unique_ptr<Node>pChild)noexcept(!IS_DEBUG);
 		void RenderTree(Node*& pSelectedNode) const noexcept;
 	private:
-		int _mID;
-		std::string _mName;
-		std::vector<std::unique_ptr<Node>>_mChildPtrs;
-		std::vector<Mesh*>_mMeshPtrs;
-		DirectX::XMFLOAT4X4 _mTransform;
-		DirectX::XMFLOAT4X4 appliedTransform;
+		int _mID = 0;
+		std::string _mName = {};
+		std::vector<std::unique_ptr<Node>>_mChildPtrs = {};
+		std::vector<Mesh*>_mMeshPtrs = {};
+		DirectX::XMFLOAT4X4 _mTransform = {};
+		DirectX::XMFLOAT4X4 appliedTransform = {};
 	};
 
 	class Model
@@ -47,7 +47,7 @@ namespace FraplesDev
 			const char* GetType()const noexcept override;
 			const std::string& GetNote()const noexcept;
 		private:
-			std::string note;
+			std::string note = "";
 		};
 		class ModelWindow
 		{
@@ -57,7 +57,7 @@ namespace FraplesDev
 			DirectX::XMMATRIX GetTransform() const noexcept;
 			Node* GetSelectedNode()	const noexcept;
 		private:
-			Node* _mPselectedNode;
+			Node* _mPselectedNode = nullptr;
 			struct TransformParameters
 			{
 				float roll = 0.0f;
@@ -67,7 +67,7 @@ namespace FraplesDev
 				float y = 0.0f;
 				float z = 0.0f;
 			};
-			std::unordered_map<int, TransformParameters>_mTransforms;
+			std::unordered_map<int, TransformParameters>_mTransforms = {};
 		};
 
 		Model(Graphics& gfx, const std::string fileName);

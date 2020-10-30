@@ -19,7 +19,7 @@ namespace FraplesDev
 
 		void Transform(DirectX::FXMMATRIX matrix)
 		{
-			using Elements = MP::VertexLayout::ElementType;
+			using Elements = MP::ElementType;
 			for (int i = 0; i < _mVertices.Size(); i++)
 			{
 				auto& pos = _mVertices[i].Attr<Elements::Position3D>();
