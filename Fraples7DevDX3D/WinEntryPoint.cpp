@@ -22,7 +22,5 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	{
 		MessageBox(nullptr, "No details available","Unknown Excaption", MB_OK | MB_ICONEXCLAMATION);
 	}
-	
-
 	return 0;
 }

@@ -24,7 +24,7 @@ Texture2D spec;
 Texture2D normalmap;
 SamplerState samplr;
 
-float4 main(float3 worldPos : Position, float3 normal : Normal,float3 tangent : Tangent, float3 bitan : Bitangent, float2 texcoord : Texcoord) : SV_TARGET
+float4 main(float3 viewPos : Position, float3 normal : Normal, float3 tangent : Tangent, float3 bitan : Bitangent, float2 texcoord : Texcoord) : SV_TARGET
 {
 
     
@@ -37,12 +37,12 @@ float4 main(float3 worldPos : Position, float3 normal : Normal,float3 tangent : 
         
         normal.x = normalSample.x * 2.0f - 1.0f;
         normal.y = -normalSample.y * 2.0f + 1.0f;
-        normal.z = normalSample.z * 2.0f + 1.0f;
+        normal.z = normalSample.z;
         normal = mul(normal, tanToView);
     }
         
     //fragment to light vector data
-    const float3 vTol = lightPos - worldPos;
+    const float3 vTol = lightPos - viewPos;
     const float distTol = length(vTol);
     const float3 dirTol = vTol / distTol;
     //attenuation
@@ -61,7 +61,7 @@ float4 main(float3 worldPos : Position, float3 normal : Normal,float3 tangent : 
     
     const float3 specularReflectionColor = specularSample.rgb;
     const float specularPower = pow(2.0f, specularSample.a * 13.0f);
-    const float3 specular = att * (diffuseColor * diffuseIntensity) * pow(max(0.0f, dot(normalize(-r), normalize(worldPos))), specularPower);
+    const float3 specular = att * (diffuseColor * diffuseIntensity) * pow(max(0.0f, dot(normalize(-r), normalize(viewPos))), specularPower);
     //final color
     return float4(saturate((diffuse + ambient) * tex.Sample(samplr, texcoord).rgb + specular * specularReflectionColor), 1.0f);
 }

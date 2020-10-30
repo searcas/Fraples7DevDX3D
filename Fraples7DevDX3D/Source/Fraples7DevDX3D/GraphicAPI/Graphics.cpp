@@ -201,7 +201,7 @@ namespace FraplesDev {
 
 	void Graphics::RenderIndexed(UINT count)noexcept(!IS_DEBUG)
 	{
-		_mpContext->DrawIndexed(count, 0u, 0u);
+		FPL_GFX_THROW_INFO_ONLY(_mpContext->DrawIndexed(count, 0u, 0));
 	}
 
 	

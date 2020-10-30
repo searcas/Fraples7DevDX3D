@@ -92,13 +92,21 @@ namespace FraplesDev
 	std::unique_ptr<Mesh>Model::ParseMesh(Graphics& gfx, const aiMesh& mesh, const aiMaterial* const* pMaterials)
 	{
 		using MP::VertexLayout;
-		MP::VertexBuffer vBuf(std::move(VertexLayout{}.Append(MP::ElementType::Position3D).Append(MP::ElementType::Normal).Append(MP::ElementType::Tangent).Append(MP::ElementType::Bitangent).Append(MP::ElementType::Texture2D)));
+		MP::VertexBuffer vBuf(std::move(VertexLayout{}.
+			Append(MP::ElementType::Position3D)
+			.Append(MP::ElementType::Normal)
+			.Append(MP::ElementType::Tangent)
+			.Append(MP::ElementType::Bitangent)
+			.Append(MP::ElementType::Texture2D)));
 
 
 		for (unsigned int i = 0; i < mesh.mNumVertices; i++)
 		{
 			vBuf.EmplaceBack(*reinterpret_cast<DirectX::XMFLOAT3*>(&mesh.mVertices[i]),
-				*reinterpret_cast<DirectX::XMFLOAT3*>(&mesh.mNormals[i]),*reinterpret_cast<DirectX::XMFLOAT3*>(&mesh.mTangents[i]),*reinterpret_cast<DirectX::XMFLOAT3*>(&mesh.mBitangents[i]), *reinterpret_cast<DirectX::XMFLOAT2*>(&mesh.mTextureCoords[0][i]));
+				*reinterpret_cast<DirectX::XMFLOAT3*>(&mesh.mNormals[i]),
+				*reinterpret_cast<DirectX::XMFLOAT3*>(&mesh.mTangents[i]),
+				*reinterpret_cast<DirectX::XMFLOAT3*>(&mesh.mBitangents[i]), 
+				*reinterpret_cast<DirectX::XMFLOAT2*>(&mesh.mTextureCoords[0][i]));
 		}
 		std::vector<unsigned short> indices;
 		indices.reserve(mesh.mNumFaces * 3);
@@ -146,8 +154,8 @@ namespace FraplesDev
 		auto pvs = VertexShader::Resolve(gfx, "PhongNormalMapVS.cso");
 		auto pvsByte = pvs->GetBytecode();
 		bindablePtrs.push_back(std::move(pvs));
-
 		bindablePtrs.push_back(InputLayout::Resolve(gfx, vBuf.GetLayout(), pvsByte));
+
 		if (hasSpecularMap)
 		{
 			bindablePtrs.push_back(PixelShader::Resolve(gfx, "PhongPSSpecNormalMap.cso"));
@@ -178,15 +186,7 @@ namespace FraplesDev
 			//Ns (specular power) specified for each in the material properties... bad conflict
 			bindablePtrs.push_back(PixelConstantBuffer<PSMaterialConstant>::Resolve(gfx, pmc, 1u));
 		}
-		struct PSMaterialConstant
-		{
-			DirectX::XMFLOAT3 color = { 0.6f,0.6f,0.8f };
-			float specularIntensity = 0.6f;
-			float specularPower = 30.0f;
-			float padding[3] = {};
-		};
-		PSMaterialConstant pixelShaderMaterialConstant = {};
-		bindablePtrs.push_back(std::make_unique<PixelConstantBuffer<PSMaterialConstant>>(gfx, pixelShaderMaterialConstant, 1u));
+		
 
 		return std::make_unique<Mesh>(gfx, std::move(bindablePtrs));
 	}

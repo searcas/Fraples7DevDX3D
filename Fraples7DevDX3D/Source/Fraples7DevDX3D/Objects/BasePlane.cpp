@@ -27,7 +27,7 @@ namespace FraplesDev
 		AddBind(InputLayout::Resolve(gfx, model._mVertices.GetLayout(), pvsbc));
 		AddBind(Topology::Resolve(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 
-		AddBind(std::make_shared<TransformCbufDual>(gfx, *this, 0u, 2u));
+		AddBind(std::make_shared<TransformCbufDual>(gfx, *this,0u,2u));
 	}
 
 
