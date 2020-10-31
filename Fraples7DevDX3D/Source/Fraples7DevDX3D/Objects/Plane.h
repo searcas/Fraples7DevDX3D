@@ -14,12 +14,11 @@ namespace FraplesDev
 			assert(divisions_x >= 1);
 			assert(divisions_y >= 1);
 
-			constexpr float width = 2.0f;
-			constexpr float height = 2.0f;
+			constexpr float width = 1.0f;
+			constexpr float height = 1.0f;
 			const int nVertices_x = divisions_x + 1;
 			const int nVertices_y = divisions_y + 1;
 			MP::VertexBuffer vb(std::move(layout));
-
 			{
 				const float side_x = width / 2.0f;
 				const float side_y = height / 2.0f;

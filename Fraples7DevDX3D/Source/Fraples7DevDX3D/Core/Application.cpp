@@ -19,7 +19,7 @@ namespace FraplesDev
 
 	Application::Application(const char* name, int width, int height)
 		:_mWin(name, width, height), light(_mWin.GetGFX()), 
-		plane(_mWin.GetGFX(), 3.0f), cube(_mWin.GetGFX(), 4.0f)
+		plane(_mWin.GetGFX(), 2.0f), cube(_mWin.GetGFX(), 1.0f)
 	{
 		_mWall.SetRootTransform(DirectX::XMMatrixTranslation(-1.5f, 0.0f, 0.0f));
 

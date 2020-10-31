@@ -324,8 +324,6 @@
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\ColorBlendPS.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\ColorIndexPS.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\ColorIndexVS.hlsl" />
-    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\TexturePS.hlsl" />
-    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\TextureVS.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\SolidVS.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\SolidPS.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongVS.hlsl" />

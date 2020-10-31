@@ -31,10 +31,10 @@ cbuffer TransformCBuf
 };
 
 Texture2D tex;
-Texture2D normalMap;
+Texture2D normalMap : register(t2);
 SamplerState samplr;
 
-float4 main(float3 viewPos : Position, float3 norm : Normal,float2 texCoord : Texcoord) : SV_TARGET
+float4 main(float3 vp : Position, float3 norm : Normal,float2 texCoord : Texcoord) : SV_TARGET
 {
     
     //sample normal from map if normal mappping enabled
@@ -43,12 +43,13 @@ float4 main(float3 viewPos : Position, float3 norm : Normal,float2 texCoord : Te
         const float3 normalMapSample = normalMap.Sample(samplr, texCoord).xyz;
         norm.x = normalMapSample.x * 2.0f - 1.0f;
         norm.y = -normalMapSample.y * 2.0f + 1.0f;
-        norm.z = -normalMapSample.z;
+        norm.z = -normalMapSample.z * 2.0f + 1.0f;
         norm = mul(norm, (float3x3) modelView);
     }
 
+
     //fragment to light vector data
-    const float3 vTol = lightPos - viewPos;
+    const float3 vTol = lightPos - vp;
     const float distTol = length(vTol);
     const float3 dirTol = vTol / distTol;
     //attenuation
@@ -62,7 +63,8 @@ float4 main(float3 viewPos : Position, float3 norm : Normal,float2 texCoord : Te
     const float3 r = w * 2.0f - vTol;
     //caclulate specular intensity based on angle between viewing vector 
     //and reflection vector, narrow with power func
-    const float3 specular = att * (diffuseColor * diffuseIntensity) * specularIntensity * pow(max(0.0f, dot(normalize(-r), normalize(viewPos))), specularPower);
+    
+    const float3 specular = att * (diffuseColor * diffuseIntensity) * specularIntensity * pow(max(0.0f, dot(normalize(-r), normalize(vp))), specularPower);
     
     //final color
     return float4(saturate((diffuse + ambient) * tex.Sample(samplr, texCoord).rgb + specular), 1.0f);
