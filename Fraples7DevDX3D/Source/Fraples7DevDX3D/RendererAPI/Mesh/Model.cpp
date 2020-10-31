@@ -59,6 +59,9 @@ namespace FraplesDev
 			}
 	}
 
+
+	
+
 	void Node::AddChild(std::unique_ptr<Node>pChild)noexcept(!IS_DEBUG)
 	{
 		assert(pChild);
@@ -99,8 +102,11 @@ namespace FraplesDev
 		const auto base = "Models\\gobber\\"s;
 		bool hasSpecularMap = false;
 		bool hasNormalMap = false;
+		bool hasAlphaGloss = false;
 		bool hasDiffuseMap = false;
-		float shininess = 35.0f;
+		float shininess = 2.0f;
+		DirectX::XMFLOAT4 specularColor = { 0.18f,0.18f,0.18f,1.0f };
+		DirectX::XMFLOAT4 diffuseColor = { 0.45f,0.45f,0.85f,1.0f };
 
 		if (mesh.mMaterialIndex >=0)
 		{
@@ -114,18 +120,30 @@ namespace FraplesDev
 				bindablePtrs.push_back(Texture::Resolve(gfx, base + texFileName.C_Str()));
 				hasDiffuseMap = true;
 			}
+			else
+			{
+				material.Get(AI_MATKEY_COLOR_DIFFUSE, reinterpret_cast<aiColor3D&>(diffuseColor));
+			}
 			if (material.GetTexture(aiTextureType_SPECULAR, 0, &texFileName) == aiReturn_SUCCESS)
 			{
-				bindablePtrs.push_back(Texture::Resolve(gfx, base + texFileName.C_Str(),1));
+				auto tex = Texture::Resolve(gfx, base + texFileName.C_Str(), 1);
+				hasAlphaGloss = tex->HasAlhpa();
+				bindablePtrs.push_back(std::move(tex));
 				hasSpecularMap = true;
 			}
-			else 
+			else
+			{
+				material.Get(AI_MATKEY_COLOR_DIFFUSE, reinterpret_cast<aiColor3D&>(specularColor));
+			}
+			if(!hasAlphaGloss)
 			{
 				material.Get(AI_MATKEY_SHININESS, shininess);
 			}
 			if (material.GetTexture(aiTextureType_NORMALS,0,&texFileName) ==aiReturn_SUCCESS)
 			{
-				bindablePtrs.push_back(Texture::Resolve(gfx, base + texFileName.C_Str(), 2));
+				auto tex = Texture::Resolve(gfx, base + texFileName.C_Str(), 2);
+				hasAlphaGloss = tex->HasAlhpa();
+				bindablePtrs.push_back(std::move(tex));
 				hasNormalMap = true;
 			}
 			if (hasDiffuseMap || hasSpecularMap || hasNormalMap)
@@ -167,14 +185,12 @@ namespace FraplesDev
 			bindablePtrs.push_back(PixelShader::Resolve(gfx, "PhongPSSpecNormalMap.cso"));
 			bindablePtrs.push_back(InputLayout::Resolve(gfx, vbuf.GetLayout(), pvsbyte));
 
-			struct PSMaterialConstantFullmonte
-			{
-				BOOL normalMapEnabled = TRUE;
-				float padding[3];
-			}pmc;
+			Node::PSMaterialConstantFullmonte pmc;
+			pmc.specularPower = shininess;
+			pmc.hasGlossMap = hasAlphaGloss ? TRUE : FALSE;
 			//this is clearly an issue... all meshes will share same mat const, but may have different
 			//Ns (Specular power) specified for each in the material properties ...bad conflict
-			bindablePtrs.push_back(PixelConstantBuffer<PSMaterialConstantFullmonte>::Resolve(gfx, pmc, 1u));
+			bindablePtrs.push_back(PixelConstantBuffer<Node::PSMaterialConstantFullmonte>::Resolve(gfx, pmc, 1u));
 		}
 		else if (hasDiffuseMap && hasNormalMap)
 		{
@@ -220,12 +236,13 @@ namespace FraplesDev
 			
 			struct PSMaterialConstantDiffnorm
 			{
-				float specularIntensity = 0.18;
+				float specularIntensity = 0.0f;
 				float specularPower = 0.0f;
 				BOOL normalMapEnabled = TRUE;
 				float padding[1] = {};
 			}pmc;
 			pmc.specularPower = shininess;
+			pmc.specularIntensity = (specularColor.x + specularColor.y + specularColor.z) / 3.0f;
 			bindablePtrs.push_back(PixelConstantBuffer<PSMaterialConstantDiffnorm>::Resolve(gfx, pmc, 1u));
 		}
 		else if (hasDiffuseMap)
@@ -273,6 +290,7 @@ namespace FraplesDev
 				float padding[2] = {};
 			}pmc;
 			pmc.specularPower = shininess;
+			pmc.specularIntensity = (specularColor.x + specularColor.y + specularColor.z) / 3.0f;
 			bindablePtrs.push_back(PixelConstantBuffer<PSMaterialConstantDiffnorm>::Resolve(gfx, pmc, 1u));
 
 		}
@@ -308,16 +326,11 @@ namespace FraplesDev
 			bindablePtrs.push_back(PixelShader::Resolve(gfx, "PhongPSNotex.cso"));
 			bindablePtrs.push_back(InputLayout::Resolve(gfx, vbuf.GetLayout(), pvsbyte));
 
-			struct PSMaterialConstantNotex
-			{
-				DirectX::XMFLOAT4 materialColor = { 0.65f,0.65f,0.85f,1.0f };
-				float specularIntensity = 0.18f;
-				float specularPower = 0.0f;
-				float padding[2] = { };
-			} pmc;
+			Node::PSMaterialConstantNotex pmc;
 			pmc.specularPower = shininess;
-
-			bindablePtrs.push_back(PixelConstantBuffer<PSMaterialConstantNotex>::Resolve(gfx, pmc, 1u));
+			pmc.specularColor = specularColor;
+			pmc.materialColor = diffuseColor;
+			bindablePtrs.push_back(PixelConstantBuffer<Node::PSMaterialConstantNotex>::Resolve(gfx, pmc, 1u));
 		}
 		else
 		{
@@ -355,12 +368,12 @@ namespace FraplesDev
 	{
 	}
 
-	void Model::ShowModelInfo(const char* windowName)
+	void Model::ShowModelInfo(Graphics& gfx, const char* windowName)
 	{
-		_mpWindow->Show(windowName, *_mRoot);
+		_mpWindow->Show(gfx, windowName, *_mRoot);
 	}
 
-	void Model::ModelWindow::Show(const char* windowName, const Node& root)
+	void Model::ModelWindow::Show(Graphics& gfx,const char* windowName, const Node& root)
 	{
 		windowName = windowName ? windowName : "Model";
 
@@ -384,6 +397,10 @@ namespace FraplesDev
 				ImGui::SliderFloat("X", &transform.x, -20.0f, 20.0f);
 				ImGui::SliderFloat("Y", &transform.y, -20.0f, 20.0f);
 				ImGui::SliderFloat("Z", &transform.z, -20.0f, 20.0f);
+				if (!_mPselectedNode->ControlMeSenpai(gfx,_mSkinMaterial))
+				{
+					_mPselectedNode->ControlMeSenpai(gfx, _mRingMaterial);
+				}
 				if (ImGui::Button("Reset"))
 				{
 					transform = { };

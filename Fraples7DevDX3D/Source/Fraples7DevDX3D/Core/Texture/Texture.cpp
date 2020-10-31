@@ -12,6 +12,7 @@ namespace FraplesDev
 
 
 		const auto s = Surface::FromFile(path);
+		hasAlpha = s.AlphaLoaded();
 		//create texture resource 
 		D3D11_TEXTURE2D_DESC textureDesc = {};
 		textureDesc.Width = s.GetWidth();

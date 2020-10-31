@@ -37,8 +37,8 @@ void FraplesDev::PointLight::SpawnControlWindow() noexcept
 void FraplesDev::PointLight::Reset() noexcept
 {
 	_mConstantBufferData = {
-		{0.0f,4.0f,-4.5f},
-		{0.05f,0.05f,0.05f,},
+		{2.0f,9.0f,-17.0f},
+		{0.4f,0.45f,0.45f,},
 		{1.0f,1.0f,1.0f,},
 		1.0f,
 		1.0f,

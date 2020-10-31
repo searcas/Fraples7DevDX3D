@@ -1,6 +1,4 @@
 //https://docs.microsoft.com/en-us/cpp/preprocessor/intrinsic?view=vs-2019
-
-
 cbuffer LightCBuf
 {
     float3 lightPos;
@@ -39,14 +37,17 @@ SamplerState samplr;
 float4 main(float3 viewPos : Position, float3 normal : Normal, float3 tangent : Tangent, float3 bitan : Bitangent, float2 texCoord : Texcoord) : SV_TARGET
 {
     
-    //sample normal from map if normal mappping enabled
-    
-    const float3x3 tanToView = float3x3(normalize(tangent), normalize(bitan), normalize(normal));
-    const float3 normalMapSample = normalMap.Sample(samplr, texCoord).xyz;
-    normal = normalMapSample * 2.0f - 1.0f;
-    normal.y = -normal.y;
-    //bring normal from tanspace into view space
-    normal = mul(normal, tanToView);
+    if(normalMapEnabled)
+    {
+        const float3x3 tanToView = float3x3(normalize(tangent), normalize(bitan), normalize(normal));
+        //sample normal from map if normal mappping enabled
+        const float3 normalMapSample = normalMap.Sample(samplr, texCoord).xyz;
+        float3 tanNormal;
+        tanNormal = normalMapSample * 2.0f - 1.0f;
+        tanNormal.y = -tanNormal.y;
+        //bring normal from tanspace into view space
+        normal = mul(tanNormal, tanToView);
+    }
     
     //fragment to light vector data
     const float3 vTol = lightPos - viewPos;

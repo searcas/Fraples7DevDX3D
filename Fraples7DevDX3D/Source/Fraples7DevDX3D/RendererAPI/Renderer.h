@@ -20,7 +20,6 @@ namespace FraplesDev
 	public:
 		virtual const DirectX::XMMATRIX GetTransformXM()const noexcept = 0;
 		virtual ~Renderer() = default;
-	protected:
 		template <class T>
 		T* QueryBindable()noexcept
 		{

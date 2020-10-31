@@ -17,24 +17,31 @@ cbuffer LightCBuf
 cbuffer ObjectCBuf
 {
     bool normalMapEnabled;
-    float padding[3];
+    bool specularMapEnabled;
+    bool hasGloss;
+    float specularPowerConst;
+    float3 specularColor;
+    float specularMapWight;
 };
 Texture2D tex;
 Texture2D spec;
 Texture2D normalmap;
+
 SamplerState samplr;
 
 float4 main(float3 viewPos : Position, float3 normal : Normal, float3 tangent : Tangent, float3 bitan : Bitangent, float2 texcoord : Texcoord) : SV_TARGET
 {
 
-    
-
-    const float3x3 tanToView = float3x3(normalize(tangent), normalize(bitan), normalize(normal));
-    //unpack normal data
-    const float3 normalSample = normalmap.Sample(samplr, texcoord).xyz;
-    normal = normalSample * 2.0f - 1.0f;
-    normal.y = -normal.y;
-    normal = mul(normal, tanToView);
+    if (normalMapEnabled)
+    {
+        const float3x3 tanToView = float3x3(normalize(tangent), normalize(bitan), normalize(normal));
+        //sample normal from map if normal mappping enabled
+        const float3 normalMapSample = normalmap.Sample(samplr, texcoord).xyz;
+        float3 tanNormal;
+        tanNormal = normalMapSample * 2.0f - 1.0f;
+        //bring normal from tanspace into view space
+        normal = mul(tanNormal, tanToView);
+    }
         
     //fragment to light vector data
     const float3 vTol = lightPos - viewPos;
@@ -51,11 +58,21 @@ float4 main(float3 viewPos : Position, float3 normal : Normal, float3 tangent : 
     const float3 r = w * 2.0f - vTol;
     
     //caclulate specular intensity based on angle between viewing vector and reflection vector, narrow with power func
-    
-    const float4 specularSample = spec.Sample(samplr, texcoord);
-    
-    const float3 specularReflectionColor = specularSample.rgb;
-    const float specularPower = pow(2.0f, specularSample.a * 13.0f);
+    float3 specularReflectionColor;
+    float specularPower = specularPowerConst;
+    if (specularMapEnabled)
+    {
+       const float4 specularSample = spec.Sample(samplr, texcoord);
+        specularReflectionColor = specularSample.rgb * specularMapWight;
+        if (hasGloss)
+        {
+            specularPower = pow(2.0f, specularSample.a * 13.0f);
+        }
+    }
+    else
+    {
+        specularReflectionColor = specularColor;
+    }
     const float3 specular = att * (diffuseColor * diffuseIntensity) * pow(max(0.0f, dot(normalize(-r), normalize(viewPos))), specularPower);
     //final color
     return float4(saturate((diffuse + ambient) * tex.Sample(samplr, texcoord).rgb + specular * specularReflectionColor), 1.0f);

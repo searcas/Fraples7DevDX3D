@@ -102,8 +102,8 @@ namespace FraplesDev
 		Surface(unsigned int width, unsigned int height) noexcept;
 		Surface(Surface&& source) noexcept;
 		Surface(Surface& cpyctr) = delete;
-		Surface& operator = (Surface&& donor)noexcept;
 		Surface& operator = (const Surface&) = delete;
+		Surface& operator = (Surface&& donor)noexcept;
 		void Clear(Color fillValue) noexcept;
 		void PutPixel(unsigned int x, unsigned int y, Color c)noexcept(!IS_DEBUG);
 		Color GetPixel(unsigned int x, unsigned int y)const noexcept(!IS_DEBUG);
@@ -113,15 +113,17 @@ namespace FraplesDev
 		const Color* GetBufferPtrConst()const noexcept;
 		static Surface FromFile(const std::string& name);
 		
+		bool AlphaLoaded()const noexcept;
 		void Save(const std::string& filename) const;
 		void Copy(const Surface& src)noexcept(!IS_DEBUG);
 		private:
-			Surface(unsigned int width, unsigned int height, std::unique_ptr<Color[]>pBufferParam)noexcept;
+			Surface(unsigned int width, unsigned int height, std::unique_ptr<Color[]>pBufferParam, bool alphaLoaded = false) noexcept;
 
 	private:
 		std::unique_ptr<Color[]>_mPBuffer;
 		unsigned int _mWidth;
 		unsigned int _mHeight;
+		bool _mAlphaLoaded = false;
 	};
 
 

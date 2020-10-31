@@ -15,10 +15,11 @@ namespace FraplesDev
 		static std::shared_ptr<Texture>Resolve(Graphics& gfx, const std::string& path, UINT slot = 0);
 		static std::string GenerateUID(const std::string& path, UINT slot = 0);
 		std::string GetUID()const noexcept override;
-
+		inline bool HasAlhpa()const noexcept { return hasAlpha;	}
 	protected:
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _mpTextureView;
 		std::string _mPath;
+		bool hasAlpha = false;
 	private:
 		unsigned int _mSlot;
 	};

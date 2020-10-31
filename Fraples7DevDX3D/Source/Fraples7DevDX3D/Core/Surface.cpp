@@ -76,7 +76,7 @@ namespace FraplesDev
 		unsigned int  height = 0;
 
 		std::unique_ptr<Color[]> pBuffer;
-
+		bool alphaLoaded = false;
 		{
 			//convert filenam to wide string (for Gdiplus)
 			wchar_t wideName[512];
@@ -101,10 +101,19 @@ namespace FraplesDev
 					Gdiplus::Color c;
 					bitmap.GetPixel(x, y, &c);
 					pBuffer[y * width + x] = c.GetValue();
+					if (c.GetAlpha() !=255)
+					{
+						alphaLoaded = false;
+						
+					}
 				}
 			}
 		}
-		return Surface(width, height, std::move(pBuffer));
+		return Surface(width, height, std::move(pBuffer), alphaLoaded);
+	}
+	bool Surface::AlphaLoaded() const noexcept
+	{
+		return _mAlphaLoaded;
 	}
 	void Surface::Save(const std::string& filename) const
 	{
@@ -169,8 +178,8 @@ namespace FraplesDev
 		assert(_mHeight == src._mHeight);
 		memcpy(_mPBuffer.get(), src._mPBuffer.get(), _mWidth * _mHeight * sizeof(Color));
 	}
-	Surface::Surface(unsigned int width, unsigned int height, std::unique_ptr<Color[]> pBufferParam) noexcept
-		: _mWidth(width),_mHeight(height),_mPBuffer(std::move(pBufferParam))
+	Surface::Surface(unsigned int width, unsigned int height, std::unique_ptr<Color[]> pBufferParam,bool alphaLoaded) noexcept
+		: _mWidth(width),_mHeight(height),_mPBuffer(std::move(pBufferParam)), _mAlphaLoaded(alphaLoaded)
 	{
 	}
 	Surface::Exception::Exception(int line, const char* file, std::string note) noexcept

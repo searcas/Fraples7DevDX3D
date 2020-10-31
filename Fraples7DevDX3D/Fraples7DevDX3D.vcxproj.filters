@@ -322,8 +322,6 @@
   <ItemGroup>
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\ColorBlendVS.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\ColorBlendPS.hlsl" />
-    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\ColorIndexPS.hlsl" />
-    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\ColorIndexVS.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongVS.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongPS.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\IndexedPhongPS.hlsl" />

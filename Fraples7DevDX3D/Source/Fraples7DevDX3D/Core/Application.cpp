@@ -49,7 +49,7 @@ namespace FraplesDev
 	{
 		_mCamera.SpawnControllWindow();
 		light.SpawnControlWindow();
-    	_mGoblin.ShowModelInfo("Ugly Goblin");
+    	_mGoblin.ShowModelInfo(_mWin.GetGFX(),"Ugly Goblin");
 		SpawnAppInfoWindow();
 		ShowRawInputWindow();
 	}
