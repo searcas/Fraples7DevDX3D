@@ -40,18 +40,14 @@ float4 main(float3 viewPos : Position, float3 normal : Normal, float3 tangent : 
 {
     
     //sample normal from map if normal mappping enabled
-    if(normalMapEnabled)
-    {
-        const float3x3 tanToView = float3x3(normalize(tangent), normalize(bitan), normalize(normal));
-        
-        const float3 normalMapSample = normalMap.Sample(samplr, texCoord).xyz;
-        normal.x = normalMapSample.x * 2.0f - 1.0f;
-        normal.y = -normalMapSample.y * 2.0f + 1.0f;
-        normal.z = normalMapSample.z * 2.0f - 1.0f;
-        //bring normal from tanspace into view space
-        normal = mul(normal, tanToView);
-    }
-
+    
+    const float3x3 tanToView = float3x3(normalize(tangent), normalize(bitan), normalize(normal));
+    const float3 normalMapSample = normalMap.Sample(samplr, texCoord).xyz;
+    normal = normalMapSample * 2.0f - 1.0f;
+    normal.y = -normal.y;
+    //bring normal from tanspace into view space
+    normal = mul(normal, tanToView);
+    
     //fragment to light vector data
     const float3 vTol = lightPos - viewPos;
     const float distTol = length(vTol);

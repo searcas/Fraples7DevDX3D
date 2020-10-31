@@ -41,9 +41,9 @@ float4 main(float3 vp : Position, float3 norm : Normal,float2 texCoord : Texcoor
     if (normalMapEnabled)
     {
         const float3 normalMapSample = normalMap.Sample(samplr, texCoord).xyz;
-        norm.x = normalMapSample.x * 2.0f - 1.0f;
-        norm.y = -normalMapSample.y * 2.0f + 1.0f;
-        norm.z = -normalMapSample.z * 2.0f + 1.0f;
+        norm = normalMapSample * 2.0f - 1.0f;
+        norm.y = -norm.y;
+        norm.z = -norm.z;
         norm = mul(norm, (float3x3) modelView);
     }
 

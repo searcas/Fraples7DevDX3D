@@ -24,7 +24,7 @@ namespace FraplesDev
 		auto pvsbyte = pvs->GetBytecode();
 		AddBind(std::move(pvs));
 
-		AddBind(PixelShader::Resolve(gfx, "PhongNormalMapPS.cso"));
+		AddBind(PixelShader::Resolve(gfx, "PhongPSNormalMapObject.cso"));
 		AddBind(PixelConstantBuffer<PSMaterialConstant>::Resolve(gfx, pmc, 1u));
 		AddBind(InputLayout::Resolve(gfx, model._mVertices.GetLayout(), pvsbyte));
 		AddBind(Topology::Resolve(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));

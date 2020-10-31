@@ -324,8 +324,6 @@
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\ColorBlendPS.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\ColorIndexPS.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\ColorIndexVS.hlsl" />
-    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\SolidVS.hlsl" />
-    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\SolidPS.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongVS.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongPS.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\IndexedPhongPS.hlsl" />
@@ -337,5 +335,7 @@
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongNormalMapVS.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongPSSpecNormalMap.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongPSNormalMapObject.hlsl" />
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongVSNotex.hlsl" />
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongPSNotex.hlsl" />
   </ItemGroup>
 </Project>

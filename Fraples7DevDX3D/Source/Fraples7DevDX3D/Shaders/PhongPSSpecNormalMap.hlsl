@@ -28,16 +28,13 @@ float4 main(float3 viewPos : Position, float3 normal : Normal, float3 tangent : 
 {
 
     
-    if(normalMapEnabled)
-    {
-        const float3x3 tanToView = float3x3(normalize(tangent), normalize(bitan), normalize(normal));
-        //unpack normal data
-        const float3 normalSample = normalmap.Sample(samplr, texcoord).xyz;
-        normal.x = normalSample.x * 2.0f - 1.0f;
-        normal.y = -normalSample.y * 2.0f + 1.0f;
-        normal.z = -normalSample.z * 2.0f + 1.0f;
-        normal = mul(normal, tanToView);
-    }
+
+    const float3x3 tanToView = float3x3(normalize(tangent), normalize(bitan), normalize(normal));
+    //unpack normal data
+    const float3 normalSample = normalmap.Sample(samplr, texcoord).xyz;
+    normal = normalSample * 2.0f - 1.0f;
+    normal.y = -normal.y;
+    normal = mul(normal, tanToView);
         
     //fragment to light vector data
     const float3 vTol = lightPos - viewPos;
