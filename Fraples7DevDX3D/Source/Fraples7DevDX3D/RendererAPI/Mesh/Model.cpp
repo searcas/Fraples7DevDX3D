@@ -331,6 +331,49 @@ namespace FraplesDev
 			pmc.materialColor = diffuseColor;
 			bindablePtrs.push_back(PixelConstantBuffer<Node::PSMaterialConstantNotex>::Resolve(gfx, pmc, 1u));
 		}
+		else if (hasDiffuseMap && !hasNormalMap && hasSpecularMap)
+		{
+			MP::VertexBuffer vbuf(std::move(MP::VertexLayout{}.Append(MP::ElementType::Position3D).Append(MP::ElementType::Normal).Append(MP::ElementType::Texture2D)));
+
+			for (unsigned int i = 0; i< mesh.mNumVertices; i++)
+			{
+				vbuf.EmplaceBack(DirectX::XMFLOAT3(mesh.mVertices[i].x * scale, mesh.mVertices[i].y * scale, mesh.mVertices[i].z * scale),
+					*reinterpret_cast<DirectX::XMFLOAT3*>(&mesh.mNormals[i]),*reinterpret_cast<DirectX::XMFLOAT2*>(&mesh.mTextureCoords[0][i]));
+			}
+			std::vector<unsigned short>indices;
+			indices.reserve(mesh.mNumFaces * 3);
+			for (unsigned int i = 0; i < mesh.mNumFaces; i++)
+			{
+				const auto& face = mesh.mFaces[i];
+				assert(face.mNumIndices == 3);
+				indices.push_back(face.mIndices[0]);
+				indices.push_back(face.mIndices[1]);
+				indices.push_back(face.mIndices[2]);
+			}
+			bindablePtrs.push_back(VertexBuffer::Resolve(gfx, meshTag, vbuf));
+			bindablePtrs.push_back(IndexBuffer::Resolve(gfx, meshTag, indices));
+
+			auto pvs = VertexShader::Resolve(gfx, "PhongVS.cso");
+			auto pvsbyte = pvs->GetBytecode();
+
+			bindablePtrs.push_back(std::move(pvs));
+
+			bindablePtrs.push_back(PixelShader::Resolve(gfx, "PhongSpecPS.cso"));
+			bindablePtrs.push_back(InputLayout::Resolve(gfx, vbuf.GetLayout(), pvsbyte));
+			
+			struct PSMaterialConstant
+			{
+				float specularPowerConst = 20.0f;
+				BOOL hasGloss = FALSE;
+				float specularMapWeight = 1.0f;
+			}pmc;
+			pmc.specularPowerConst = shininess;
+			pmc.hasGloss = hasAlphaGloss ? TRUE : FALSE;
+			pmc.specularMapWeight = 1.0f;
+			bindablePtrs.push_back(PixelConstantBuffer<PSMaterialConstant>::Resolve(gfx, pmc, 1u));
+
+
+		}
 		else
 		{
 

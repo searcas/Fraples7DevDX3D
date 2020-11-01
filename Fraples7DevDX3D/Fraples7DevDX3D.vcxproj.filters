@@ -342,5 +342,6 @@
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongPSNormalMapObject.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongVSNotex.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongPSNotex.hlsl" />
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongSpecPS.hlsl" />
   </ItemGroup>
 </Project>
