@@ -14,7 +14,7 @@ namespace FraplesDev
 		AddBind(VertexBuffer::Resolve(gfx, geometryTag, model._mVertices));
 		AddBind(IndexBuffer::Resolve(gfx, geometryTag, model._mIndices));
 		AddBind(Texture::Resolve(gfx, "Images\\brickwall.jpg"));
-		AddBind(Texture::Resolve(gfx,"Images\\brickwall_normal.jpg",1u));
+		AddBind(Texture::Resolve(gfx,"Images\\brickwall_normal_obj.png", 2u));
 
 		auto pvs = VertexShader::Resolve(gfx, "PhongVS.cso");
 		auto pvsbc = pvs->GetBytecode();

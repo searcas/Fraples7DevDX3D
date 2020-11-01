@@ -16,7 +16,7 @@ namespace FraplesDev
 	class Application
 	{
 	public:
-		Application(const char* name, int width, int height);
+		Application(const char* name, int width, int height, const std::string& commandLine);
 		~Application();
 		int StartApp();
 	private:
@@ -48,6 +48,7 @@ namespace FraplesDev
 		float _mSpeedFactor = 1.0f;
 		bool show_demo_window = true;
 		float speed_accelerator = 1.500f;
+		std::string _mCommandLine;
 	
 	};
 

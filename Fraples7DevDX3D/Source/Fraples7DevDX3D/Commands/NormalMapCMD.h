@@ -30,7 +30,7 @@ namespace FraplesDev
 				}
 				sIn.Save(pathOut);
 			}
-			static void RotateXAxis180(const std::string& pathIn, std::string pathOut)
+			static void RotateXAxis180(const std::string& pathIn)
 			{
 				RotateXAxis180(pathIn, pathIn);
 			}

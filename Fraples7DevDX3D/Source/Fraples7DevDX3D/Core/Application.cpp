@@ -13,13 +13,33 @@
 #include "Core/MetaProgramming/Vertex.h"
 #include "RendererAPI/VertexBuffer.h"
 #include <algorithm>
+#include <shellapi.h>
+#include "Commands/NormalMapCMD.h"
 namespace FraplesDev
 {
 	GDIPlusManager gdipm;
 
-	Application::Application(const char* name, int width, int height)
-		:_mWin(name, width, height), light(_mWin.GetGFX()),plane(_mWin.GetGFX(),6),cube(_mWin.GetGFX(),6)
+	Application::Application(const char* name, int width, int height, const std::string& commandLine)
+		:_mWin(name, width, height), light(_mWin.GetGFX()),plane(_mWin.GetGFX(),6),cube(_mWin.GetGFX(),6),_mCommandLine(commandLine)
 	{
+		if (_mCommandLine != "")
+		{
+			int nArgs;
+			const auto pLineW = GetCommandLineW();
+			const auto pArgs = CommandLineToArgvW(pLineW, &nArgs);
+
+			if (nArgs >= 4 && std::wstring(pArgs[1])==L"--fpl-rotx180")
+			{
+				const std::wstring pathInWide = pArgs[2];
+				const std::wstring pathOutWide = pArgs[3];
+				cmd::NormalMap::RotateXAxis180(
+				std::string(pathInWide.begin(), pathInWide.end()),
+				std::string(pathOutWide.begin(), pathOutWide.end()));
+				
+				throw std::runtime_error("Normal map processed successfully. Nah just kidding With this cuz why not.");
+
+			}
+		}
 		_mWin.GetGFX().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
 	}
 

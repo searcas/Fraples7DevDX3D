@@ -62,7 +62,7 @@ namespace FraplesDev
 	{
 		return _mHeight;
 	}
-	const Surface::Color* Surface::GetBufferPtr() const noexcept
+	 Surface::Color* Surface::GetBufferPtr() const noexcept
 	{
 		return _mPBuffer.get();
 	}

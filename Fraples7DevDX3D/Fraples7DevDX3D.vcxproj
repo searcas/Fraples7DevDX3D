@@ -100,6 +100,7 @@
     <ClCompile Include="ImGui\imgui_impl_dx11.cpp" />
     <ClCompile Include="ImGui\imgui_impl_win32.cpp" />
     <ClCompile Include="ImGui\imgui_widgets.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\Commands\NormalMapCMD.h" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Application.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Debugging\dxerr.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Debugging\DxgiInfoManager.cpp" />
