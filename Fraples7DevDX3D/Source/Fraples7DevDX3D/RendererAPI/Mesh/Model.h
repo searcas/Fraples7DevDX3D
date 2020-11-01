@@ -10,6 +10,7 @@
 #include <unordered_map>
 #include <optional>
 #include "RendererAPI/ConstantBuffers.h"
+#include <filesystem>
 namespace FraplesDev
 {
 	
@@ -146,9 +147,9 @@ namespace FraplesDev
 		};
 
 
-		Model(Graphics& gfx, const std::string fileName);
+		Model(Graphics& gfx, const std::string& path, float scale = 1.0f);
 		void Render(Graphics& gfx) const;
-		static std::unique_ptr<Mesh>ParseMesh(Graphics& gfx, const aiMesh& mesh, const aiMaterial* const* pMaterials);
+		static std::unique_ptr<Mesh>ParseMesh(Graphics& gfx, const aiMesh& mesh, const aiMaterial* const* pMaterials, const std::filesystem::path& path,const float& scale);
 		std::unique_ptr<Node>ParseNode(int& nextId,const aiNode& node)noexcept;
 		void SetRootTransform(DirectX::FXMMATRIX tf);
 		~Model();

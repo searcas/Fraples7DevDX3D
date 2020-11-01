@@ -320,6 +320,8 @@
     </None>
     <None Include="Source\Fraples7DevDX3D\Shaders\ShaderOps.hlsli" />
     <None Include="Source\Fraples7DevDX3D\Shaders\PointLight.hlsli" />
+    <None Include="Source\Fraples7DevDX3D\Shaders\LightVectorData.hlsli" />
+    <None Include="Source\Fraples7DevDX3D\Shaders\TransformData.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\ColorBlendVS.hlsl" />

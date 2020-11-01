@@ -63,9 +63,9 @@ namespace FraplesDev
 			ImGui::Text("Shading");
 			bool change0 = ImGui::SliderFloat("Specular Intensity.", &pmc.specularIntensity, 0.0f, 1.0f);
 			bool change1 = ImGui::SliderFloat("Specular Power.", &pmc.specularPower, 0.0f, 100.0f);
-			bool checkState = pmc.normalMappingEnabled == TRUE;
+			bool checkState = pmc.normalMappingEnabled== TRUE;
 			bool change2 = ImGui::Checkbox("Enable Normal Map", &checkState);
-			pmc.normalMappingEnabled = checkState ? TRUE : FALSE;
+			pmc.normalMappingEnabled= checkState ? TRUE : FALSE;
 			if (change0 || change1 || change2)
 			{
 				QueryBindable<PixelConstantBuffer<PSMaterialConstant>>()->Update(gfx, pmc);

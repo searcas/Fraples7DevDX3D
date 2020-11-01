@@ -109,7 +109,7 @@ namespace FraplesDev
 		Color GetPixel(unsigned int x, unsigned int y)const noexcept(!IS_DEBUG);
 		unsigned int GetWidth()const noexcept;
 		unsigned int GetHeight()const noexcept;
-		const Color* GetBufferPtr()const noexcept;
+		Color* GetBufferPtr()const noexcept;
 		const Color* GetBufferPtrConst()const noexcept;
 		static Surface FromFile(const std::string& name);
 		

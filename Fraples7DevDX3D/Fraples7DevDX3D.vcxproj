@@ -199,8 +199,10 @@
     <None Include="Source\Fraples7DevDX3D\Core\Debugging\DXGetErrorDescription.inl" />
     <None Include="Source\Fraples7DevDX3D\Core\Debugging\DXGetErrorString.inl" />
     <None Include="Source\Fraples7DevDX3D\Core\Debugging\DXTrace.inl" />
+    <None Include="Source\Fraples7DevDX3D\Shaders\LightVectorData.hlsli" />
     <None Include="Source\Fraples7DevDX3D\Shaders\PointLight.hlsli" />
     <None Include="Source\Fraples7DevDX3D\Shaders\ShaderOps.hlsli" />
+    <None Include="Source\Fraples7DevDX3D\Shaders\TransformData.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\BlendedPhongPS.hlsl">

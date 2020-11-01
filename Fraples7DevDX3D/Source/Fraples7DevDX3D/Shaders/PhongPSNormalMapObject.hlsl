@@ -1,20 +1,7 @@
-//https://docs.microsoft.com/en-us/cpp/preprocessor/intrinsic?view=vs-2019
+#include "ShaderOps.hlsli"
+#include "LightVectorData.hlsli"
 
-
-cbuffer LightCBuf
-{
-    float3 lightPos;
-    float3 ambient;
-    float3 diffuseColor;
-
-//http://wiki.ogre3d.org/-Point+Light+Attenuation More info
-    
-    float diffuseIntensity;
-    float attConst;
-    float attLin;
-    float attQuad;
-};
-
+#include "PointLight.hlsli"
 
 cbuffer ObjectCBuf
 {
@@ -24,52 +11,36 @@ cbuffer ObjectCBuf
     float padding[1];
 };
 
-cbuffer TransformCBuf
-{
-    matrix modelView;
-    matrix modelViewProj;
-};
+#include "TransformData.hlsli"
 
 Texture2D tex;
-Texture2D normalMap : register(t2);
-SamplerState samplr;
+Texture2D nmap : register(t2);
 
-float4 main(float3 vp : Position, float3 norm : Normal,float2 texCoord : Texcoord) : SV_TARGET
+SamplerState splr;
+
+
+float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc : Texcoord) : SV_Target
 {
-    
-    //sample normal from map if normal mappping enabled
+	// sample normal from map if normal mapping enabled
     if (normalMapEnabled)
     {
-        //sample and unpack normal data
-        const float3 normalMapSample = normalMap.Sample(samplr, texCoord).xyz;
-        norm = normalMapSample * 2.0f - 1.0f;
-        norm.y = -norm.y;
-        norm.z = -norm.z;
-        
-        //bring normal from object space into view space
-        norm = normalize(mul(norm, (float3x3) modelView));
+        // sample and unpack normal data
+        const float3 normalSample = nmap.Sample(splr, tc).xyz;
+        const float3 objectNormal = normalSample * 2.0f - 1.0f;
+        // bring normal from object space into view space
+        viewNormal = normalize(mul(objectNormal, (float3x3) modelView));
     }
-
-
-    //fragment to light vector data
-    const float3 vTol = lightPos - vp;
-    
-    const float distTol = length(vTol);
-    const float3 dirTol = vTol / distTol;
-    //attenuation
-    const float att = 1.0f / (attConst + attLin * distTol + attQuad * (distTol * distTol));
-    
-    //diffuse intensity
-    const float3 diffuse = diffuseColor * diffuseIntensity * att * max(0.0f, dot(dirTol, norm));
-
-    //reflect light vector
-    const float3 w = norm * dot(vTol, norm);
-    const float3 r = w * 2.0f - vTol;
-    //caclulate specular intensity based on angle between viewing vector 
-    //and reflection vector, narrow with power func
-    
-    const float3 specular = att * (diffuseColor * diffuseIntensity) * specularIntensity * pow(max(0.0f, dot(normalize(-r), normalize(vp))), specularPower);
-    
-    //final color
-    return float4(saturate((diffuse + ambient) * tex.Sample(samplr, texCoord).rgb + specular), 1.0f);
+	// fragment to light vector data
+    const LightVectorData lv = CalculateLightVectorData(viewLightPos, viewFragPos);
+	// attenuation
+    const float att = Attenuate(attConst, attLin, attQuad, lv.distToL);
+	// diffuse intensity
+    const float3 diffuse = Diffuse(diffuseColor, diffuseIntensity, att, lv.dirToL, viewNormal);
+	// specular
+    const float3 specular = Speculate(
+        specularIntensity.rrr, 1.0f, viewNormal, lv.vToL,
+        viewFragPos, att, specularPower
+    );
+	// final color
+    return float4(saturate((diffuse + ambient) * tex.Sample(splr, tc).rgb + specular), 1.0f);
 }

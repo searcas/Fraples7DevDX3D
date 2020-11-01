@@ -68,17 +68,17 @@ namespace FraplesDev
 		_mChildPtrs.push_back(std::move(pChild));
 
 	}
-	Model::Model(Graphics& gfx, const std::string fileName) : _mpWindow(std::make_unique<ModelWindow>())
+	Model::Model(Graphics& gfx, const std::string& path, float scale) : _mpWindow(std::make_unique<ModelWindow>())
 	{
 		Assimp::Importer imp;
-		const auto pScene = imp.ReadFile(fileName.c_str(), aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_ConvertToLeftHanded | aiProcess_GenNormals | aiProcess_CalcTangentSpace);
+		const auto pScene = imp.ReadFile(path.c_str(), aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_ConvertToLeftHanded | aiProcess_GenNormals | aiProcess_CalcTangentSpace);
 		if (pScene==nullptr)
 		{
 			throw ModelException(imp.GetErrorString(), __LINE__, __FILE__);
 		}
 		for (int i = 0; i < pScene->mNumMeshes; i++)
 		{
-			_mMeshPtrs.push_back(ParseMesh(gfx, *pScene->mMeshes[i],pScene->mMaterials));
+			_mMeshPtrs.push_back(ParseMesh(gfx, *pScene->mMeshes[i],pScene->mMaterials,path,scale));
 		}
 		int nextId;
 		_mRoot = ParseNode(nextId,*pScene->mRootNode);
@@ -92,14 +92,14 @@ namespace FraplesDev
 		}
 		_mRoot->Render(gfx, DirectX::XMMatrixIdentity());
 	}
-	std::unique_ptr<Mesh>Model::ParseMesh(Graphics& gfx, const aiMesh& mesh, const aiMaterial* const* pMaterials)
+	std::unique_ptr<Mesh>Model::ParseMesh(Graphics& gfx, const aiMesh& mesh, const aiMaterial* const* pMaterials,const std::filesystem::path& path,const float& scale)
 	{
 	
 		using namespace std::string_literals;
-
+			
+		const auto rootPath = path.parent_path().string() + "\\";
 		std::vector<std::shared_ptr<GfxContext>>bindablePtrs;
 
-		const auto base = "Models\\gobber\\"s;
 		bool hasSpecularMap = false;
 		bool hasNormalMap = false;
 		bool hasAlphaGloss = false;
@@ -117,7 +117,7 @@ namespace FraplesDev
 
 			if (material.GetTexture(aiTextureType_DIFFUSE,0,&texFileName) ==aiReturn_SUCCESS)
 			{
-				bindablePtrs.push_back(Texture::Resolve(gfx, base + texFileName.C_Str()));
+				bindablePtrs.push_back(Texture::Resolve(gfx, rootPath + texFileName.C_Str()));
 				hasDiffuseMap = true;
 			}
 			else
@@ -126,7 +126,7 @@ namespace FraplesDev
 			}
 			if (material.GetTexture(aiTextureType_SPECULAR, 0, &texFileName) == aiReturn_SUCCESS)
 			{
-				auto tex = Texture::Resolve(gfx, base + texFileName.C_Str(), 1);
+				auto tex = Texture::Resolve(gfx, rootPath + texFileName.C_Str(), 1);
 				hasAlphaGloss = tex->HasAlhpa();
 				bindablePtrs.push_back(std::move(tex));
 				hasSpecularMap = true;
@@ -141,7 +141,7 @@ namespace FraplesDev
 			}
 			if (material.GetTexture(aiTextureType_NORMALS,0,&texFileName) ==aiReturn_SUCCESS)
 			{
-				auto tex = Texture::Resolve(gfx, base + texFileName.C_Str(), 2);
+				auto tex = Texture::Resolve(gfx, rootPath + texFileName.C_Str(), 2);
 				hasAlphaGloss = tex->HasAlhpa();
 				bindablePtrs.push_back(std::move(tex));
 				hasNormalMap = true;
@@ -151,8 +151,7 @@ namespace FraplesDev
 				bindablePtrs.push_back(Sampler::Resolve(gfx));
 			}
 		}
-		const auto meshTag = base + "%" + mesh.mName.C_Str();
-		const float scale = 6.0f;
+		const auto meshTag = path.string() + "%" + mesh.mName.C_Str();
 		if (hasDiffuseMap && hasNormalMap && hasSpecularMap)
 		{
 			MP::VertexBuffer vbuf(std::move(MP::VertexLayout{}.Append(MP::ElementType::Position3D).Append(MP::ElementType::Normal).Append(MP::ElementType::Tangent).Append(MP::ElementType::Bitangent).Append(MP::ElementType::Texture2D)));
