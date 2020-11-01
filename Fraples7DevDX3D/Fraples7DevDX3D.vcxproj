@@ -108,6 +108,7 @@
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Debugging\WindowsMessageMap.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Debugging\Exceptions\FraplesException.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\GDIPlusManager.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\Core\Math\FraplesXM.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\MetaProgramming\Vertex.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Sampler.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Surface.cpp" />
@@ -157,6 +158,7 @@
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Fraples7.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\GDIPlusManager.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\IndexedList.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\Core\Math\FraplesXM.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Math\Math.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\MetaProgramming\Vertex.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Surface.h" />

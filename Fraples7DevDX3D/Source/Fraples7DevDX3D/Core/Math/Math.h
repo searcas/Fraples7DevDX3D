@@ -11,11 +11,20 @@ constexpr auto Sq(const T&& x)
 	return std::move(x * x);
 }
 
-template <typename T>
-inline T wrap_angle(T theta)
+template <typename T = double>
+inline T wrap_angle(T  theta )
 {
-	const T modded = fmod(theta, (T)2.0 * (T)PI_D);
-	return (modded > (T)PI_D) ? (modded - (T)2.0 * (T)PI_D) : modded;
+	constexpr T twoPi = (T)2 * (T)PI_D;
+	const T mod = fmod(theta, twoPi);
+	if (mod > (T)PI_D)
+	{
+		return mod - twoPi;
+	}
+	else
+	{
+		mod + twoPi;
+	}
+	return mod;
 }
 
 template<typename T>
