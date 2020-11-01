@@ -1,8 +1,5 @@
-cbuffer CBuf
-{
-    matrix modelView;
-    matrix modelViewProj;
-};
+#include "TransformData.hlsli"
+
 struct VSOut
 {
     float3 viewPos : Position;
