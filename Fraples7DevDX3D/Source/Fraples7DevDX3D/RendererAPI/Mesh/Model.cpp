@@ -2,6 +2,7 @@
 #include <memory>
 #include <sstream>
 #include "RendererAPI/GFXContextBase.h"
+#include "Core/Math/FraplesXM.h"
 namespace FraplesDev
 {
 	
@@ -428,8 +429,25 @@ namespace FraplesDev
 			ImGui::NextColumn();
 			if (_mPselectedNode != nullptr)
 			{
-				auto& transform = _mTransforms[_mPselectedNode->GetId()];
+				const auto id = _mPselectedNode->GetId();
+				auto i = _mTransforms.find(id);
+				if (i ==_mTransforms.end())
+				{
+					const auto& applied = _mPselectedNode->GetAppliedTransform();
+					const auto angles = ExtractEulerAngles(applied);
+					const auto translation = ExtractTranslation(applied);
+					TransformParameters tp;
+					tp.roll = angles.z;
+					tp.pitch = angles.x;
+					tp.yaw = angles.y;
 
+					tp.x = translation.x;
+					tp.y = translation.y;
+					tp.z = translation.z;
+
+					std::tie(i, std::ignore) = _mTransforms.insert({ id,tp });
+				}
+				auto& transform = i->second;
 				ImGui::Text("Orientation");
 				ImGui::SliderAngle("Roll", &transform.roll, -180.0f, 180.0f);
 				ImGui::SliderAngle("Pitch", &transform.pitch, -180.0f, 180.0f);

@@ -40,6 +40,7 @@ namespace FraplesDev
 		Node(int id,const std::string& name,std::vector<Mesh*>meshPtrs, const DirectX::XMMATRIX& transform)noexcept(!IS_DEBUG);
 		void Render(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform)const noexcept(!IS_DEBUG);
 		void SetAppliedTransform(DirectX::FXMMATRIX transform)noexcept;
+		inline const DirectX::XMFLOAT4X4& GetAppliedTransform() noexcept { return appliedTransform; }
 		inline const int GetId()const noexcept { return _mID; }
 	private:
 		void AddChild(std::unique_ptr<Node>pChild)noexcept(!IS_DEBUG);
