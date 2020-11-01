@@ -39,10 +39,7 @@ namespace FraplesDev
 		//objects
 		PointLight light;
 		Camera _mCamera;
-		Model _mNano{ _mWin.GetGFX(),"Models\\nano_textured\\nanosuit.obj" };
-	    Model _mGoblin{ _mWin.GetGFX(),"Models\\gobber\\GoblinX.obj",6};
-		BaseCube cube;
-		BasePlane plane;
+		Model _mSponza{ _mWin.GetGFX(),"Models\\Sponza\\sponza.obj",0.5f};
 	private:
 		FraplesDev::Timer _mTimer;
 		float _mSpeedFactor = 1.0f;

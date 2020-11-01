@@ -20,7 +20,7 @@ namespace FraplesDev
 	GDIPlusManager gdipm;
 
 	Application::Application(const char* name, int width, int height, const std::string& commandLine)
-		:_mWin(name, width, height), light(_mWin.GetGFX()),plane(_mWin.GetGFX(),6),cube(_mWin.GetGFX(),6),_mCommandLine(commandLine)
+		:_mWin(name, width, height), light(_mWin.GetGFX()),_mCommandLine(commandLine)
 	{
 		if (_mCommandLine != "")
 		{
@@ -40,7 +40,7 @@ namespace FraplesDev
 
 			}
 		}
-		_mWin.GetGFX().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
+		_mWin.GetGFX().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 800.0f));
 	}
 
 
@@ -67,23 +67,19 @@ namespace FraplesDev
 
 	void Application::SpawnFunc()
 	{
+		_mSponza.ShowModelInfo(_mWin.GetGFX(), "SPONZAAAAAAAAAAaaaa");
 		_mCamera.SpawnControllWindow();
 		light.SpawnControlWindow();
-    	_mGoblin.ShowModelInfo(_mWin.GetGFX(),"Ugly Goblin");
-		plane.SpawnControlWindow(_mWin.GetGFX());
-		cube.SpawnControlWindow(_mWin.GetGFX());
 		SpawnAppInfoWindow();
 		ShowRawInputWindow();
+
 	}
 
 	void Application::RenderObj()
 	{
 
-		_mNano.Render(_mWin.GetGFX());
+		_mSponza.Render(_mWin.GetGFX());
 		light.Render(_mWin.GetGFX());
-		_mGoblin.Render(_mWin.GetGFX());
-		plane.Render(_mWin.GetGFX());
-		cube.Render(_mWin.GetGFX());
 	}
 
 	void Application::DoFrame()
