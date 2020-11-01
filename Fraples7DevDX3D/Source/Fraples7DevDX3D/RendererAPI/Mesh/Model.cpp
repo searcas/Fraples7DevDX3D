@@ -375,7 +375,7 @@ namespace FraplesDev
 
 	void Model::ModelWindow::Show(Graphics& gfx,const char* windowName, const Node& root)
 	{
-		windowName = windowName ? windowName : "Model";
+		windowName = windowName ? windowName : "Model ";
 
 		if (ImGui::Begin(windowName))
 		{
@@ -397,6 +397,7 @@ namespace FraplesDev
 				ImGui::SliderFloat("X", &transform.x, -20.0f, 20.0f);
 				ImGui::SliderFloat("Y", &transform.y, -20.0f, 20.0f);
 				ImGui::SliderFloat("Z", &transform.z, -20.0f, 20.0f);
+
 				if (!_mPselectedNode->ControlMeSenpai(gfx,_mSkinMaterial))
 				{
 					_mPselectedNode->ControlMeSenpai(gfx, _mRingMaterial);

@@ -25,9 +25,11 @@ cbuffer ObjectCBuf
 Texture2D tex;
 SamplerState samplr;
 
+
+
 float4 main(float3 viewPos : Position, float3 n : Normal, float2 tc : Texcoord) : SV_TARGET
 {
-
+    viewPos = normalize(viewPos);
     //fragment to light vector data
     const float3 vTol = lightPos - viewPos;
     const float distTol = length(vTol);

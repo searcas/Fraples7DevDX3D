@@ -318,6 +318,8 @@
     <None Include="Source\Fraples7DevDX3D\Core\Debugging\DXTrace.inl">
       <Filter>Header Files</Filter>
     </None>
+    <None Include="Source\Fraples7DevDX3D\Shaders\ShaderOps.hlsli" />
+    <None Include="Source\Fraples7DevDX3D\Shaders\PointLight.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\ColorBlendVS.hlsl" />

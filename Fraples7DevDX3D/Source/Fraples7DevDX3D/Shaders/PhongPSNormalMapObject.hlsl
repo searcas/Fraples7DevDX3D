@@ -40,16 +40,20 @@ float4 main(float3 vp : Position, float3 norm : Normal,float2 texCoord : Texcoor
     //sample normal from map if normal mappping enabled
     if (normalMapEnabled)
     {
+        //sample and unpack normal data
         const float3 normalMapSample = normalMap.Sample(samplr, texCoord).xyz;
         norm = normalMapSample * 2.0f - 1.0f;
         norm.y = -norm.y;
         norm.z = -norm.z;
-        norm = mul(norm, (float3x3) modelView);
+        
+        //bring normal from object space into view space
+        norm = normalize(mul(norm, (float3x3) modelView));
     }
 
 
     //fragment to light vector data
     const float3 vTol = lightPos - vp;
+    
     const float distTol = length(vTol);
     const float3 dirTol = vTol / distTol;
     //attenuation

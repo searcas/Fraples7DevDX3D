@@ -18,6 +18,9 @@ cbuffer ObjectCBuf
 };
 float4 main(float3 viewPos : Position, float3 normal : Normal) : SV_TARGET
 {
+	
+	//renormalize interpolated normal
+    viewPos = normalize(viewPos);
 	const float3 vTol = lightPos - viewPos;
     const float distTol = length(vTol);
     const float3 dirTol = vTol / distTol;
