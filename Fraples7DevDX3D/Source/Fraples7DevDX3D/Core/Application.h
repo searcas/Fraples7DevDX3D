@@ -39,7 +39,7 @@ namespace FraplesDev
 		//objects
 		PointLight light;
 		Camera _mCamera;
-		Model _mSponza{ _mWin.GetGFX(),"Models\\Sponza\\sponza.obj",0.5f};
+		Model _mSponza{ _mWin.GetGFX(),"Models\\Sponza\\sponza.obj",0.1f};
 	private:
 		FraplesDev::Timer _mTimer;
 		float _mSpeedFactor = 1.0f;
