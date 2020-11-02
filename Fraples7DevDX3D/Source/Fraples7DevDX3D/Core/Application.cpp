@@ -14,7 +14,7 @@
 #include "RendererAPI/VertexBuffer.h"
 #include <algorithm>
 #include <shellapi.h>
-#include "Commands/NormalMapCMD.h"
+#include "Commands/TexturePreprocessor.h"
 namespace FraplesDev
 {
 	GDIPlusManager gdipm;
@@ -28,16 +28,27 @@ namespace FraplesDev
 			const auto pLineW = GetCommandLineW();
 			const auto pArgs = CommandLineToArgvW(pLineW, &nArgs);
 
-			if (nArgs >= 4 && std::wstring(pArgs[1])==L"--fpl-rotx180")
+			if (nArgs >= 3 && std::wstring(pArgs[1])==L"--fpl-obj-normal")
 			{
 				const std::wstring pathInWide = pArgs[2];
-				const std::wstring pathOutWide = pArgs[3];
-				cmd::NormalMap::RotateXAxis180(
-				std::string(pathInWide.begin(), pathInWide.end()),
-				std::string(pathOutWide.begin(), pathOutWide.end()));
-				
+				cmd::TexturePreprocessor::FlipYAllNormalMapsInObj(std::string(pathInWide.begin(), pathInWide.end()));
 				throw std::runtime_error("Normal map processed successfully. Nah just kidding With this cuz why not.");
 
+			}
+			else if(nArgs >=3 && std::wstring(pArgs[1]) == L"--fpl-flipy")
+			{
+				const std::wstring pathInWIde = pArgs[2];
+				const std::wstring pathOutWide = pArgs[3];
+
+				cmd::TexturePreprocessor::FlipYNormalMap(std::string(pathInWIde.begin(), pathInWIde.end()), std::string(pathOutWide.begin(), pathOutWide.end()));
+			}
+			else if (nArgs >= 4 && std::wstring(pArgs[1]) == L"--fpl-validate")
+			{
+				const std::wstring minWide = pArgs[2];
+				const std::wstring maxWide = pArgs[3];
+				const std::wstring pathWide = pArgs[4];
+
+				cmd::TexturePreprocessor::ValidateNormalMap(std::string(pathWide.begin(), pathWide.end()), std::stof(minWide), std::stof(maxWide));
 			}
 		}
 		_mWin.GetGFX().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 800.0f));

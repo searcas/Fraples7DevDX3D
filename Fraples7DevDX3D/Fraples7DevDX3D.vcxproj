@@ -101,6 +101,7 @@
     <ClCompile Include="ImGui\imgui_impl_win32.cpp" />
     <ClCompile Include="ImGui\imgui_widgets.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Commands\NormalMapCMD.h" />
+    <ClCompile Include="Source\Fraples7DevDX3D\Commands\TexturePreprocessor.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Application.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Debugging\dxerr.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Debugging\DxgiInfoManager.cpp" />
@@ -147,6 +148,7 @@
     <ClInclude Include="ImGui\imstb_textedit.h" />
     <ClInclude Include="ImGui\imstb_truetype.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\Commands\TexturePreprocessor.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Application.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Debugging\dxerr.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Debugging\DxgiInfoManager.h" />
