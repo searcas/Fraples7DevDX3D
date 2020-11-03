@@ -123,6 +123,7 @@
     <ClCompile Include="Source\Fraples7DevDX3D\Objects\PointLight.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Objects\SolidSphere.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Platform\Windows\Window.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Blending\Blending.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Camera.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\IndexBuffer.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\InputLayout.cpp" />
@@ -178,6 +179,7 @@
     <ClInclude Include="Source\Fraples7DevDX3D\Objects\SolidSphere.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Objects\Sphere.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Platform\Windows\Window.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Blending\Blending.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Camera.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\GFXContextBase.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\GFXContextCodex.h" />

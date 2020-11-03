@@ -103,6 +103,7 @@ namespace FraplesDev
 
 		bool hasSpecularMap = false;
 		bool hasNormalMap = false;
+		bool hasAlphaDiffuse = false;
 		bool hasAlphaGloss = false;
 		bool hasDiffuseMap = false;
 		float shininess = 2.0f;
@@ -116,9 +117,11 @@ namespace FraplesDev
 		
 			aiString texFileName;
 
-			if (material.GetTexture(aiTextureType_DIFFUSE,0,&texFileName) ==aiReturn_SUCCESS)
+			if (material.GetTexture(aiTextureType_DIFFUSE,0,&texFileName) == aiReturn_SUCCESS)
 			{
-				bindablePtrs.push_back(Texture::Resolve(gfx, rootPath + texFileName.C_Str()));
+				auto tex = Texture::Resolve(gfx, rootPath + texFileName.C_Str());
+				hasAlphaDiffuse = tex->HasAlhpa();
+				bindablePtrs.push_back(std::move(tex));
 				hasDiffuseMap = true;
 			}
 			else
@@ -380,7 +383,7 @@ namespace FraplesDev
 
 			throw std::runtime_error("Terrible combination of textures in material, watch out what you doing or importing.");
 	    }
-		
+		bindablePtrs.push_back(Blending::Resolve(gfx, hasAlphaDiffuse));
 
 		return std::make_unique<Mesh>(gfx, std::move(bindablePtrs));
 	}

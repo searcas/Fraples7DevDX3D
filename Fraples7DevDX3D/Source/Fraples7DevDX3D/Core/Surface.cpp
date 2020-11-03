@@ -103,7 +103,7 @@ namespace FraplesDev
 					pBuffer[y * width + x] = c.GetValue();
 					if (c.GetAlpha() !=255)
 					{
-						alphaLoaded = false;
+						alphaLoaded = true;
 						
 					}
 				}
