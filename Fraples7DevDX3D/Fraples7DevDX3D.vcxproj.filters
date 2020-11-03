@@ -75,9 +75,6 @@
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Surface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Fraples7DevDX3D\Core\GDIPlusManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Texture\Texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -236,9 +233,6 @@
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Surface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Fraples7DevDX3D\Core\GDIPlusManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Texture\Texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -329,6 +323,30 @@
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Rasterizer\Rasterizer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DirectXTex\BC.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXTex\BCDirectCompute.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXTex\d3dx12.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXTex\DDS.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXTex\DirectXTex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXTex\DirectXTexP.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXTex\filters.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXTex\scoped.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Fraples7DevDX3D.rc">
@@ -349,6 +367,9 @@
     <None Include="Source\Fraples7DevDX3D\Shaders\PointLight.hlsli" />
     <None Include="Source\Fraples7DevDX3D\Shaders\LightVectorData.hlsli" />
     <None Include="Source\Fraples7DevDX3D\Shaders\TransformData.hlsli" />
+    <None Include="DirectXTex\DirectXTex.inl">
+      <Filter>Header Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\ColorBlendVS.hlsl" />
@@ -367,5 +388,8 @@
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongVSNotex.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongPSNotex.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongSpecPS.hlsl" />
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongPSSpecNormalMask.hlsl" />
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\SolidPS.hlsl" />
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\SolidVS.hlsl" />
   </ItemGroup>
 </Project>

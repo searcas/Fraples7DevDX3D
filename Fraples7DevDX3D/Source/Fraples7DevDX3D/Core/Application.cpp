@@ -6,7 +6,6 @@
 //#include "../Objects/Melon.h"
 //#include "../Objects/Sheet.h"
 //########### End Objects ###########
-#include "GDIPlusManager.h"
 #include "imgui.h"
 #include "imgui_impl_dx11.h"
 #include "imgui_impl_win32.h"
@@ -15,13 +14,21 @@
 #include <algorithm>
 #include <shellapi.h>
 #include "Commands/TexturePreprocessor.h"
+#include "DirectXTex/DirectXTex.h"
+
 namespace FraplesDev
 {
-	GDIPlusManager gdipm;
 
 	Application::Application(const char* name, int width, int height, const std::string& commandLine)
 		:_mWin(name, width, height), light(_mWin.GetGFX()),_mCommandLine(commandLine)
 	{
+		auto scratch = DirectX::ScratchImage{};
+		DirectX::LoadFromWICFile(L"Images\\brickwall.jpg", DirectX::WIC_FLAGS_NONE, nullptr, scratch);
+		auto image = scratch.GetImage(0, 0, 0);
+		auto a = image->pixels[0];
+		auto b = image->pixels[1];
+		auto c = image->pixels[2];
+		auto d = image->pixels[3];
 		if (_mCommandLine != "")
 		{
 			int nArgs;
@@ -50,7 +57,10 @@ namespace FraplesDev
 
 				cmd::TexturePreprocessor::ValidateNormalMap(std::string(pathWide.begin(), pathWide.end()), std::stof(minWide), std::stof(maxWide));
 			}
+
 		}
+		bluePlane.SetPosXYZ(_mCamera.GetPos());
+		redPlane.SetPosXYZ(_mCamera.GetPos());
 		_mWin.GetGFX().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 800.0f));
 	}
 
@@ -83,6 +93,8 @@ namespace FraplesDev
 		light.SpawnControlWindow();
 		SpawnAppInfoWindow();
 		ShowRawInputWindow();
+		bluePlane.SpawnControlWindow(_mWin.GetGFX(),"BLUE ONE");
+		redPlane.SpawnControlWindow(_mWin.GetGFX(), "RED ONE");
 
 	}
 
@@ -91,6 +103,8 @@ namespace FraplesDev
 
 		_mSponza.Render(_mWin.GetGFX());
 		light.Render(_mWin.GetGFX());
+		bluePlane.Render(_mWin.GetGFX());
+		redPlane.Render(_mWin.GetGFX());
 	}
 
 	void Application::DoFrame()

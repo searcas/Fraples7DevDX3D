@@ -4,6 +4,8 @@
 #include <assert.h>
 #include <string>
 #include "Fraples7.h"
+#include <optional>
+#include "DirectXTex/DirectXTex.h"
 namespace FraplesDev
 {
 	class Surface
@@ -91,19 +93,22 @@ namespace FraplesDev
 		class Exception : public FraplesException
 		{
 		public:
-			Exception(int line, const char* file, std::string note)noexcept;
+			Exception(int line, const char* file, std::string note, std::optional<HRESULT>hr = {})noexcept;
+			Exception(int line, const char* file,std::string fileName, std::string note, std::optional<HRESULT>hr = {})noexcept;
 			const char* what()const noexcept override;
 			const char* GetType()const noexcept override;
 			inline const std::string& GetNote()const noexcept;
 		private:
+			std::optional<HRESULT>hr;
 			std::string _mNote;
 		};
 
-		Surface(unsigned int width, unsigned int height) noexcept;
-		Surface(Surface&& source) noexcept;
+		Surface(unsigned int width, unsigned int height);
+		Surface(Surface&& source) noexcept = default;
 		Surface(Surface& cpyctr) = delete;
 		Surface& operator = (const Surface&) = delete;
-		Surface& operator = (Surface&& donor)noexcept;
+		Surface& operator = (Surface&& donor)noexcept = default;
+		~Surface() = default;
 		void Clear(Color fillValue) noexcept;
 		void PutPixel(unsigned int x, unsigned int y, Color c)noexcept(!IS_DEBUG);
 		Color GetPixel(unsigned int x, unsigned int y)const noexcept(!IS_DEBUG);
@@ -115,15 +120,12 @@ namespace FraplesDev
 		
 		bool AlphaLoaded()const noexcept;
 		void Save(const std::string& filename) const;
-		void Copy(const Surface& src)noexcept(!IS_DEBUG);
 		private:
-			Surface(unsigned int width, unsigned int height, std::unique_ptr<Color[]>pBufferParam, bool alphaLoaded = false) noexcept;
+			Surface(DirectX::ScratchImage scratch) noexcept;
 
 	private:
-		std::unique_ptr<Color[]>_mPBuffer;
-		unsigned int _mWidth;
-		unsigned int _mHeight;
-		bool _mAlphaLoaded = false;
+		static constexpr DXGI_FORMAT format = DXGI_FORMAT::DXGI_FORMAT_B8G8R8A8_UNORM;
+		DirectX::ScratchImage scratch = {};
 	};
 
 

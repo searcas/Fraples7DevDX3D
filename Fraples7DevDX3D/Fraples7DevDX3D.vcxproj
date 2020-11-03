@@ -57,12 +57,13 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)Fraples7DevDX3D\ImGui;$(SolutionDir)Fraples7DevDX3D\Source\Fraples7DevDX3D;$(SolutionDir)Fraples7DevDX3D\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>26812</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d11.lib;assimp-vc140-mt.lib;dxguid.lib;D3DCompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\assimp-lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>d3d11.lib;assimp-vc140-mt.lib;dxguid.lib;D3DCompiler.lib;DirectXTex.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\assimp-lib;$(SolutionDir)Fraples7DevDX3D\DirectXTex\lib\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -82,14 +83,15 @@
       <DebugInformationFormat>None</DebugInformationFormat>
       <Optimization>MaxSpeed</Optimization>
       <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>
-      <AdditionalDependencies>d3d11.lib;assimp-vc140-mt.lib;dxguid.lib;D3DCompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\assimp-lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>d3d11.lib;assimp-vc140-mt.lib;dxguid.lib;D3DCompiler.lib;DirectXTex.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\assimp-lib;$(SolutionDir)Fraples7DevDX3D\DirectXTex\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <LinkTimeCodeGeneration>UseFastLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
   </ItemDefinitionGroup>
@@ -108,7 +110,6 @@
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Debugging\Timer.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Debugging\WindowsMessageMap.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Debugging\Exceptions\FraplesException.cpp" />
-    <ClCompile Include="Source\Fraples7DevDX3D\Core\GDIPlusManager.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Math\FraplesXM.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\MetaProgramming\Vertex.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Sampler.cpp" />
@@ -141,6 +142,14 @@
     <ClCompile Include="WinEntryPoint.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DirectXTex\BC.h" />
+    <ClInclude Include="DirectXTex\BCDirectCompute.h" />
+    <ClInclude Include="DirectXTex\d3dx12.h" />
+    <ClInclude Include="DirectXTex\DDS.h" />
+    <ClInclude Include="DirectXTex\DirectXTex.h" />
+    <ClInclude Include="DirectXTex\DirectXTexP.h" />
+    <ClInclude Include="DirectXTex\filters.h" />
+    <ClInclude Include="DirectXTex\scoped.h" />
     <ClInclude Include="ImGui\imconfig.h" />
     <ClInclude Include="ImGui\imgui.h" />
     <ClInclude Include="ImGui\imgui_impl_dx11.h" />
@@ -160,7 +169,6 @@
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Debugging\Exceptions\FraplesException.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Debugging\Exceptions\Macros\WindowsThrowMacros.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Fraples7.h" />
-    <ClInclude Include="Source\Fraples7DevDX3D\Core\GDIPlusManager.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\IndexedList.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Math\FraplesXM.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Math\Math.h" />
@@ -205,6 +213,7 @@
     <ResourceCompile Include="Fraples7DevDX3D.rc" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="DirectXTex\DirectXTex.inl" />
     <None Include="Source\Fraples7DevDX3D\Core\Debugging\DXGetErrorDescription.inl" />
     <None Include="Source\Fraples7DevDX3D\Core\Debugging\DXGetErrorString.inl" />
     <None Include="Source\Fraples7DevDX3D\Core\Debugging\DXTrace.inl" />
@@ -282,6 +291,12 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
     </FxCompile>
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongPSSpecNormalMask.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongSpecPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
@@ -295,6 +310,18 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongVSNotex.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\SolidPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\SolidVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>

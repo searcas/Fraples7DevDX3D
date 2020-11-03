@@ -185,7 +185,7 @@ namespace FraplesDev
 			auto pvsbyte = pvs->GetBytecode();
 			bindablePtrs.push_back(std::move(pvs));
 
-			bindablePtrs.push_back(PixelShader::Resolve(gfx, "PhongPSSpecNormalMap.cso"));
+			bindablePtrs.push_back(PixelShader::Resolve(gfx, hasAlphaDiffuse?"PhongPSSpecNormalMask.cso": "PhongPSSpecNormalMap.cso"));
 			bindablePtrs.push_back(InputLayout::Resolve(gfx, vbuf.GetLayout(), pvsbyte));
 
 			Node::PSMaterialConstantFullmonte pmc;
@@ -386,6 +386,7 @@ namespace FraplesDev
 		// anything with alpha diffuse is 2-sided IN THIS SCENE
 		//need a better way of signalling  2-sidedness to be more general in the future
 		bindablePtrs.push_back(Rasterizer::Resolve(gfx, hasAlphaDiffuse));
+		bindablePtrs.push_back(Blending::Resolve(gfx, false));
 		return std::make_unique<Mesh>(gfx, std::move(bindablePtrs));
 	}
 	std::unique_ptr<Node>Model::ParseNode(int& nextId, const aiNode& node)noexcept

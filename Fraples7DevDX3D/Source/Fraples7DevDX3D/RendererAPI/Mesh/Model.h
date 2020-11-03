@@ -110,7 +110,7 @@ namespace FraplesDev
 		DirectX::XMFLOAT4X4 appliedTransform = {};
 
 	};
-
+	
 	class Model
 	{
 	public:

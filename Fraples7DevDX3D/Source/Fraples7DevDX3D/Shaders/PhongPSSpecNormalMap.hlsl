@@ -25,6 +25,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
 	
 	//sample diffuse texture
     float4 dtex = tex.Sample(splr, tc);
+#ifdef MASK_ON
 	//bail if higly translucent
     clip(dtex.a < 0.1f ? -1 : 1);
 	//flip normal when backface
@@ -32,6 +33,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
     {
         viewNormal = -viewNormal;
     }
+#endif
 	// normalize the mesh normal
 	viewNormal = normalize(viewNormal);
 	// replace normal with mapped if normal mapping enabled

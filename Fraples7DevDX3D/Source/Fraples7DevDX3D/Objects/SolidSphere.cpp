@@ -31,10 +31,13 @@ namespace FraplesDev
 			
 			AddBind(InputLayout::Resolve(gfx, model._mVertices.GetLayout(), pvsbyte));
 
-
+			
 			AddBind(Topology::Resolve(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 
 			AddBind(std::make_shared<TransformCBuf>(gfx, *this));
+
+			AddBind(Blending::Resolve(gfx, false));
+			AddBind(Rasterizer::Resolve(gfx, false));
 	}
 
 

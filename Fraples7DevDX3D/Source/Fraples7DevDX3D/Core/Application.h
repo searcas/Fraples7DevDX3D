@@ -40,6 +40,9 @@ namespace FraplesDev
 		PointLight light;
 		Camera _mCamera;
 		Model _mSponza{ _mWin.GetGFX(),"Models\\Sponza\\sponza.obj",0.1f };
+		BasePlane bluePlane{ _mWin.GetGFX(),6.0f,{0.3,0.3,1.0f,0.0f} };
+		BasePlane redPlane{ _mWin.GetGFX(),6.0f,{1.0,0.3,0.4f,0.0f} };
+		
 	private:
 		FraplesDev::Timer _mTimer;
 		float _mSpeedFactor = 1.0f;
