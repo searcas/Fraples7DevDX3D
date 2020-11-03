@@ -21,6 +21,8 @@ namespace FraplesDev
 		std::string _mPath;
 		bool hasAlpha = false;
 	private:
+		static UINT CalculateNumberOfMipLevels(UINT width, UINT height)noexcept;
+	private:
 		unsigned int _mSlot;
 	};
 
