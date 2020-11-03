@@ -383,7 +383,9 @@ namespace FraplesDev
 
 			throw std::runtime_error("Terrible combination of textures in material, watch out what you doing or importing.");
 	    }
-
+		// anything with alpha diffuse is 2-sided IN THIS SCENE
+		//need a better way of signalling  2-sidedness to be more general in the future
+		bindablePtrs.push_back(Rasterizer::Resolve(gfx, hasAlphaDiffuse));
 		return std::make_unique<Mesh>(gfx, std::move(bindablePtrs));
 	}
 	std::unique_ptr<Node>Model::ParseNode(int& nextId, const aiNode& node)noexcept

@@ -12,3 +12,4 @@
 #include "Core/Sampler.h"
 #include "Core/Texture/Texture.h"
 #include "Blending/Blending.h"
+#include "RendererAPI/Rasterizer/Rasterizer.h"
