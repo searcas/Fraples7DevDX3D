@@ -383,7 +383,6 @@ namespace FraplesDev
 
 			throw std::runtime_error("Terrible combination of textures in material, watch out what you doing or importing.");
 	    }
-		bindablePtrs.push_back(Blending::Resolve(gfx, hasAlphaDiffuse));
 
 		return std::make_unique<Mesh>(gfx, std::move(bindablePtrs));
 	}
