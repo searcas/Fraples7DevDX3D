@@ -15,80 +15,75 @@ namespace FraplesDev
 		class Color
 		{
 		public:
-			constexpr Color() noexcept : _mDword()
+			unsigned int dword;
+		public:
+			constexpr Color() noexcept : dword()
+			{}
+			constexpr Color(const Color& col) noexcept
+				:
+				dword(col.dword)
+			{}
+			constexpr Color(unsigned int dw) noexcept
+				:
+				dword(dw)
+			{}
+			constexpr Color(unsigned char x, unsigned char r, unsigned char g, unsigned char b) noexcept
+				:
+				dword((x << 24u) | (r << 16u) | (g << 8u) | b)
+			{}
+			constexpr Color(unsigned char r, unsigned char g, unsigned char b) noexcept
+				:
+				dword((255u << 24u) | (r << 16u) | (g << 8u) | b)
+			{}
+			constexpr Color(Color col, unsigned char x) noexcept
+				:
+				Color((x << 24u) | col.dword)
+			{}
+			Color& operator =(Color color) noexcept
 			{
-
-			}
-			constexpr Color(const Color& other) noexcept : _mDword(other._mDword)
-			{
-
-			}
-			constexpr Color(unsigned int dw) noexcept : _mDword(dw)
-			{
-
-			}
-			constexpr Color(unsigned int x, unsigned int r, unsigned int g, unsigned int b)noexcept : 
-				_mDword((x << 24u) | (r << 16u) | (g <<8) | b)
-			{
-
-			}
-			constexpr Color(unsigned int r, unsigned int g, unsigned int b)noexcept 
-				: _mDword((255u<<24u) | (r<<16u) | (g<<8u) | b)
-			{
-
-			}
-			constexpr Color(Color col, unsigned char x)noexcept : 
-				Color((x << 24u) | col._mDword)
-			{
-
-			}
-			Color& operator = (Color color)noexcept
-			{
-				_mDword = color._mDword;
+				dword = color.dword;
 				return *this;
 			}
-			constexpr unsigned char GetX()const noexcept
+			constexpr unsigned char GetX() const noexcept
 			{
-				return _mDword >> 24u;
+				return dword >> 24u;
 			}
-			constexpr unsigned char GetA()const noexcept
+			constexpr unsigned char GetA() const noexcept
 			{
 				return GetX();
 			}
-			constexpr unsigned char GetR()const noexcept
+			constexpr unsigned char GetR() const noexcept
 			{
-				return (_mDword >> 16u) & 0xFFu;
+				return (dword >> 16u) & 0xFFu;
 			}
-			constexpr unsigned char GetG()const noexcept
+			constexpr unsigned char GetG() const noexcept
 			{
-				return(_mDword >> 8u) & 0xFFu;
+				return (dword >> 8u) & 0xFFu;
 			}
-			constexpr unsigned char GetB()const noexcept
+			constexpr unsigned char GetB() const noexcept
 			{
-				return _mDword & 0xFFu;
+				return dword & 0xFFu;
 			}
-			void SetX(unsigned char x)noexcept
+			void SetX(unsigned char x) noexcept
 			{
-				_mDword = (_mDword & 0xFFFFFFu) | (x << 24u);
+				dword = (dword & 0xFFFFFFu) | (x << 24u);
 			}
-			void SetA(unsigned char a)noexcept
+			void SetA(unsigned char a) noexcept
 			{
 				SetX(a);
 			}
-			void SetR(unsigned char r)noexcept
+			void SetR(unsigned char r) noexcept
 			{
-				_mDword = (_mDword & 0xFF00FFFFu) | (r << 16u);
+				dword = (dword & 0xFF00FFFFu) | (r << 16u);
 			}
-			void SetG(unsigned char g)noexcept
+			void SetG(unsigned char g) noexcept
 			{
-				_mDword = (_mDword & 0xFFFF00FFu) | (g << 8u);
+				dword = (dword & 0xFFFF00FFu) | (g << 8u);
 			}
-			void SetB(unsigned char b)noexcept
+			void SetB(unsigned char b) noexcept
 			{
-				_mDword = (_mDword & 0xFFFFFF00u) | b;
+				dword = (dword & 0xFFFFFF00u) | b;
 			}
-		public:
-			unsigned int _mDword;
 		};
 
 		class Exception : public FraplesException
@@ -115,7 +110,8 @@ namespace FraplesDev
 		Color GetPixel(unsigned int x, unsigned int y)const noexcept(!IS_DEBUG);
 		unsigned int GetWidth()const noexcept;
 		unsigned int GetHeight()const noexcept;
-		Color* GetBufferPtr()const noexcept;
+		Color* GetBufferPtr() noexcept;
+		const Color* GetBufferPtr()const noexcept;
 		const Color* GetBufferPtrConst()const noexcept;
 		static Surface FromFile(const std::string& name);
 		

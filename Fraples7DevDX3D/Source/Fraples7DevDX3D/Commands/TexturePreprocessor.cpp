@@ -160,9 +160,9 @@ namespace FraplesDev
 			DirectX::XMStoreFloat3(&floats, nOut);
 
 			return { 
-			(unsigned int)round(floats.x),
-			(unsigned int)round(floats.y),
-			(unsigned int)round(floats.z)
+			(unsigned char)round(floats.x),
+			(unsigned char)round(floats.y),
+			(unsigned char)round(floats.z)
 			};
 
 		}

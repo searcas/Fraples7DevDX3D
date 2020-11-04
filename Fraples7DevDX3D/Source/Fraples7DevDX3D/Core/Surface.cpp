@@ -57,7 +57,11 @@ namespace FraplesDev
 	{
 		return (unsigned int)scratch.GetMetadata().height;
 	}
-	 Surface::Color* Surface::GetBufferPtr() const noexcept
+	Surface::Color* Surface::GetBufferPtr()  noexcept
+	{
+		 return reinterpret_cast<Color*>(scratch.GetPixels());
+	}
+	const Surface::Color* Surface::GetBufferPtr() const noexcept
 	{
 		 return reinterpret_cast<Color*>(scratch.GetPixels());
 	}
@@ -76,7 +80,9 @@ namespace FraplesDev
 		if (scratch.GetImage(0, 0, 0)->format != format)
 		{
 			DirectX::ScratchImage converted;
-			hr = DirectX::Convert(*scratch.GetImage(0, 0, 0), format, DirectX::TEX_FILTER_DEFAULT, DirectX::TEX_THRESHOLD_DEFAULT, converted);
+			hr = DirectX::Convert(*scratch.GetImage(0, 0, 0), format, 
+				DirectX::TEX_FILTER_DEFAULT, 
+				DirectX::TEX_THRESHOLD_DEFAULT, converted);
 
 
 			if (FAILED(hr))
