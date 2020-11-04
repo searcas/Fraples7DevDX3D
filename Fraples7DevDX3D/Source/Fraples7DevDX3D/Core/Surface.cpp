@@ -67,11 +67,8 @@ namespace FraplesDev
 	}
 	Surface Surface::FromFile(const std::string& name)
 	{
-		wchar_t wideName[512];
-		mbstowcs_s(nullptr, wideName, name.c_str(), _TRUNCATE);
-
 		DirectX::ScratchImage scratch;
-		HREFTYPE hr = DirectX::LoadFromWICFile(wideName, DirectX::WIC_FLAGS_NONE, nullptr, scratch);
+		HREFTYPE hr = DirectX::LoadFromWICFile(Utility::ToWide(name).c_str(), DirectX::WIC_FLAGS_NONE, nullptr, scratch);
 		if (FAILED(hr))
 		{
 			throw Surface::Exception(__LINE__, __FILE__, name, "Failed to load image", hr);
@@ -115,9 +112,9 @@ namespace FraplesDev
 			}
 			throw Exception(__LINE__, __FILE__, filename, "Image format not supported");
 		};
-		wchar_t wideName[512];
-		mbstowcs_s(nullptr, wideName, filename.c_str(), _TRUNCATE);
-		HRESULT hr = DirectX::SaveToWICFile(*scratch.GetImage(0, 0, 0), DirectX::WIC_FLAGS_NONE, DirectX::GetWICCodec(GetCodeID(filename)), wideName);
+	
+		HRESULT hr = DirectX::SaveToWICFile(*scratch.GetImage(0, 0, 0),
+		DirectX::WIC_FLAGS_NONE, DirectX::GetWICCodec(GetCodeID(filename)), Utility::ToWide(filename).c_str());
 		
 		if (FAILED(hr))
 		{

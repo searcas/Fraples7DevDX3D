@@ -12,53 +12,15 @@
 #include "Core/MetaProgramming/Vertex.h"
 #include "RendererAPI/VertexBuffer.h"
 #include <algorithm>
-#include <shellapi.h>
-#include "Commands/TexturePreprocessor.h"
-#include "DirectXTex/DirectXTex.h"
-
+#include "Commands/Fraples7Utility.h"
 namespace FraplesDev
 {
 
 	Application::Application(const char* name, int width, int height, const std::string& commandLine)
-		:_mWin(name, width, height), light(_mWin.GetGFX()),_mCommandLine(commandLine)
+		:_mWin(name, width, height), light(_mWin.GetGFX()), _mCommandLine(commandLine), scriptCommander(Utility::TokenizeQuoted(commandLine))
 	{
-		auto scratch = DirectX::ScratchImage{};
-		DirectX::LoadFromWICFile(L"Images\\brickwall.jpg", DirectX::WIC_FLAGS_NONE, nullptr, scratch);
-		auto image = scratch.GetImage(0, 0, 0);
-		auto a = image->pixels[0];
-		auto b = image->pixels[1];
-		auto c = image->pixels[2];
-		auto d = image->pixels[3];
-		if (_mCommandLine != "")
-		{
-			int nArgs;
-			const auto pLineW = GetCommandLineW();
-			const auto pArgs = CommandLineToArgvW(pLineW, &nArgs);
 
-			if (nArgs >= 3 && std::wstring(pArgs[1])==L"--fpl-obj-normal")
-			{
-				const std::wstring pathInWide = pArgs[2];
-				cmd::TexturePreprocessor::FlipYAllNormalMapsInObj(std::string(pathInWide.begin(), pathInWide.end()));
-				throw std::runtime_error("Normal map processed successfully. Nah just kidding With this cuz why not.");
-
-			}
-			else if(nArgs >=3 && std::wstring(pArgs[1]) == L"--fpl-flipy")
-			{
-				const std::wstring pathInWIde = pArgs[2];
-				const std::wstring pathOutWide = pArgs[3];
-
-				cmd::TexturePreprocessor::FlipYNormalMap(std::string(pathInWIde.begin(), pathInWIde.end()), std::string(pathOutWide.begin(), pathOutWide.end()));
-			}
-			else if (nArgs >= 4 && std::wstring(pArgs[1]) == L"--fpl-validate")
-			{
-				const std::wstring minWide = pArgs[2];
-				const std::wstring maxWide = pArgs[3];
-				const std::wstring pathWide = pArgs[4];
-
-				cmd::TexturePreprocessor::ValidateNormalMap(std::string(pathWide.begin(), pathWide.end()), std::stof(minWide), std::stof(maxWide));
-			}
-
-		}
+	
 		bluePlane.SetPosXYZ(_mCamera.GetPos());
 		redPlane.SetPosXYZ(_mCamera.GetPos());
 		_mWin.GetGFX().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 800.0f));

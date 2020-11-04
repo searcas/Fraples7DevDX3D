@@ -7,7 +7,7 @@
 #include "Objects/BasePlane.h"
 #include "Objects/BaseCube.h"
 #include "Objects/PointLight.h"
-
+#include "Commands/ScriptCommandCenter.h"
 #include <set>
 namespace FraplesDev
 {
@@ -49,7 +49,7 @@ namespace FraplesDev
 		bool show_demo_window = true;
 		float speed_accelerator = 1.500f;
 		std::string _mCommandLine;
-	
+		ScriptCommander scriptCommander;
 	};
 
 }

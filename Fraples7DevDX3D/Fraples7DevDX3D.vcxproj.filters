@@ -147,6 +147,12 @@
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Rasterizer\Rasterizer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\Commands\Fraples7Utility.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\Commands\ScriptCommandCenter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Debugging\WindowsMessageMap.h">
@@ -345,6 +351,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DirectXTex\scoped.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\Commands\Fraples7Utility.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\Commands\ScriptCommandCenter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

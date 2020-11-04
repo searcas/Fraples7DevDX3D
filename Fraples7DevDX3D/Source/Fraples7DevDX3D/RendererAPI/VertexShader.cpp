@@ -1,14 +1,14 @@
 #include "VertexShader.h"
 #include "../Core/Debugging/Exceptions/Macros/GraphicsThrowMacros.h"
 #include "RendererAPI/GFXContextCodex.h"
-
+#include "Commands/Fraples7Utility.h"
 namespace FraplesDev
 {
 	VertexShader::VertexShader(Graphics& gfx, const std::string& path) :_mPath(path)
 	{
 		INFOMAN(gfx);
 
-		FPL_GFX_THROW_INFO(D3DReadFileToBlob(std::wstring{ path.begin(),path.end() }.c_str(), &_mpBytecodeBlob));
+		FPL_GFX_THROW_INFO(D3DReadFileToBlob(Utility::ToWide(path).c_str(), &_mpBytecodeBlob));
 		FPL_GFX_THROW_INFO(GetDevice(gfx)->CreateVertexShader(_mpBytecodeBlob->GetBufferPointer(), _mpBytecodeBlob->GetBufferSize(), nullptr, &_mpVertexShader));
 
 	}

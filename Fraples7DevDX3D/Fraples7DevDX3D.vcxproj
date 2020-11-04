@@ -56,7 +56,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Fraples7DevDX3D\ImGui;$(SolutionDir)Fraples7DevDX3D\Source\Fraples7DevDX3D;$(SolutionDir)Fraples7DevDX3D\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Fraples7DevDX3D\ImGui;$(SolutionDir)Fraples7DevDX3D\Source\Fraples7DevDX3D;$(SolutionDir)Fraples7DevDX3D\;$(SolutionDir)Dependencies\json\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>26812</DisableSpecificWarnings>
     </ClCompile>
     <Link>
@@ -79,7 +79,7 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Fraples7DevDX3D\ImGui;$(SolutionDir)Fraples7DevDX3D\Source\Fraples7DevDX3D;$(SolutionDir)Fraples7DevDX3D\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Fraples7DevDX3D\ImGui;$(SolutionDir)Fraples7DevDX3D\Source\Fraples7DevDX3D;$(SolutionDir)Fraples7DevDX3D\;$(SolutionDir)Dependencies\json\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>None</DebugInformationFormat>
       <Optimization>MaxSpeed</Optimization>
       <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
@@ -102,7 +102,9 @@
     <ClCompile Include="ImGui\imgui_impl_dx11.cpp" />
     <ClCompile Include="ImGui\imgui_impl_win32.cpp" />
     <ClCompile Include="ImGui\imgui_widgets.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\Commands\Fraples7Utility.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Commands\NormalMapCMD.h" />
+    <ClCompile Include="Source\Fraples7DevDX3D\Commands\ScriptCommandCenter.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Commands\TexturePreprocessor.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Application.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Debugging\dxerr.cpp" />
@@ -159,6 +161,8 @@
     <ClInclude Include="ImGui\imstb_textedit.h" />
     <ClInclude Include="ImGui\imstb_truetype.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\Commands\Fraples7Utility.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\Commands\ScriptCommandCenter.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Commands\TexturePreprocessor.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Application.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Debugging\dxerr.h" />
