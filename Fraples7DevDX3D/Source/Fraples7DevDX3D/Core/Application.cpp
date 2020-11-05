@@ -21,12 +21,29 @@ namespace FraplesDev
 		:_mWin(name, width, height), light(_mWin.GetGFX()), scriptCommander(Utility::TokenizeQuoted(commandLine))
 	{
 		MP::Struct s(0);
-		s.Add<MP::Struct>("Searcas7");
-		static_cast<MP::Struct&>(s["Searcas7"]).Add<MP::Float3>("TrinityCore");
+		s.Add<MP::Struct>("butts");
+		s["butts"].Add<MP::Float3>("pubes");
+		s["butts"].Add<MP::Float>("dank");
+		s.Add<MP::Float>("woot");
+		s.Add<MP::Array>("arr");
+		s["arr"].Set<MP::Struct>(4);
+		s["arr"].T().Add<MP::Float3>("twerk");
+		s["arr"].T().Add<MP::Array>("werk");
+		s["arr"].T()["werk"].Set<MP::Float>(6);
+		s["arr"].T().Add<MP::Array>("meta");
+		s["arr"].T()["meta"].Set<MP::Array>(6);
+		s["arr"].T()["meta"].T().Set<MP::Matrix>(4);
 		MP::Buffer b(s);
-		b["Searcas7"]["TrinityCore"] = DirectX::XMFLOAT3{ 69.0f,69.0f,69.0f};
-		DirectX::XMFLOAT3 v = b["Searcas7"]["TrinityCore"];
-	
+		b["butts"]["pubes"] = DirectX::XMFLOAT3{ 69.0f,0.0f,0.0f };
+		b["butts"]["dank"] = 420.0f;
+		b["woot"] = 42.0f;
+		b["arr"][2]["werk"][5] = 111.0f;
+		DirectX::XMStoreFloat4x4(&(DirectX::XMFLOAT4X4&)b["arr"][2]["meta"][5][3], DirectX::XMMatrixIdentity());
+		float k = b["woot"];
+		DirectX::XMFLOAT3 v = b["butts"]["pubes"];
+		float u = b["butts"]["dank"];
+		float er = b["arr"][2]["werk"][5];
+		DirectX::XMFLOAT4X4 eq = b["arr"][2]["meta"][5][3];
 		bluePlane.SetPosXYZ(_mCamera.GetPos());
 		redPlane.SetPosXYZ(_mCamera.GetPos());
 		_mWin.GetGFX().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 800.0f));
