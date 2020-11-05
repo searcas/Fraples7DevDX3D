@@ -2,7 +2,8 @@
 #include <sstream>
 #include <fstream>
 #include "TexturePreprocessor.h"
-#include "nlohmann/json.hpp"
+#include "Json/nlohmann/json.hpp"
+
 namespace FraplesDev
 {
 	using namespace std::string_literals;
