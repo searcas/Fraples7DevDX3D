@@ -3,11 +3,6 @@
 #include "GFXContextCodex.h"
 namespace FraplesDev
 {
-
-
-
-
-
 	PixelShader::PixelShader(Graphics& gfx, const std::string& path) 
 		:_mPath(path)
 	{

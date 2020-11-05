@@ -51,8 +51,10 @@ artifacts/
 *.ilk
 *.meta
 *.obj
-!hw3d/Models/**/*.obj
-!hw3d/assimp/bin/*
+!Fraples7DevDX3D/Models/**/*.obj
+!Fraples7DevDX3D/assimp/bin/*
+!Fraples7DevDX3D/DirectXTex/lib/Debug
+!Fraples7DevDX3D/DirectXTex/lib/Release
 *.pch
 *.pdb
 *.pgc
@@ -262,4 +264,4 @@ paket-files/
 __pycache__/
 *.pyc
 *.cso
-/hw3d/imgui.ini
+/Fraples7DevDX3D/imgui.ini

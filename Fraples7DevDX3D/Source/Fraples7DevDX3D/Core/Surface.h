@@ -1,11 +1,9 @@
 #pragma once
-#include "Debugging\Exceptions\FraplesException.h"
 #include "Fraples7.h"
-#include "DirectXTex/DirectXTex.h"
-#include <assert.h>
 #include <optional>
-#include <memory>
 #include <string>
+#include "Debugging\Exceptions\FraplesException.h"
+#include "DirectXTex/DirectXTex.h"
 namespace FraplesDev
 {
 	class Surface

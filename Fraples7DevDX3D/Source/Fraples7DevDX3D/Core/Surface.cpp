@@ -1,11 +1,10 @@
 #include "Surface.h"
 #include <sstream>
 #include <algorithm>
-#include "Platform/Windows/Window.h"
 #include <filesystem>
 #include <cassert>
+#include "Platform/Windows/Window.h"
 #include "Commands/Fraples7Utility.h"
-
 
 namespace FraplesDev
 {
@@ -72,6 +71,7 @@ namespace FraplesDev
 	}
 	Surface Surface::FromFile(const std::string& name)
 	{
+
 		DirectX::ScratchImage scratch;
 		HREFTYPE hr = DirectX::LoadFromWICFile(Utility::ToWide(name).c_str(), DirectX::WIC_FLAGS_NONE, nullptr, scratch);
 		if (FAILED(hr))
@@ -84,8 +84,6 @@ namespace FraplesDev
 			hr = DirectX::Convert(*scratch.GetImage(0, 0, 0), format, 
 				DirectX::TEX_FILTER_DEFAULT, 
 				DirectX::TEX_THRESHOLD_DEFAULT, converted);
-
-
 			if (FAILED(hr))
 			{
 				throw Surface::Exception(__LINE__, __FILE__, name, "Failed to convert image", hr);
@@ -139,7 +137,6 @@ namespace FraplesDev
 		{
 			note = "[Error String]" + Window::Exception::TranslateErrorCode(*hr) + "\n" + note;
 		}
-
 	}
 	Surface::Exception::Exception(int line, const char* file, std::string filename,std::string note, std::optional<HRESULT>hr) noexcept
 		:FraplesException(line, file)
@@ -150,7 +147,6 @@ namespace FraplesDev
 		{
 			note = "[Error String]" + Window::Exception::TranslateErrorCode(*hr)  + note;
 		}
-
 	}
 	const char* Surface::Exception::what() const noexcept
 	{
