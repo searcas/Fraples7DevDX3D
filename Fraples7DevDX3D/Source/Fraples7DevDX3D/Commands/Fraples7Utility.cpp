@@ -1,6 +1,7 @@
 #include "Fraples7Utility.h"
 #include <sstream>
 #include <iomanip>
+
 std::vector<std::string> FraplesDev::Utility::TokenizeQuoted(const std::string& input)
 {
 	std::istringstream stream;
