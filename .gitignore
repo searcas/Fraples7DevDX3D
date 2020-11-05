@@ -15,8 +15,12 @@
 [Dd]ebugPublic/
 [Rr]elease/
 [Rr]eleases/
-x64/
-x86/
+
+!x64/Release
+!x64/Debug
+*.exe
+*.iobj
+*.ipdb
 bld/
 [Bb]in/
 [Oo]bj/
@@ -55,6 +59,7 @@ artifacts/
 !Fraples7DevDX3D/assimp/bin/*
 !Fraples7DevDX3D/DirectXTex/lib/Debug
 !Fraples7DevDX3D/DirectXTex/lib/Release
+
 *.pch
 *.pdb
 *.pgc
