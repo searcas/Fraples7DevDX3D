@@ -5,17 +5,10 @@
 
 namespace FraplesDev
 {
-	class Utility
+	namespace Utility
 	{
-	public:
-		static std::vector<std::string> TokenizeQuoted(const std::string& input);
-		static std::wstring ToWide(const std::string& narrow);
-		static std::string ToNarrow(const std::wstring& wide);
-
-	private:
-
+		std::vector<std::string> TokenizeQuoted(const std::string& input);
+		std::wstring ToWide(const std::string& narrow);
+		std::string ToNarrow(const std::wstring& wide);
 	};
-
-
-
 }

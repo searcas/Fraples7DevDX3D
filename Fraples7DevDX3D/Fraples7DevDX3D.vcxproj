@@ -50,18 +50,20 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);IS_DEBUG=true</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_MBCS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);IS_DEBUG=true</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <FloatingPointModel>Fast</FloatingPointModel>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)Fraples7DevDX3D\ImGui;$(SolutionDir)Fraples7DevDX3D\Source\Fraples7DevDX3D;$(SolutionDir)Fraples7DevDX3D\;$(SolutionDir)Dependencies\json\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <DisableSpecificWarnings>26812</DisableSpecificWarnings>
+      <DisableSpecificWarnings>
+      </DisableSpecificWarnings>
+      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>
       <AdditionalDependencies>d3d11.lib;assimp-vc140-mt.lib;dxguid.lib;D3DCompiler.lib;DirectXTex.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\assimp-lib;$(SolutionDir)Fraples7DevDX3D\DirectXTex\lib\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
@@ -113,6 +115,7 @@
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Debugging\WindowsMessageMap.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Debugging\Exceptions\FraplesException.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Math\FraplesXM.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\Core\MetaProgramming\DynamicConstant.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\MetaProgramming\Vertex.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Sampler.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Surface.cpp" />
@@ -176,6 +179,7 @@
     <ClInclude Include="Source\Fraples7DevDX3D\Core\IndexedList.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Math\FraplesXM.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Math\Math.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\Core\MetaProgramming\DynamicConstant.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\MetaProgramming\Vertex.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Surface.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Texture\Texture.h" />
@@ -221,6 +225,7 @@
     <None Include="Source\Fraples7DevDX3D\Core\Debugging\DXGetErrorDescription.inl" />
     <None Include="Source\Fraples7DevDX3D\Core\Debugging\DXGetErrorString.inl" />
     <None Include="Source\Fraples7DevDX3D\Core\Debugging\DXTrace.inl" />
+    <None Include="process.json" />
     <None Include="Source\Fraples7DevDX3D\Shaders\LightVectorData.hlsli" />
     <None Include="Source\Fraples7DevDX3D\Shaders\PointLight.hlsli" />
     <None Include="Source\Fraples7DevDX3D\Shaders\ShaderOps.hlsli" />

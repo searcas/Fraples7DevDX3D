@@ -4,6 +4,7 @@
 #include "Platform/Windows/Window.h"
 #include <filesystem>
 #include <cassert>
+#include "Commands/Fraples7Utility.h"
 
 
 namespace FraplesDev

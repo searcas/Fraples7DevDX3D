@@ -36,6 +36,7 @@ namespace FraplesDev
 		int _mX = 0, _mY = 0;
 
 	private:
+		ScriptCommander scriptCommander;
 		//objects
 		PointLight light;
 		Camera _mCamera;
@@ -48,8 +49,6 @@ namespace FraplesDev
 		float _mSpeedFactor = 1.0f;
 		bool show_demo_window = true;
 		float speed_accelerator = 1.500f;
-		std::string _mCommandLine;
-		ScriptCommander scriptCommander;
 	};
 
 }

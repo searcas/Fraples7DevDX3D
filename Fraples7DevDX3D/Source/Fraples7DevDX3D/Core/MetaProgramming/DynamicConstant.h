@@ -25,6 +25,7 @@ namespace FraplesDev
 			virtual const LayoutElement& operator[](const char* key)const 
 			{
 				assert(false && "Cannot access member on non Struct.");
+				return *this;
 			}
 			size_t GetOffsetBegin()const noexcept
 			{
@@ -35,6 +36,7 @@ namespace FraplesDev
 			virtual size_t ResolveFloat3()const noexcept(!IS_DEBUG)
 			{
 				assert(false && "Cannot resolve LayoutElement type.");
+				return 0;
 			}
 		private:
 			size_t _mOffset;
@@ -119,7 +121,7 @@ namespace FraplesDev
 			}
 			ElementRef operator[](const char* key)noexcept(!IS_DEBUG)
 			{
-
+				return	{&(*pLayout)[key], bytes.data()};
 			}
 		private:
 			const class Struct* pLayout;

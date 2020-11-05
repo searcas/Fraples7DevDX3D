@@ -153,6 +153,9 @@
     <ClCompile Include="Source\Fraples7DevDX3D\Commands\ScriptCommandCenter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\Core\MetaProgramming\DynamicConstant.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Debugging\WindowsMessageMap.h">
@@ -359,6 +362,9 @@
     <ClInclude Include="Source\Fraples7DevDX3D\Commands\ScriptCommandCenter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\Core\MetaProgramming\DynamicConstant.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Fraples7DevDX3D.rc">
@@ -382,6 +388,7 @@
     <None Include="DirectXTex\DirectXTex.inl">
       <Filter>Header Files</Filter>
     </None>
+    <None Include="process.json" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\ColorBlendVS.hlsl" />

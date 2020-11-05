@@ -10,16 +10,22 @@
 #include "imgui_impl_dx11.h"
 #include "imgui_impl_win32.h"
 #include "Core/MetaProgramming/Vertex.h"
+#include "Core/MetaProgramming/DynamicConstant.h"
 #include "RendererAPI/VertexBuffer.h"
-#include <algorithm>
 #include "Commands/Fraples7Utility.h"
+#include <algorithm>
 namespace FraplesDev
 {
 
 	Application::Application(const char* name, int width, int height, const std::string& commandLine)
-		:_mWin(name, width, height), light(_mWin.GetGFX()), _mCommandLine(commandLine), scriptCommander(Utility::TokenizeQuoted(commandLine))
+		:_mWin(name, width, height), light(_mWin.GetGFX()), scriptCommander(Utility::TokenizeQuoted(commandLine))
 	{
-
+		MP::Struct s(0);
+		s.Add<MP::Struct>("Searcas7");
+		static_cast<MP::Struct&>(s["Searcas7"]).Add<MP::Float3>("TrinityCore");
+		MP::Buffer b(s);
+		b["Searcas7"]["TrinityCore"] = DirectX::XMFLOAT3{ 69.0f,69.0f,69.0f};
+		DirectX::XMFLOAT3 v = b["Searcas7"]["TrinityCore"];
 	
 		bluePlane.SetPosXYZ(_mCamera.GetPos());
 		redPlane.SetPosXYZ(_mCamera.GetPos());

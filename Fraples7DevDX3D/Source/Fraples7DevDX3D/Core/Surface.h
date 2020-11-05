@@ -6,7 +6,6 @@
 #include "Fraples7.h"
 #include <optional>
 #include "DirectXTex/DirectXTex.h"
-#include "Commands/Fraples7Utility.h"
 namespace FraplesDev
 {
 	class Surface
