@@ -168,6 +168,38 @@ namespace FraplesDev
 			std::unique_ptr<LayoutElement>_mPElement;
 			size_t size = 0u;
 		};
+		class Layout
+		{
+		public:
+			Layout() : 
+				pLayout(std::make_shared<Struct>(0))
+			{
+
+			}
+			LayoutElement& operator[](const char* key)
+			{
+				assert(!finalized && "cannot modify finalized layout");
+				return (*pLayout)[key];
+			}
+			size_t GetSizeInBytes()const noexcept
+			{
+				return pLayout->GetSizeInBytes();
+			}
+			template<typename T>
+			LayoutElement& Add(const std::string& key)noexcept(!IS_DEBUG)
+			{
+				assert(!finalized && "cannot modify finalized layout");
+				return pLayout->Add<T>(key);
+			}
+			std::shared_ptr<LayoutElement>Finalize()
+			{
+				finalized = true;
+				return pLayout;
+			}
+		private:
+			bool finalized = false;
+			std::shared_ptr<LayoutElement>pLayout;
+		};
 		class ElementRef
 		{
 		public:
@@ -225,11 +257,12 @@ namespace FraplesDev
 		class Buffer
 		{
 		public:
-			Buffer(std::shared_ptr<Struct> pLayout)
-				:
-				pLayout(pLayout),
-				bytes(pLayout->GetOffsetEnd())
-			{}
+			Buffer(Layout& rLayout) 
+				: pLayout(std::static_pointer_cast<Struct>(rLayout.Finalize())),
+					bytes(pLayout->GetOffsetEnd())
+			{
+			
+			}
 			ElementRef operator[](const char* key) noexcept(!IS_DEBUG)
 			{
 				return { &(*pLayout)[key],bytes.data(),0u };

@@ -20,8 +20,7 @@ namespace FraplesDev
 	Application::Application(const char* name, int width, int height, const std::string& commandLine)
 		:_mWin(name, width, height), light(_mWin.GetGFX()), scriptCommander(Utility::TokenizeQuoted(commandLine))
 	{
-		auto ps = std::make_shared<MP::Struct>(0);
-		MP::Struct&s = *ps;
+		MP::Layout s;
 		s.Add<MP::Struct>("butts");
 		s["butts"].Add<MP::Float3>("pubes");
 		s["butts"].Add<MP::Float>("dank");
@@ -34,7 +33,7 @@ namespace FraplesDev
 		s["arr"].T().Add<MP::Array>("meta");
 		s["arr"].T()["meta"].Set<MP::Array>(6);
 		s["arr"].T()["meta"].T().Set<MP::Matrix>(4);
-		MP::Buffer b(std::move(ps));
+		MP::Buffer b(s);
 		b["butts"]["pubes"] = DirectX::XMFLOAT3{ 69.0f,0.0f,0.0f };
 		b["butts"]["dank"] = 420.0f;
 		b["woot"] = 42.0f;
