@@ -204,6 +204,7 @@
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\GFXContextCodex.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\IndexBuffer.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\InputLayout.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\LayoutCodex.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\Mesh.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\Model.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\PixelShader.h" />

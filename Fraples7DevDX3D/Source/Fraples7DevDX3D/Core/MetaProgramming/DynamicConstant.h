@@ -12,7 +12,7 @@ virtual size_t Resolve ## eltype() const noexcept(!IS_DEBUG) \
 	assert( false && "Cannot resolve to" #eltype ); return 0u; \
 }
 
-#define LEAF_ELEMENT(eltype, systype) \
+#define LEAF_ELEMENT_IMPL(eltype, systype,hlslSize) \
 class eltype : public LayoutElement \
 { \
 public: \
@@ -31,11 +31,12 @@ protected:\
 	_mOffset = offset_in;\
 	return offset_in + ComputeSize();\
 	}\
-	size_t ComputeSize()const noexcept(!IS_DEBUG)\
+	size_t ComputeSize()const noexcept (!IS_DEBUG)final\
 	{\
-			return sizeof(SystemType);\
+			return (hlslSize);\
 	}\
 };
+#define LEAF_ELEMENT(eltype,systype) LEAF_ELEMENT_IMPL(eltype,systype,sizeof(systype))
 
 #define REF_CONVERSION(eltype)\
 operator eltype::SystemType&() noexcept(!IS_DEBUG)\
@@ -134,7 +135,7 @@ namespace FraplesDev
 		LEAF_ELEMENT(Float3, DirectX::XMFLOAT3)
 		LEAF_ELEMENT(Float2, DirectX::XMFLOAT2)
 		LEAF_ELEMENT(Float, float)
-		LEAF_ELEMENT(Bool, BOOL)
+		LEAF_ELEMENT_IMPL(Bool, bool, 4u)
 			
 		class Struct : public LayoutElement
 		{
@@ -248,6 +249,11 @@ namespace FraplesDev
 		public:
 			Layout() : 
 				pLayout(std::make_shared<Struct>())
+			{
+
+			}
+			Layout(std::shared_ptr<LayoutElement>pLayout) :
+				pLayout(std::move(pLayout))
 			{
 
 			}

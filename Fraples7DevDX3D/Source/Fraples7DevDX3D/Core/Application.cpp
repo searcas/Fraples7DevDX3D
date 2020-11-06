@@ -35,6 +35,7 @@ namespace FraplesDev
 			s["arr"].T().Add<MP::Array>("meta");
 			s["arr"].T()["meta"].Set<MP::Array>(6);
 			s["arr"].T()["meta"].T().Set<MP::Matrix>(4);
+			s["arr"].T().Add<MP::Bool>("booly");
 			MP::Buffer b(s);
 
 			{
@@ -62,6 +63,18 @@ namespace FraplesDev
 				DirectX::XMFLOAT4X4 act = b["arr"][2]["meta"][5][3];
 				assert(!std::memcmp(&exp, &act, sizeof(DirectX::XMFLOAT4)));
 
+			}
+			{
+				auto exp = true;
+				b["arr"][2]["booly"] = exp;
+				bool act = b["arr"][2]["booly"];
+				assert(act == exp);
+			}
+			{
+				auto exp = false;
+				b["arr"][2]["booly"] = exp;
+				bool act = b["arr"][2]["booly"];
+				assert(act == exp);
 			}
 		}
 		//size test array of arrays
