@@ -17,7 +17,6 @@ class eltype : public LayoutElement \
 { \
 public: \
 	using SystemType = systype;\
-	using LayoutElement::LayoutElement; \
 	size_t Resolve ## eltype() const noexcept(!IS_DEBUG) override final \
 	{ \
 		return GetOffsetBegin(); \
@@ -26,6 +25,12 @@ public: \
 	{ \
 		return GetOffsetBegin() + sizeof( systype ); \
 	} \
+protected:\
+	size_t Finalize(size_t offset_in)override\
+	{\
+	_mOffset = offset_in;\
+	return offset_in + sizeof(systype);\
+	}\
 };
 
 #define REF_CONVERSION(eltype)\
@@ -49,13 +54,14 @@ namespace FraplesDev
 	{
 		class Struct;
 		class Array;
+		class Layout;
+
 		class LayoutElement
 		{
+			friend class Layout;
+			friend class Array;
+			friend class Struct;
 		public:
-			LayoutElement(size_t offset)
-				:
-				offset(offset)
-			{}
 			virtual ~LayoutElement()
 			{
 
@@ -82,7 +88,7 @@ namespace FraplesDev
 			}
 			size_t GetOffsetBegin() const noexcept
 			{
-				return offset;
+				return _mOffset;
 			}
 			virtual size_t GetOffsetEnd() const noexcept = 0;
 			size_t GetSizeInBytes()const noexcept
@@ -99,8 +105,10 @@ namespace FraplesDev
 			RESOLVE_BASE(Float2)
 			RESOLVE_BASE(Float)
 			RESOLVE_BASE(Bool)
-		private:
-			size_t offset;
+		protected:
+			virtual size_t Finalize(size_t offset) = 0;
+		protected:
+			size_t _mOffset;
 		};
 
 		LEAF_ELEMENT(Matrix, DirectX::XMFLOAT4X4)
@@ -129,12 +137,24 @@ namespace FraplesDev
 			template<typename T>
 			Struct& Add(const std::string& name) noexcept(!IS_DEBUG)
 			{
-				elements.push_back(std::make_unique<T>(GetOffsetEnd()));
+				elements.push_back(std::make_unique<T>());
 				if (!map.emplace(name, elements.back().get()).second)
 				{
 					assert(false);
 				}
 				return *this;
+			}
+		protected:
+			size_t Finalize(size_t offset_in)override
+			{
+				assert(elements.size() != 0u);
+				_mOffset = offset_in;
+				auto offsetNext = _mOffset;
+				for (auto& el : elements)
+				{
+					offsetNext = (*el).Finalize(offsetNext);
+				}
+				return GetOffsetEnd();
 			}
 		private:
 			std::unordered_map<std::string, LayoutElement*> map;
@@ -152,7 +172,7 @@ namespace FraplesDev
 			template<typename T>
 			Array& Set(size_t size_in)noexcept(!IS_DEBUG)
 			{
-				_mPElement = std::make_unique<T>(GetOffsetBegin());
+				_mPElement = std::make_unique<T>();
 				size = size_in;
 				return *this;
 			}
@@ -164,6 +184,14 @@ namespace FraplesDev
 			{
 				return *_mPElement;
 			}
+		protected:
+			size_t Finalize(size_t offset_in)override
+			{
+				assert(size != 0u && _mPElement);
+				_mOffset = offset_in;
+				_mPElement->Finalize(offset_in);
+				return _mOffset + _mPElement->GetSizeInBytes() * size;
+			}
 		private:
 			std::unique_ptr<LayoutElement>_mPElement;
 			size_t size = 0u;
@@ -172,7 +200,7 @@ namespace FraplesDev
 		{
 		public:
 			Layout() : 
-				pLayout(std::make_shared<Struct>(0))
+				pLayout(std::make_shared<Struct>())
 			{
 
 			}
@@ -193,6 +221,7 @@ namespace FraplesDev
 			}
 			std::shared_ptr<LayoutElement>Finalize()
 			{
+				pLayout->Finalize(0);
 				finalized = true;
 				return pLayout;
 			}
@@ -305,3 +334,4 @@ namespace FraplesDev
 		}
 	}
 }
+
