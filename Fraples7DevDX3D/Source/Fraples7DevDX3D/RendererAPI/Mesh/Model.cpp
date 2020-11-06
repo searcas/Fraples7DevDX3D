@@ -243,7 +243,6 @@ namespace FraplesDev
 			layout.Add<MP::Float>("specularIntensity");
 			layout.Add<MP::Float>("specularPower");
 			layout.Add<MP::Bool>("normalMapEnabled");
-			layout.Add<MP::Float>("padding");
 
 			MP::Buffer cbuf{ layout };
 			cbuf["specularIntensity"] = (specularColor.x + specularColor.y + specularColor.z) / 3.0f;

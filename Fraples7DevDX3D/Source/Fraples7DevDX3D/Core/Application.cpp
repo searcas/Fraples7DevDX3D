@@ -14,36 +14,93 @@
 #include "RendererAPI/VertexBuffer.h"
 #include "Commands/Fraples7Utility.h"
 #include <algorithm>
+#include <cstring>
+
+
 namespace FraplesDev
 {
+	void TestDynamicConstant()
+	{
+		{
+			MP::Layout s;
+			s.Add<MP::Struct>("butts");
+			s["butts"].Add<MP::Float3>("pubes");
+			s["butts"].Add<MP::Float>("dank");
+			s.Add<MP::Float>("woot");
+			s.Add<MP::Array>("arr");
+			s["arr"].Set<MP::Struct>(4);
+			s["arr"].T().Add<MP::Float3>("twerk");
+			s["arr"].T().Add<MP::Array>("werk");
+			s["arr"].T()["werk"].Set<MP::Float>(6);
+			s["arr"].T().Add<MP::Array>("meta");
+			s["arr"].T()["meta"].Set<MP::Array>(6);
+			s["arr"].T()["meta"].T().Set<MP::Matrix>(4);
+			MP::Buffer b(s);
 
+			{
+				auto exp = 69.0f;
+				b["woot"] = exp;
+				float act = b["woot"];
+				assert(act == exp);
+			}
+			{
+				auto exp = 690.0f;
+				b["butts"]["dank"] = exp;
+				float act = b["butts"]["dank"];
+				assert(act == exp);
+			}
+			{
+				auto exp = DirectX::XMFLOAT3{ 69.0f,0.0f,0.0f };
+				b["butts"]["pubes"] = exp;
+				DirectX::XMFLOAT3 act = b["butts"]["pubes"];
+				assert(!std::memcmp(&exp, &act, sizeof(DirectX::XMFLOAT3)));
+			}
+			{
+				DirectX::XMFLOAT4X4 exp;
+				DirectX::XMStoreFloat4x4(&exp, DirectX::XMMatrixIdentity());
+				b["arr"][2]["meta"][5][3] = exp;
+				DirectX::XMFLOAT4X4 act = b["arr"][2]["meta"][5][3];
+				assert(!std::memcmp(&exp, &act, sizeof(DirectX::XMFLOAT4)));
+
+			}
+		}
+		//size test array of arrays
+		{
+			MP::Layout s;
+			s.Add<MP::Array>("arr");
+			s["arr"].Set<MP::Array>(6);
+			s["arr"].T().Set<MP::Matrix>(4);
+			MP::Buffer b(s);
+
+			auto act = b.GetSizeInBytes();
+			assert(act == 16u * 4u * 4u * 6u);
+		}
+		//size test array of structs with padding
+		{
+			MP::Layout s;
+			s.Add<MP::Array>("arr");
+			s["arr"].Set<MP::Struct>(6);
+			s["arr"].T().Add<MP::Float2>("a");
+			s["arr"].T().Add<MP::Float3>("b");
+			MP::Buffer b(s);
+			auto act = b.GetSizeInBytes();
+			assert(act == 16u * 2u * 6u);
+		}
+		//size test array of primitive that needs padding
+		{
+			MP::Layout s;
+			s.Add<MP::Array>("arr");
+			s["arr"].Set<MP::Float3>(6);
+			MP::Buffer b(s);
+			auto act = b.GetSizeInBytes();
+			assert(act == 16u * 6u);
+		}
+
+	}
 	Application::Application(const char* name, int width, int height, const std::string& commandLine)
 		:_mWin(name, width, height), light(_mWin.GetGFX()), scriptCommander(Utility::TokenizeQuoted(commandLine))
 	{
-		MP::Layout s;
-		s.Add<MP::Struct>("butts");
-		s["butts"].Add<MP::Float3>("pubes");
-		s["butts"].Add<MP::Float>("dank");
-		s.Add<MP::Float>("woot");
-		s.Add<MP::Array>("arr");
-		s["arr"].Set<MP::Struct>(4);
-		s["arr"].T().Add<MP::Float3>("twerk");
-		s["arr"].T().Add<MP::Array>("werk");
-		s["arr"].T()["werk"].Set<MP::Float>(6);
-		s["arr"].T().Add<MP::Array>("meta");
-		s["arr"].T()["meta"].Set<MP::Array>(6);
-		s["arr"].T()["meta"].T().Set<MP::Matrix>(4);
-		MP::Buffer b(s);
-		b["butts"]["pubes"] = DirectX::XMFLOAT3{ 69.0f,0.0f,0.0f };
-		b["butts"]["dank"] = 420.0f;
-		b["woot"] = 42.0f;
-		b["arr"][2]["werk"][5] = 111.0f;
-		DirectX::XMStoreFloat4x4(&b["arr"][2]["meta"][5][3], DirectX::XMMatrixIdentity());
-		float k = b["woot"];
-		DirectX::XMFLOAT3 v = b["butts"]["pubes"];
-		float u = b["butts"]["dank"];
-		float er = b["arr"][2]["werk"][5];
-		DirectX::XMFLOAT4X4 eq = b["arr"][2]["meta"][5][3];
+		TestDynamicConstant();
 		bluePlane.SetPosXYZ(_mCamera.GetPos());
 		redPlane.SetPosXYZ(_mCamera.GetPos());
 		_mWin.GetGFX().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 800.0f));
