@@ -3,6 +3,8 @@
 #include <sstream>
 #include "RendererAPI/GFXContextBase.h"
 #include "Core/Math/FraplesXM.h"
+#include "Core/MetaProgramming/DynamicConstant.h"
+#include "RendererAPI/ConstantBuffersEx.h"
 namespace FraplesDev
 {
 	
@@ -204,7 +206,7 @@ namespace FraplesDev
 				Append(MP::ElementType::Bitangent).
 				Append(MP::ElementType::Texture2D)));
 
-			
+
 
 			for (unsigned int i = 0; i < mesh.mNumVertices; i++)
 			{
@@ -234,19 +236,21 @@ namespace FraplesDev
 			auto pvsbyte = pvs->GetBytecode();
 			bindablePtrs.push_back(std::move(pvs));
 
-			bindablePtrs.push_back(PixelShader::Resolve(gfx,"PhongNormalMapPS.cso"));
+			bindablePtrs.push_back(PixelShader::Resolve(gfx, "PhongNormalMapPS.cso"));
 			bindablePtrs.push_back(InputLayout::Resolve(gfx, vbuf.GetLayout(), pvsbyte));
 			
-			struct PSMaterialConstantDiffnorm
-			{
-				float specularIntensity = 0.0f;
-				float specularPower = 0.0f;
-				BOOL normalMapEnabled = TRUE;
-				float padding[1] = {};
-			}pmc;
-			pmc.specularPower = shininess;
-			pmc.specularIntensity = (specularColor.x + specularColor.y + specularColor.z) / 3.0f;
-			bindablePtrs.push_back(PixelConstantBuffer<PSMaterialConstantDiffnorm>::Resolve(gfx, pmc, 1u));
+			auto layout = std::make_shared<MP::Struct>(0);
+			layout->Add<MP::Float>("specularIntensity");
+			layout->Add<MP::Float>("specularPower");
+			layout->Add<MP::Bool>("normalMapEnabled");
+			layout->Add<MP::Float>("padding");
+
+			MP::Buffer cbuf{ std::move(layout) };
+			cbuf["specularIntensity"] = (specularColor.x + specularColor.y + specularColor.z) / 3.0f;
+			cbuf["specularPower"] = shininess;
+			cbuf["normalMapEnabled"] = TRUE;
+			bindablePtrs.push_back(std::make_shared<PixelConstantBufferEx>(gfx, cbuf, 1u));
+
 		}
 		else if (hasDiffuseMap)
 		{

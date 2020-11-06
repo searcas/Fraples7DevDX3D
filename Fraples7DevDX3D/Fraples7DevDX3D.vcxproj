@@ -199,6 +199,7 @@
     <ClInclude Include="Source\Fraples7DevDX3D\Platform\Windows\Window.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Blending\Blending.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Camera.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\ConstantBuffersEx.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\GFXContextBase.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\GFXContextCodex.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\IndexBuffer.h" />
