@@ -37,7 +37,11 @@ eltype::SystemType& operator=( const eltype::SystemType& rhs ) noexcept(!IS_DEBU
 {\
 	return static_cast<eltype::SystemType&>(*this) = rhs;\
 }
-
+#define PTR_CONVERSION(eltype)\
+operator eltype::SystemType*()noexcept(!IS_DEBUG)\
+{\
+	return &static_cast<eltype::SystemType&>(ref);\
+}
 
 namespace FraplesDev
 {
@@ -52,6 +56,10 @@ namespace FraplesDev
 				:
 				offset(offset)
 			{}
+			virtual ~LayoutElement()
+			{
+
+			}
 			virtual LayoutElement& operator[](const char*)
 			{
 				assert(false && "cannot access member on non Struct");
@@ -157,11 +165,30 @@ namespace FraplesDev
 				return *_mPElement;
 			}
 		private:
-			size_t size = 0u;
 			std::unique_ptr<LayoutElement>_mPElement;
+			size_t size = 0u;
 		};
 		class ElementRef
 		{
+		public:
+			class ElementPtr
+			{
+			public:
+				//ElementPtr(const elementPtr&) = delete;
+				ElementPtr(ElementRef& ref) :
+					ref(ref)
+				{
+
+				}
+				PTR_CONVERSION(Matrix)
+				PTR_CONVERSION(Float4)
+				PTR_CONVERSION(Float3)
+				PTR_CONVERSION(Float2)
+				PTR_CONVERSION(Float)
+				PTR_CONVERSION(Bool)
+			private:
+				ElementRef& ref;
+			};
 		public:
 			ElementRef(const LayoutElement* pLayout, char* pBytes, size_t offset)
 				:
@@ -178,7 +205,10 @@ namespace FraplesDev
 				const auto& t = pLayout->T();
 				return { &t,pBytes,_mOffset + t.GetSizeInBytes() * index };
 			}
-
+			ElementPtr operator&()noexcept(!IS_DEBUG)
+			{
+				return { *this };
+			}
 			REF_CONVERSION(Matrix)
 			REF_CONVERSION(Float4)
 			REF_CONVERSION(Float3)
@@ -215,6 +245,10 @@ namespace FraplesDev
 			const LayoutElement& GetLayout()const noexcept
 			{
 				return *pLayout;
+			}
+			std::shared_ptr<LayoutElement>CloneLayout()const
+			{
+				return pLayout;
 			}
 		private:
 			std::shared_ptr<Struct> pLayout;

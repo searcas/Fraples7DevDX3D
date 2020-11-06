@@ -39,7 +39,7 @@ namespace FraplesDev
 		b["butts"]["dank"] = 420.0f;
 		b["woot"] = 42.0f;
 		b["arr"][2]["werk"][5] = 111.0f;
-		DirectX::XMStoreFloat4x4(&(DirectX::XMFLOAT4X4&)b["arr"][2]["meta"][5][3], DirectX::XMMatrixIdentity());
+		DirectX::XMStoreFloat4x4(&b["arr"][2]["meta"][5][3], DirectX::XMMatrixIdentity());
 		float k = b["woot"];
 		DirectX::XMFLOAT3 v = b["butts"]["pubes"];
 		float u = b["butts"]["dank"];
