@@ -38,7 +38,7 @@ namespace FraplesDev
 			s["arr"].T()["meta"].T().Set<MP::Matrix>(4);
 			s["arr"].T().Add<MP::Bool>("booly");
 			MP::Buffer b(s);
-
+			const auto sig = b.GetSignature();
 			{
 				auto exp = 69.0f;
 				b["woot"] = exp;
