@@ -21,6 +21,7 @@ namespace FraplesDev
 {
 	void TestDynamicConstant()
 	{
+		using namespace	std::string_literals;
 		{
 			MP::Layout s;
 			s.Add<MP::Struct>("butts");
@@ -46,36 +47,43 @@ namespace FraplesDev
 			}
 			{
 				auto exp = 690.0f;
-				b["butts"]["dank"] = exp;
-				float act = b["butts"]["dank"];
+				b["butts"]["dank"s] = exp;
+				float act = b["butts"]["dank"s];
 				assert(act == exp);
 			}
 			{
 				auto exp = DirectX::XMFLOAT3{ 69.0f,0.0f,0.0f };
-				b["butts"]["pubes"] = exp;
-				DirectX::XMFLOAT3 act = b["butts"]["pubes"];
+				b["butts"]["pubes"s] = exp;
+				DirectX::XMFLOAT3 act = b["butts"]["pubes"s];
 				assert(!std::memcmp(&exp, &act, sizeof(DirectX::XMFLOAT3)));
 			}
 			{
 				DirectX::XMFLOAT4X4 exp;
 				DirectX::XMStoreFloat4x4(&exp, DirectX::XMMatrixIdentity());
-				b["arr"][2]["meta"][5][3] = exp;
-				DirectX::XMFLOAT4X4 act = b["arr"][2]["meta"][5][3];
+				b["arr"][2]["meta"s][5][3] = exp;
+				DirectX::XMFLOAT4X4 act = b["arr"][2]["meta"s][5][3];
 				assert(!std::memcmp(&exp, &act, sizeof(DirectX::XMFLOAT4)));
 
 			}
 			{
 				auto exp = true;
-				b["arr"][2]["booly"] = exp;
-				bool act = b["arr"][2]["booly"];
+				b["arr"][2]["booly"s] = exp;
+				bool act = b["arr"][2]["booly"s];
 				assert(act == exp);
 			}
 			{
 				auto exp = false;
-				b["arr"][2]["booly"] = exp;
-				bool act = b["arr"][2]["booly"];
+				b["arr"][2]["booly"s] = exp;
+				bool act = b["arr"][2]["booly"s];
 				assert(act == exp);
 			}
+			const auto& cb = b;
+			{
+				DirectX::XMFLOAT4X4 act = cb["arr"][2]["meta"s][5][3];
+				assert(act._11 == 1.0f);
+			}
+			//this doesn't compile buffer is const 
+			//cb["arr"][2]["booly"s] = true;
 		}
 		//size test array of arrays
 		{

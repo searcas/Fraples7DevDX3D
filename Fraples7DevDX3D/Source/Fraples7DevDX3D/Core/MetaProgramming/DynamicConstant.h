@@ -6,6 +6,8 @@
 #include <unordered_map>
 #include <type_traits>
 #include <numeric>
+
+
 #define RESOLVE_BASE(eltype) \
 virtual size_t Resolve ## eltype() const noexcept(!IS_DEBUG) \
 { \
@@ -37,20 +39,22 @@ protected:\
 	}\
 };
 #define LEAF_ELEMENT(eltype,systype) LEAF_ELEMENT_IMPL(eltype,systype,sizeof(systype))
-
-#define REF_CONVERSION(eltype)\
-operator eltype::SystemType&() noexcept(!IS_DEBUG)\
+#define REF_CONVERSION(eltype,...)\
+operator __VA_ARGS__ eltype::SystemType&()noexcept(!IS_DEBUG)\
 {\
 	return *reinterpret_cast<eltype::SystemType*>(pBytes + _mOffset + pLayout->Resolve ## eltype());\
-}\
+}
+#define REF_ASSIGN(eltype)\
 eltype::SystemType& operator=( const eltype::SystemType& rhs ) noexcept(!IS_DEBUG)\
 {\
 	return static_cast<eltype::SystemType&>(*this) = rhs;\
 }
-#define PTR_CONVERSION(eltype)\
-operator eltype::SystemType*()noexcept(!IS_DEBUG)\
+#define REF_NONCONST(eltype)REF_CONVERSION(eltype) REF_ASSIGN(eltype)
+#define REF_CONST(eltype) REF_CONVERSION(eltype,const);
+#define PTR_CONVERSION(eltype,...)\
+operator __VA_ARGS__ eltype::SystemType*()noexcept(!IS_DEBUG)\
 {\
-	return &static_cast<eltype::SystemType&>(ref);\
+	return &static_cast<__VA_ARGS__ eltype::SystemType&>(ref);\
 }
 
 namespace FraplesDev
@@ -72,12 +76,12 @@ namespace FraplesDev
 
 			}
 			//[] only works for Structs; access member by name
-			virtual LayoutElement& operator[](const char*)
+			virtual LayoutElement& operator[](const std::string)
 			{
 				assert(false && "cannot access member on non Struct");
 				return *this;
 			}
-			virtual const LayoutElement& operator[](const char* key) const
+			virtual const LayoutElement& operator[](const std::string key) const
 			{
 				assert(false && "cannot access member on non Struct");
 				return *this;
@@ -141,11 +145,11 @@ namespace FraplesDev
 		{
 		public:
 			using LayoutElement::LayoutElement;
-			LayoutElement& operator[](const char* key) override final
+			LayoutElement& operator[](const std::string key) override final
 			{
 				return *map.at(key);
 			}
-			const LayoutElement& operator[](const char* key) const override final
+			const LayoutElement& operator[](const std::string key) const override final
 			{
 				return *map.at(key);
 			}
@@ -257,7 +261,7 @@ namespace FraplesDev
 			{
 
 			}
-			LayoutElement& operator[](const char* key)
+			LayoutElement& operator[](const std::string key)
 			{
 				assert(!finalized && "cannot modify finalized layout");
 				return (*pLayout)[key];
@@ -281,6 +285,55 @@ namespace FraplesDev
 		private:
 			bool finalized = false;
 			std::shared_ptr<LayoutElement>pLayout;
+		};
+		class ConstElementRef
+		{
+		public:
+			class PtrConstElementRef
+			{
+			public:
+				PtrConstElementRef(ConstElementRef&) :ref(ref)
+				{
+
+				}
+				PTR_CONVERSION(Matrix, const)
+				PTR_CONVERSION(Float4, const)
+				PTR_CONVERSION(Float3, const)
+				PTR_CONVERSION(Float2 , const)
+				PTR_CONVERSION(Float, const)
+				PTR_CONVERSION(Bool, const)
+			private:
+				ConstElementRef& ref;
+			};
+			ConstElementRef(const LayoutElement* pLayout, char* pBytes, size_t offset)
+				: _mOffset(offset),pLayout(pLayout),pBytes(pBytes)
+			{
+
+			}
+			ConstElementRef operator[](const std::string& key)noexcept(!IS_DEBUG)
+			{
+				return{ &(*pLayout)[key],pBytes,_mOffset };
+			}
+			ConstElementRef operator[](size_t index)noexcept(!IS_DEBUG)
+			{
+				const auto& t = pLayout->T();
+				//arrays are not packed in hlsl
+				const auto elementSize = LayoutElement::GetNextBoundaryOffset(t.GetSizeInBytes());
+				return{ &t,pBytes,_mOffset + elementSize * index };
+			}
+			PtrConstElementRef operator&()noexcept(!IS_DEBUG)
+			{
+				return{ *this };
+			}
+				REF_CONST(Matrix)
+				REF_CONST(Float4)
+				REF_CONST(Float3)
+				REF_CONST(Float2)
+				REF_CONST(Float)
+				REF_CONST(Bool)
+			size_t _mOffset;
+			const LayoutElement* pLayout;
+			char* pBytes;
 		};
 		class ElementRef
 		{
@@ -310,7 +363,11 @@ namespace FraplesDev
 				pLayout(pLayout),
 				pBytes(pBytes)
 			{}
-			ElementRef operator[](const char* key) noexcept(!IS_DEBUG)
+			operator ConstElementRef()const noexcept
+			{
+				return { pLayout,pBytes,_mOffset };
+			}
+			ElementRef operator[](const std::string key) noexcept(!IS_DEBUG)
 			{
 				return { &(*pLayout)[key],pBytes,_mOffset };
 			}
@@ -326,12 +383,12 @@ namespace FraplesDev
 			{
 				return { *this };
 			}
-			REF_CONVERSION(Matrix)
-			REF_CONVERSION(Float4)
-			REF_CONVERSION(Float3)
-			REF_CONVERSION(Float2)
-			REF_CONVERSION(Float)
-			REF_CONVERSION(Bool)
+			REF_NONCONST(Matrix)
+			REF_NONCONST(Float4)
+			REF_NONCONST(Float3)
+			REF_NONCONST(Float2)
+			REF_NONCONST(Float)
+			REF_NONCONST(Bool)
 				
 		private:
 			size_t _mOffset;
@@ -348,9 +405,13 @@ namespace FraplesDev
 			{
 			
 			}
-			ElementRef operator[](const char* key) noexcept(!IS_DEBUG)
+			ElementRef operator[](const std::string key) noexcept(!IS_DEBUG)
 			{
 				return { &(*pLayout)[key],bytes.data(),0u };
+			}
+			ConstElementRef operator[](const std::string& key)const noexcept(!IS_DEBUG)
+			{
+				return const_cast<Buffer&>(*this)[key];
 			}
 			const char* GetData()const noexcept
 			{
