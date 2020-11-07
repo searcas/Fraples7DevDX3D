@@ -270,6 +270,9 @@ namespace FraplesDev
 		ConstElementRef ConstElementRef::operator[](size_t index) noexcept(!IS_DEBUG)
 		{
 			const auto& t = pLayout->T();
+			//previous call didn't fail assert implies that layout is Array
+			assert(static_cast<const Array&>(*pLayout).IndexBounds(index));
+
 			// arrays are not packed in hlsl
 			const auto elementSize = LayoutElement::GetNextBoundaryOffset(t.GetSizeInBytes());
 			return { &t,pBytes,offset + elementSize * index };
@@ -321,6 +324,8 @@ namespace FraplesDev
 		ElementRef ElementRef::operator[](size_t index) noexcept(!IS_DEBUG)
 		{
 			const auto& t = pLayout->T();
+			//previous call didn't fail assert implies that layout is array
+			assert(static_cast<const Array&>(*pLayout).IndexBounds(index));
 			// arrays are not packed in hlsl
 			const auto elementSize = LayoutElement::GetNextBoundaryOffset(t.GetSizeInBytes());
 			return { &t,pBytes,offset + elementSize * index };

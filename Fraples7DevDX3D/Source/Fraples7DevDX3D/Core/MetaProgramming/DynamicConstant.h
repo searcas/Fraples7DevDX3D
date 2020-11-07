@@ -120,6 +120,10 @@ namespace MP
 		size_t GetOffsetEnd() const noexcept override final;
 		void Set(std::unique_ptr<LayoutElement> pElement, size_t size_in) noexcept(!IS_DEBUG);
 		LayoutElement& T() override final;
+		inline bool IndexBounds(size_t index)const noexcept
+		{
+			return index < size;
+		}
 	protected:
 		size_t Finalize(size_t offset_in) override final;
 		size_t ComputeSize() const noexcept(!IS_DEBUG) override final;
