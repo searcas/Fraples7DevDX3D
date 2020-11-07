@@ -6,7 +6,7 @@
 #include <unordered_map>
 #include <type_traits>
 #include <numeric>
-
+#include <optional>
 #define DCB_RESOLVE_BASE(eltype) \
 virtual size_t Resolve ## eltype() const noexcept(!IS_DEBUG);
 
@@ -47,7 +47,10 @@ namespace MP
 		friend class Struct;
 	public:
 		virtual ~LayoutElement();
-
+		inline virtual bool Exists()const noexcept
+		{
+			return true;
+		}
 		// [] only works for Structs; access member by name
 		virtual LayoutElement& operator[](const std::string&);
 		const LayoutElement& operator[](const std::string& key) const;
@@ -166,6 +169,7 @@ namespace MP
 		};
 	public:
 		ConstElementRef(const LayoutElement* pLayout, char* pBytes, size_t offset);
+		std::optional<ConstElementRef>Exists()const noexcept;
 		ConstElementRef operator[](const std::string& key) noexcept(!IS_DEBUG);
 		ConstElementRef operator[](size_t index) noexcept(!IS_DEBUG);
 		Ptr operator&() noexcept(!IS_DEBUG);
@@ -201,6 +205,7 @@ namespace MP
 		};
 	public:
 		ElementRef(const LayoutElement* pLayout, char* pBytes, size_t offset);
+		std::optional<ElementRef>Exists()const noexcept;
 		operator ConstElementRef() const noexcept;
 		ElementRef operator[](const std::string& key) noexcept(!IS_DEBUG);
 		ElementRef operator[](size_t index) noexcept(!IS_DEBUG);

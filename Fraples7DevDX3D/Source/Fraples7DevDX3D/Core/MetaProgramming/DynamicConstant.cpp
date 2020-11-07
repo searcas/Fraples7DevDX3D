@@ -84,6 +84,30 @@ namespace FraplesDev
 		{
 			return offset + (16u - offset % 16u) % 16u;
 		}
+		class Empty : public LayoutElement
+		{
+		public:
+			size_t GetOffsetEnd()const noexcept override final
+			{
+				return 0u;
+			}
+			bool Exists()const noexcept override final
+			{
+				return false;
+			}
+		protected:
+			size_t Finalize(size_t offset_in)override final
+			{
+				return 0u;
+			}
+			size_t ComputeSize()const noexcept(!IS_DEBUG) override final
+			{
+				return 0u;
+			}
+		private:
+			size_t size = 0u;
+			std::unique_ptr<LayoutElement>pElement;
+		}emptyLayoutElement;
 		DCB_RESOLVE_BASE(Matrix)
 		DCB_RESOLVE_BASE(Float4)
 		DCB_RESOLVE_BASE(Float3)
@@ -104,7 +128,12 @@ namespace FraplesDev
 
 		LayoutElement& Struct::operator[](const std::string& key)
 		{
-			return *map.at(key);
+			const auto i = map.find(key);
+			if (i==map.end())
+			{
+				return emptyLayoutElement;
+			}
+			return *i->second;
 		}
 		size_t Struct::GetOffsetEnd() const noexcept
 		{
@@ -212,19 +241,28 @@ namespace FraplesDev
 		ConstElementRef::Ptr::Ptr(ConstElementRef& ref)
 			:
 			ref(ref)
-		{}
+		{
+		}
 		DCB_PTR_CONVERSION(ConstElementRef, Matrix, const)
-			DCB_PTR_CONVERSION(ConstElementRef, Float4, const)
-			DCB_PTR_CONVERSION(ConstElementRef, Float3, const)
-			DCB_PTR_CONVERSION(ConstElementRef, Float2, const)
-			DCB_PTR_CONVERSION(ConstElementRef, Float, const)
-			DCB_PTR_CONVERSION(ConstElementRef, Bool, const)
-			ConstElementRef::ConstElementRef(const LayoutElement* pLayout, char* pBytes, size_t offset)
+		DCB_PTR_CONVERSION(ConstElementRef, Float4, const)
+		DCB_PTR_CONVERSION(ConstElementRef, Float3, const)
+		DCB_PTR_CONVERSION(ConstElementRef, Float2, const)
+		DCB_PTR_CONVERSION(ConstElementRef, Float, const)
+		DCB_PTR_CONVERSION(ConstElementRef, Bool, const)
+		ConstElementRef::ConstElementRef(const LayoutElement* pLayout, char* pBytes, size_t offset)
 			:
 			offset(offset),
 			pLayout(pLayout),
 			pBytes(pBytes)
 		{}
+		std::optional<ConstElementRef>ConstElementRef::Exists()const noexcept
+		{
+			if (pLayout->Exists())
+			{
+				return ConstElementRef(pLayout, pBytes, offset);
+			}
+			return std::nullopt;
+		}
 		ConstElementRef ConstElementRef::operator[](const std::string& key) noexcept(!IS_DEBUG)
 		{
 			return { &(*pLayout)[key],pBytes,offset };
@@ -241,23 +279,23 @@ namespace FraplesDev
 			return { *this };
 		}
 		DCB_REF_CONST(ConstElementRef, Matrix)
-			DCB_REF_CONST(ConstElementRef, Float4)
-			DCB_REF_CONST(ConstElementRef, Float3)
-			DCB_REF_CONST(ConstElementRef, Float2)
-			DCB_REF_CONST(ConstElementRef, Float)
-			DCB_REF_CONST(ConstElementRef, Bool)
+		DCB_REF_CONST(ConstElementRef, Float4)
+		DCB_REF_CONST(ConstElementRef, Float3)
+		DCB_REF_CONST(ConstElementRef, Float2)
+		DCB_REF_CONST(ConstElementRef, Float)
+		DCB_REF_CONST(ConstElementRef, Bool)
 
 
-			ElementRef::Ptr::Ptr(ElementRef& ref)
+		ElementRef::Ptr::Ptr(ElementRef& ref)
 			:
 			ref(ref)
 		{}
 		DCB_PTR_CONVERSION(ElementRef, Matrix)
-			DCB_PTR_CONVERSION(ElementRef, Float4)
-			DCB_PTR_CONVERSION(ElementRef, Float3)
-			DCB_PTR_CONVERSION(ElementRef, Float2)
-			DCB_PTR_CONVERSION(ElementRef, Float)
-			DCB_PTR_CONVERSION(ElementRef, Bool)
+		DCB_PTR_CONVERSION(ElementRef, Float4)
+		DCB_PTR_CONVERSION(ElementRef, Float3)
+		DCB_PTR_CONVERSION(ElementRef, Float2)
+		DCB_PTR_CONVERSION(ElementRef, Float)
+		DCB_PTR_CONVERSION(ElementRef, Bool)
 			ElementRef::ElementRef(const LayoutElement* pLayout, char* pBytes, size_t offset)
 			:
 			offset(offset),
@@ -267,6 +305,14 @@ namespace FraplesDev
 		ElementRef::operator ConstElementRef() const noexcept
 		{
 			return { pLayout,pBytes,offset };
+		}
+		std::optional<ElementRef>ElementRef::Exists()const noexcept
+		{
+			if (pLayout->Exists())
+			{
+				return ElementRef{ pLayout,pBytes,offset };
+			}
+			return std::nullopt;
 		}
 		ElementRef ElementRef::operator[](const std::string& key) noexcept(!IS_DEBUG)
 		{
@@ -284,19 +330,17 @@ namespace FraplesDev
 			return { *this };
 		}
 		DCB_REF_NONCONST(ElementRef, Matrix)
-			DCB_REF_NONCONST(ElementRef, Float4)
-			DCB_REF_NONCONST(ElementRef, Float3)
-			DCB_REF_NONCONST(ElementRef, Float2)
-			DCB_REF_NONCONST(ElementRef, Float)
-			DCB_REF_NONCONST(ElementRef, Bool)
+		DCB_REF_NONCONST(ElementRef, Float4)
+		DCB_REF_NONCONST(ElementRef, Float3)
+		DCB_REF_NONCONST(ElementRef, Float2)
+		DCB_REF_NONCONST(ElementRef, Float)
+		DCB_REF_NONCONST(ElementRef, Bool)
 
 
 
 
-			Buffer::Buffer(Layout& lay)
-			:
-			pLayout(std::static_pointer_cast<Struct>(lay.Finalize())),
-			bytes(pLayout->GetOffsetEnd())
+		Buffer::Buffer(Layout& lay)
+			:pLayout(std::static_pointer_cast<Struct>(lay.Finalize())), bytes(pLayout->GetOffsetEnd())
 		{}
 		ElementRef Buffer::operator[](const std::string& key) noexcept(!IS_DEBUG)
 		{
