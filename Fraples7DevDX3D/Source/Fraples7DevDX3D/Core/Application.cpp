@@ -81,9 +81,8 @@ namespace FraplesDev
 			{
 				assert(b["butts"s]["pubes"s].Exists());
 				assert(!b["butts"s]["fubar"s].Exists());
-				if (auto opt = b["butts"s]["pubes"s].Exists())
+				if (auto ref = b["butts"s]["pubes"s]; ref.Exists())
 				{
-					auto& ref = *opt;
 					DirectX::XMFLOAT3 f = ref;
 					assert(f.x == 69.0f);
 				}

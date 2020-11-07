@@ -173,7 +173,7 @@ namespace MP
 		};
 	public:
 		ConstElementRef(const LayoutElement* pLayout, char* pBytes, size_t offset);
-		std::optional<ConstElementRef>Exists()const noexcept;
+		bool Exists()const noexcept;
 		ConstElementRef operator[](const std::string& key) noexcept(!IS_DEBUG);
 		ConstElementRef operator[](size_t index) noexcept(!IS_DEBUG);
 		Ptr operator&() noexcept(!IS_DEBUG);
@@ -209,7 +209,7 @@ namespace MP
 		};
 	public:
 		ElementRef(const LayoutElement* pLayout, char* pBytes, size_t offset);
-		std::optional<ElementRef>Exists()const noexcept;
+		bool Exists()const noexcept;
 		operator ConstElementRef() const noexcept;
 		ElementRef operator[](const std::string& key) noexcept(!IS_DEBUG);
 		ElementRef operator[](size_t index) noexcept(!IS_DEBUG);
