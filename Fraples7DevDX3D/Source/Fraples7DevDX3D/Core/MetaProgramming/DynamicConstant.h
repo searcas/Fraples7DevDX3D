@@ -109,11 +109,11 @@ namespace FraplesDev
 			}
 			//only works for Structs; add LayoutElement;
 			template <typename T>
-			Struct& Add(const std::string& key)noexcept(!IS_DEBUG);
+			LayoutElement& Add(const std::string& key)noexcept(!IS_DEBUG);
 			
 			//only works for Arrays; set the type and the # of elements
-			template<typename T>
-			Array& Set(size_t size)noexcept(!IS_DEBUG);
+			template <typename T>
+			LayoutElement& Set(size_t size_in)noexcept(!IS_DEBUG);
 			//returns the value of offset bumped up to the next 16-byte boundary( if not already on one)
 
 			static size_t GetNextBoundaryOffset(size_t offset)
@@ -159,15 +159,13 @@ namespace FraplesDev
 				//(because structs are multiple of 16 in size)
 				return LayoutElement::GetNextBoundaryOffset(elements.back()->GetOffsetEnd());
 			}
-			template<typename T>
-			Struct& Add(const std::string& name) noexcept(!IS_DEBUG)
+			void Add(const std::string& name,std::unique_ptr<LayoutElement>pElement) noexcept(!IS_DEBUG)
 			{
-				elements.push_back(std::make_unique<T>());
+				elements.push_back(std::move(pElement));
 				if (!map.emplace(name, elements.back().get()).second)
 				{
 					assert(false);
 				}
-				return *this;
 			}
 		protected:
 			size_t Finalize(size_t offset_in)override final
@@ -216,12 +214,10 @@ namespace FraplesDev
 				//arrays are not packed in hlsl
 				return GetOffsetBegin() + LayoutElement::GetNextBoundaryOffset(_mPElement->GetSizeInBytes()) * size;
 			}
-			template<typename T>
-			Array& Set(size_t size_in)noexcept(!IS_DEBUG)
+			void Set(std::unique_ptr<LayoutElement>pElement,size_t size_in)noexcept(!IS_DEBUG)
 			{
-				_mPElement = std::make_unique<T>();
+				_mPElement = std::move(pElement);
 				size = size_in;
-				return *this;
 			}
 			LayoutElement& T()override final
 			{
@@ -436,18 +432,20 @@ namespace FraplesDev
 
 		//must come after Definitions of Struct and Array
 		template<typename T>
-		Struct& LayoutElement::Add(const std::string& key) noexcept(!IS_DEBUG)
+		LayoutElement& LayoutElement::Add(const std::string& key) noexcept(!IS_DEBUG)
 		{
 			auto ps = dynamic_cast<Struct*>(this);
 			assert(ps != nullptr);
-			return ps->Add<T>(key);
+			ps->Add(key,std::make_unique<T>());
+			return *this;
 		}
 		template<typename T>
-		Array& LayoutElement::Set(size_t size)noexcept(!IS_DEBUG)
+		LayoutElement& LayoutElement::Set(size_t size)noexcept(!IS_DEBUG)
 		{
 			auto pa = dynamic_cast<Array*>(this);
 			assert(pa != nullptr);
-			return pa->Set<T>(size);
+			pa->Set(std::make_unique<T>(),size);
+			return *this;
 		}
 	}
 
