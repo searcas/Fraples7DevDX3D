@@ -58,8 +58,8 @@ namespace MP
 		virtual LayoutElement& operator[](const std::string&);
 		const LayoutElement& operator[](const std::string& key) const;
 		// T() only works for Arrays; gets the array type layout object
-		virtual LayoutElement& T();
-		const LayoutElement& T() const;
+		virtual LayoutElement& T()noexcept(!IS_DEBUG);
+		const LayoutElement& T() const noexcept(!IS_DEBUG);
 
 		// offset based- functions only work after finalization!
 		size_t GetOffsetBegin() const noexcept;
@@ -85,7 +85,7 @@ namespace MP
 			DCB_RESOLVE_BASE(Bool)
 	protected:
 		// sets all offsets for element and subelements, returns offset directly after this element
-		virtual size_t Finalize(size_t offset) = 0;
+		virtual size_t Finalize(size_t offset)noexcept(!IS_DEBUG) = 0;
 		// computes the size of this element in bytes, considering padding on Arrays and Structs
 		virtual size_t ComputeSize() const noexcept(!IS_DEBUG) = 0;
 	protected:
@@ -105,7 +105,7 @@ namespace MP
 	{
 		friend LayoutElement;
 	public:
-		LayoutElement& operator[](const std::string& key) override final;
+		LayoutElement& operator[](const std::string& key)noexcept(!IS_DEBUG) override final;
 		size_t GetOffsetEnd() const noexcept override final;
 		std::string GetSignature()const noexcept(!IS_DEBUG) override final;
 
@@ -127,13 +127,13 @@ namespace MP
 	public:
 		size_t GetOffsetEnd() const noexcept override final;
 		void Set(std::unique_ptr<LayoutElement> pElement, size_t size_in) noexcept(!IS_DEBUG);
-		LayoutElement& T() override final;
-		const LayoutElement& T()const;
+		LayoutElement& T() noexcept(!IS_DEBUG) override final;
+		const LayoutElement& T()const noexcept(!IS_DEBUG);
 		std::string GetSignature()const noexcept(!IS_DEBUG) override final;
 		bool IndexBounds(size_t index)const noexcept;
 	protected:
 		Array() = default;
-		size_t Finalize(size_t offset_in) override final;
+		size_t Finalize(size_t offset_in) noexcept(!IS_DEBUG)override final;
 		size_t ComputeSize() const noexcept(!IS_DEBUG) override final;
 	private:
 		size_t size = 0u;
@@ -147,10 +147,8 @@ namespace MP
 		friend class LayoutCodex;
 		friend class Buffer;
 	public:
-		Layout();
-		//this ctor creates finalized layout's only
-		Layout(std::shared_ptr<LayoutElement> pLayout);
-		LayoutElement& operator[](const std::string& key);
+		Layout()noexcept;
+		LayoutElement& operator[](const std::string& key)noexcept(!IS_DEBUG);
 		size_t GetSizeInBytes() const noexcept;
 		template<typename T>
 		LayoutElement& Add(const std::string& key) noexcept(!IS_DEBUG)
@@ -159,9 +157,12 @@ namespace MP
 			return pLayout->Add<T>(key);
 		}
 		std::string GetSignature()const noexcept(!IS_DEBUG);
-		void Finalize();
+		void Finalize()noexcept(!IS_DEBUG);
 		bool IsFinalized()const noexcept;
 		std::shared_ptr<LayoutElement>ShareRoot()const noexcept;
+	private:
+		//this ctor creates FINALIZED layouts only
+		Layout(std::shared_ptr<LayoutElement>pLayout)noexcept;
 	private:
 		bool finalized = false;
 		std::shared_ptr<LayoutElement> pLayout;
@@ -185,7 +186,7 @@ namespace MP
 			DCB_PTR_CONVERSION(Float, const)
 			DCB_PTR_CONVERSION(Bool, const)
 		private:
-			Ptr(ConstElementRef& ref);
+			Ptr(ConstElementRef& ref)noexcept;
 			ConstElementRef& ref;
 		};
 	public:
@@ -201,7 +202,7 @@ namespace MP
 		DCB_REF_CONST(Float)
 		DCB_REF_CONST(Bool)
 	private:
-		ConstElementRef(const LayoutElement* pLayout, char* pBytes, size_t offset);
+		ConstElementRef(const LayoutElement* pLayout, char* pBytes, size_t offset)noexcept;
 	private:
 		size_t offset;
 		const class LayoutElement* pLayout;
@@ -224,7 +225,7 @@ namespace MP
 				DCB_PTR_CONVERSION(Float)
 				DCB_PTR_CONVERSION(Bool)
 		private:
-			Ptr(ElementRef& ref);
+			Ptr(ElementRef& ref)noexcept;
 
 			ElementRef& ref;
 		};
@@ -242,7 +243,7 @@ namespace MP
 			DCB_REF_NONCONST(Float)
 			DCB_REF_NONCONST(Bool)
 	private:
-		ElementRef(const LayoutElement* pLayout, char* pBytes, size_t offset);
+		ElementRef(const LayoutElement* pLayout, char* pBytes, size_t offset)noexcept;
 	private:
 		size_t offset;
 		const class LayoutElement* pLayout;
@@ -259,11 +260,11 @@ namespace MP
 		const char* GetData() const noexcept;
 		size_t GetSizeInBytes() const noexcept;
 		const LayoutElement& GetLayout() const noexcept;
-		std::shared_ptr<LayoutElement> ShareLayout() const;
+		std::shared_ptr<LayoutElement> ShareLayout() const noexcept;
 		std::string GetSignature()const noexcept(!IS_DEBUG);
 	private:
-		Buffer(Layout& lay);
-		Buffer(Layout&& lay);
+		Buffer(Layout& lay)noexcept;
+		Buffer(Layout&& lay)noexcept;
 	private:
 		std::shared_ptr<LayoutElement>pLayout;
 		std::vector<char> bytes;
@@ -289,7 +290,7 @@ namespace MP
 		assert(pa != nullptr);
 		//neeed to allow make_unique access to the ctor
 		struct Enabler : public T {};
-		ps->Set(std::make_unique<Enabler>(), size);
+		pa->Set(std::make_unique<Enabler>(), size);
 		return *this;
 	}
 }

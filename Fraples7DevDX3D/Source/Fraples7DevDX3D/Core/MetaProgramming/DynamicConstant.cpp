@@ -18,7 +18,7 @@ size_t eltype::GetOffsetEnd() const noexcept \
 { \
 	return GetOffsetBegin() + ComputeSize(); \
 } \
-size_t eltype::Finalize( size_t offset_in ) \
+size_t eltype::Finalize( size_t offset_in )noexcept(!IS_DEBUG) \
 { \
 	offset = offset_in; \
 	return offset_in + ComputeSize(); \
@@ -61,21 +61,21 @@ namespace FraplesDev
 	{
 		LayoutElement::~LayoutElement()
 		{}
-		LayoutElement& LayoutElement::operator[](const std::string&)
+		LayoutElement& LayoutElement::operator[](const std::string&)noexcept(!IS_DEBUG)
 		{
 			assert(false && "cannot access member on non Struct");
 			return *this;
 		}
-		const LayoutElement& LayoutElement::operator[](const std::string& key) const
+		const LayoutElement& LayoutElement::operator[](const std::string& key) const noexcept(!IS_DEBUG)
 		{
 			return const_cast<LayoutElement&>(*this)[key];
 		}
-		LayoutElement& LayoutElement::T()
+		LayoutElement& LayoutElement::T()noexcept(!IS_DEBUG)
 		{
 			assert(false);
 			return *this;
 		}
-		const LayoutElement& LayoutElement::T() const
+		const LayoutElement& LayoutElement::T() const noexcept(!IS_DEBUG)
 		{
 			return const_cast<LayoutElement&>(*this).T();
 		}
@@ -108,7 +108,7 @@ namespace FraplesDev
 				return "";
 			}
 		protected:
-			size_t Finalize(size_t offset_in)override final
+			size_t Finalize(size_t offset_in)noexcept(!IS_DEBUG) override final
 			{
 				return 0u;
 			}
@@ -139,7 +139,7 @@ namespace FraplesDev
 
 
 
-		LayoutElement& Struct::operator[](const std::string& key)
+		LayoutElement& Struct::operator[](const std::string& key)noexcept(!IS_DEBUG)
 		{
 			const auto i = map.find(key);
 			if (i==map.end())
@@ -170,7 +170,7 @@ namespace FraplesDev
 				assert(false && "duplicate symbol name in Struct");
 			}
 		}
-		size_t Struct::Finalize(size_t offset_in)
+		size_t Struct::Finalize(size_t offset_in)noexcept(!IS_DEBUG)
 		{
 			assert(elements.size() != 0u);
 			offset = offset_in;
@@ -215,7 +215,7 @@ namespace FraplesDev
 			pElement = std::move(pElement_in);
 			size = size_in;
 		}
-		LayoutElement& Array::T()
+		LayoutElement& Array::T()noexcept(!IS_DEBUG)
 		{
 			return *pElement;
 		}
@@ -232,7 +232,7 @@ namespace FraplesDev
 		{
 			return index < size;
 		}
-		size_t Array::Finalize(size_t offset_in)
+		size_t Array::Finalize(size_t offset_in)noexcept(!IS_DEBUG)
 		{
 			assert(size != 0u && pElement);
 			offset = offset_in;
@@ -247,15 +247,16 @@ namespace FraplesDev
 
 
 
-		Layout::Layout()
-			:
-			pLayout(std::make_shared<Struct>())
-		{}
-		Layout::Layout(std::shared_ptr<LayoutElement> pLayout)
+		Layout::Layout()noexcept
+		{
+			struct Enabler : public Struct{};
+			pLayout = std::make_shared<Enabler>();
+		}
+		Layout::Layout(std::shared_ptr<LayoutElement> pLayout)noexcept
 			:
 			pLayout(std::move(pLayout)),finalized(true)
 		{}
-		LayoutElement& Layout::operator[](const std::string& key)
+		LayoutElement& Layout::operator[](const std::string& key)noexcept(!IS_DEBUG)
 		{
 			assert(!finalized && "cannot modify finalized layout");
 			return (*pLayout)[key];
@@ -288,7 +289,7 @@ namespace FraplesDev
 
 
 
-		ConstElementRef::Ptr::Ptr(ConstElementRef& ref)
+		ConstElementRef::Ptr::Ptr(ConstElementRef& ref)noexcept
 			:
 			ref(ref)
 		{
@@ -299,7 +300,7 @@ namespace FraplesDev
 		DCB_PTR_CONVERSION(ConstElementRef, Float2, const)
 		DCB_PTR_CONVERSION(ConstElementRef, Float, const)
 		DCB_PTR_CONVERSION(ConstElementRef, Bool, const)
-		ConstElementRef::ConstElementRef(const LayoutElement* pLayout, char* pBytes, size_t offset)
+		ConstElementRef::ConstElementRef(const LayoutElement* pLayout, char* pBytes, size_t offset)noexcept
 			:
 			offset(offset),
 			pLayout(pLayout),
@@ -335,7 +336,7 @@ namespace FraplesDev
 		DCB_REF_CONST(ConstElementRef, Bool)
 
 
-		ElementRef::Ptr::Ptr(ElementRef& ref)
+		ElementRef::Ptr::Ptr(ElementRef& ref)noexcept
 			:
 			ref(ref)
 		{}
@@ -345,7 +346,7 @@ namespace FraplesDev
 		DCB_PTR_CONVERSION(ElementRef, Float2)
 		DCB_PTR_CONVERSION(ElementRef, Float)
 		DCB_PTR_CONVERSION(ElementRef, Bool)
-			ElementRef::ElementRef(const LayoutElement* pLayout, char* pBytes, size_t offset)
+			ElementRef::ElementRef(const LayoutElement* pLayout, char* pBytes, size_t offset)noexcept
 			:
 			offset(offset),
 			pLayout(pLayout),
@@ -386,10 +387,10 @@ namespace FraplesDev
 
 
 
-		Buffer::Buffer(Layout& lay)
+		Buffer::Buffer(Layout& lay)noexcept
 			:pLayout(lay.ShareRoot()), bytes(pLayout->GetOffsetEnd())
 		{}
-		Buffer::Buffer(Layout&& lay) 
+		Buffer::Buffer(Layout&& lay) noexcept
 			: Buffer(lay)
 		{
 
@@ -418,7 +419,7 @@ namespace FraplesDev
 		{
 			return *pLayout;
 		}
-		std::shared_ptr<LayoutElement> Buffer::ShareLayout() const
+		std::shared_ptr<LayoutElement> Buffer::ShareLayout() const noexcept
 		{
 			return pLayout;
 		}
