@@ -239,11 +239,11 @@ namespace FraplesDev
 			bindablePtrs.push_back(PixelShader::Resolve(gfx, "PhongNormalMapPS.cso"));
 			bindablePtrs.push_back(InputLayout::Resolve(gfx, vbuf.GetLayout(), pvsbyte));
 			
-			MP::Layout layout;
+			MP::RawLayout layout;
 			layout.Add<MP::Float>("specularIntensity");
 			layout.Add<MP::Float>("specularPower");
 			layout.Add<MP::Bool>("normalMapEnabled");
-			MP::Buffer cbuf = MP::Buffer::Make( layout );
+			MP::Buffer cbuf = MP::Buffer::Make(std::move(layout));
 			cbuf["specularIntensity"] = (specularColor.x + specularColor.y + specularColor.z) / 3.0f;
 			cbuf["specularPower"] = shininess;
 			cbuf["normalMapEnabled"] = true;

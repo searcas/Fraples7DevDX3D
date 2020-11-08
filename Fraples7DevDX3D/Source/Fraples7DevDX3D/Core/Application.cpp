@@ -10,136 +10,19 @@
 #include "imgui_impl_dx11.h"
 #include "imgui_impl_win32.h"
 #include "Core/MetaProgramming/Vertex.h"
-#include "Core/MetaProgramming/DynamicConstant.h"
 #include "RendererAPI/VertexBuffer.h"
 #include "Commands/Fraples7Utility.h"
 #include <algorithm>
 #include <cstring>
-
+#include "QualityAssurance/TestingQA.h"
 
 namespace FraplesDev
 {
-	void TestDynamicConstant()
-	{
-		using namespace	std::string_literals;
-		{
-			MP::Layout s;
-			s.Add<MP::Struct>("butts");
-			s["butts"].Add<MP::Float3>("pubes");
-			s["butts"].Add<MP::Float>("dank");
-			s.Add<MP::Float>("woot");
-			s.Add<MP::Array>("arr");
-			s["arr"].Set<MP::Struct>(4);
-			s["arr"].T().Add<MP::Float3>("twerk");
-			s["arr"].T().Add<MP::Array>("werk");
-			s["arr"].T()["werk"].Set<MP::Float>(6);
-			s["arr"].T().Add<MP::Array>("meta");
-			s["arr"].T()["meta"].Set<MP::Array>(6);
-			s["arr"].T()["meta"].T().Set<MP::Matrix>(4);
-			s["arr"].T().Add<MP::Bool>("booly");
-			//fails: duplicate symbol name
-			//s.Add<MP::Bool>("arr"s);
-			//failes: bad symbol name
-			//s.Add<MP::Bool>("69Man");
-
-			MP::Buffer b = MP::Buffer::Make(s);
-			const auto sig = b.GetSignature();
-			{
-				auto exp = 69.0f;
-				b["woot"] = exp;
-				float act = b["woot"];
-				assert(act == exp);
-			}
-			{
-				auto exp = 690.0f;
-				b["butts"]["dank"s] = exp;
-				float act = b["butts"]["dank"s];
-				assert(act == exp);
-			}
-			{
-				auto exp = DirectX::XMFLOAT3{ 69.0f,0.0f,0.0f };
-				b["butts"]["pubes"s] = exp;
-				DirectX::XMFLOAT3 act = b["butts"]["pubes"s];
-				assert(!std::memcmp(&exp, &act, sizeof(DirectX::XMFLOAT3)));
-			}
-			{
-				DirectX::XMFLOAT4X4 exp;
-				DirectX::XMStoreFloat4x4(&exp, DirectX::XMMatrixIdentity());
-				b["arr"][2]["meta"s][5][3] = exp;
-				DirectX::XMFLOAT4X4 act = b["arr"][2]["meta"s][5][3];
-				assert(!std::memcmp(&exp, &act, sizeof(DirectX::XMFLOAT4)));
-
-			}
-			{
-				auto exp = true;
-				b["arr"][2]["booly"s] = exp;
-				bool act = b["arr"][2]["booly"s];
-				assert(act == exp);
-			}
-			{
-				auto exp = false;
-				b["arr"][2]["booly"s] = exp;
-				bool act = b["arr"][2]["booly"s];
-				assert(act == exp);
-			}
-			//exists
-			{
-				assert(b["butts"s]["pubes"s].Exists());
-				assert(!b["butts"s]["fubar"s].Exists());
-				if (auto ref = b["butts"s]["pubes"s]; ref.Exists())
-				{
-					DirectX::XMFLOAT3 f = ref;
-					assert(f.x == 69.0f);
-				}
-			}
-			const auto& cb = b;
-			{
-				DirectX::XMFLOAT4X4 act = cb["arr"][2]["meta"s][5][3];
-				assert(act._11 == 1.0f);
-			}
-			//this doesn't compile buffer is const 
-			//cb["arr"][2]["booly"s] = true;
-			
-			//this failes assertion: array out of bounds
-			//cb["arr"s][200];
-		}
-		//size test array of arrays
-		{
-			MP::Layout s;
-			s.Add<MP::Array>("arr");
-			s["arr"].Set<MP::Array>(6);
-			s["arr"].T().Set<MP::Matrix>(4);
-			MP::Buffer b = MP::Buffer::Make(s);
-
-			auto act = b.GetSizeInBytes();
-			assert(act == 16u * 4u * 4u * 6u);
-		}
-		//size test array of structs with padding
-		{
-			MP::Layout s;
-			s.Add<MP::Array>("arr");
-			s["arr"].Set<MP::Struct>(6);
-			s["arr"].T().Add<MP::Float2>("a");
-			s["arr"].T().Add<MP::Float3>("b");
-			MP::Buffer b = MP::Buffer::Make(s);
-			auto act = b.GetSizeInBytes();
-			assert(act == 16u * 2u * 6u);
-		}
-		//size test array of primitive that needs padding
-		{
-			MP::Layout s;
-			s.Add<MP::Array>("arr");
-			s["arr"].Set<MP::Float3>(6);
-			MP::Buffer b = MP::Buffer::Make(s);
-			auto act = b.GetSizeInBytes();
-			assert(act == 16u * 6u);
-		}
-
-	}
+	
 	Application::Application(const char* name, int width, int height, const std::string& commandLine)
 		:_mWin(name, width, height), light(_mWin.GetGFX()), scriptCommander(Utility::TokenizeQuoted(commandLine))
 	{
-		TestDynamicConstant();
+		QA::TestDynamicConstant();
 		bluePlane.SetPosXYZ(_mCamera.GetPos());
 		redPlane.SetPosXYZ(_mCamera.GetPos());
 		_mWin.GetGFX().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 800.0f));

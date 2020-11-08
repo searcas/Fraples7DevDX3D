@@ -198,6 +198,7 @@
     <ClInclude Include="Source\Fraples7DevDX3D\Objects\SolidSphere.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Objects\Sphere.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Platform\Windows\Window.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\QualityAssurance\TestingQA.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Blending\Blending.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Camera.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\ConstantBuffersEx.h" />

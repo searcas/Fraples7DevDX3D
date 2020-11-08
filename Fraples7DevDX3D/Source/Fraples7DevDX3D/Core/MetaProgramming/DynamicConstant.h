@@ -59,7 +59,7 @@ namespace FraplesDev
 			// the reason for the friend relationship is generally so that intermediate
 			// classes that the client should not create can have their constructors made
 			// private, Finalize() cannot be called on aribtrary LayoutElements, etc.
-			friend class Layout;
+			friend class RawLayout;
 			friend class Array;
 			friend class Struct;
 		public:
@@ -176,37 +176,63 @@ namespace FraplesDev
 		};
 
 		// The layout class serves as a shell to hold the root of the LayoutElement tree
-		// Client does not create LayoutElements directly, create layout and then use it
+		// Client does not create LayoutElements directly, create raw layout and then use it
 		// to access the elements and add on from there.
-		// When bulding is done, tree is
-		// finalized(all offsets calculated) and a flag is set preventing further changes to the tree
+		// When bulding is done, raw layout is moved to Codex (usually via Buffer::Make), and the internal layout
+		// element tree is "delivered" (finalized and moved out). Codex returns a baked layout
+		// which the buffer can then use to initialize itself. Baked Layout can also be used to directly init mulitple Buffers
+		// Baked layouts are conceptually immutable.
+		// Base layout cannot be constructed.
 
 		class Layout
 		{
 			friend class LayoutCodex;
 			friend class Buffer;
 		public:
+			size_t GetSizeInBytes()const noexcept;
+			std::string GetSignature()const noexcept(!IS_DEBUG);
+		protected:
 			Layout()noexcept;
+			Layout(std::shared_ptr<LayoutElement>pRoot)noexcept;
+		protected:
+			std::shared_ptr<LayoutElement>pRoot;
+		};
+		 // Raw layout represents a layout that has not yet been finalized and registered
+		 // Stucture can be edited by adding layout noedes
+		class RawLayout : public Layout
+		{
+			friend class LayoutCodex;
+		public:
+			RawLayout() = default;
 			LayoutElement& operator[](const std::string& key)noexcept(!IS_DEBUG);
-			size_t GetSizeInBytes() const noexcept;
 			template<typename T>
 			LayoutElement& Add(const std::string& key) noexcept(!IS_DEBUG)
 			{
-				assert(!finalized && "cannot modify finalized layout");
-				return pLayout->Add<T>(key);
+				return pRoot->Add<T>(key);
 			}
-			std::string GetSignature()const noexcept(!IS_DEBUG);
-			void Finalize()noexcept(!IS_DEBUG);
-			bool IsFinalized()const noexcept;
+			
 		private:
-			//this ctor creates FINALIZED layouts only(used by Codex to return layouts)
-			Layout(std::shared_ptr<LayoutElement>pLayout)noexcept;
-		private:
-			// used by COdex and Buffer to get a shared ptr to the layout
-			std::shared_ptr<LayoutElement>ShareRoot()const noexcept;
-			bool finalized = false;
-			std::shared_ptr<LayoutElement> pLayout;
+			std::shared_ptr<LayoutElement>DeliverRoot()noexcept;
+			void ClearRoot()noexcept;
 		};
+
+		// CokkedLayout represend a completed and registered Layout shell object
+		// layout tree is fixed
+
+		class CookedLayout : public Layout
+		{
+			friend class LayoutCodex;
+			friend class Buffer;
+		public:
+			const LayoutElement& operator[](const std::string& key)const noexcept(!IS_DEBUG);
+		private:
+			//this ctor used by Codex to return cooked layouts
+			CookedLayout(std::shared_ptr<LayoutElement>pRoot)noexcept;
+			// used by buffer to add reference to shared ptr to layout tree root
+			std::shared_ptr<LayoutElement>ShareRoot()const noexcept;
+		};
+
+		
 
 		// The Reference classes (ElementRef and ConstElementRef) from the shels for 
 		// interfacing with a Buffer. Operations such as indexing[] reutrn further Ref objects
@@ -237,6 +263,8 @@ namespace FraplesDev
 				ConstElementRef& ref;
 			};
 		public:
+			// Polymorphic function returns true for all node types instead of
+			// EmptyLayout(see EmptyLayout class internal to DynamicConstant.cpp)
 			bool Exists()const noexcept;
 			ConstElementRef operator[](const std::string& key) noexcept(!IS_DEBUG);
 			ConstElementRef operator[](size_t index) noexcept(!IS_DEBUG);
@@ -279,6 +307,8 @@ namespace FraplesDev
 				ElementRef& ref;
 			};
 		public:
+			// Polymorphic function returns true for all node types instead of
+			// EmptyLayout(see EmptyLayout class internal to DynamicConstant.cpp)
 			bool Exists()const noexcept;
 			operator ConstElementRef() const noexcept;
 			ElementRef operator[](const std::string& key) noexcept(!IS_DEBUG);
@@ -308,17 +338,18 @@ namespace FraplesDev
 		class Buffer
 		{
 		public:
-			static Buffer Make(Layout& lay)noexcept(!IS_DEBUG);
+			// ctros private, clients call Make to create buffers
+			// Make with a rawlayout first passes layout to Codex for cooking/Resolution
+			static Buffer Make(RawLayout&& lay)noexcept(!IS_DEBUG);
+			static Buffer Make(const CookedLayout& lay)noexcept(!IS_DEBUG);
 			ElementRef operator[](const std::string& key) noexcept(!IS_DEBUG);
 			ConstElementRef operator[](const std::string& key) const noexcept(!IS_DEBUG);
 			const char* GetData() const noexcept;
 			size_t GetSizeInBytes() const noexcept;
 			const LayoutElement& GetLayout() const noexcept;
 			std::shared_ptr<LayoutElement> ShareLayout() const noexcept;
-			std::string GetSignature()const noexcept(!IS_DEBUG);
 		private:
-			Buffer(Layout& lay)noexcept;
-			Buffer(Layout&& lay)noexcept;
+			Buffer(const CookedLayout& lay) noexcept;
 		private:
 			std::shared_ptr<LayoutElement>pLayout;
 			std::vector<char> bytes;

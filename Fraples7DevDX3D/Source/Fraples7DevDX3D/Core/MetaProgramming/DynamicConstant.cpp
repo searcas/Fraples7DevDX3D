@@ -91,6 +91,11 @@ namespace FraplesDev
 		{
 			return offset + (16u - offset % 16u) % 16u;
 		}
+
+		// This layout is a special layout returned whenever a Struct is indexed 
+		// with a bad key, or an Empty indexed at all. Instead of merely causing an exception
+		// when accesssing a non-existent member, returning an Empty allows the existence
+		// of elements to be queried at runtime via Exists() which only returns false from an Empty()
 		class Empty : public LayoutElement
 		{
 		public:
@@ -250,42 +255,51 @@ namespace FraplesDev
 		Layout::Layout()noexcept
 		{
 			struct Enabler : public Struct{};
-			pLayout = std::make_shared<Enabler>();
+			pRoot = std::make_shared<Enabler>();
 		}
-		Layout::Layout(std::shared_ptr<LayoutElement> pLayout)noexcept
+		Layout::Layout(std::shared_ptr<LayoutElement> pRoot)noexcept
 			:
-			pLayout(std::move(pLayout)),finalized(true)
+			pRoot(std::move(pRoot))
 		{}
-		LayoutElement& Layout::operator[](const std::string& key)noexcept(!IS_DEBUG)
+		size_t Layout::GetSizeInBytes()const noexcept
 		{
-			assert(!finalized && "cannot modify finalized layout");
-			return (*pLayout)[key];
+			return pRoot->GetSizeInBytes();
 		}
-		size_t Layout::GetSizeInBytes() const noexcept
-		{
-			return pLayout->GetSizeInBytes();
-		}
-		void Layout::Finalize()
-		{
-			pLayout->Finalize(0u);
-			finalized = true;
-		}
-
-		bool Layout::IsFinalized() const noexcept
-		{
-			return finalized;
-		}
-
-		std::shared_ptr<LayoutElement> Layout::ShareRoot() const noexcept
-		{
-			return pLayout;
-		}
-
 		std::string Layout::GetSignature() const noexcept(!IS_DEBUG)
 		{
-			assert(finalized);
-			return pLayout->GetSignature();
+			return pRoot->GetSignature();
 		}
+		LayoutElement& RawLayout::operator[](const std::string& key)noexcept(!IS_DEBUG)
+		{
+			return (*pRoot)[key];
+		}
+
+		std::shared_ptr<LayoutElement>RawLayout::DeliverRoot()noexcept
+		{
+			auto temp = std::move(pRoot);
+			temp->Finalize(0u);
+			*this = RawLayout();
+			return std::move(temp);
+		}
+		void RawLayout::ClearRoot()noexcept
+		{
+			*this =  RawLayout();
+		}
+		CookedLayout::CookedLayout(std::shared_ptr<LayoutElement>pRoot)noexcept
+			:Layout(std::move(pRoot))
+		{
+
+		}
+		std::shared_ptr<LayoutElement>CookedLayout::ShareRoot()const noexcept
+		{
+			return pRoot;
+		}
+		const LayoutElement& CookedLayout::operator[](const std::string& key) const noexcept(!IS_DEBUG)
+		{
+			return (*pRoot)[key];
+		}
+
+	
 
 
 
@@ -387,18 +401,19 @@ namespace FraplesDev
 
 
 
-		Buffer::Buffer(Layout& lay)noexcept
-			:pLayout(lay.ShareRoot()), bytes(pLayout->GetOffsetEnd())
-		{}
-		Buffer::Buffer(Layout&& lay) noexcept
-			: Buffer(lay)
+		Buffer Buffer::Make(RawLayout&& lay)noexcept(!IS_DEBUG)
 		{
-
+			return { LayoutCodex::Resolve(std::move(lay)) };
 		}
-		Buffer Buffer::Make(Layout& lay) noexcept(!IS_DEBUG)
+		Buffer Buffer::Make(const CookedLayout& lay) noexcept(!IS_DEBUG)
 		{
-			return { LayoutCodex::Resolve(lay) };
+			return { lay.ShareRoot() };
 		}
+		Buffer::Buffer(const CookedLayout& lay)noexcept
+			: pLayout(lay.ShareRoot()), bytes(pLayout->GetOffsetEnd())
+		{
+		}
+	
 		ElementRef Buffer::operator[](const std::string& key) noexcept(!IS_DEBUG)
 		{
 			return { &(*pLayout)[key],bytes.data(),0u };
@@ -423,10 +438,7 @@ namespace FraplesDev
 		{
 			return pLayout;
 		}
-		std::string Buffer::GetSignature() const noexcept(!IS_DEBUG)
-		{
-			return pLayout->GetSignature();
-		}
+	
 		std::string Struct::GetSignature() const noexcept(!IS_DEBUG)
 		{
 			using namespace std::string_literals;

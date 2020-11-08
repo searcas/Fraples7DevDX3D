@@ -14,7 +14,7 @@ namespace FraplesDev
 		class LayoutCodex
 		{
 		public:
-			static MP::Layout Resolve(MP::Layout& layout)noexcept(!IS_DEBUG);
+			static MP::CookedLayout Resolve(MP::RawLayout&& layout)noexcept(!IS_DEBUG);
 		private:
 			static LayoutCodex& Get_()noexcept;
 		private:
