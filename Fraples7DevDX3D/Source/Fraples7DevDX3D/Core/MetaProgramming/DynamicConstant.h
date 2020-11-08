@@ -38,9 +38,9 @@ namespace FraplesDev
 namespace MP
 {
 	namespace dx = DirectX;
-
 	class LayoutElement
 	{
+		
 		friend class Layout;
 		friend class Array;
 		friend class Struct;
@@ -93,15 +93,15 @@ namespace MP
 
 
 	DCB_LEAF_ELEMENT(Matrix, dx::XMFLOAT4X4)
-		DCB_LEAF_ELEMENT(Float4, dx::XMFLOAT4)
-		DCB_LEAF_ELEMENT(Float3, dx::XMFLOAT3)
-		DCB_LEAF_ELEMENT(Float2, dx::XMFLOAT2)
-		DCB_LEAF_ELEMENT(Float, float)
-		DCB_LEAF_ELEMENT_IMPL(Bool, bool, 4u)
+	DCB_LEAF_ELEMENT(Float4, dx::XMFLOAT4)
+	DCB_LEAF_ELEMENT(Float3, dx::XMFLOAT3)
+	DCB_LEAF_ELEMENT(Float2, dx::XMFLOAT2)
+	DCB_LEAF_ELEMENT(Float, float)
+	DCB_LEAF_ELEMENT_IMPL(Bool, bool, 4u)
 
 
 		class Struct : public LayoutElement
-	{
+		{
 	public:
 		LayoutElement& operator[](const std::string& key) override final;
 		size_t GetOffsetEnd() const noexcept override final;
@@ -139,8 +139,11 @@ namespace MP
 
 	class Layout
 	{
+		friend class LayoutCodex;
+		friend class Buffer;
 	public:
 		Layout();
+		//this ctor creates finalized layout's only
 		Layout(std::shared_ptr<LayoutElement> pLayout);
 		LayoutElement& operator[](const std::string& key);
 		size_t GetSizeInBytes() const noexcept;
@@ -150,9 +153,10 @@ namespace MP
 			assert(!finalized && "cannot modify finalized layout");
 			return pLayout->Add<T>(key);
 		}
-		std::shared_ptr<LayoutElement> Finalize();
 		std::string GetSignature()const noexcept(!IS_DEBUG);
-
+		void Finalize();
+		bool IsFinalized()const noexcept;
+		std::shared_ptr<LayoutElement>ShareRoot()const noexcept;
 	private:
 		bool finalized = false;
 		std::shared_ptr<LayoutElement> pLayout;
@@ -168,11 +172,11 @@ namespace MP
 			Ptr(ConstElementRef& ref);
 
 			DCB_PTR_CONVERSION(Matrix, const)
-				DCB_PTR_CONVERSION(Float4, const)
-				DCB_PTR_CONVERSION(Float3, const)
-				DCB_PTR_CONVERSION(Float2, const)
-				DCB_PTR_CONVERSION(Float, const)
-				DCB_PTR_CONVERSION(Bool, const)
+			DCB_PTR_CONVERSION(Float4, const)
+			DCB_PTR_CONVERSION(Float3, const)
+			DCB_PTR_CONVERSION(Float2, const)
+			DCB_PTR_CONVERSION(Float, const)
+			DCB_PTR_CONVERSION(Bool, const)
 		private:
 			ConstElementRef& ref;
 		};
@@ -184,11 +188,11 @@ namespace MP
 		Ptr operator&() noexcept(!IS_DEBUG);
 
 		DCB_REF_CONST(Matrix)
-			DCB_REF_CONST(Float4)
-			DCB_REF_CONST(Float3)
-			DCB_REF_CONST(Float2)
-			DCB_REF_CONST(Float)
-			DCB_REF_CONST(Bool)
+		DCB_REF_CONST(Float4)
+		DCB_REF_CONST(Float3)
+		DCB_REF_CONST(Float2)
+		DCB_REF_CONST(Float)
+		DCB_REF_CONST(Bool)
 	private:
 		size_t offset;
 		const class LayoutElement* pLayout;
@@ -236,16 +240,19 @@ namespace MP
 	class Buffer
 	{
 	public:
-		Buffer(Layout& lay);
+		static Buffer Make(Layout& lay)noexcept(!IS_DEBUG);
 		ElementRef operator[](const std::string& key) noexcept(!IS_DEBUG);
 		ConstElementRef operator[](const std::string& key) const noexcept(!IS_DEBUG);
 		const char* GetData() const noexcept;
 		size_t GetSizeInBytes() const noexcept;
 		const LayoutElement& GetLayout() const noexcept;
-		std::shared_ptr<LayoutElement> CloneLayout() const;
+		std::shared_ptr<LayoutElement> ShareLayout() const;
 		std::string GetSignature()const noexcept(!IS_DEBUG);
 	private:
-		std::shared_ptr<Struct> pLayout;
+		Buffer(Layout& lay);
+		Buffer(Layout&& lay);
+	private:
+		std::shared_ptr<LayoutElement>pLayout;
 		std::vector<char> bytes;
 	};
 

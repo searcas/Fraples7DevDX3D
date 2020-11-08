@@ -13,7 +13,7 @@ namespace FraplesDev
 
 		}
 		PixelConstantBufferEx(Graphics& gfx, const MP::Buffer& buf, UINT slot)
-			:PixelConstantBufferEx(gfx, buf.CloneLayout(), slot, &buf)
+			:PixelConstantBufferEx(gfx, buf.ShareLayout(), slot, &buf)
 		{
 
 		}

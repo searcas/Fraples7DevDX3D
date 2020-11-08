@@ -42,7 +42,7 @@ namespace FraplesDev
 			//failes: bad symbol name
 			//s.Add<MP::Bool>("69Man");
 
-			MP::Buffer b(s);
+			MP::Buffer b = MP::Buffer::Make(s);
 			const auto sig = b.GetSignature();
 			{
 				auto exp = 69.0f;
@@ -109,7 +109,7 @@ namespace FraplesDev
 			s.Add<MP::Array>("arr");
 			s["arr"].Set<MP::Array>(6);
 			s["arr"].T().Set<MP::Matrix>(4);
-			MP::Buffer b(s);
+			MP::Buffer b = MP::Buffer::Make(s);
 
 			auto act = b.GetSizeInBytes();
 			assert(act == 16u * 4u * 4u * 6u);
@@ -121,7 +121,7 @@ namespace FraplesDev
 			s["arr"].Set<MP::Struct>(6);
 			s["arr"].T().Add<MP::Float2>("a");
 			s["arr"].T().Add<MP::Float3>("b");
-			MP::Buffer b(s);
+			MP::Buffer b = MP::Buffer::Make(s);
 			auto act = b.GetSizeInBytes();
 			assert(act == 16u * 2u * 6u);
 		}
@@ -130,7 +130,7 @@ namespace FraplesDev
 			MP::Layout s;
 			s.Add<MP::Array>("arr");
 			s["arr"].Set<MP::Float3>(6);
-			MP::Buffer b(s);
+			MP::Buffer b = MP::Buffer::Make(s);
 			auto act = b.GetSizeInBytes();
 			assert(act == 16u * 6u);
 		}

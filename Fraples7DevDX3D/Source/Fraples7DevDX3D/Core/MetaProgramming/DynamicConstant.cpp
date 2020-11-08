@@ -2,6 +2,7 @@
 #include <string>
 #include <algorithm>
 #include <cctype>
+#include "RendererAPI/LayoutCodex.h"
 #define DCB_RESOLVE_BASE(eltype) \
 size_t LayoutElement::Resolve ## eltype() const noexcept(!IS_DEBUG) \
 { \
@@ -252,7 +253,7 @@ namespace FraplesDev
 		{}
 		Layout::Layout(std::shared_ptr<LayoutElement> pLayout)
 			:
-			pLayout(std::move(pLayout))
+			pLayout(std::move(pLayout)),finalized(true)
 		{}
 		LayoutElement& Layout::operator[](const std::string& key)
 		{
@@ -263,15 +264,25 @@ namespace FraplesDev
 		{
 			return pLayout->GetSizeInBytes();
 		}
-		std::shared_ptr<LayoutElement> Layout::Finalize()
+		void Layout::Finalize()
 		{
-			pLayout->Finalize(0);
+			pLayout->Finalize(0u);
 			finalized = true;
+		}
+
+		bool Layout::IsFinalized() const noexcept
+		{
+			return finalized;
+		}
+
+		std::shared_ptr<LayoutElement> Layout::ShareRoot() const noexcept
+		{
 			return pLayout;
 		}
 
 		std::string Layout::GetSignature() const noexcept(!IS_DEBUG)
 		{
+			assert(finalized);
 			return pLayout->GetSignature();
 		}
 
@@ -376,8 +387,17 @@ namespace FraplesDev
 
 
 		Buffer::Buffer(Layout& lay)
-			:pLayout(std::static_pointer_cast<Struct>(lay.Finalize())), bytes(pLayout->GetOffsetEnd())
+			:pLayout(lay.ShareRoot()), bytes(pLayout->GetOffsetEnd())
 		{}
+		Buffer::Buffer(Layout&& lay) 
+			: Buffer(lay)
+		{
+
+		}
+		Buffer Buffer::Make(Layout& lay) noexcept(!IS_DEBUG)
+		{
+			return { LayoutCodex::Resolve(lay) };
+		}
 		ElementRef Buffer::operator[](const std::string& key) noexcept(!IS_DEBUG)
 		{
 			return { &(*pLayout)[key],bytes.data(),0u };
@@ -398,7 +418,7 @@ namespace FraplesDev
 		{
 			return *pLayout;
 		}
-		std::shared_ptr<LayoutElement> Buffer::CloneLayout() const
+		std::shared_ptr<LayoutElement> Buffer::ShareLayout() const
 		{
 			return pLayout;
 		}

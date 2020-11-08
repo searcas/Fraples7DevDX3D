@@ -5,7 +5,6 @@
 #include "Core/Math/FraplesXM.h"
 #include "Core/MetaProgramming/DynamicConstant.h"
 #include "RendererAPI/ConstantBuffersEx.h"
-#include "RendererAPI/LayoutCodex.h"
 namespace FraplesDev
 {
 	
@@ -241,31 +240,15 @@ namespace FraplesDev
 			bindablePtrs.push_back(InputLayout::Resolve(gfx, vbuf.GetLayout(), pvsbyte));
 			
 			MP::Layout layout;
-			bool loaded = false;
-			
-			auto tag = "diff&nrm";
-
-			if (LayoutCodex::Has(tag))
-			{
-				layout = LayoutCodex::Load(tag);
-				loaded = true;
-			}
-			else
-			{
-				layout.Add<MP::Float>("specularIntensity");
-				layout.Add<MP::Float>("specularPower");
-				layout.Add<MP::Bool>("normalMapEnabled");
-			}
-
-			MP::Buffer cbuf{ layout };
+			layout.Add<MP::Float>("specularIntensity");
+			layout.Add<MP::Float>("specularPower");
+			layout.Add<MP::Bool>("normalMapEnabled");
+			MP::Buffer cbuf = MP::Buffer::Make( layout );
 			cbuf["specularIntensity"] = (specularColor.x + specularColor.y + specularColor.z) / 3.0f;
 			cbuf["specularPower"] = shininess;
 			cbuf["normalMapEnabled"] = true;
 			bindablePtrs.push_back(std::make_shared<PixelConstantBufferEx>(gfx, cbuf, 1u));
-			if (!loaded)
-			{
-				LayoutCodex::Store(tag, layout);
-			}
+	
 		}
 		else if (hasDiffuseMap)
 		{
