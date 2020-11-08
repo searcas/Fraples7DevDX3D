@@ -17,25 +17,7 @@ namespace FraplesDev
 
 	class Node
 	{
-	
-		friend class Model;
-	public:
-		struct PSMaterialConstantFullmonte
-		{
-			BOOL normalMapEnabled = TRUE;
-			BOOL specularMapEnabled = TRUE;
-			BOOL hasGlossMap = FALSE;
-			float specularPower = 3.1f;
-			DirectX::XMFLOAT3 specularColor = { 0.75f, 0.75f, 0.75f };
-			float specularMapWeight = 0.671f;
-		};
-		struct PSMaterialConstantNotex
-		{
-			DirectX::XMFLOAT4 materialColor = { 0.447970f, 0.327254f, 0.176283f, 1.0f };
-			DirectX::XMFLOAT4 specularColor = { 0.65f, 0.65f, 0.65f, 1.0f };
-			float specularPower = 120.0f;
-			float padding[3] = {};
-		};
+	friend class Model;
 	public:
 		Node(int id,const std::string& name,std::vector<Mesh*>meshPtrs, const DirectX::XMMATRIX& transform)noexcept(!IS_DEBUG);
 		void Render(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform)const noexcept(!IS_DEBUG);
@@ -46,6 +28,7 @@ namespace FraplesDev
 		void AddChild(std::unique_ptr<Node>pChild)noexcept(!IS_DEBUG);
 		void RenderTree(Node*& pSelectedNode) const noexcept;
 
+		/*
 		template<class T>
 		bool ControlMeSenpai(Graphics& gfx, T& c)
 		{
@@ -101,6 +84,7 @@ namespace FraplesDev
 			}
 			return false;
 		}
+		*/
 	private:
 		int _mID = 0;
 		std::string _mName = {};
@@ -142,8 +126,8 @@ namespace FraplesDev
 				float y = 0.0f;
 				float z = 0.0f;
 			};
-			Node::PSMaterialConstantFullmonte _mSkinMaterial = {};
-			Node::PSMaterialConstantNotex _mRingMaterial = {};
+			/*Node::PSMaterialConstantFullmonte _mSkinMaterial = {};
+			Node::PSMaterialConstantNotex _mRingMaterial = {};*/
 			std::unordered_map<int, TransformParameters>_mTransforms = {};
 		};
 

@@ -189,13 +189,23 @@ namespace FraplesDev
 
 			bindablePtrs.push_back(PixelShader::Resolve(gfx, hasAlphaDiffuse?"PhongPSSpecNormalMask.cso": "PhongPSSpecNormalMap.cso"));
 			bindablePtrs.push_back(InputLayout::Resolve(gfx, vbuf.GetLayout(), pvsbyte));
+			
+			MP::RawLayout layout;
+			layout.Add<MP::Bool>("normalMapEnabled");
+			layout.Add<MP::Bool>("specularMapEnabled");
+			layout.Add<MP::Bool>("hasGlossMap");
+			layout.Add<MP::Float>("specularPower");
+			layout.Add<MP::Float3>("specularColor");
+			layout.Add<MP::Float>("specularMapWeight");
 
-			Node::PSMaterialConstantFullmonte pmc;
-			pmc.specularPower = shininess;
-			pmc.hasGlossMap = hasAlphaGloss ? TRUE : FALSE;
-			//this is clearly an issue... all meshes will share same mat const, but may have different
-			//Ns (Specular power) specified for each in the material properties ...bad conflict
-			bindablePtrs.push_back(PixelConstantBuffer<Node::PSMaterialConstantFullmonte>::Resolve(gfx, pmc, 1u));
+			auto buf = MP::Buffer::Make(std::move(layout));
+			buf["normalMapEnabled"] = true;
+			buf["specularMapEnabled"] = true;
+			buf["hasGlossMap"] = hasAlphaGloss;
+			buf["specularPower"] = shininess;
+			buf["specularColor"] = DirectX::XMFLOAT3{ 0.75f,0.75f,0.75f };
+			buf["specularMapWeight"] = 0.671f;
+			bindablePtrs.push_back(std::make_shared<PixelConstantBufferEx>(gfx, buf, 1u));
 		}
 		else if (hasDiffuseMap && hasNormalMap)
 		{
@@ -250,55 +260,6 @@ namespace FraplesDev
 			bindablePtrs.push_back(std::make_shared<PixelConstantBufferEx>(gfx, cbuf, 1u));
 	
 		}
-		else if (hasDiffuseMap)
-		{
-			MP::VertexBuffer vbuf(std::move(MP::VertexLayout{}.
-				Append(MP::ElementType::Position3D).
-				Append(MP::ElementType::Normal).
-				Append(MP::ElementType::Texture2D)));
-
-
-
-			for (unsigned int i = 0; i < mesh.mNumVertices; i++)
-			{
-				vbuf.EmplaceBack(
-					DirectX::XMFLOAT3(
-						mesh.mVertices[i].x * scale, mesh.mVertices[i].y * scale, mesh.mVertices[i].z * scale),
-					*reinterpret_cast<DirectX::XMFLOAT3*>(&mesh.mNormals[i]),
-					*reinterpret_cast<DirectX::XMFLOAT2*>(&mesh.mTextureCoords[0][i]));
-			}
-
-			std::vector<unsigned short>indices;
-			indices.reserve(mesh.mNumFaces * 3);
-			for (unsigned int i = 0; i < mesh.mNumFaces; i++)
-			{
-				const auto& face = mesh.mFaces[i];
-				assert(face.mNumIndices == 3);
-				indices.push_back(face.mIndices[0]);
-				indices.push_back(face.mIndices[1]);
-				indices.push_back(face.mIndices[2]);
-			}
-			bindablePtrs.push_back(VertexBuffer::Resolve(gfx, meshTag, vbuf));
-			bindablePtrs.push_back(IndexBuffer::Resolve(gfx, meshTag, indices));
-
-			auto pvs = VertexShader::Resolve(gfx, "PhongVS.cso");
-			auto pvsbyte = pvs->GetBytecode();
-			bindablePtrs.push_back(std::move(pvs));
-
-			bindablePtrs.push_back(PixelShader::Resolve(gfx, "PhongPS.cso"));
-			bindablePtrs.push_back(InputLayout::Resolve(gfx, vbuf.GetLayout(), pvsbyte));
-
-			struct PSMaterialConstantDiffnorm
-			{
-				float specularIntensity = 0.18;
-				float specularPower = 0.0f;
-				float padding[2] = {};
-			}pmc;
-			pmc.specularPower = shininess;
-			pmc.specularIntensity = (specularColor.x + specularColor.y + specularColor.z) / 3.0f;
-			bindablePtrs.push_back(PixelConstantBuffer<PSMaterialConstantDiffnorm>::Resolve(gfx, pmc, 1u));
-
-		}
 		else if(!hasDiffuseMap && !hasNormalMap && !hasSpecularMap)
 		{
 			MP::VertexBuffer vbuf(MP::VertexLayout{}.Append(MP::ElementType::Position3D).
@@ -330,12 +291,15 @@ namespace FraplesDev
 			bindablePtrs.push_back(std::move(pvs));
 			bindablePtrs.push_back(PixelShader::Resolve(gfx, "PhongPSNotex.cso"));
 			bindablePtrs.push_back(InputLayout::Resolve(gfx, vbuf.GetLayout(), pvsbyte));
-
-			Node::PSMaterialConstantNotex pmc;
-			pmc.specularPower = shininess;
-			pmc.specularColor = specularColor;
-			pmc.materialColor = diffuseColor;
-			bindablePtrs.push_back(PixelConstantBuffer<Node::PSMaterialConstantNotex>::Resolve(gfx, pmc, 1u));
+			MP::RawLayout layout;
+			layout.Add<MP::Float4>("materialColor");
+			layout.Add<MP::Float4>("specularColor");
+			layout.Add<MP::Float>("specularPower");
+			auto buf = MP::Buffer::Make(std::move(layout));
+			buf["specularPower"] = shininess;
+			buf["materialColor"] = diffuseColor;
+			buf["specularColor"] = specularColor;
+			bindablePtrs.push_back(std::make_unique<PixelConstantBufferEx>(gfx, buf, 1u));
 		}
 		else if (hasDiffuseMap && !hasNormalMap && hasSpecularMap)
 		{
@@ -367,18 +331,67 @@ namespace FraplesDev
 			bindablePtrs.push_back(PixelShader::Resolve(gfx, "PhongSpecPS.cso"));
 			bindablePtrs.push_back(InputLayout::Resolve(gfx, vbuf.GetLayout(), pvsbyte));
 			
-			struct PSMaterialConstant
-			{
-				float specularPowerConst = 20.0f;
-				BOOL hasGloss = FALSE;
-				float specularMapWeight = 1.0f;
-			}pmc;
-			pmc.specularPowerConst = shininess;
-			pmc.hasGloss = hasAlphaGloss ? TRUE : FALSE;
-			pmc.specularMapWeight = 1.0f;
-			bindablePtrs.push_back(PixelConstantBuffer<PSMaterialConstant>::Resolve(gfx, pmc, 1u));
+			MP::RawLayout layout;
+			layout.Add<MP::Float>("specularPowerConst");
+			layout.Add<MP::Bool>("hasGloss");
+			layout.Add<MP::Float>("specularMapWeight");
+
+			auto buf = MP::Buffer::Make(std::move(layout));
+			buf["specularPowerConst"] = shininess;
+			buf["hasGloss"] = hasAlphaGloss;
+			buf["specularMapWight"] = 1.0f;
+
+			bindablePtrs.push_back(std::make_unique<PixelConstantBufferEx>(gfx, buf, 1u));
 
 
+		}
+		else if (hasDiffuseMap)
+		{
+		MP::VertexBuffer vbuf(std::move(MP::VertexLayout{}.
+			Append(MP::ElementType::Position3D).
+			Append(MP::ElementType::Normal).
+			Append(MP::ElementType::Texture2D)));
+
+
+
+		for (unsigned int i = 0; i < mesh.mNumVertices; i++)
+		{
+			vbuf.EmplaceBack(
+				DirectX::XMFLOAT3(
+					mesh.mVertices[i].x * scale, mesh.mVertices[i].y * scale, mesh.mVertices[i].z * scale),
+				*reinterpret_cast<DirectX::XMFLOAT3*>(&mesh.mNormals[i]),
+				*reinterpret_cast<DirectX::XMFLOAT2*>(&mesh.mTextureCoords[0][i]));
+		}
+
+		std::vector<unsigned short>indices;
+		indices.reserve(mesh.mNumFaces * 3);
+		for (unsigned int i = 0; i < mesh.mNumFaces; i++)
+		{
+			const auto& face = mesh.mFaces[i];
+			assert(face.mNumIndices == 3);
+			indices.push_back(face.mIndices[0]);
+			indices.push_back(face.mIndices[1]);
+			indices.push_back(face.mIndices[2]);
+		}
+		bindablePtrs.push_back(VertexBuffer::Resolve(gfx, meshTag, vbuf));
+		bindablePtrs.push_back(IndexBuffer::Resolve(gfx, meshTag, indices));
+
+		auto pvs = VertexShader::Resolve(gfx, "PhongVS.cso");
+		auto pvsbyte = pvs->GetBytecode();
+		bindablePtrs.push_back(std::move(pvs));
+
+		bindablePtrs.push_back(PixelShader::Resolve(gfx, "PhongPS.cso"));
+		bindablePtrs.push_back(InputLayout::Resolve(gfx, vbuf.GetLayout(), pvsbyte));
+
+		MP::RawLayout layout;
+		layout.Add<MP::Float>("specularIntensity");
+		layout.Add<MP::Float>("specularPower");
+		auto buf = MP::Buffer::Make(std::move(layout));
+		buf["specularIntensity"] = (specularColor.x + specularColor.y + specularColor.z) / 3.0f;
+		buf["specularPower"] = shininess;
+		buf["specularMapWeight"] = 1.0f;
+
+		bindablePtrs.push_back(std::make_unique<PixelConstantBufferEx>(gfx, buf, 1u));
 		}
 		else
 		{
@@ -465,6 +478,7 @@ namespace FraplesDev
 				ImGui::SliderFloat("Y", &transform.y, -20.0f, 20.0f);
 				ImGui::SliderFloat("Z", &transform.z, -20.0f, 20.0f);
 
+				/*
 				if (!_mPselectedNode->ControlMeSenpai(gfx,_mSkinMaterial))
 				{
 					_mPselectedNode->ControlMeSenpai(gfx, _mRingMaterial);
@@ -473,6 +487,7 @@ namespace FraplesDev
 				{
 					transform = { };
 				}
+				*/
 			}
 
 		}
