@@ -225,11 +225,11 @@ namespace FraplesDev
 			friend class Buffer;
 		public:
 			const LayoutElement& operator[](const std::string& key)const noexcept(!IS_DEBUG);
+			// add reference to shared ptr to layout tree root
+			std::shared_ptr<LayoutElement>ShareRoot()const noexcept;
 		private:
 			//this ctor used by Codex to return cooked layouts
 			CookedLayout(std::shared_ptr<LayoutElement>pRoot)noexcept;
-			// used by buffer to add reference to shared ptr to layout tree root
-			std::shared_ptr<LayoutElement>ShareRoot()const noexcept;
 		};
 
 		
@@ -338,6 +338,7 @@ namespace FraplesDev
 		class Buffer
 		{
 		public:
+			Buffer(const Buffer& buf) noexcept;
 			// ctros private, clients call Make to create buffers
 			// Make with a rawlayout first passes layout to Codex for cooking/Resolution
 			static Buffer Make(RawLayout&& lay)noexcept(!IS_DEBUG);
@@ -347,6 +348,7 @@ namespace FraplesDev
 			const char* GetData() const noexcept;
 			size_t GetSizeInBytes() const noexcept;
 			const LayoutElement& GetLayout() const noexcept;
+			void CopyFrom(const Buffer&)noexcept(!IS_DEBUG);
 			std::shared_ptr<LayoutElement> ShareLayout() const noexcept;
 		private:
 			Buffer(const CookedLayout& lay) noexcept;

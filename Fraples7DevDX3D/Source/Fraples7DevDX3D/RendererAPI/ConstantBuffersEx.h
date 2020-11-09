@@ -7,36 +7,24 @@ namespace FraplesDev
 	class PixelConstantBufferEx : public GfxContext
 	{
 	public:
-		PixelConstantBufferEx(Graphics& gfx,std::shared_ptr<MP::LayoutElement> playout,UINT slot)
-			:PixelConstantBufferEx(gfx,std::move(pLayout),slot,nullptr)
-		{
-
-		}
-		PixelConstantBufferEx(Graphics& gfx, const MP::Buffer& buf, UINT slot)
-			:PixelConstantBufferEx(gfx, buf.ShareLayout(), slot, &buf)
-		{
-
-		}
+	
 		void Update(Graphics& gfx, const MP::Buffer& buf)
 		{
-			assert(&buf.GetLayout() == &*pLayout);
+			assert(&buf.GetLayout() == &GetLayout());
 			INFOMAN(gfx);
 			D3D11_MAPPED_SUBRESOURCE msr;
 			FPL_GFX_THROW_INFO(GetContext(gfx)->Map(_mPConstantBuffer.Get(), 0u, D3D11_MAP_WRITE_DISCARD, 0u, &msr));
 			memcpy(msr.pData, buf.GetData(), buf.GetSizeInBytes());
 			GetContext(gfx)->Unmap(_mPConstantBuffer.Get(), 0u);
 		}
-		const MP::LayoutElement& GetLayout() const noexcept
-		{
-			return *pLayout;
-		}
 		void Bind(Graphics& gfx)noexcept override
 		{
 			GetContext(gfx)->PSSetConstantBuffers(_mSlot, 1u, _mPConstantBuffer.GetAddressOf());
 		}
-	private:
-		PixelConstantBufferEx(Graphics& gfx, std::shared_ptr<MP::LayoutElement> layout_in, UINT slot, const MP::Buffer* pBuffer)
-			:_mSlot(slot),pLayout(std::move(layout_in))
+		virtual const MP::LayoutElement& GetLayout() const noexcept = 0;
+	protected:
+		PixelConstantBufferEx(Graphics& gfx, const MP::LayoutElement& layoutRoot, UINT slot, const MP::Buffer* pBuffer)
+			:_mSlot(slot)
 		{
 			INFOMAN(gfx);
 			D3D11_BUFFER_DESC constantBufferDescriptor = {};
@@ -44,7 +32,7 @@ namespace FraplesDev
 			constantBufferDescriptor.Usage = D3D11_USAGE_DYNAMIC;
 			constantBufferDescriptor.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 			constantBufferDescriptor.MiscFlags = 0u;
-			constantBufferDescriptor.ByteWidth = (UINT)pLayout->GetSizeInBytes();
+			constantBufferDescriptor.ByteWidth = (UINT)layoutRoot.GetSizeInBytes();
 			constantBufferDescriptor.StructureByteStride = 0u;
 			if (pBuffer != nullptr)
 			{
@@ -57,10 +45,65 @@ namespace FraplesDev
 				FPL_GFX_THROW_INFO(GetDevice(gfx)->CreateBuffer(&constantBufferDescriptor, nullptr, &_mPConstantBuffer));
 			}
 		}
+	
 	private:
 		std::shared_ptr<MP::LayoutElement> pLayout;
 		Microsoft::WRL::ComPtr<ID3D11Buffer>_mPConstantBuffer;
 		UINT _mSlot = 0;
 	};
+	class CachingPixelConstantBufferEx : public PixelConstantBufferEx
+	{
+	public:
+		CachingPixelConstantBufferEx(Graphics& gfx, const MP::CookedLayout& layout, UINT slot)
+			:PixelConstantBufferEx(gfx, *layout.ShareRoot(), slot, nullptr), _mBuf(MP::Buffer::Make(layout))
+		{
 
+		}
+		CachingPixelConstantBufferEx(Graphics& gfx, const MP::Buffer& buf, UINT slot)
+			:PixelConstantBufferEx(gfx, buf.GetLayout(), slot, &buf), _mBuf(buf)
+		{
+
+		}
+		const MP::LayoutElement& GetLayout() const noexcept override
+		{
+			return _mBuf.GetLayout();
+		}
+		const MP::Buffer& GetBuffer()const noexcept
+		{
+			return _mBuf;
+		}
+		void SetBuffer(const MP::Buffer& buff_in)
+		{
+			_mBuf.CopyFrom(buff_in);
+			dirty = true;
+		}
+		void Bind(Graphics& gfx) noexcept override
+		{
+			if (dirty)
+			{
+				Update(gfx, _mBuf);
+				dirty = false;
+			}
+			PixelConstantBufferEx::Bind(gfx);
+		}
+	private:
+		MP::Buffer _mBuf;
+		bool dirty = false;
+	};
+	class NoCachePixelConstantBufferEx : public PixelConstantBufferEx
+	{
+	public:
+		NoCachePixelConstantBufferEx(Graphics& gfx, const MP::CookedLayout& layout, UINT slot)
+			: PixelConstantBufferEx(gfx, *layout.ShareRoot(), slot, nullptr),_mPLayoutRoot(layout.ShareRoot())
+		{}
+		NoCachePixelConstantBufferEx(Graphics& gfx, const MP::Buffer& buff, UINT slot)
+			: PixelConstantBufferEx(gfx, buff.GetLayout(), slot, nullptr), _mPLayoutRoot(buff.ShareLayout())
+		{}
+		const MP::LayoutElement& GetLayout()const noexcept override
+		{
+			return *_mPLayoutRoot;
+		}
+	private:
+		std::shared_ptr<MP::LayoutElement>_mPLayoutRoot;
+	};
 }

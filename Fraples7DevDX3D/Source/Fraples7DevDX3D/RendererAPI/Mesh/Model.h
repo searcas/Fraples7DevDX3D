@@ -11,6 +11,7 @@
 #include <optional>
 #include "RendererAPI/ConstantBuffers.h"
 #include <filesystem>
+#include "Core/MetaProgramming/DynamicConstant.h"
 namespace FraplesDev
 {
 	
@@ -24,67 +25,11 @@ namespace FraplesDev
 		void SetAppliedTransform(DirectX::FXMMATRIX transform)noexcept;
 		inline const DirectX::XMFLOAT4X4& GetAppliedTransform() noexcept { return appliedTransform; }
 		inline const int GetId()const noexcept { return _mID; }
+		const MP::Buffer* GetMaterialConstants()const noexcept(!IS_DEBUG);
+		void SetMaterialConstants(const MP::Buffer& buff)noexcept(!IS_DEBUG);
 	private:
 		void AddChild(std::unique_ptr<Node>pChild)noexcept(!IS_DEBUG);
 		void RenderTree(Node*& pSelectedNode) const noexcept;
-
-		/*
-		template<class T>
-		bool ControlMeSenpai(Graphics& gfx, T& c)
-		{
-
-			if (_mMeshPtrs.empty())
-			{
-				return false;
-			}
-
-			if constexpr(std::is_same<T, PSMaterialConstantFullmonte>::value)
-			{
-				if (auto pcb = _mMeshPtrs.front()->QueryBindable<PixelConstantBuffer<T>>())
-				{
-					ImGui::Text("Material");
-
-					bool normalMapEnabled = (bool)c.normalMapEnabled;
-					ImGui::Checkbox("Norm Map", &normalMapEnabled);
-					c.normalMapEnabled = normalMapEnabled ? TRUE : FALSE;
-
-					bool specularMapEnabled = (bool)c.specularMapEnabled;
-					ImGui::Checkbox("Spec Map", &specularMapEnabled);
-					c.specularMapEnabled = specularMapEnabled ? TRUE : FALSE;
-
-					bool hasGlossMap = (bool)c.hasGlossMap;
-					ImGui::Checkbox("Gloss Alpha", &hasGlossMap);
-					c.hasGlossMap = hasGlossMap ? TRUE : FALSE;
-
-					ImGui::SliderFloat("Spec Weight", &c.specularMapWeight, 0.0f, 2.0f);
-
-					ImGui::SliderFloat("Spec Pow", &c.specularPower, 0.0f, 1000.0f, "%f");
-
-					ImGui::ColorPicker3("Spec Color", reinterpret_cast<float*>(&c.specularColor));
-
-					pcb->Update(gfx, c);
-					return true;
-				}
-			}
-			else if constexpr (std::is_same<T, PSMaterialConstantNotex>::value)
-			{
-				if (auto pcb = _mMeshPtrs.front()->QueryBindable<PixelConstantBuffer<T>>())
-				{
-					ImGui::Text("Material");
-
-					ImGui::ColorPicker3("Spec Color.", reinterpret_cast<float*>(&c.specularColor));
-
-					ImGui::SliderFloat("Spec Pow", &c.specularPower, 0.0f, 1000.0f, "%f");
-
-					ImGui::ColorPicker3("Diff Color", reinterpret_cast<float*>(&c.materialColor));
-
-					pcb->Update(gfx, c);
-					return true;
-				}
-			}
-			return false;
-		}
-		*/
 	private:
 		int _mID = 0;
 		std::string _mName = {};
@@ -112,6 +57,7 @@ namespace FraplesDev
 		{
 		public:
 			void Show(Graphics& gfx, const char* windowName, const Node& root);
+			const MP::Buffer* GetMaterial()const noexcept;
 
 			DirectX::XMMATRIX GetTransform() const noexcept;
 			Node* GetSelectedNode()	const noexcept;
@@ -126,9 +72,14 @@ namespace FraplesDev
 				float y = 0.0f;
 				float z = 0.0f;
 			};
+			struct NodeData
+			{
+				TransformParameters transformParams;
+				std::optional<MP::Buffer>materialCbuf;
+			};
 			/*Node::PSMaterialConstantFullmonte _mSkinMaterial = {};
 			Node::PSMaterialConstantNotex _mRingMaterial = {};*/
-			std::unordered_map<int, TransformParameters>_mTransforms = {};
+			std::unordered_map<int, NodeData>_mTransforms = {};
 		};
 
 

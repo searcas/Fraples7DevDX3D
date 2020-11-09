@@ -28,7 +28,21 @@ namespace FraplesDev
 			pc->Render(gfx, built);
 		}
 	}
-
+	const MP::Buffer* Node::GetMaterialConstants()const noexcept(!IS_DEBUG)
+	{
+		if (_mMeshPtrs.size() == 0)
+		{
+			return nullptr;
+		}
+		auto pBindable = _mMeshPtrs.front()->QueryBindable<CachingPixelConstantBufferEx>();
+		return &pBindable->GetBuffer();
+	}
+	void Node::SetMaterialConstants(const MP::Buffer& buf_in)noexcept(!IS_DEBUG)
+	{
+		auto pcb = _mMeshPtrs.front()->QueryBindable<CachingPixelConstantBufferEx>();
+		assert(pcb != nullptr);
+		pcb->SetBuffer(buf_in);
+	}
 	void Node::SetAppliedTransform(DirectX::FXMMATRIX transform) noexcept
 	{
 		DirectX::XMStoreFloat4x4(&appliedTransform, transform);
@@ -92,6 +106,10 @@ namespace FraplesDev
 		if (auto node = _mpWindow->GetSelectedNode())
 		{
 			node->SetAppliedTransform(_mpWindow->GetTransform());
+			if (auto mat = _mpWindow->GetMaterial())
+			{
+				node->SetMaterialConstants(*mat);
+			}
 		}
 		_mRoot->Render(gfx, DirectX::XMMatrixIdentity());
 	}
@@ -145,7 +163,7 @@ namespace FraplesDev
 			{
 				material.Get(AI_MATKEY_SHININESS, shininess);
 			}
-			if (material.GetTexture(aiTextureType_NORMALS,0,&texFileName) ==aiReturn_SUCCESS)
+			if (material.GetTexture(aiTextureType_NORMALS,0,&texFileName) == aiReturn_SUCCESS)
 			{
 				auto tex = Texture::Resolve(gfx, rootPath + texFileName.C_Str(), 2);
 				hasAlphaGloss = tex->HasAlhpa();
@@ -205,7 +223,7 @@ namespace FraplesDev
 			buf["specularPower"] = shininess;
 			buf["specularColor"] = DirectX::XMFLOAT3{ 0.75f,0.75f,0.75f };
 			buf["specularMapWeight"] = 0.671f;
-			bindablePtrs.push_back(std::make_shared<PixelConstantBufferEx>(gfx, buf, 1u));
+			bindablePtrs.push_back(std::make_shared<CachingPixelConstantBufferEx>(gfx, buf, 1u));
 		}
 		else if (hasDiffuseMap && hasNormalMap)
 		{
@@ -257,7 +275,7 @@ namespace FraplesDev
 			cbuf["specularIntensity"] = (specularColor.x + specularColor.y + specularColor.z) / 3.0f;
 			cbuf["specularPower"] = shininess;
 			cbuf["normalMapEnabled"] = true;
-			bindablePtrs.push_back(std::make_shared<PixelConstantBufferEx>(gfx, cbuf, 1u));
+			bindablePtrs.push_back(std::make_shared<CachingPixelConstantBufferEx>(gfx, cbuf, 1u));
 	
 		}
 		else if(!hasDiffuseMap && !hasNormalMap && !hasSpecularMap)
@@ -299,7 +317,7 @@ namespace FraplesDev
 			buf["specularPower"] = shininess;
 			buf["materialColor"] = diffuseColor;
 			buf["specularColor"] = specularColor;
-			bindablePtrs.push_back(std::make_unique<PixelConstantBufferEx>(gfx, buf, 1u));
+			bindablePtrs.push_back(std::make_unique<CachingPixelConstantBufferEx>(gfx, buf, 1u));
 		}
 		else if (hasDiffuseMap && !hasNormalMap && hasSpecularMap)
 		{
@@ -341,7 +359,7 @@ namespace FraplesDev
 			buf["hasGloss"] = hasAlphaGloss;
 			buf["specularMapWight"] = 1.0f;
 
-			bindablePtrs.push_back(std::make_unique<PixelConstantBufferEx>(gfx, buf, 1u));
+			bindablePtrs.push_back(std::make_unique<CachingPixelConstantBufferEx>(gfx, buf, 1u));
 
 
 		}
@@ -391,7 +409,7 @@ namespace FraplesDev
 		buf["specularPower"] = shininess;
 		buf["specularMapWeight"] = 1.0f;
 
-		bindablePtrs.push_back(std::make_unique<PixelConstantBufferEx>(gfx, buf, 1u));
+		bindablePtrs.push_back(std::make_unique<CachingPixelConstantBufferEx>(gfx, buf, 1u));
 		}
 		else
 		{
@@ -465,9 +483,12 @@ namespace FraplesDev
 					tp.y = translation.y;
 					tp.z = translation.z;
 
-					std::tie(i, std::ignore) = _mTransforms.insert({ id,tp });
+					auto pMatConst = _mPselectedNode->GetMaterialConstants();
+					auto buf = pMatConst != nullptr ? std::optional<MP::Buffer>{*pMatConst} : std::optional<MP::Buffer>{};
+					std::tie(i, std::ignore) = _mTransforms.insert({ id,{tp,std::move(buf)} });
 				}
-				auto& transform = i->second;
+				// Link imgui ctrl to our cached transform params
+				auto& transform = i->second.transformParams;
 				ImGui::Text("Orientation");
 				ImGui::SliderAngle("Roll", &transform.roll, -180.0f, 180.0f);
 				ImGui::SliderAngle("Pitch", &transform.pitch, -180.0f, 180.0f);
@@ -478,18 +499,45 @@ namespace FraplesDev
 				ImGui::SliderFloat("Y", &transform.y, -20.0f, 20.0f);
 				ImGui::SliderFloat("Z", &transform.z, -20.0f, 20.0f);
 
-				/*
-				if (!_mPselectedNode->ControlMeSenpai(gfx,_mSkinMaterial))
+				// link imgui ctrl to our cached material params
+				if (i->second.materialCbuf)
 				{
-					_mPselectedNode->ControlMeSenpai(gfx, _mRingMaterial);
+					auto& mat = *i->second.materialCbuf;
+					ImGui::Text("Material");
+					if (auto v = mat["normalMapEnabled"]; v.Exists())
+					{
+						ImGui::Checkbox("Norm Map", &v);
+					}
+					if (auto v = mat["specularMapEnabled"]; v.Exists())
+					{
+						ImGui::Checkbox("Spec Map", &v);
+					}
+					if (auto v = mat["hasGlossMap"]; v.Exists())
+					{
+						ImGui::Checkbox("Gloss Map", &v);
+					}
+					if (auto v = mat["materialColor"]; v.Exists())
+					{
+						ImGui::ColorPicker3("Diff Color", reinterpret_cast<float*>(&static_cast<DirectX::XMFLOAT3&>(v)));
+					}
+					if (auto v = mat["specularPower"]; v.Exists())
+					{
+						ImGui::SliderFloat("Spec Power", &v, 0.0f, 100.0f, "%.1f");
+					}
+					if (auto v = mat["specularColor"]; v.Exists())
+					{
+						ImGui::ColorPicker3("Spec Color", reinterpret_cast<float*>(&static_cast<DirectX::XMFLOAT3&>(v)));
+					}
+					if (auto v = mat["specularMapWeight"]; v.Exists())
+					{
+						ImGui::SliderFloat("Spec Weight", &v, 0.0f, 4.0f);
+					}
+					if (auto v = mat["specularIntensity"]; v.Exists())
+					{
+						ImGui::SliderFloat("Spec Intens", &v, 0.0f, 1.0f);
+					}
 				}
-				if (ImGui::Button("Reset"))
-				{
-					transform = { };
-				}
-				*/
 			}
-
 		}
 		ImGui::End();
 	}
@@ -498,14 +546,21 @@ namespace FraplesDev
 	{
 		assert(_mPselectedNode != nullptr);
 
-		const auto& transform = _mTransforms.at(_mPselectedNode->GetId());
+		const auto& transform = _mTransforms.at(_mPselectedNode->GetId()).transformParams;
 		return DirectX::XMMatrixRotationRollPitchYaw(transform.roll, transform.pitch, transform.yaw) *
 			DirectX::XMMatrixTranslation(transform.x, transform.y, transform.z);
+	}
+	const MP::Buffer* Model::ModelWindow::GetMaterial()const noexcept
+	{
+		assert(_mPselectedNode != nullptr);
+		const auto& mat = _mTransforms.at(_mPselectedNode->GetId()).materialCbuf;
+		return mat ? &*mat : nullptr;
 	}
 	Node* Model::ModelWindow::GetSelectedNode()	const noexcept
 	{
 		return _mPselectedNode;
 	}
+
 	Model::ModelException::ModelException(std::string note, int line, const char* file) 
 		: FraplesException(line,file), note(std::move(note))
 	{
