@@ -10,7 +10,7 @@ namespace FraplesDev
 	
 		void Update(Graphics& gfx, const MP::Buffer& buf)
 		{
-			assert(&buf.GetLayout() == &GetLayout());
+			assert(&buf.GetRootLayoutElement() == &GetRootLayoutElement());
 			INFOMAN(gfx);
 			D3D11_MAPPED_SUBRESOURCE msr;
 			FPL_GFX_THROW_INFO(GetContext(gfx)->Map(_mPConstantBuffer.Get(), 0u, D3D11_MAP_WRITE_DISCARD, 0u, &msr));
@@ -21,7 +21,7 @@ namespace FraplesDev
 		{
 			GetContext(gfx)->PSSetConstantBuffers(_mSlot, 1u, _mPConstantBuffer.GetAddressOf());
 		}
-		virtual const MP::LayoutElement& GetLayout() const noexcept = 0;
+		virtual const MP::LayoutElement& GetRootLayoutElement() const noexcept = 0;
 	protected:
 		PixelConstantBufferEx(Graphics& gfx, const MP::LayoutElement& layoutRoot, UINT slot, const MP::Buffer* pBuffer)
 			:_mSlot(slot)
@@ -55,18 +55,18 @@ namespace FraplesDev
 	{
 	public:
 		CachingPixelConstantBufferEx(Graphics& gfx, const MP::CookedLayout& layout, UINT slot)
-			:PixelConstantBufferEx(gfx, *layout.ShareRoot(), slot, nullptr), _mBuf(MP::Buffer::Make(layout))
+			:PixelConstantBufferEx(gfx, *layout.ShareRoot(), slot, nullptr), _mBuf(MP::Buffer(layout))
 		{
 
 		}
 		CachingPixelConstantBufferEx(Graphics& gfx, const MP::Buffer& buf, UINT slot)
-			:PixelConstantBufferEx(gfx, buf.GetLayout(), slot, &buf), _mBuf(buf)
+			:PixelConstantBufferEx(gfx, buf.GetRootLayoutElement(), slot, &buf), _mBuf(buf)
 		{
 
 		}
-		const MP::LayoutElement& GetLayout() const noexcept override
+		const MP::LayoutElement& GetRootLayoutElement() const noexcept override
 		{
-			return _mBuf.GetLayout();
+			return _mBuf.GetRootLayoutElement();
 		}
 		const MP::Buffer& GetBuffer()const noexcept
 		{
@@ -97,9 +97,9 @@ namespace FraplesDev
 			: PixelConstantBufferEx(gfx, *layout.ShareRoot(), slot, nullptr),_mPLayoutRoot(layout.ShareRoot())
 		{}
 		NoCachePixelConstantBufferEx(Graphics& gfx, const MP::Buffer& buff, UINT slot)
-			: PixelConstantBufferEx(gfx, buff.GetLayout(), slot, nullptr), _mPLayoutRoot(buff.ShareLayout())
+			: PixelConstantBufferEx(gfx, buff.GetRootLayoutElement(), slot, nullptr), _mPLayoutRoot(buff.ShareLayoutRoot())
 		{}
-		const MP::LayoutElement& GetLayout()const noexcept override
+		const MP::LayoutElement& GetRootLayoutElement()const noexcept override
 		{
 			return *_mPLayoutRoot;
 		}

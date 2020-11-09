@@ -31,8 +31,8 @@ namespace FraplesDev
 				//failes: bad symbol name
 				//s.Add<MP::Bool>("69Man");
 
-				auto b = MP::Buffer::Make(std::move(s));
-				const auto sig = b.GetLayout().GetSignature();
+				auto b = MP::Buffer(std::move(s));
+				const auto sig = b.GetRootLayoutElement().GetSignature();
 				{
 					auto exp = 69.0f;
 					b["woot"] = exp;
@@ -98,7 +98,7 @@ namespace FraplesDev
 				s.Add<MP::Array>("arr");
 				s["arr"].Set<MP::Array>(6);
 				s["arr"].T().Set<MP::Matrix>(4);
-				MP::Buffer b = MP::Buffer::Make(std::move(s));
+				MP::Buffer b = MP::Buffer(std::move(s));
 
 				auto act = b.GetSizeInBytes();
 				assert(act == 16u * 4u * 4u * 6u);
@@ -110,7 +110,7 @@ namespace FraplesDev
 				s["arr"].Set<MP::Struct>(6);
 				s["arr"].T().Add<MP::Float2>("a");
 				s["arr"].T().Add<MP::Float3>("b");
-				MP::Buffer b = MP::Buffer::Make(std::move(s));
+				MP::Buffer b = MP::Buffer(std::move(s));
 				auto act = b.GetSizeInBytes();
 				assert(act == 16u * 2u * 6u);
 			}
@@ -119,7 +119,7 @@ namespace FraplesDev
 				MP::RawLayout s;
 				s.Add<MP::Array>("arr");
 				s["arr"].Set<MP::Float3>(6);
-				MP::Buffer b = MP::Buffer::Make(std::move(s));
+				MP::Buffer b = MP::Buffer(std::move(s));
 
 				auto act = b.GetSizeInBytes();
 				assert(act == 16u * 6u);
@@ -136,9 +136,9 @@ namespace FraplesDev
 				s.Add<MP::Float>("arr");
 				//failes to compile, cooked returns const&
 				//cooked["arr"].Add<MP::Float>("buttman")
-				auto b1 = MP::Buffer::Make(cooked);
+				auto b1 = MP::Buffer(cooked);
 				b1["arr"][0] = DirectX::XMFLOAT3{ 69.0f,69.0f,60.69f };
-				auto b2 = MP::Buffer::Make(cooked);
+				auto b2 = MP::Buffer(cooked);
 				b2["arr"][0] = DirectX::XMFLOAT3{ 690.0f,0.0f,0.0f };
 				assert(static_cast<DirectX::XMFLOAT3>(b1["arr"][0]).x == 69.0f);
 				assert(static_cast<DirectX::XMFLOAT3>(b2["arr"][0]).x == 690.0f);

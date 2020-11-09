@@ -212,8 +212,9 @@ namespace FraplesDev
 			}
 			
 		private:
-			std::shared_ptr<LayoutElement>DeliverRoot()noexcept;
 			void ClearRoot()noexcept;
+			// Finalize the layout and then pilfer
+			std::shared_ptr<LayoutElement>DeliverRoot()noexcept;
 		};
 
 		// CokkedLayout represend a completed and registered Layout shell object
@@ -230,6 +231,7 @@ namespace FraplesDev
 		private:
 			//this ctor used by Codex to return cooked layouts
 			CookedLayout(std::shared_ptr<LayoutElement>pRoot)noexcept;
+			std::shared_ptr<LayoutElement> RelinquishRoot()const noexcept;
 		};
 
 		
@@ -338,22 +340,30 @@ namespace FraplesDev
 		class Buffer
 		{
 		public:
+			//have to be careful with this one...
+			// the buffer that has been plifered must not be used :x
+			Buffer(Buffer&& buf) noexcept;
 			Buffer(const Buffer& buf) noexcept;
 			// ctros private, clients call Make to create buffers
 			// Make with a rawlayout first passes layout to Codex for cooking/Resolution
-			static Buffer Make(RawLayout&& lay)noexcept(!IS_DEBUG);
-			static Buffer Make(const CookedLayout& lay)noexcept(!IS_DEBUG);
+			Buffer (RawLayout&& lay)noexcept(!IS_DEBUG);
+			Buffer(const CookedLayout& lay)noexcept(!IS_DEBUG);
+			Buffer (CookedLayout&& lay)noexcept(!IS_DEBUG);
+			// how you begin indexing into buffer(root is always Struct)
 			ElementRef operator[](const std::string& key) noexcept(!IS_DEBUG);
 			ConstElementRef operator[](const std::string& key) const noexcept(!IS_DEBUG);
+			// get raw bytes
 			const char* GetData() const noexcept;
+			// size of the raw byte buffer
 			size_t GetSizeInBytes() const noexcept;
-			const LayoutElement& GetLayout() const noexcept;
+			const LayoutElement& GetRootLayoutElement() const noexcept;
+			// copy bytes from another buffer( layout must match)
 			void CopyFrom(const Buffer&)noexcept(!IS_DEBUG);
-			std::shared_ptr<LayoutElement> ShareLayout() const noexcept;
+			//return another sptr to the alyout root
+			std::shared_ptr<LayoutElement> ShareLayoutRoot() const noexcept;
 		private:
-			Buffer(const CookedLayout& lay) noexcept;
 		private:
-			std::shared_ptr<LayoutElement>pLayout;
+			std::shared_ptr<LayoutElement>_mPLayoutRoot;
 			std::vector<char> bytes;
 		};
 

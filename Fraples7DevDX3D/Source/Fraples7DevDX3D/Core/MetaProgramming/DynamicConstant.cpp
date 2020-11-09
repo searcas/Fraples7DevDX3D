@@ -290,6 +290,10 @@ namespace FraplesDev
 		{
 
 		}
+		std::shared_ptr<LayoutElement>CookedLayout::RelinquishRoot()const noexcept
+		{
+			return std::move(pRoot);
+		}
 		std::shared_ptr<LayoutElement>CookedLayout::ShareRoot()const noexcept
 		{
 			return pRoot;
@@ -399,28 +403,34 @@ namespace FraplesDev
 		DCB_REF_NONCONST(ElementRef, Bool)
 
 
-		Buffer::Buffer(const Buffer& buf)noexcept 
-			: pLayout(buf.ShareLayout()),bytes(buf.bytes)
+
+		Buffer::Buffer(RawLayout&& lay)noexcept(!IS_DEBUG) 
+			: Buffer(LayoutCodex::Resolve(std::move(lay))) 
+		{
+			
+		}
+		Buffer::Buffer(const CookedLayout& lay) noexcept(!IS_DEBUG)
+			 : _mPLayoutRoot(lay.ShareRoot()),bytes(_mPLayoutRoot->GetOffsetEnd())
+		{
+		}
+		Buffer::Buffer(CookedLayout&& lay)noexcept(!IS_DEBUG)
+			: _mPLayoutRoot(lay.RelinquishRoot()), bytes(_mPLayoutRoot->GetOffsetEnd())
 		{
 
 		}
+		Buffer::Buffer(const Buffer& buf)noexcept
+			:_mPLayoutRoot(buf._mPLayoutRoot),bytes(buf.bytes)
+		{
 
-		Buffer Buffer::Make(RawLayout&& lay)noexcept(!IS_DEBUG)
-		{
-			return { LayoutCodex::Resolve(std::move(lay)) };
 		}
-		Buffer Buffer::Make(const CookedLayout& lay) noexcept(!IS_DEBUG)
+		Buffer::Buffer(Buffer&& buf)noexcept
+			:_mPLayoutRoot(std::move(buf._mPLayoutRoot))
 		{
-			return { lay.ShareRoot() };
+
 		}
-		Buffer::Buffer(const CookedLayout& lay)noexcept
-			: pLayout(lay.ShareRoot()), bytes(pLayout->GetOffsetEnd())
-		{
-		}
-	
 		ElementRef Buffer::operator[](const std::string& key) noexcept(!IS_DEBUG)
 		{
-			return { &(*pLayout)[key],bytes.data(),0u };
+			return { &(*_mPLayoutRoot)[key],bytes.data(),0u };
 		}
 		ConstElementRef Buffer::operator[](const std::string& key) const noexcept(!IS_DEBUG)
 		{
@@ -434,18 +444,18 @@ namespace FraplesDev
 		{
 			return bytes.size();
 		}
-		const LayoutElement& Buffer::GetLayout() const noexcept
+		const LayoutElement& Buffer::GetRootLayoutElement() const noexcept
 		{
-			return *pLayout;
+			return *_mPLayoutRoot;
 		}
 		void Buffer::CopyFrom(const Buffer& other)noexcept(!IS_DEBUG)
 		{
-			assert(&GetLayout() == &other.GetLayout());
+			assert(&GetRootLayoutElement() == &other.GetRootLayoutElement());
 			std::copy(other.bytes.begin(), other.bytes.end(), bytes.begin());
 		}
-		std::shared_ptr<LayoutElement> Buffer::ShareLayout() const noexcept
+		std::shared_ptr<LayoutElement> Buffer::ShareLayoutRoot() const noexcept
 		{
-			return pLayout;
+			return _mPLayoutRoot;
 		}
 	
 		std::string Struct::GetSignature() const noexcept(!IS_DEBUG)

@@ -216,7 +216,7 @@ namespace FraplesDev
 			layout.Add<MP::Float3>("specularColor");
 			layout.Add<MP::Float>("specularMapWeight");
 
-			auto buf = MP::Buffer::Make(std::move(layout));
+			auto buf = MP::Buffer(std::move(layout));
 			buf["normalMapEnabled"] = true;
 			buf["specularMapEnabled"] = true;
 			buf["hasGlossMap"] = hasAlphaGloss;
@@ -271,7 +271,7 @@ namespace FraplesDev
 			layout.Add<MP::Float>("specularIntensity");
 			layout.Add<MP::Float>("specularPower");
 			layout.Add<MP::Bool>("normalMapEnabled");
-			MP::Buffer cbuf = MP::Buffer::Make(std::move(layout));
+			MP::Buffer cbuf = MP::Buffer(std::move(layout));
 			cbuf["specularIntensity"] = (specularColor.x + specularColor.y + specularColor.z) / 3.0f;
 			cbuf["specularPower"] = shininess;
 			cbuf["normalMapEnabled"] = true;
@@ -313,7 +313,7 @@ namespace FraplesDev
 			layout.Add<MP::Float4>("materialColor");
 			layout.Add<MP::Float4>("specularColor");
 			layout.Add<MP::Float>("specularPower");
-			auto buf = MP::Buffer::Make(std::move(layout));
+			auto buf = MP::Buffer(std::move(layout));
 			buf["specularPower"] = shininess;
 			buf["materialColor"] = diffuseColor;
 			buf["specularColor"] = specularColor;
@@ -354,7 +354,7 @@ namespace FraplesDev
 			layout.Add<MP::Bool>("hasGloss");
 			layout.Add<MP::Float>("specularMapWeight");
 
-			auto buf = MP::Buffer::Make(std::move(layout));
+			auto buf = MP::Buffer(std::move(layout));
 			buf["specularPowerConst"] = shininess;
 			buf["hasGloss"] = hasAlphaGloss;
 			buf["specularMapWight"] = 1.0f;
@@ -404,7 +404,7 @@ namespace FraplesDev
 		MP::RawLayout layout;
 		layout.Add<MP::Float>("specularIntensity");
 		layout.Add<MP::Float>("specularPower");
-		auto buf = MP::Buffer::Make(std::move(layout));
+		auto buf = MP::Buffer(std::move(layout));
 		buf["specularIntensity"] = (specularColor.x + specularColor.y + specularColor.z) / 3.0f;
 		buf["specularPower"] = shininess;
 		buf["specularMapWeight"] = 1.0f;
