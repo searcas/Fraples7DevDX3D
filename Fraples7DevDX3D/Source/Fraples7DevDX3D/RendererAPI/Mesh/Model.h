@@ -57,10 +57,17 @@ namespace FraplesDev
 		{
 		public:
 			void Show(Graphics& gfx, const char* windowName, const Node& root);
-			const MP::Buffer* GetMaterial()const noexcept;
+			const MP::Buffer& GetMaterial()const noexcept(!IS_DEBUG);
+			
+
+			bool TransformDirty()const noexcept(!IS_DEBUG);
+			void ResetTransformDirty()noexcept(!IS_DEBUG);
+			bool MaterialDirty()const noexcept(!IS_DEBUG);
+			void ResetMaterialDirty()noexcept(!IS_DEBUG);
+			bool IsDirty()const noexcept(!IS_DEBUG);
 
 			DirectX::XMMATRIX GetTransform() const noexcept;
-			Node* GetSelectedNode()	const noexcept;
+			void ApplyParameters() noexcept;
 		private:
 			Node* _mPselectedNode = nullptr;
 			struct TransformParameters
@@ -75,7 +82,9 @@ namespace FraplesDev
 			struct NodeData
 			{
 				TransformParameters transformParams;
+				bool transformParamsDirty = false;
 				std::optional<MP::Buffer>materialCbuf;
+				bool materialCbufDirty = false;
 			};
 			/*Node::PSMaterialConstantFullmonte _mSkinMaterial = {};
 			Node::PSMaterialConstantNotex _mRingMaterial = {};*/

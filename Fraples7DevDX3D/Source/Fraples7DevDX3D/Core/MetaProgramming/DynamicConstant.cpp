@@ -61,6 +61,10 @@ namespace FraplesDev
 	{
 		LayoutElement::~LayoutElement()
 		{}
+		bool LayoutElement::Exists() const noexcept
+		{
+			return true;
+		}
 		LayoutElement& LayoutElement::operator[](const std::string&)noexcept(!IS_DEBUG)
 		{
 			assert(false && "cannot access member on non Struct");
@@ -424,7 +428,7 @@ namespace FraplesDev
 
 		}
 		Buffer::Buffer(Buffer&& buf)noexcept
-			:_mPLayoutRoot(std::move(buf._mPLayoutRoot))
+			:_mPLayoutRoot(std::move(buf._mPLayoutRoot)),bytes(std::move(buf.bytes))
 		{
 
 		}

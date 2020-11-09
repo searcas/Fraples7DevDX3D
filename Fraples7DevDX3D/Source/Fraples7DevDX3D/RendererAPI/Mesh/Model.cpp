@@ -85,7 +85,8 @@ namespace FraplesDev
 		_mChildPtrs.push_back(std::move(pChild));
 
 	}
-	Model::Model(Graphics& gfx, const std::string& path, float scale) : _mpWindow(std::make_unique<ModelWindow>())
+	Model::Model(Graphics& gfx, const std::string& path, float scale)
+		: _mpWindow(std::make_unique<ModelWindow>())
 	{
 		Assimp::Importer imp;
 		const auto pScene = imp.ReadFile(path.c_str(), aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_ConvertToLeftHanded | aiProcess_GenNormals | aiProcess_CalcTangentSpace);
@@ -103,14 +104,11 @@ namespace FraplesDev
 
 	void Model::Render(Graphics& gfx) const
 	{
-		if (auto node = _mpWindow->GetSelectedNode())
-		{
-			node->SetAppliedTransform(_mpWindow->GetTransform());
-			if (auto mat = _mpWindow->GetMaterial())
-			{
-				node->SetMaterialConstants(*mat);
-			}
-		}
+		// I'm stillnot happy about updating parameters
+		// (I.E mutatting a bindable GPU state which is 
+		// part of a node which is part of the model that
+		// is const in this call) can probably do this elsewhere
+		_mpWindow->ApplyParameters();
 		_mRoot->Render(gfx, DirectX::XMMatrixIdentity());
 	}
 	std::unique_ptr<Mesh>Model::ParseMesh(Graphics& gfx, const aiMesh& mesh, const aiMaterial* const* pMaterials,const std::filesystem::path& path,const float& scale)
@@ -485,61 +483,83 @@ namespace FraplesDev
 
 					auto pMatConst = _mPselectedNode->GetMaterialConstants();
 					auto buf = pMatConst != nullptr ? std::optional<MP::Buffer>{*pMatConst} : std::optional<MP::Buffer>{};
-					std::tie(i, std::ignore) = _mTransforms.insert({ id,{tp,std::move(buf)} });
+					std::tie(i, std::ignore) = _mTransforms.insert({ id,{tp,false,std::move(buf),false} });
 				}
 				// Link imgui ctrl to our cached transform params
-				auto& transform = i->second.transformParams;
-				ImGui::Text("Orientation");
-				ImGui::SliderAngle("Roll", &transform.roll, -180.0f, 180.0f);
-				ImGui::SliderAngle("Pitch", &transform.pitch, -180.0f, 180.0f);
-				ImGui::SliderAngle("Yaw", &transform.yaw, -180.0f, 180.0f);
+				{
+					auto& transform = i->second.transformParams;
+					// dirty check
+					auto& dirty = i->second.transformParamsDirty;
+					const auto dcheck = [&dirty](bool changed) {dirty = dirty || changed; };
+					// widgets
+					ImGui::Text("Orientation");
+					dcheck(ImGui::SliderAngle("Roll", &transform.roll, -180.0f, 180.0f));
+					dcheck(ImGui::SliderAngle("Pitch", &transform.pitch, -180.0f, 180.0f));
+					dcheck(ImGui::SliderAngle("Yaw", &transform.yaw, -180.0f, 180.0f));
 
-				ImGui::Text("Position");
-				ImGui::SliderFloat("X", &transform.x, -20.0f, 20.0f);
-				ImGui::SliderFloat("Y", &transform.y, -20.0f, 20.0f);
-				ImGui::SliderFloat("Z", &transform.z, -20.0f, 20.0f);
-
+					ImGui::Text("Position");
+					dcheck(ImGui::SliderFloat("X", &transform.x, -20.0f, 20.0f));
+					dcheck(ImGui::SliderFloat("Y", &transform.y, -20.0f, 20.0f));
+					dcheck(ImGui::SliderFloat("Z", &transform.z, -20.0f, 20.0f));
+				}
 				// link imgui ctrl to our cached material params
 				if (i->second.materialCbuf)
 				{
 					auto& mat = *i->second.materialCbuf;
+					//dirty check
+					auto& dirty = i->second.materialCbufDirty;
+					const auto dcheck = [&dirty](bool changed) {dirty = dirty || changed; };
+
 					ImGui::Text("Material");
 					if (auto v = mat["normalMapEnabled"]; v.Exists())
 					{
-						ImGui::Checkbox("Norm Map", &v);
+						dcheck(ImGui::Checkbox("Norm Map", &v));
 					}
 					if (auto v = mat["specularMapEnabled"]; v.Exists())
 					{
-						ImGui::Checkbox("Spec Map", &v);
+						dcheck(ImGui::Checkbox("Spec Map", &v));
 					}
 					if (auto v = mat["hasGlossMap"]; v.Exists())
 					{
-						ImGui::Checkbox("Gloss Map", &v);
+						dcheck(ImGui::Checkbox("Gloss Map", &v));
 					}
 					if (auto v = mat["materialColor"]; v.Exists())
 					{
-						ImGui::ColorPicker3("Diff Color", reinterpret_cast<float*>(&static_cast<DirectX::XMFLOAT3&>(v)));
+						dcheck(ImGui::ColorPicker3("Diff Color", reinterpret_cast<float*>(&static_cast<DirectX::XMFLOAT3&>(v))));
 					}
 					if (auto v = mat["specularPower"]; v.Exists())
 					{
-						ImGui::SliderFloat("Spec Power", &v, 0.0f, 100.0f, "%.1f");
+						dcheck(ImGui::SliderFloat("Spec Power", &v, 0.0f, 100.0f, "%.1f"));
 					}
 					if (auto v = mat["specularColor"]; v.Exists())
 					{
-						ImGui::ColorPicker3("Spec Color", reinterpret_cast<float*>(&static_cast<DirectX::XMFLOAT3&>(v)));
+						dcheck(ImGui::ColorPicker3("Spec Color", reinterpret_cast<float*>(&static_cast<DirectX::XMFLOAT3&>(v))));
 					}
 					if (auto v = mat["specularMapWeight"]; v.Exists())
 					{
-						ImGui::SliderFloat("Spec Weight", &v, 0.0f, 4.0f);
+						dcheck(ImGui::SliderFloat("Spec Weight", &v, 0.0f, 4.0f));
 					}
 					if (auto v = mat["specularIntensity"]; v.Exists())
 					{
-						ImGui::SliderFloat("Spec Intens", &v, 0.0f, 1.0f);
+						dcheck(ImGui::SliderFloat("Spec Intens", &v, 0.0f, 1.0f));
 					}
 				}
 			}
 		}
 		ImGui::End();
+	}
+	void Model::ModelWindow::ApplyParameters() noexcept
+	{
+		if (TransformDirty())
+		{
+			_mPselectedNode->SetAppliedTransform(GetTransform());
+			ResetTransformDirty();
+		}
+		if (MaterialDirty())
+		{
+			_mPselectedNode->SetMaterialConstants(GetMaterial());
+			ResetTransformDirty();
+		}
 	}
 
 	DirectX::XMMATRIX Model::ModelWindow::GetTransform() const noexcept
@@ -550,17 +570,35 @@ namespace FraplesDev
 		return DirectX::XMMatrixRotationRollPitchYaw(transform.roll, transform.pitch, transform.yaw) *
 			DirectX::XMMatrixTranslation(transform.x, transform.y, transform.z);
 	}
-	const MP::Buffer* Model::ModelWindow::GetMaterial()const noexcept
+	const MP::Buffer& Model::ModelWindow::GetMaterial()const noexcept(!IS_DEBUG)
 	{
 		assert(_mPselectedNode != nullptr);
 		const auto& mat = _mTransforms.at(_mPselectedNode->GetId()).materialCbuf;
-		return mat ? &*mat : nullptr;
-	}
-	Node* Model::ModelWindow::GetSelectedNode()	const noexcept
-	{
-		return _mPselectedNode;
-	}
+		assert(mat);
+		return *mat;
 
+	}
+	bool Model::ModelWindow::TransformDirty()const noexcept(!IS_DEBUG)
+	{
+		return _mPselectedNode && _mTransforms.at(_mPselectedNode->GetId()).transformParamsDirty;
+	}
+	void Model::ModelWindow::ResetTransformDirty()noexcept(!IS_DEBUG)
+	{
+		_mTransforms.at(_mPselectedNode->GetId()).transformParamsDirty = false;
+	}
+	bool Model::ModelWindow::MaterialDirty()const noexcept(!IS_DEBUG)
+	{
+		return _mPselectedNode && _mTransforms.at(_mPselectedNode->GetId()).materialCbufDirty;
+	}
+	void Model::ModelWindow::ResetMaterialDirty()noexcept(!IS_DEBUG)
+	{
+		_mTransforms.at(_mPselectedNode->GetId()).materialCbufDirty = false;
+	}
+	bool Model::ModelWindow::IsDirty()const noexcept(!IS_DEBUG)
+	{
+		return TransformDirty() || MaterialDirty();
+	}
+	
 	Model::ModelException::ModelException(std::string note, int line, const char* file) 
 		: FraplesException(line,file), note(std::move(note))
 	{

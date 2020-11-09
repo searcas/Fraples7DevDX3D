@@ -67,10 +67,8 @@ namespace FraplesDev
 			//get a string signature for this element(Recursive)
 			virtual std::string GetSignature()const noexcept(!IS_DEBUG) = 0;
 
-			inline virtual bool Exists()const noexcept
-			{
-				return true;
-			}
+			virtual bool Exists()const noexcept;
+			
 			// [] only works for Structs; access member by name
 			virtual LayoutElement& operator[](const std::string&);
 			const LayoutElement& operator[](const std::string& key) const;
