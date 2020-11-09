@@ -81,6 +81,13 @@ namespace FraplesDev
 						assert(f.x == 69.0f);
 					}
 				}
+					// set if exists
+				{
+						assert(b["butts"s]["pubes"s].SetIfExists(DirectX::XMFLOAT3{ 1.0f,2.0f,3.0f }));
+						auto& f3 = static_cast<const DirectX::XMFLOAT3&>(b["butts"s]["pubes"s]);
+						assert(f3.x == 1.0f && f3.y == 2.0f && f3.z == 3.0f);
+						assert(!b["butts"s]["phubar"s].SetIfExists(DirectX::XMFLOAT3{ 2.0f,2.0f,7.0f }));
+				}
 				const auto& cb = b;
 				{
 					DirectX::XMFLOAT4X4 act = cb["arr"][2]["meta"s][5][3];
@@ -88,6 +95,7 @@ namespace FraplesDev
 				}
 				//this doesn't compile buffer is const 
 				//cb["arr"][2]["booly"s] = true;
+				//static_cast<bool&>(cb["arr"][2]["booly"]) =true;
 
 				//this failes assertion: array out of bounds
 				//cb["arr"s][200];
@@ -142,6 +150,52 @@ namespace FraplesDev
 				b2["arr"][0] = DirectX::XMFLOAT3{ 690.0f,0.0f,0.0f };
 				assert(static_cast<DirectX::XMFLOAT3>(b1["arr"][0]).x == 69.0f);
 				assert(static_cast<DirectX::XMFLOAT3>(b2["arr"][0]).x == 690.0f);
+			}
+			//specific testing scenario
+			{
+				MP::RawLayout pscLayout;
+				pscLayout.Add<MP::Float3>("materialColor");
+				pscLayout.Add<MP::Float3>("specularColor");
+				pscLayout.Add<MP::Float>("specularWeight");
+				pscLayout.Add<MP::Float>("specularGloss");
+				auto cooked = MP::LayoutCodex::Resolve(std::move(pscLayout));
+				assert(cooked.GetSizeInBytes() == 48u);
+
+			}
+			// array non-packing
+			{	MP::RawLayout pscLayout;
+			pscLayout.Add<MP::Array>("arr");
+			pscLayout["arr"].Set<MP::Float>(10);
+			auto cooked = MP::LayoutCodex::Resolve(std::move(pscLayout));
+			assert(cooked.GetSizeInBytes() == 160u);
+			}
+			//array of struct w/ padding
+			{
+				MP::RawLayout pscLayout;
+				pscLayout.Add<MP::Array>("arr");
+				pscLayout["arr"].Set<MP::Struct>(10);
+				pscLayout["arr"].T().Add<MP::Float3>("x");
+				pscLayout["arr"].T().Add<MP::Float2>("y");
+
+				auto cooked = MP::LayoutCodex::Resolve(std::move(pscLayout));
+
+				assert(cooked.GetSizeInBytes() == 320u);
+			}
+			// testing pointer stuff
+			{
+				MP::RawLayout s;
+				s.Add<MP::Struct>("butts"s);
+				s["butts"s].Add<MP::Float3>("pubes"s);
+				s["butts"s].Add<MP::Float>("dank"s);
+
+				auto b = MP::Buffer(std::move(s));
+				const auto exp = 696969.6969f;
+				b["butts"s]["dank"s] = 696969.6969f;
+				assert((float&)b["butts"s]["dank"s] == exp);
+				assert(*(float*)&b["butts"s]["dank"s] == exp);
+				const auto exp2 = 42.424242f;
+				*(float*)&b["butts"s]["dank"s] = exp2;
+				assert((float&)b["butts"s]["dank"s] == exp2);
 			}
 
 		}
