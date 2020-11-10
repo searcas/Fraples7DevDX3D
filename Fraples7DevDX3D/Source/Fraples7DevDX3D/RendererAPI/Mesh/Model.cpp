@@ -5,6 +5,8 @@
 #include "Core/Math/FraplesXM.h"
 #include "Core/MetaProgramming/DynamicConstant.h"
 #include "RendererAPI/ConstantBuffersEx.h"
+#include "RendererAPI/Stencil.h"
+
 namespace FraplesDev
 {
 	
@@ -418,6 +420,7 @@ namespace FraplesDev
 		//need a better way of signalling  2-sidedness to be more general in the future
 		bindablePtrs.push_back(Rasterizer::Resolve(gfx, hasAlphaDiffuse));
 		bindablePtrs.push_back(Blending::Resolve(gfx, false));
+		bindablePtrs.push_back(std::make_shared<Stencil>(gfx, Stencil::Mode::Off));
 		return std::make_unique<Mesh>(gfx, std::move(bindablePtrs));
 	}
 	std::unique_ptr<Node>Model::ParseNode(int& nextId, const aiNode& node)noexcept

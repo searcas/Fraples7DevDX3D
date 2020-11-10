@@ -53,15 +53,7 @@ namespace FraplesDev {
 		FPL_GFX_THROW_INFO(_mpSwap->GetBuffer(0, __uuidof(ID3D11Resource),&pBackBuffer));
 		FPL_GFX_THROW_INFO(_mpDevice->CreateRenderTargetView(pBackBuffer.Get(), nullptr, &_mpTarget));
 
-		D3D11_DEPTH_STENCIL_DESC ddsd = {};
-		ddsd.DepthEnable = true;
-		ddsd.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-		ddsd.DepthFunc = D3D11_COMPARISON_LESS;
-		Microsoft::WRL::ComPtr<ID3D11DepthStencilState> pDSState;
-		FPL_GFX_THROW_INFO(_mpDevice->CreateDepthStencilState(&ddsd, &pDSState));
-
-		//bind depth state 
-		_mpContext->OMSetDepthStencilState(pDSState.Get(), 1u);
+		
 
 		Microsoft::WRL::ComPtr<ID3D11Texture2D> pDepthStencil;
 		D3D11_TEXTURE2D_DESC descDepth = {};
@@ -69,7 +61,7 @@ namespace FraplesDev {
 		descDepth.Height = height;
 		descDepth.MipLevels = 1u;
 		descDepth.ArraySize = 1u;
-		descDepth.Format = DXGI_FORMAT_D32_FLOAT;
+		descDepth.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
 		descDepth.SampleDesc.Count = 1u;
 		descDepth.SampleDesc.Quality = 0u;
 		descDepth.Usage = D3D11_USAGE_DEFAULT;
@@ -78,7 +70,7 @@ namespace FraplesDev {
 
 		//create view of depth stensil texture
 		D3D11_DEPTH_STENCIL_VIEW_DESC descDSV = {};
-		descDSV.Format = DXGI_FORMAT_D32_FLOAT;
+		descDSV.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
 		descDSV.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 		descDSV.Texture2D.MipSlice = 0u;
 		FPL_GFX_THROW_INFO(_mpDevice->CreateDepthStencilView(pDepthStencil.Get(), &descDSV, &_mpDSV));
@@ -167,7 +159,7 @@ namespace FraplesDev {
 		}
 		const float color[] = { red,green,blue,1.0f };
 		_mpContext->ClearRenderTargetView(_mpTarget.Get(), color);
-		_mpContext->ClearDepthStencilView(_mpDSV.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0u);
+		_mpContext->ClearDepthStencilView(_mpDSV.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0u);
 	}
 	void FraplesDev::Graphics::EndFrame()
 	{

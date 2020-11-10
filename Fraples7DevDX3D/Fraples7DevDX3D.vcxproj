@@ -213,6 +213,7 @@
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RendererBase.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Sampler.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Rasterizer\Rasterizer.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Stencil.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Topology.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\TransformCBuf.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\TransformCBufDual.h" />

@@ -3,7 +3,7 @@
 #include "RendererAPI/GFXContextBase.h"
 #include "RendererAPI/TransformCBufDual.h"
 #include "ImGui/imgui.h"
-
+#include "RendererAPI/Stencil.h"
 
 namespace FraplesDev
 {
@@ -18,18 +18,37 @@ namespace FraplesDev
 		AddBind(IndexBuffer::Resolve(gfx, geometryTag, model._mIndices));
 
 		AddBind(Texture::Resolve(gfx, "Images\\brickwall.jpg", 0));
-		AddBind(Texture::Resolve(gfx, "Images\\brickwall_normal_obj.png", 2u));
+		AddBind(Sampler::Resolve(gfx));
 
 		auto pvs = VertexShader::Resolve(gfx, "PhongVS.cso");
 		auto pvsbyte = pvs->GetBytecode();
 		AddBind(std::move(pvs));
 
-		AddBind(PixelShader::Resolve(gfx, "PhongPSNormalMapObject.cso"));
+		AddBind(PixelShader::Resolve(gfx, "PhongPS.cso"));
 		AddBind(PixelConstantBuffer<PSMaterialConstant>::Resolve(gfx, pmc, 1u));
 		AddBind(InputLayout::Resolve(gfx, model._mVertices.GetLayout(), pvsbyte));
 		AddBind(Topology::Resolve(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 
-		AddBind(std::make_shared<TransformCbufDual>(gfx, *this, 0u, 2u));
+		auto tcbdb = std::make_shared<TransformCbufDual>(gfx, *this, 0u, 2u);
+		AddBind(tcbdb);
+
+		AddBind(std::make_shared<Stencil>(gfx, Stencil::Mode::Write));
+
+		outLineEffect.push_back(VertexBuffer::Resolve(gfx, geometryTag, model._mVertices));
+		outLineEffect.push_back(IndexBuffer::Resolve(gfx, geometryTag, model._mIndices));
+		pvs = VertexShader::Resolve(gfx, "SolidVS.cso");
+		pvsbyte = pvs->GetBytecode();
+		outLineEffect.push_back(std::move(pvs));
+		outLineEffect.push_back(PixelShader::Resolve(gfx, "SolidPS.cso"));
+		struct SolidColorBuffer
+		{
+			DirectX::XMFLOAT4 color = { 1.0f,0.4f,0.4f,1.0f };
+		}scb;
+		outLineEffect.push_back(PixelConstantBuffer<SolidColorBuffer>::Resolve(gfx, scb, 1u));
+		outLineEffect.push_back(InputLayout::Resolve(gfx, model._mVertices.GetLayout(), pvsbyte));
+		outLineEffect.push_back(Topology::Resolve(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
+		outLineEffect.push_back(std::move(tcbdb));
+		outLineEffect.push_back(std::make_shared<Stencil>(gfx, Stencil::Mode::Mask));
 	}
 	void BaseCube::SetPos(DirectX::XMFLOAT3 pos_in) noexcept
 	{
@@ -43,12 +62,17 @@ namespace FraplesDev
 	}
 	const DirectX::XMMATRIX BaseCube::GetTransformXM() const noexcept
 	{
-		return DirectX::XMMatrixRotationRollPitchYaw(roll, pitch, yaw) * DirectX::XMMatrixTranslation(pos.x, pos.y, pos.z);
+		auto xf = DirectX::XMMatrixRotationRollPitchYaw(roll, pitch, yaw) * DirectX::XMMatrixTranslation(pos.x, pos.y, pos.z);
+		if (outLining)
+		{
+			xf = DirectX::XMMatrixScaling(1.03f, 1.03f, 1.03f) * xf;
+		}
+		return xf;
 
 	}
-	void BaseCube::SpawnControlWindow(Graphics& gfx) noexcept
+	void BaseCube::SpawnControlWindow(Graphics& gfx, const char* name) noexcept
 	{
-		if (ImGui::Begin("Cube"))
+		if (ImGui::Begin(name))
 		{
 			ImGui::Text("Position");
 			ImGui::SliderFloat("X", &pos.x, -80.0f, 80.0f, "%.1f");

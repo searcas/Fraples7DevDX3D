@@ -3,7 +3,7 @@
 #include "Core/Debugging/Exceptions/Macros/GraphicsThrowMacros.h"
 #include "RendererAPI/GFXContextBase.h"
 #include "Core/MetaProgramming/Vertex.h"
-
+#include "RendererAPI/Stencil.h"
 namespace FraplesDev
 {
 	SolidSphere::SolidSphere(Graphics& gfx, float radius)
@@ -38,6 +38,7 @@ namespace FraplesDev
 
 			AddBind(Blending::Resolve(gfx, false));
 			AddBind(Rasterizer::Resolve(gfx, false));
+			AddBind(std::make_shared<Stencil>(gfx, Stencil::Mode::Off));
 	}
 
 

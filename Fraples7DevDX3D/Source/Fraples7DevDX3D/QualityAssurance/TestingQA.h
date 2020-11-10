@@ -197,7 +197,19 @@ namespace FraplesDev
 				*(float*)&b["butts"s]["dank"s] = exp2;
 				assert((float&)b["butts"s]["dank"s] == exp2);
 			}
+			// specific testing scenario (packing error)
+			{
+				MP::RawLayout lay;
+				lay.Add<MP::Bool>("normalMapEnabled");
+				lay.Add<MP::Bool>("specularMapEnabled");
+				lay.Add<MP::Bool>("hasGlossMap");
+				lay.Add<MP::Float>("specularPower");
+				lay.Add<MP::Float3>("specularColor");
+				lay.Add<MP::Float>("specularMapWeight");
 
+				auto buf = MP::Buffer(std::move(lay));
+				assert(buf.GetSizeInBytes() == 32u);
+			}
 		}
 	}
 }
