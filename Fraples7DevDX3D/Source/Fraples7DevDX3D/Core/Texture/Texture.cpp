@@ -1,6 +1,6 @@
 #include "Texture.h"
 #include "../Surface.h"
-#include "../Debugging/Exceptions/Macros/GraphicsThrowMacros.h"
+#include "../Common/Exceptions/Macros/GraphicsThrowMacros.h"
 #include <algorithm>
 namespace FraplesDev
 {

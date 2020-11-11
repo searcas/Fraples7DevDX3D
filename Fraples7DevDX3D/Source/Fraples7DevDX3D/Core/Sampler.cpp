@@ -1,5 +1,5 @@
 #include "Sampler.h"
-#include "Debugging\Exceptions\Macros\GraphicsThrowMacros.h"
+#include "Common\Exceptions\Macros\GraphicsThrowMacros.h"
 #include "RendererAPI/GFXContextCodex.h"
 namespace FraplesDev
 {

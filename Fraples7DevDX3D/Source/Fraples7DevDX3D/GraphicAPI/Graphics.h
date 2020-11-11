@@ -1,7 +1,7 @@
 #pragma once
-#include "../Core/Fraples7.h"
-#include "../Core/Debugging/Exceptions/FraplesException.h"
-#include "../Core/Debugging/DxgiInfoManager.h"
+#include "Core/Fraples7.h"
+#include "Core/Common/Exceptions/FraplesException.h"
+#include "Core/Common/DxgiInfoManager.h"
 #include <d3dcompiler.h>
 #include <DirectXMath.h>
 #include <vector>

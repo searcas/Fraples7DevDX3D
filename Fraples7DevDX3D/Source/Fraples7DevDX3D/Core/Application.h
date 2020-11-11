@@ -1,13 +1,13 @@
 #pragma once
 #include "Platform/Windows/Window.h"
-#include "Core/Debugging/Timer.h"
+#include "Utility/Timer.h"
 #include "RendererAPI/Camera.h"
 #include "RendererAPI/Mesh/Model.h"
 #include "Math/Math.h"
 #include "Objects/BasePlane.h"
 #include "Objects/BaseCube.h"
 #include "Objects/PointLight.h"
-#include "Commands/ScriptCommandCenter.h"
+#include "Utility/ScriptCommandCenter.h"
 #include "RendererAPI/RenderPriority/FrameCommander.h"
 #include <set>
 namespace FraplesDev

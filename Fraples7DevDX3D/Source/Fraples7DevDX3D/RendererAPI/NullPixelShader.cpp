@@ -1,7 +1,7 @@
 #include "NullPixelShader.h"
-#include "Core/Debugging/Exceptions/Macros/GraphicsThrowMacros.h"
+#include "Core/Common/Exceptions/Macros/GraphicsThrowMacros.h"
 #include "RendererAPI/GFXContextCodex.h"
-#include "Commands/Fraples7Utility.h"
+#include "Utility/Fraples7Utility.h"
 
 namespace FraplesDev
 {

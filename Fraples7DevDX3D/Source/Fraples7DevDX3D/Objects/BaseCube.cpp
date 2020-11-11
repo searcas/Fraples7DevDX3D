@@ -56,6 +56,7 @@ namespace FraplesDev
 			{
 				Step draw(2);
 
+				//these can be pass-constant (tricky due to layout issues)
 				auto pvs = VertexShader::Resolve(gfx, "SolidVS.cso");
 				auto pvsbyte = pvs->GetBytecode();
 				draw.AddContext(std::move(pvs));

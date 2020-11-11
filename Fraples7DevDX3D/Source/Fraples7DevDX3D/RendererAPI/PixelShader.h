@@ -1,7 +1,7 @@
 #pragma once
 #include "GFXContext.h"
 #include <memory>
-#include "Commands/Fraples7Utility.h"
+#include "Utility/Fraples7Utility.h"
 namespace FraplesDev
 {
 	class PixelShader : public GfxContext

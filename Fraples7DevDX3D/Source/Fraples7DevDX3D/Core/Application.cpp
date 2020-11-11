@@ -1,6 +1,6 @@
 #include "Application.h"
-#include "Debugging/Exceptions/Macros/WindowsThrowMacros.h"
-#include "Debugging/Timer.h"
+#include "Common/Exceptions/Macros/WindowsThrowMacros.h"
+#include "Utility/Timer.h"
 // ########## Objects ################
 //#include "../Objects/Sphere.h"
 //#include "../Objects/Melon.h"
@@ -11,7 +11,7 @@
 #include "imgui_impl_win32.h"
 #include "Core/MetaProgramming/Vertex.h"
 #include "RendererAPI/VertexBuffer.h"
-#include "Commands/Fraples7Utility.h"
+#include "Utility/Fraples7Utility.h"
 #include <algorithm>
 #include <cstring>
 #include "QualityAssurance/TestingQA.h"

@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
-#include "Core/Debugging/Exceptions/FraplesException.h"
+#include "Core/Common/Exceptions/FraplesException.h"
 
 namespace FraplesDev
 {

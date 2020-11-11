@@ -1,7 +1,7 @@
 #include "DxgiInfoManager.h"
 #include "../../Platform/Windows/Window.h"
-#include "../Debugging/Exceptions/Macros/GraphicsThrowMacros.h"
-#include "../Debugging/Exceptions/Macros/WindowsThrowMacros.h"
+#include "../Common/Exceptions/Macros/GraphicsThrowMacros.h"
+#include "../Common/Exceptions/Macros/WindowsThrowMacros.h"
 #include <memory>
 FraplesDev::DxgiInfoManager::DxgiInfoManager()
 {

@@ -2,7 +2,7 @@
 #include "Fraples7.h"
 #include <optional>
 #include <string>
-#include "Debugging\Exceptions\FraplesException.h"
+#include "Common/Exceptions/FraplesException.h"
 #include "DirectXTex/DirectXTex.h"
 namespace FraplesDev
 {

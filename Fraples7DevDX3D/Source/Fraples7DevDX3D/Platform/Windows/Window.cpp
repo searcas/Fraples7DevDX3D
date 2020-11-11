@@ -1,6 +1,6 @@
 #include "Window.h"
 #include <sstream>
-#include "../../Core/Debugging/Exceptions/Macros/WindowsThrowMacros.h"
+#include "../../Core/Common/Exceptions/Macros/WindowsThrowMacros.h"
 #include "../../../../ImGui/imgui_impl_win32.h"
 #include "../Source/Fraples7DevDX3D/ImGuiMgr/ImGuiMgr.h"
 namespace FraplesDev {

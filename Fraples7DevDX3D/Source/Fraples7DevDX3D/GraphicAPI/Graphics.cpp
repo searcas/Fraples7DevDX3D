@@ -1,7 +1,7 @@
 #include "../../Fraples7DevDX3D/Core/Fraples7.h"
-#include "../Core/Debugging/Exceptions/Macros/GraphicsThrowMacros.h"
-#include "../Core/Debugging/dxerr.h"
-#include "../Core/Debugging/DxgiInfoManager.h"
+#include "../Core/Common/Exceptions/Macros/GraphicsThrowMacros.h"
+#include "../Core/Common/dxerr.h"
+#include "../Core/Common/DxgiInfoManager.h"
 #include "imgui_impl_dx11.h"
 #include "Graphics.h"
 #include <sstream>

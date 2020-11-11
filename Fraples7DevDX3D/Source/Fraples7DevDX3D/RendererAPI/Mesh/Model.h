@@ -6,7 +6,7 @@
 #include "Core/Math/Math.h"
 #include "ImGui/imgui.h"
 #include "Mesh.h"
-#include "Core/Debugging/Exceptions/FraplesException.h"
+#include "Core/Common/Exceptions/FraplesException.h"
 #include "RendererAPI/ConstantBuffers.h"
 #include "Core/MetaProgramming/DynamicConstant.h"
 #include "RendererAPI/RenderPriority/FrameCommander.h"

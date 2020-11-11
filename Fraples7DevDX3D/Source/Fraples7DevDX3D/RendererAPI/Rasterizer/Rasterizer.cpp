@@ -1,5 +1,5 @@
 #include "Rasterizer.h"
-#include "Core/Debugging/Exceptions/Macros/GraphicsThrowMacros.h"
+#include "Core/Common/Exceptions/Macros/GraphicsThrowMacros.h"
 #include "RendererAPI/GFXContextCodex.h"
 namespace FraplesDev
 {

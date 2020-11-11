@@ -1,6 +1,6 @@
 #include "SolidSphere.h"
 #include "Objects/Sphere.h"
-#include "Core/Debugging/Exceptions/Macros/GraphicsThrowMacros.h"
+#include "Core/Common/Exceptions/Macros/GraphicsThrowMacros.h"
 #include "RendererAPI/GFXContextBase.h"
 #include "Core/MetaProgramming/Vertex.h"
 #include "RendererAPI/Stencil.h"

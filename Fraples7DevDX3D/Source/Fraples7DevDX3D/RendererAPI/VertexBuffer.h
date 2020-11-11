@@ -1,7 +1,7 @@
 #pragma once
 
 #include "GFXContext.h"
-#include "../Core/Debugging/Exceptions/Macros/GraphicsThrowMacros.h"
+#include "../Core/Common/Exceptions/Macros/GraphicsThrowMacros.h"
 #include "../Core/MetaProgramming/Vertex.h"
 #include <memory>
 namespace FraplesDev

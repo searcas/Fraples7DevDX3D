@@ -18,9 +18,6 @@
     <ClCompile Include="WinEntryPoint.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Fraples7DevDX3D\Core\Debugging\WindowsMessageMap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Fraples7DevDX3D\Platform\Windows\Window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -30,19 +27,7 @@
     <ClCompile Include="Source\Fraples7DevDX3D\Input Events\MouseEvents.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Fraples7DevDX3D\Core\Debugging\Timer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Application.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Fraples7DevDX3D\Core\Debugging\Exceptions\FraplesException.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Fraples7DevDX3D\Core\Debugging\dxerr.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Fraples7DevDX3D\Core\Debugging\DxgiInfoManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\GFXContext.cpp">
@@ -132,25 +117,13 @@
     <ClCompile Include="Source\Fraples7DevDX3D\Objects\BaseCube.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Fraples7DevDX3D\Commands\NormalMapCMD.h">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Math\FraplesXM.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Fraples7DevDX3D\Commands\TexturePreprocessor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Blending\Blending.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Rasterizer\Rasterizer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Fraples7DevDX3D\Commands\Fraples7Utility.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Fraples7DevDX3D\Commands\ScriptCommandCenter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Fraples7DevDX3D\Core\MetaProgramming\DynamicConstant.cpp">
@@ -171,11 +144,35 @@
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\NullPixelShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\Utility\Fraples7Utility.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\Utility\NormalMapCMD.h">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\Utility\ScriptCommandCenter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\Utility\TexturePreprocessor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\Core\Common\Exceptions\FraplesException.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\Core\Common\dxerr.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\Core\Common\DxgiInfoManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\Core\Common\WindowsMessageMap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\Utility\Timer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\Fraples7DevDX3D\Core\Debugging\WindowsMessageMap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Fraples7.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -191,25 +188,7 @@
     <ClInclude Include="Source\Fraples7DevDX3D\Input Events\MouseEvents.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Fraples7DevDX3D\Core\Debugging\Timer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Application.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Fraples7DevDX3D\Core\Debugging\Exceptions\FraplesException.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Fraples7DevDX3D\Core\Debugging\dxerr.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Fraples7DevDX3D\Core\Debugging\DxgiInfoManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Fraples7DevDX3D\Core\Debugging\Exceptions\Macros\GraphicsThrowMacros.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Fraples7DevDX3D\Core\Debugging\Exceptions\Macros\WindowsThrowMacros.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\GFXContext.h">
@@ -338,9 +317,6 @@
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Math\FraplesXM.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Fraples7DevDX3D\Commands\TexturePreprocessor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Blending\Blending.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -369,12 +345,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DirectXTex\scoped.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Fraples7DevDX3D\Commands\Fraples7Utility.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Fraples7DevDX3D\Commands\ScriptCommandCenter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Fraples7DevDX3D\Core\MetaProgramming\DynamicConstant.h">
@@ -410,6 +380,39 @@
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\NullPixelShader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\Utility\Fraples7Utility.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\Utility\ScriptCommandCenter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\Utility\TexturePreprocessor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\Utility\SpeedLog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\Core\Common\Exceptions\Macros\GraphicsThrowMacros.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\Core\Common\Exceptions\Macros\WindowsThrowMacros.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\Core\Common\Exceptions\FraplesException.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\Core\Common\dxerr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\Core\Common\DxgiInfoManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\Core\Common\WindowsMessageMap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\Utility\Timer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Fraples7DevDX3D.rc">
@@ -417,15 +420,6 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Source\Fraples7DevDX3D\Core\Debugging\DXGetErrorDescription.inl">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="Source\Fraples7DevDX3D\Core\Debugging\DXGetErrorString.inl">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="Source\Fraples7DevDX3D\Core\Debugging\DXTrace.inl">
-      <Filter>Header Files</Filter>
-    </None>
     <None Include="Source\Fraples7DevDX3D\Shaders\ShaderOps.hlsli" />
     <None Include="Source\Fraples7DevDX3D\Shaders\PointLight.hlsli" />
     <None Include="Source\Fraples7DevDX3D\Shaders\LightVectorData.hlsli" />
@@ -434,6 +428,15 @@
       <Filter>Header Files</Filter>
     </None>
     <None Include="process.json" />
+    <None Include="Source\Fraples7DevDX3D\Core\Common\DXGetErrorDescription.inl">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="Source\Fraples7DevDX3D\Core\Common\DXGetErrorString.inl">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="Source\Fraples7DevDX3D\Core\Common\DXTrace.inl">
+      <Filter>Header Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\ColorBlendVS.hlsl" />

@@ -357,7 +357,7 @@ void ImGui::ShowDemoWindow(bool* p_open)
         ImGui::BulletText("Sections below are demonstrating many aspects of the library.");
         ImGui::BulletText("The \"Examples\" menu above leads to more demo contents.");
         ImGui::BulletText("The \"Tools\" menu above gives access to: About Box, Style Editor,\n"
-                          "and Metrics (general purpose Dear ImGui debugging tool).");
+                          "and Metrics (general purpose Dear ImGui Common tool).");
         ImGui::Separator();
 
         ImGui::Text("PROGRAMMER GUIDE:");
