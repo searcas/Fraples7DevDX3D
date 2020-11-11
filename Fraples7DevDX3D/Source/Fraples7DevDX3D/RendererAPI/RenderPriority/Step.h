@@ -3,7 +3,7 @@
 #include <memory>
 #include "RendererAPI/GFXContext.h"
 #include "GraphicAPI/Graphics.h"	
-
+#include "TechniqueProbe.h"
 namespace FraplesDev
 {
 	class Step
@@ -24,6 +24,15 @@ namespace FraplesDev
 			for (auto& b : _mPcontexts)
 			{
 				b->Bind(gfx);
+			}
+		}
+		void Accept(TechniqueProbe& probe)
+		{
+			probe.SetStep(this);
+
+			for (auto& pb : _mPcontexts)
+			{
+				pb->Accept(probe);
 			}
 		}
 		void InitializeParentReferences(const class Renderer& parent)noexcept;

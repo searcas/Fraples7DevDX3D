@@ -2,6 +2,8 @@
 #include "GFXContext.h"
 #include "Core/Common/Exceptions/Macros/GraphicsThrowMacros.h"
 #include "Core/MetaProgramming/DynamicConstant.h"
+#include "RenderPriority/TechniqueProbe.h"
+
 namespace FraplesDev
 {
 	class PixelConstantBufferEx : public GfxContext
@@ -45,6 +47,7 @@ namespace FraplesDev
 				FPL_GFX_THROW_INFO(GetDevice(gfx)->CreateBuffer(&constantBufferDescriptor, nullptr, &_mPConstantBuffer));
 			}
 		}
+		
 	
 	private:
 		std::shared_ptr<MP::LayoutElement> pLayout;
@@ -85,6 +88,13 @@ namespace FraplesDev
 				dirty = false;
 			}
 			PixelConstantBufferEx::Bind(gfx);
+		}
+		void Accept(TechniqueProbe& probe)override
+		{
+			if (probe.VisitBuffer(_mBuf))
+			{
+				dirty = true;
+			}
 		}
 	private:
 		MP::Buffer _mBuf;

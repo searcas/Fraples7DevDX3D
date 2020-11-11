@@ -9,8 +9,6 @@ namespace FraplesDev
 {
 	namespace MP
 	{
-
-
 		class LayoutCodex
 		{
 		public:

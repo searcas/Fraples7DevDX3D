@@ -25,5 +25,11 @@ namespace FraplesDev {
 	{
 		return _mPindices->GetCount();
 	}
-
+	void Renderer::Accept(TechniqueProbe& probe)
+	{
+		for (auto& t : _mTechniques)
+		{
+			t.Accept(probe);
+		}
+	}
 }

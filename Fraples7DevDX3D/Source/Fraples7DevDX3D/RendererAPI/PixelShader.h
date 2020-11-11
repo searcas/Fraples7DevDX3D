@@ -16,6 +16,4 @@ namespace FraplesDev
 		std::string _mPath;
 		Microsoft::WRL::ComPtr<ID3D11PixelShader>_mPixelShader;
 	};
-
-
 }

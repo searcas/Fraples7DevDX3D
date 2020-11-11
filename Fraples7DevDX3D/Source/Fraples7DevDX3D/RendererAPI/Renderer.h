@@ -21,6 +21,8 @@ namespace FraplesDev
 		void Submit(class FrameCommander& frame)const noexcept;
 		void Bind(Graphics& gfx)const noexcept;
 		UINT GetIndexCount()const noexcept(!IS_DEBUG);
+		void Accept(class TechniqueProbe& probe);
+
 		virtual ~Renderer() = default;
 	protected:
 		std::shared_ptr<IndexBuffer>_mPindices;

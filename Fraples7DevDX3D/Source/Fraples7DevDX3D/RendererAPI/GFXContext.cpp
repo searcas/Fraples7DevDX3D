@@ -2,7 +2,7 @@
 #include <stdexcept>
 namespace FraplesDev
 {
-
+	
 	ID3D11DeviceContext* GfxContext::GetContext(Graphics& gfx) noexcept
 	{
 		return gfx._mpContext.Get();

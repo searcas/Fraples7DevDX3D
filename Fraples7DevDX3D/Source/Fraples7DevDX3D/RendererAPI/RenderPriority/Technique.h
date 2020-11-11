@@ -6,22 +6,41 @@ namespace FraplesDev
 	class Technique
 	{
 	public:
+		Technique() = default;
+		Technique(std::string name)noexcept
+			:_mName(name)
+		{
+
+		}
 		void Submit(class FrameCommander& frame, const class Renderer& renderer)const noexcept;
 		void AddStep(Step step)noexcept
 		{
 			_mSteps.push_back(std::move(step));
 		}
-		inline void Activate()noexcept
+		inline void SetActiveState(bool active)noexcept
 		{
-			_mActivate = true;
+			_mActivate = active;
 		}
-		inline void Deactivate()noexcept
+		inline bool IsActivated()noexcept
 		{
-			_mActivate = false;
+			return _mActivate;
 		}
 		void InitializeParentReferences(const class Renderer& parent)noexcept;
+		void Accept(TechniqueProbe& probe)
+		{
+			probe.SetTechnique(this);
+			for (auto& s : _mSteps)
+			{
+				s.Accept(probe);
+			}
+		}
+		const std::string& GetName()const noexcept
+		{
+			return _mName;
+		}
 	private:
 		bool _mActivate = true;
 		std::vector<Step>_mSteps;
+		std::string _mName = "Nameless Tech";
 	};
 }

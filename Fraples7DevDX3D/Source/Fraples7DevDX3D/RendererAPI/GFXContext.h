@@ -1,6 +1,5 @@
 #pragma once
 #include "../GraphicAPI/Graphics.h"
-
 namespace FraplesDev
 {
     class GfxContext
@@ -14,12 +13,11 @@ namespace FraplesDev
             return "";
         }
         virtual void InitializeParentReference(const class Renderer& parent)noexcept {};
-
+        virtual void Accept(class TechniqueProbe&) {};
     protected:
         static ID3D11DeviceContext* GetContext(Graphics& gfx) noexcept;
         static ID3D11Device* GetDevice(Graphics& gfx)noexcept;
         static DxgiInfoManager& GetInfoManager(Graphics& gfx);
 
     };
-
 }

@@ -24,6 +24,7 @@ namespace FraplesDev
 	{
 		cube1.SetPos({ 4.0f,0.0f,0.0f });
 		cube2.SetPos({ 0.0f,4.0f,0.0f });
+		
 		QA::TestDynamicConstant();
 		//bluePlane.SetPosXYZ(_mCamera.GetPos());
 		//redPlane.SetPosXYZ(_mCamera.GetPos());

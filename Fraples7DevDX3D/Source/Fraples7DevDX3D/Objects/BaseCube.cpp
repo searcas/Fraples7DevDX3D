@@ -4,7 +4,9 @@
 #include "RendererAPI/TransformCBufDual.h"
 #include "ImGui/imgui.h"
 #include "RendererAPI/Stencil.h"
-
+#include "RendererAPI/RenderPriority/TechniqueProbe.h"
+#include "Core/MetaProgramming/DynamicConstant.h"
+#include "RendererAPI/ConstantBuffersEx.h"
 namespace FraplesDev
 {
 	BaseCube::BaseCube(Graphics& gfx, float size)
@@ -17,9 +19,8 @@ namespace FraplesDev
 		_mPvertices = VertexBuffer::Resolve(gfx, geometryTag, model._mVertices);
 		_mPindices = IndexBuffer::Resolve(gfx, geometryTag, model._mIndices);
 		_mPtopology = Topology::Resolve(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
 		{
-			Technique standard;
+			Technique shade("Shade");
 			{
 				Step only(0);
 				only.AddContext(Texture::Resolve(gfx, "Images\\brickwall.jpg", 0));
@@ -28,17 +29,22 @@ namespace FraplesDev
 				auto pvs = VertexShader::Resolve(gfx, "PhongVS.cso");
 				auto pvsbyte = pvs->GetBytecode();
 				only.AddContext(std::move(pvs));
-
 				only.AddContext(PixelShader::Resolve(gfx, "PhongPS.cso"));
-				only.AddContext(PixelConstantBuffer<PSMaterialConstant>::Resolve(gfx, pmc, 1u));
+				MP::RawLayout layout;
+				layout.Add<MP::Float>("specularIntensity");
+				layout.Add<MP::Float>("specularPower");
+				auto buf = MP::Buffer(std::move(layout));
+				buf["specularIntensity"] = 0.1f;
+				buf["specularPower"] = 20.0f;
+				only.AddContext(std::make_shared<CachingPixelConstantBufferEx>(gfx, buf, 1u));
 				only.AddContext(InputLayout::Resolve(gfx, model._mVertices.GetLayout(), pvsbyte));
 				only.AddContext(std::make_shared<TransformCBuf>(gfx));
-				standard.AddStep(std::move(only));
+				shade.AddStep(std::move(only));
 			}
-			AddTechnique(std::move(standard));
+			AddTechnique(std::move(shade));
 		}
 		{
-			Technique outLine;
+			Technique outLine("Outline");
 			{
 				Step mask(1);
 
@@ -58,6 +64,11 @@ namespace FraplesDev
 
 				//these can be pass-constant (tricky due to layout issues)
 				auto pvs = VertexShader::Resolve(gfx, "SolidVS.cso");
+				MP::RawLayout layout;
+				layout.Add<MP::Float4>("color");
+				auto buf = MP::Buffer(std::move(layout));
+				buf["color"] = DirectX::XMFLOAT4{ 1.0f,0.4f,0.4f,1.0f };
+				draw.AddContext(std::make_shared<CachingPixelConstantBufferEx>(gfx, buf, 1u));
 				auto pvsbyte = pvs->GetBytecode();
 				draw.AddContext(std::move(pvs));
 
@@ -71,16 +82,34 @@ namespace FraplesDev
 				class TransformCbufScaling : public TransformCBuf
 				{
 				public:
-					using TransformCBuf::TransformCBuf;
+					TransformCbufScaling(Graphics& gfx, float scale = 1.04f)
+						:TransformCBuf(gfx),_mBuf(MakeLayout())
+					{
 
+					}
+					void Accept(TechniqueProbe& probe)override
+					{
+						probe.VisitBuffer(_mBuf);
+					}
 					void Bind(Graphics& gfx)noexcept override
 					{
-						const auto scale = DirectX::XMMatrixScaling(1.04f, 1.04f, 1.04f);
+						const auto scale = _mBuf["scale"];
+						const auto scaleMatrix = DirectX::XMMatrixScaling(scale, scale, scale);
 						auto xf = GetTransforms(gfx);
-						xf.modelView = xf.modelView * scale;
-						xf.modelViewProj = xf.modelViewProj * scale;
+
+						xf.modelView = xf.modelView * scaleMatrix;
+						xf.modelViewProj = xf.modelViewProj * scaleMatrix;
 						UpdateBindImpl(gfx, xf);
 					}
+				private:
+					static MP::RawLayout MakeLayout()
+					{
+						MP::RawLayout layout;
+						layout.Add<MP::Float>("scale");
+						return layout;
+					}
+				private:
+					MP::Buffer _mBuf;
 				};
 				draw.AddContext(std::make_shared<TransformCbufScaling>(gfx));
 				//TODO: might need to specify rasterizer when doubled-sided models start being used
@@ -117,24 +146,47 @@ namespace FraplesDev
 			ImGui::SliderAngle("Roll", &roll, -180.0f, 180.0f);
 			ImGui::SliderAngle("Pitch", &pitch, -180.0f, 180.0f);
 			ImGui::SliderAngle("Yaw", &yaw, -180.0f, 180.0f);
-		/*	ImGui::Text("Shading");
-			bool change0 = ImGui::SliderFloat("Specular Intensity.", &pmc.specularIntensity, 0.0f, 1.0f);
-			bool change1 = ImGui::SliderFloat("Specular Power.", &pmc.specularPower, 0.0f, 100.0f);
-			bool checkState = pmc.normalMappingEnabled== TRUE;
-			bool change2 = ImGui::Checkbox("Enable Normal Map", &checkState);
-			pmc.normalMappingEnabled= checkState ? TRUE : FALSE;
-			if (change0 || change1 || change2)
+				
+			class Probe : public TechniqueProbe
 			{
-				QueryBindable<PixelConstantBuffer<PSMaterialConstant>>()->Update(gfx, pmc);
-			}
-			if (ImGui::Button("Reset"))
-			{
-				pos = { 1.0f,17.0f,-1.0f };
-				roll = -0;
-				pitch = -0;
-				yaw = -0;
-				pmc = {};
-		}*/
+			public:
+				void OnSetTechnique()override
+				{
+					using namespace std::string_literals;
+
+					ImGui::TextColored({ 0.4f, 1.0f,0.6f,1.0f },_mPtech->GetName().c_str());
+					bool active = _mPtech->IsActivated();
+
+					ImGui::Checkbox(("Tech Activate##"s + _mPtech->GetName()).c_str(), &active);
+					_mPtech->SetActiveState(active);
+				}
+				bool VisitBuffer(MP::Buffer& buf)override
+				{
+					bool dirty = false;
+					const auto dCheck = [&dirty](bool changed) {dirty = dirty || changed; };
+
+					if (auto v = buf["scale"];v.Exists())
+					{
+						dCheck(ImGui::SliderFloat("Scale", &v, 1.0f, 2.0f, "%.3f"));
+					}
+					if (auto v = buf["color"]; v.Exists())
+					{
+						dCheck(ImGui::ColorPicker4("Color", reinterpret_cast<float*>(&static_cast<DirectX::XMFLOAT4&>(v))));
+					}
+					if (auto v = buf["specularIntensity"]; v.Exists())
+					{
+						dCheck(ImGui::SliderFloat("Specular Intensity", &v, 0.0f, 1.0f));
+					}
+					if (auto v = buf["specularPower"]; v.Exists())
+					{
+						dCheck(ImGui::SliderFloat("Glossiness", &v, 1.0f, 100.0f,"%.1f"));
+					}
+					return dirty;
+				}
+
+			};
+			static Probe probe;
+			Accept(probe);
 		}
 		ImGui::End();
 	}

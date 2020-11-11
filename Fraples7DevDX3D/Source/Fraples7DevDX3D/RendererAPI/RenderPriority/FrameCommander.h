@@ -32,16 +32,10 @@ namespace FraplesDev
 			NullPixelShader::Resolve(gfx)->Bind(gfx);
 			_mPasses[1].Execute(gfx);
 
-			SpeedLog::SpeedLog::Start();
 			// Outline drawing pass
 			Stencil::Resolve(gfx, Stencil::Mode::Mask)->Bind(gfx);
 
-			struct SolidColorBuffer
-			{
-				DirectX::XMFLOAT4 color{ 1.0f,0.4f,0.3f,0.9f };
-			}scb;
-			PixelConstantBuffer<SolidColorBuffer>::Resolve(gfx, scb, 1u)->Bind(gfx);
-			SpeedLog::SpeedLog::Mark();
+			
 			_mPasses[2].Execute(gfx);
 		}
 		void Reset()noexcept

@@ -170,6 +170,7 @@
     <ClInclude Include="ImGui\imstb_textedit.h" />
     <ClInclude Include="ImGui\imstb_truetype.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderPriority\TechniqueProbe.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Utility\Fraples7Utility.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Utility\ScriptCommandCenter.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Utility\SpeedLog.h" />
