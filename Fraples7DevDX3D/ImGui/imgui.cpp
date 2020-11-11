@@ -862,6 +862,7 @@ static float            NavUpdatePageUpPageDown();
 static inline void      NavUpdateAnyRequestFlag();
 static void             NavEndFrame();
 static bool             NavScoreItem(ImGuiNavMoveResult* result, ImRect cand);
+static void             NavApplyItemToResult(ImGuiNavMoveResult* result, ImGuiWindow* window, ImGuiID id, const ImRect& nav_bb_rel);
 static void             NavProcessItem(ImGuiWindow* window, const ImRect& nav_bb, ImGuiID id);
 static ImVec2           NavCalcPreferredRefPos();
 static void             NavSaveLastChildNavWindowIntoParent(ImGuiWindow* nav_window);
@@ -6904,9 +6905,13 @@ static void ImGui::ErrorCheckEndFrameSanityChecks()
 
     // Verify that io.KeyXXX fields haven't been tampered with. Key mods should not be modified between NewFrame() and EndFrame()
     // One possible reason leading to this assert is that your backends update inputs _AFTER_ NewFrame().
-    const ImGuiKeyModFlags expected_key_mod_flags = GetMergedKeyModFlags();
-    IM_ASSERT(g.IO.KeyMods == expected_key_mod_flags && "Mismatching io.KeyCtrl/io.KeyShift/io.KeyAlt/io.KeySuper vs io.KeyMods");
-    IM_UNUSED(expected_key_mod_flags);
+    // It is known that when some modal native windows called mid-frame takes focus away, some backends such as GLFW will
+    // send key release events mid-frame. This would normally trigger this assertion and lead to sheared inputs.
+    // We silently accommodate for this case by ignoring/ the case where all io.KeyXXX modifiers were released (aka key_mod_flags == 0),
+    // while still correctly asserting on mid-frame key press events.
+    const ImGuiKeyModFlags key_mod_flags = GetMergedKeyModFlags();
+    IM_ASSERT((key_mod_flags == 0 || g.IO.KeyMods == key_mod_flags) && "Mismatching io.KeyCtrl/io.KeyShift/io.KeyAlt/io.KeySuper vs io.KeyMods");
+    IM_UNUSED(key_mod_flags);
 
     // Report when there is a mismatch of Begin/BeginChild vs End/EndChild calls. Important: Remember that the Begin/BeginChild API requires you
     // to always call End/EndChild even if Begin/BeginChild returns false! (this is unfortunately inconsistent with most other Begin* API).
@@ -8377,6 +8382,14 @@ static bool ImGui::NavScoreItem(ImGuiNavMoveResult* result, ImRect cand)
     return new_best;
 }
 
+static void ImGui::NavApplyItemToResult(ImGuiNavMoveResult* result, ImGuiWindow* window, ImGuiID id, const ImRect& nav_bb_rel)
+{
+    result->Window = window;
+    result->ID = id;
+    result->FocusScopeId = window->DC.NavFocusScopeIdCurrent;
+    result->RectRel = nav_bb_rel;
+}
+
 // We get there when either NavId == id, or when g.NavAnyRequest is set (which is updated by NavUpdateAnyRequestFlag above)
 static void ImGui::NavProcessItem(ImGuiWindow* window, const ImRect& nav_bb, const ImGuiID id)
 {
@@ -8417,25 +8430,14 @@ static void ImGui::NavProcessItem(ImGuiWindow* window, const ImRect& nav_bb, con
         bool new_best = g.NavMoveRequest && NavScoreItem(result, nav_bb);
 #endif
         if (new_best)
-        {
-            result->Window = window;
-            result->ID = id;
-            result->FocusScopeId = window->DC.NavFocusScopeIdCurrent;
-            result->RectRel = nav_bb_rel;
-        }
+            NavApplyItemToResult(result, window, id, nav_bb_rel);
 
         // Features like PageUp/PageDown need to maintain a separate score for the visible set of items.
         const float VISIBLE_RATIO = 0.70f;
         if ((g.NavMoveRequestFlags & ImGuiNavMoveFlags_AlsoScoreVisibleSet) && window->ClipRect.Overlaps(nav_bb))
             if (ImClamp(nav_bb.Max.y, window->ClipRect.Min.y, window->ClipRect.Max.y) - ImClamp(nav_bb.Min.y, window->ClipRect.Min.y, window->ClipRect.Max.y) >= (nav_bb.Max.y - nav_bb.Min.y) * VISIBLE_RATIO)
                 if (NavScoreItem(&g.NavMoveResultLocalVisibleSet, nav_bb))
-                {
-                    result = &g.NavMoveResultLocalVisibleSet;
-                    result->Window = window;
-                    result->ID = id;
-                    result->FocusScopeId = window->DC.NavFocusScopeIdCurrent;
-                    result->RectRel = nav_bb_rel;
-                }
+                    NavApplyItemToResult(&g.NavMoveResultLocalVisibleSet, window, id, nav_bb_rel);
     }
 
     // Update window-relative bounding box of navigated item
@@ -10371,7 +10373,7 @@ void ImGui::ShowMetricsWindow(bool* p_open)
     ImGui::Text("%d active allocations", io.MetricsActiveAllocations);
     ImGui::Separator();
 
-    // Common enums
+    // Debugging enums
     enum { WRT_OuterRect, WRT_OuterRectClipped, WRT_InnerRect, WRT_InnerClipRect, WRT_WorkRect, WRT_Content, WRT_ContentRegionRect, WRT_Count }; // Windows Rect Type
     const char* wrt_rects_names[WRT_Count] = { "OuterRect", "OuterRectClipped", "InnerRect", "InnerClipRect", "WorkRect", "Content", "ContentRegionRect" };
     enum { TRT_OuterRect, TRT_WorkRect, TRT_HostClipRect, TRT_InnerClipRect, TRT_BackgroundClipRect, TRT_ColumnsRect, TRT_ColumnsClipRect, TRT_ColumnsContentHeadersUsed, TRT_ColumnsContentHeadersIdeal, TRT_ColumnsContentRowsFrozen, TRT_ColumnsContentRowsUnfrozen, TRT_Count }; // Tables Rect Type

@@ -65,7 +65,7 @@ static bool                 g_HasGamepad = false;
 static bool                 g_WantUpdateHasGamepad = true;
 
 // Functions
-bool    ImGui_ImplWin32_Init(HWND hwnd)
+bool    ImGui_ImplWin32_Init(void* hwnd)
 {
     if (!::QueryPerformanceFrequency((LARGE_INTEGER*)&g_TicksPerSecond))
         return false;
@@ -73,7 +73,7 @@ bool    ImGui_ImplWin32_Init(HWND hwnd)
         return false;
 
     // Setup backend capabilities flags
-    g_hWnd = hwnd;
+    g_hWnd = (HWND)hwnd;
     ImGuiIO& io = ImGui::GetIO();
     io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;         // We can honor GetMouseCursor() values (optional)
     io.BackendFlags |= ImGuiBackendFlags_HasSetMousePos;          // We can honor io.WantSetMousePos requests (optional, rarely used)

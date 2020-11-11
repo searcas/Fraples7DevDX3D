@@ -177,7 +177,7 @@ namespace ImStb
 #define IM_STATIC_ASSERT(_COND)         typedef char static_assertion_##__line__[(_COND)?1:-1]
 #endif
 
-// "Paranoid" Debug Asserts are meant to only be enabled during specific Common/work, otherwise would slow down the code too much.
+// "Paranoid" Debug Asserts are meant to only be enabled during specific debugging/work, otherwise would slow down the code too much.
 // We currently don't have many of those so the effect is currently negligible, but onward intent to add more aggressive ones in the code.
 //#define IMGUI_DEBUG_PARANOID
 #ifdef IMGUI_DEBUG_PARANOID
@@ -793,7 +793,7 @@ struct ImGuiDataTypeTempStorage
 struct ImGuiDataTypeInfo
 {
     size_t      Size;           // Size in bytes
-    const char* Name;           // Short descriptive name for the type, for Common
+    const char* Name;           // Short descriptive name for the type, for debugging
     const char* PrintFmt;       // Default printf format for the type
     const char* ScanFmt;        // Default scanf format for the type
 };
@@ -844,7 +844,7 @@ struct IMGUI_API ImGuiMenuColumns
     float       Width, NextWidth;
     float       Pos[3], NextWidths[3];
 
-    ImGuiMenuColumns();
+    ImGuiMenuColumns() { memset(this, 0, sizeof(*this)); }
     void        Update(int count, float spacing, bool clear);
     float       DeclColumns(float w0, float w1, float w2);
     float       CalcExtraSpace(float avail_w) const;
@@ -897,7 +897,7 @@ struct ImGuiPopupData
     ImVec2              OpenPopupPos;   // Set on OpenPopup(), preferred popup position (typically == OpenMousePos when using mouse)
     ImVec2              OpenMousePos;   // Set on OpenPopup(), copy of mouse position at the time of opening popup
 
-    ImGuiPopupData() { PopupId = 0; Window = SourceWindow = NULL; OpenFrameCount = -1; OpenParentId = 0; }
+    ImGuiPopupData()    { memset(this, 0, sizeof(*this)); OpenFrameCount = -1; }
 };
 
 struct ImGuiNavMoveResult
@@ -961,7 +961,7 @@ struct ImGuiNextItemData
 {
     ImGuiNextItemDataFlags      Flags;
     float                       Width;          // Set by SetNextItemWidth()
-    ImGuiID                     FocusScopeId;   // Set by SetNextItemMultiSelectData() (!= 0 signify value has been set, so it's an alternate version of HasSelectionData, we don't use Flags for this because they are cleared too early. This is mostly used for Common)
+    ImGuiID                     FocusScopeId;   // Set by SetNextItemMultiSelectData() (!= 0 signify value has been set, so it's an alternate version of HasSelectionData, we don't use Flags for this because they are cleared too early. This is mostly used for debugging)
     ImGuiCond                   OpenCond;
     bool                        OpenVal;        // Set by SetNextItemOpen()
 
@@ -1006,7 +1006,7 @@ struct ImGuiColumnData
     ImGuiColumnsFlags   Flags;              // Not exposed
     ImRect              ClipRect;
 
-    ImGuiColumnData()   { OffsetNorm = OffsetNormBeforeResize = 0.0f; Flags = ImGuiColumnsFlags_None; }
+    ImGuiColumnData()   { memset(this, 0, sizeof(*this)); }
 };
 
 struct ImGuiColumns
@@ -1027,21 +1027,7 @@ struct ImGuiColumns
     ImVector<ImGuiColumnData> Columns;
     ImDrawListSplitter  Splitter;
 
-    ImGuiColumns()      { Clear(); }
-    void Clear()
-    {
-        ID = 0;
-        Flags = ImGuiColumnsFlags_None;
-        IsFirstFrame = false;
-        IsBeingResized = false;
-        Current = 0;
-        Count = 1;
-        OffMinX = OffMaxX = 0.0f;
-        LineMinY = LineMaxY = 0.0f;
-        HostCursorPosY = 0.0f;
-        HostCursorMaxPosX = 0.0f;
-        Columns.clear();
-    }
+    ImGuiColumns()      { memset(this, 0, sizeof(*this)); }
 };
 
 //-----------------------------------------------------------------------------
@@ -1083,7 +1069,7 @@ struct ImGuiWindowSettings
     bool        Collapsed;
     bool        WantApply;      // Set when loaded from .ini data (to enable merging/loading .ini data into an already running context)
 
-    ImGuiWindowSettings()       { ID = 0; Pos = Size = ImVec2ih(0, 0); Collapsed = WantApply = false; }
+    ImGuiWindowSettings()       { memset(this, 0, sizeof(*this)); }
     char* GetName()             { return (char*)(this + 1); }
 };
 
@@ -1238,7 +1224,7 @@ struct ImGuiContext
     ImGuiID                 NavNextActivateId;                  // Set by ActivateItem(), queued until next frame.
     ImGuiInputSource        NavInputSource;                     // Keyboard or Gamepad mode? THIS WILL ONLY BE None or NavGamepad or NavKeyboard.
     ImRect                  NavScoringRect;                     // Rectangle used for scoring, in screen space. Based of window->NavRectRel[], modified for directional navigation scoring.
-    int                     NavScoringCount;                    // Metrics for Common
+    int                     NavScoringCount;                    // Metrics for debugging
     ImGuiNavLayer           NavLayer;                           // Layer we are navigating on. For now the system is hard-coded for 0=main contents and 1=menu/title bar, may expose layers later.
     int                     NavIdTabCounter;                    // == NavWindow->DC.FocusIdxTabCounter at time of NavId processing
     bool                    NavIdIsAlive;                       // Nav widget has been seen this frame ~~ NavRectRel is valid
@@ -1456,8 +1442,8 @@ struct ImGuiContext
         FocusTabPressed = false;
 
         DimBgRatio = 0.0f;
-        BackgroundDrawList._OwnerName = "##Background"; // Give it a name for Common
-        ForegroundDrawList._OwnerName = "##Foreground"; // Give it a name for Common
+        BackgroundDrawList._OwnerName = "##Background"; // Give it a name for debugging
+        ForegroundDrawList._OwnerName = "##Foreground"; // Give it a name for debugging
         MouseCursor = ImGuiMouseCursor_Arrow;
 
         DragDropActive = DragDropWithinSource = DragDropWithinTarget = false;
@@ -1644,7 +1630,7 @@ struct IMGUI_API ImGuiWindow
     signed char             ResizeBorderHeld;                   // Current border being held for resize (-1: none, otherwise 0-3)
     short                   BeginCount;                         // Number of Begin() during the current frame (generally 0 or 1, 1+ if appending via multiple Begin/End pairs)
     short                   BeginOrderWithinParent;             // Order within immediate parent window, if we are a child window. Otherwise 0.
-    short                   BeginOrderWithinContext;            // Order within entire imgui context. This is mostly used for Common submission order related issues.
+    short                   BeginOrderWithinContext;            // Order within entire imgui context. This is mostly used for debugging submission order related issues.
     ImGuiID                 PopupId;                            // ID in the popup stack when this window is used as a popup/menu (because we use generic Name/ID for recycling)
     ImS8                    AutoFitFramesX, AutoFitFramesY;
     ImS8                    AutoFitChildAxises;
@@ -1692,9 +1678,9 @@ struct IMGUI_API ImGuiWindow
     ImGuiID                 NavLastIds[ImGuiNavLayer_COUNT];    // Last known NavId for this window, per layer (0/1)
     ImRect                  NavRectRel[ImGuiNavLayer_COUNT];    // Reference rectangle, in window relative space
 
-    bool                    MemoryCompacted;                    // Set when window extraneous data have been garbage collected
     int                     MemoryDrawListIdxCapacity;          // Backup of last idx/vtx count, so when waking up the window we can preallocate and avoid iterative alloc/copy
     int                     MemoryDrawListVtxCapacity;
+    bool                    MemoryCompacted;                    // Set when window extraneous data have been garbage collected
 
 public:
     ImGuiWindow(ImGuiContext* context, const char* name);
@@ -2058,6 +2044,7 @@ namespace ImGui
     template<typename T, typename SIGNED_T, typename FLOAT_T>   IMGUI_API bool  DragBehaviorT(ImGuiDataType data_type, T* v, float v_speed, T v_min, T v_max, const char* format, ImGuiSliderFlags flags);
     template<typename T, typename SIGNED_T, typename FLOAT_T>   IMGUI_API bool  SliderBehaviorT(const ImRect& bb, ImGuiID id, ImGuiDataType data_type, T* v, T v_min, T v_max, const char* format, ImGuiSliderFlags flags, ImRect* out_grab_bb);
     template<typename T, typename SIGNED_T>                     IMGUI_API T     RoundScalarWithFormatT(const char* format, ImGuiDataType data_type, T v);
+    template<typename T>                                        IMGUI_API bool  CheckboxFlagsT(const char* label, T* flags, T flags_value);
 
     // Data type helpers
     IMGUI_API const ImGuiDataTypeInfo*  DataTypeGetInfo(ImGuiDataType data_type);
