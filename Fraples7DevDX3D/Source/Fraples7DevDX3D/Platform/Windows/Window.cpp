@@ -249,10 +249,13 @@ namespace FraplesDev {
 
 	LRESULT Window::HandleMsg(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lparam) noexcept
 	{
+		
+		
 		if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wParam, lparam))
 		{
 			return true;
 		}
+		
 		const auto& imIo = ImGui::GetIO();
 		switch (msg)
 		{
