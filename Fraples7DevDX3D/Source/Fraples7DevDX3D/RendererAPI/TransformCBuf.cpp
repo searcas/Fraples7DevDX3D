@@ -2,8 +2,7 @@
 namespace FraplesDev
 {
 
-	TransformCBuf::TransformCBuf(Graphics& gfx, const Renderer& parent, UINT slot )
-		:parent(parent)
+	TransformCBuf::TransformCBuf(Graphics& gfx, UINT slot )
 	{
 		if (!_spVcbuf)
 		{
@@ -16,6 +15,10 @@ namespace FraplesDev
 		UpdateBindImpl(gfx, GetTransforms(gfx));
 		
 	}
+	void TransformCBuf::InitializeParentReference(const Renderer& parent) noexcept
+	{
+		_mPparent = &parent;
+	}
 	void TransformCBuf::UpdateBindImpl(Graphics& gfx, const Transforms& tf) noexcept
 	{
 		_spVcbuf->Update(gfx, tf);
@@ -23,8 +26,8 @@ namespace FraplesDev
 	}
 	TransformCBuf::Transforms TransformCBuf::GetTransforms(Graphics& gfx) noexcept
 	{
-		
-		const auto modelView = parent.GetTransformXM() * gfx.GetCamera();
+		assert(_mPparent != nullptr);
+		const auto modelView = _mPparent->GetTransformXM() * gfx.GetCamera();
 		return
 		{
 			DirectX::XMMatrixTranspose(modelView),

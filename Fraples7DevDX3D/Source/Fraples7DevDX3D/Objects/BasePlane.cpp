@@ -7,7 +7,7 @@ namespace FraplesDev
 	BasePlane::BasePlane(Graphics& gfx, float size,DirectX::XMFLOAT4 color):pmc({color})
 	{
 
-		auto model = Plane::Make();
+	/*	auto model = Plane::Make();
 		model.Transform(DirectX::XMMatrixScaling(size, size, 1.0f));
 
 		const auto geometryTag = "$plane." + std::to_string(size);
@@ -28,6 +28,7 @@ namespace FraplesDev
 		AddBind(std::make_shared<TransformCBuf>(gfx, *this,0u));
 		AddBind(Blending::Resolve(gfx, true, 0.5f));
 		AddBind(Rasterizer::Resolve(gfx, true));
+		*/
 	}
 
 
@@ -50,6 +51,7 @@ namespace FraplesDev
 	}
 	void BasePlane::SpawnControlWindow(Graphics& gfx,const std::string&name)noexcept
 	{
+		/*
 		if (ImGui::Begin(name.c_str()))
 		{
 				ImGui::Text("Position");
@@ -70,5 +72,6 @@ namespace FraplesDev
 				pBlender->SetFactor(factor);
 		}
 		ImGui::End();
+		*/
 	}
 }

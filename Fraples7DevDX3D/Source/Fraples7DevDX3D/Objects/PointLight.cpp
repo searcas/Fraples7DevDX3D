@@ -1,5 +1,5 @@
 #include "PointLight.h"
-
+#include "RendererAPI/RenderPriority/FrameCommander.h"
 FraplesDev::PointLight::PointLight(Graphics& gfx, float radius) :
 	_mMesh(gfx, radius), _mCbuf(gfx)
 {
@@ -49,10 +49,10 @@ void FraplesDev::PointLight::Reset() noexcept
 	
 }
 
-void FraplesDev::PointLight::Render(Graphics& gfx) const noexcept(!IS_DEBUG)
+void FraplesDev::PointLight::Submit(FrameCommander& frame) const noexcept(!IS_DEBUG)
 {
 	_mMesh.SetPos(_mConstantBufferData.pos);
-	_mMesh.Render(gfx);
+	_mMesh.Submit(frame);
 }
 
 void FraplesDev::PointLight::Bind(Graphics& gfx, DirectX::FXMMATRIX view) const noexcept

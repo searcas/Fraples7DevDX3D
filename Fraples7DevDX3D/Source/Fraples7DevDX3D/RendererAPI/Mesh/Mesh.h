@@ -6,8 +6,9 @@ namespace FraplesDev {
 	class Mesh : public Renderer
 	{
 	public:
-		Mesh(Graphics& gfx, std::vector<std::shared_ptr<GfxContext>>bindPtrs);
-		void Render(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform)const noexcept(!IS_DEBUG);
+		using Renderer::Renderer;
+
+		void Submit(FrameCommander& frame, DirectX::FXMMATRIX accumulatedTransform)const noexcept(!IS_DEBUG);
 		const DirectX::XMMATRIX GetTransformXM()const noexcept override;
 
 	private:

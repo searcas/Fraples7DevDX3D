@@ -1,24 +1,29 @@
 #include "Renderer.h"
-
+#include "GFXContextBase.h"
+#include "GFXContextCodex.h"
 namespace FraplesDev {
 	
-	
-	void Renderer::Render(Graphics& gfx) const noexcept
+	void Renderer::AddTechnique(Technique tech_in) noexcept
 	{
-		for (auto& b : _mBinds)
+		tech_in.InitializeParentReferences(*this);
+		_mTechniques.push_back(std::move(tech_in));
+	}
+	void Renderer::Submit(FrameCommander& frame) const noexcept
+	{
+		for (auto& tech : _mTechniques)
 		{
-			b->Bind(gfx);
+			tech.Submit(frame, *this);
 		}
-		gfx.RenderIndexed(_mpIndexBuffer->GetCount());
+	}
+	void Renderer::Bind(Graphics& gfx)const noexcept
+	{
+		_mPtopology->Bind(gfx);
+		_mPindices->Bind(gfx);
+		_mPvertices->Bind(gfx);
+	}
+	UINT Renderer::GetIndexCount() const noexcept(!IS_DEBUG)
+	{
+		return _mPindices->GetCount();
 	}
 
-	void Renderer::AddBind(std::shared_ptr<GfxContext>bind) noexcept(!IS_DEBUG)
-	{
-		if (typeid(*bind) ==typeid(IndexBuffer))
-		{
-			assert("Binding multiple index buffers not allowed" && _mpIndexBuffer == nullptr);
-			_mpIndexBuffer = &static_cast<IndexBuffer&>(*bind);
-		}
-		_mBinds.push_back(std::move(bind));
-	}
 }

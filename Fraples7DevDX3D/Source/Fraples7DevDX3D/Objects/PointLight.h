@@ -14,7 +14,7 @@ namespace FraplesDev
 		PointLight(Graphics& gfx, float radius = 0.5f);
 		void SpawnControlWindow()noexcept;
 		void Reset()noexcept;
-		void Render(Graphics& gfx) const noexcept(!IS_DEBUG);
+		void Submit(class FrameCommander& frame) const noexcept(!IS_DEBUG);
 		void Bind(Graphics& gfx, DirectX::FXMMATRIX view) const noexcept;
 	private:
 		struct PointLightCBuf

@@ -1,6 +1,7 @@
 #include "TransformCBufDual.h"
 namespace FraplesDev
 {
+	/*
 	TransformCbufDual::TransformCbufDual(Graphics& gfx, const Renderer& parent, UINT slotV, UINT slotP)
 		: TransformCBuf(gfx,parent,slotV)
 	{
@@ -21,5 +22,5 @@ namespace FraplesDev
 		_sPpCbuf->Bind(gfx);
 	}
 	 std::unique_ptr<PixelConstantBuffer<TransformCbufDual::Transforms>> TransformCbufDual::_sPpCbuf;
-
+	 */
 }

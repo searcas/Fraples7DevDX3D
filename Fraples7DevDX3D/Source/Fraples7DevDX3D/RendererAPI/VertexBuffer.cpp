@@ -5,7 +5,7 @@ namespace FraplesDev
 
 
 	VertexBuffer::VertexBuffer(Graphics& gfx,const std::string& tag,const MP::VertexBuffer& vbuf)
-		: _mStride((UINT)vbuf.GetLayout().Size()),_mTag(tag)
+		: _mStride((UINT)vbuf.GetLayout().Size()),_mTag(tag),_mLayout(vbuf.GetLayout())
 	{
 		INFOMAN(gfx);
 		D3D11_BUFFER_DESC bd = {};
@@ -27,6 +27,10 @@ namespace FraplesDev
 	{
 		const UINT offset = 0u;
 		GetContext(gfx)->IASetVertexBuffers(0u, 1u, _mpVertexBuffer.GetAddressOf(), &_mStride, &offset);
+	}
+	const MP::VertexLayout& VertexBuffer::GetLayout()const noexcept
+	{
+		return _mLayout;
 	}
 
 	std::shared_ptr<VertexBuffer> FraplesDev::VertexBuffer::Resolve(Graphics& gfx, const std::string& tag, const MP::VertexBuffer& vbuf)

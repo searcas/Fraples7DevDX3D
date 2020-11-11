@@ -224,36 +224,20 @@ namespace FraplesDev
 				assert("Could not resolve element type" && false);
 				return _mElements.front();
 			}
-			const Element& ResolveByIndex(size_t i)const noexcept(!IS_DEBUG)
+			inline const Element& ResolveByIndex(size_t i)const noexcept(!IS_DEBUG)
 			{
 				return _mElements[i];
 			}
 
-			VertexLayout& Append(ElementType type)noexcept (!IS_DEBUG)
-			{
-				_mElements.emplace_back(type, Size());
-				return *this;
-			}
-			size_t Size()const noexcept(!IS_DEBUG)
-			{
-				return _mElements.empty() ? 0u : _mElements.back().GetOffsetAfter();
-			}
-			size_t GetElementCount()const noexcept
+			VertexLayout& Append(ElementType type)noexcept (!IS_DEBUG);
+			size_t Size()const noexcept(!IS_DEBUG);
+			inline size_t GetElementCount()const noexcept
 			{
 				return _mElements.size();
 			}
 		
 			std::string GetCode()const noexcept(!IS_DEBUG);
-			std::vector<D3D11_INPUT_ELEMENT_DESC>GetD3DLayout()const noexcept(!IS_DEBUG)
-			{
-				std::vector<D3D11_INPUT_ELEMENT_DESC>desc = {};
-				desc.reserve(GetElementCount());
-				for (const auto& e : _mElements)
-				{
-					desc.push_back(e.GetDesc());
-				}
-				return desc;
-			}
+			std::vector<D3D11_INPUT_ELEMENT_DESC>GetD3DLayout()const noexcept(!IS_DEBUG);
 		private:
 			std::vector<Element> _mElements;
 		};
@@ -311,6 +295,11 @@ namespace FraplesDev
 				}
 			}
 
+	
+		protected:
+			Vertex(char* pData, const VertexLayout& layout) noexcept (!IS_DEBUG);
+		private:
+
 			//enables parameter pack setting of multiple parameters by element index
 			template<typename T, typename ...Args>
 			void SetAttributeByIndex(size_t i, T&& t, Args&&... args)
@@ -318,13 +307,6 @@ namespace FraplesDev
 				SetAttributeByIndex(i, std::forward<T>(t));
 				SetAttributeByIndex(i + 1, std::forward<Args>(args)...);
 			}
-		protected:
-			Vertex(char* pData, const VertexLayout& layout) noexcept (!IS_DEBUG)
-				:_mPdata(pData), _mLayout(layout)
-			{
-				assert(pData != nullptr);
-			}
-		private:
 			//helper to reduce code duplcation in SetAtttributeByIndex
 			template<ElementType DestLayoutType, typename SrcType>
 			void SetAttribute(char* pAttribute, SrcType&& val)noexcept(!IS_DEBUG)
@@ -347,11 +329,7 @@ namespace FraplesDev
 		class ConstVertex
 		{
 		public:
-			ConstVertex(const Vertex& v) noexcept(!IS_DEBUG)
-				:vertex(v)
-			{
-
-			}
+			ConstVertex(const Vertex& v) noexcept(!IS_DEBUG);
 			template<ElementType Type>
 			const auto& Attr()const noexcept(!IS_DEBUG)
 			{
@@ -363,37 +341,15 @@ namespace FraplesDev
 		class VertexBuffer
 		{
 		public:
-	
-			VertexBuffer(VertexLayout layout,size_t size = 0u)noexcept(!IS_DEBUG)
-				: _mLayout(std::move(layout))
-			{
-				Resize(size);
-			}
-			void Resize(size_t newSize)noexcept(!IS_DEBUG)
-			{
-				const auto size = Size();
-				if (size < newSize)
-				{
-					_mBuffer.resize(_mBuffer.size() + _mLayout.Size() * (newSize - size));
-				}
-			}
-			const char* GetData()const noexcept(!IS_DEBUG)
-			{
-				return _mBuffer.data();
-			}
+			VertexBuffer(VertexLayout layout, size_t size = 0u)noexcept(!IS_DEBUG);
+			void Resize(size_t newSize)noexcept(!IS_DEBUG);
+			const char* GetData()const noexcept(!IS_DEBUG);
 			
-			const VertexLayout& GetLayout()const noexcept
-			{
-				return _mLayout;
-			}
-			size_t SizeOfBytes()const noexcept(!IS_DEBUG)
-			{
-				return _mBuffer.size();
-			}
-			size_t Size() const noexcept(!IS_DEBUG)
-			{
-				return _mBuffer.size() / _mLayout.Size();
-			}
+			const VertexLayout& GetLayout()const noexcept;
+
+			size_t SizeOfBytes()const noexcept(!IS_DEBUG);
+			size_t Size() const noexcept(!IS_DEBUG);
+		
 			template<typename ...Args>
 			void EmplaceBack(Args&&...args)noexcept (!IS_DEBUG)
 			{
@@ -401,33 +357,13 @@ namespace FraplesDev
 				_mBuffer.resize(_mBuffer.size() + _mLayout.Size());
 				Back().SetAttributeByIndex(0u, std::forward<Args>(args)...);
 			}
-			Vertex Back()noexcept(!IS_DEBUG)
-			{
-				assert(_mBuffer.size() != 0u);
-				return Vertex{ _mBuffer.data() + _mBuffer.size() - _mLayout.Size(), _mLayout };
-			}
-			Vertex Front()noexcept(!IS_DEBUG)
-			{
-				assert(_mBuffer.size() != 0u);
-				return Vertex{ _mBuffer.data(), _mLayout };
-			}
-			Vertex operator[](size_t i)noexcept(!IS_DEBUG)
-			{
-				assert(i < Size());
-				return Vertex{ _mBuffer.data() + _mLayout.Size() * i,_mLayout };
-			}
-			ConstVertex Back()const noexcept(!IS_DEBUG)
-			{
-				return const_cast<VertexBuffer*>(this)->Back();
-			}
-			ConstVertex Front()const noexcept(!IS_DEBUG)
-			{
-				return const_cast<VertexBuffer*>(this)->Front();
-			}
-			ConstVertex operator[](size_t i)const noexcept(!IS_DEBUG)
-			{
-				return const_cast<VertexBuffer&>(*this)[i];
-			}
+			Vertex Back()noexcept(!IS_DEBUG);
+			Vertex Front()noexcept(!IS_DEBUG);
+			Vertex operator[](size_t i)noexcept(!IS_DEBUG);
+			
+			ConstVertex Back()const noexcept(!IS_DEBUG);
+			ConstVertex Front()const noexcept(!IS_DEBUG);
+			ConstVertex operator[](size_t i)const noexcept(!IS_DEBUG);
 		private:
 			std::vector<char>_mBuffer;
 			VertexLayout _mLayout;

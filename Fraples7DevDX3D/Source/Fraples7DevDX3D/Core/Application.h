@@ -8,6 +8,7 @@
 #include "Objects/BaseCube.h"
 #include "Objects/PointLight.h"
 #include "Commands/ScriptCommandCenter.h"
+#include "RendererAPI/RenderPriority/FrameCommander.h"
 #include <set>
 namespace FraplesDev
 {
@@ -40,11 +41,12 @@ namespace FraplesDev
 		//objects
 		PointLight light;
 		Camera _mCamera;
+		FrameCommander fc;
 		BaseCube cube1 = { _mWin.GetGFX(),4.0f };
 		BaseCube cube2 = { _mWin.GetGFX(),4.0f };
 	
 
-		Model _mSponza{ _mWin.GetGFX(),"Models\\Sponza\\sponza.obj",0.1f };
+		//Model _mSponza{ _mWin.GetGFX(),"Models\\Sponza\\sponza.obj",0.1f };
 		//	BasePlane bluePlane{ _mWin.GetGFX(),6.0f,{0.3,0.3,1.0f,0.0f} };
 		//	BasePlane redPlane{ _mWin.GetGFX(),6.0f,{1.0,0.3,0.4f,0.0f} };
 		

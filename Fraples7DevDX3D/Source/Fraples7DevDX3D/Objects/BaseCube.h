@@ -13,16 +13,7 @@ namespace FraplesDev
 		const DirectX::XMMATRIX GetTransformXM()const noexcept override;
 		void SpawnControlWindow(Graphics& gfx, const char* name)noexcept;
 
-		void RenderOutline(Graphics& gfx) noexcept(!IS_DEBUG)
-		{
-			outLining = true;
-			for (auto& i : outLineEffect)
-			{
-				i->Bind(gfx);
-			}
-			gfx.RenderIndexed(QueryBindable<IndexBuffer>()->GetCount());
-			outLining = false;
-		}
+		
 	private:
 		struct PSMaterialConstant
 		{
@@ -35,7 +26,6 @@ namespace FraplesDev
 		float roll = 0.0f;
 		float pitch = 0.0f;
 		float yaw = 0.0f;
-		bool outLining = false;
 	private:
 		std::vector<std::shared_ptr<GfxContext>>outLineEffect;
 	};

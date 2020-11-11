@@ -6,7 +6,7 @@
 #include "Core/MetaProgramming/DynamicConstant.h"
 #include "RendererAPI/ConstantBuffersEx.h"
 #include "RendererAPI/Stencil.h"
-
+#include "RendererAPI/RenderPriority/FrameCommander.h"
 namespace FraplesDev
 {
 	
@@ -16,21 +16,20 @@ namespace FraplesDev
 		DirectX::XMStoreFloat4x4(&_mTransform, transform);
 		DirectX::XMStoreFloat4x4(&appliedTransform, DirectX::XMMatrixIdentity());
 	}
-	void Node::Render(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform)const noexcept(!IS_DEBUG)
+	void Node::Submit(FrameCommander& frame, DirectX::FXMMATRIX accumulatedTransform)const noexcept(!IS_DEBUG)
 	{
-		
 		const auto built = DirectX::XMLoadFloat4x4(&appliedTransform) * DirectX::XMLoadFloat4x4(&_mTransform) * accumulatedTransform;
 
 		for (const auto pm : _mMeshPtrs)
 		{
-			pm->Render(gfx, built);
+			pm->Submit(frame, accumulatedTransform);
 		}
 		for (const auto& pc : _mChildPtrs)
 		{
-			pc->Render(gfx, built);
+			pc->Submit(frame, accumulatedTransform);
 		}
 	}
-	const MP::Buffer* Node::GetMaterialConstants()const noexcept(!IS_DEBUG)
+	/*const MP::Buffer* Node::GetMaterialConstants()const noexcept(!IS_DEBUG)
 	{
 		if (_mMeshPtrs.size() == 0)
 		{
@@ -44,7 +43,7 @@ namespace FraplesDev
 		auto pcb = _mMeshPtrs.front()->QueryBindable<CachingPixelConstantBufferEx>();
 		assert(pcb != nullptr);
 		pcb->SetBuffer(buf_in);
-	}
+	}*/
 	void Node::SetAppliedTransform(DirectX::FXMMATRIX transform) noexcept
 	{
 		DirectX::XMStoreFloat4x4(&appliedTransform, transform);
@@ -104,18 +103,18 @@ namespace FraplesDev
 		_mRoot = ParseNode(nextId,*pScene->mRootNode);
 	}
 
-	void Model::Render(Graphics& gfx) const
+	void Model::Submit(FrameCommander& frame) const noexcept(!IS_DEBUG)
 	{
-		// I'm stillnot happy about updating parameters
+		// I'm still not happy about updating parameters
 		// (I.E mutatting a bindable GPU state which is 
 		// part of a node which is part of the model that
 		// is const in this call) can probably do this elsewhere
 		_mpWindow->ApplyParameters();
-		_mRoot->Render(gfx, DirectX::XMMatrixIdentity());
+		_mRoot->Submit(frame, DirectX::XMMatrixIdentity());
 	}
 	std::unique_ptr<Mesh>Model::ParseMesh(Graphics& gfx, const aiMesh& mesh, const aiMaterial* const* pMaterials,const std::filesystem::path& path,const float& scale)
 	{
-	
+	/*
 		using namespace std::string_literals;
 			
 		const auto rootPath = path.parent_path().string() + "\\";
@@ -422,6 +421,8 @@ namespace FraplesDev
 		bindablePtrs.push_back(Blending::Resolve(gfx, false));
 		bindablePtrs.push_back(std::make_shared<Stencil>(gfx, Stencil::Mode::Off));
 		return std::make_unique<Mesh>(gfx, std::move(bindablePtrs));
+		*/
+		return {};
 	}
 	std::unique_ptr<Node>Model::ParseNode(int& nextId, const aiNode& node)noexcept
 	{
@@ -457,7 +458,7 @@ namespace FraplesDev
 
 	void Model::ModelWindow::Show(Graphics& gfx,const char* windowName, const Node& root)
 	{
-		windowName = windowName ? windowName : "Model ";
+	/*	windowName = windowName ? windowName : "Model ";
 
 		if (ImGui::Begin(windowName))
 		{
@@ -550,9 +551,11 @@ namespace FraplesDev
 			}
 		}
 		ImGui::End();
+		*/
 	}
 	void Model::ModelWindow::ApplyParameters() noexcept
 	{
+		/*
 		if (TransformDirty())
 		{
 			_mPselectedNode->SetAppliedTransform(GetTransform());
@@ -563,6 +566,7 @@ namespace FraplesDev
 			_mPselectedNode->SetMaterialConstants(GetMaterial());
 			ResetTransformDirty();
 		}
+		*/
 	}
 
 	DirectX::XMMATRIX Model::ModelWindow::GetTransform() const noexcept

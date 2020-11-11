@@ -3,6 +3,7 @@
 
 namespace FraplesDev
 {
+	/*
 	class TransformCbufDual : public TransformCBuf
 	{
 	public:
@@ -15,4 +16,5 @@ namespace FraplesDev
 	private:
 
 	};
+	*/
 }

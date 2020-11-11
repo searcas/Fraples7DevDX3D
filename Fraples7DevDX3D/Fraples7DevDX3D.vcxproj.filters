@@ -159,6 +159,18 @@
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\LayoutCodex.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderPriority\Job.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderPriority\Technique.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderPriority\Step.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\NullPixelShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Debugging\WindowsMessageMap.h">
@@ -378,6 +390,24 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Stencil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderPriority\FrameCommander.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderPriority\Job.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderPriority\Pass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderPriority\Step.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderPriority\Technique.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\NullPixelShader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -11,34 +11,36 @@ namespace FraplesDev
 			auto model = Sphere::Make();
 			model.Transform(DirectX::XMMatrixScaling(radius, radius, radius));
 			const auto geometryTag = "$sphere." + std::to_string(radius);
-			AddBind(VertexBuffer::Resolve(gfx, geometryTag,model._mVertices));
-			AddBind(IndexBuffer::Resolve(gfx, geometryTag,model._mIndices));
-
-			auto pvs = VertexShader::Resolve(gfx, "SolidVS.cso");
-			auto pvsbyte = pvs->GetBytecode();
-
-			AddBind(std::move(pvs));
-
-			AddBind(PixelShader::Resolve(gfx, "SolidPS.cso"));
-
-			struct PSColorConstant
+			_mPvertices = VertexBuffer::Resolve(gfx, geometryTag,model._mVertices);
+			_mPindices = IndexBuffer::Resolve(gfx, geometryTag,model._mIndices);
+			_mPtopology = Topology::Resolve(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+			
 			{
-				DirectX::XMFLOAT3 color = { 1.0f,1.0f,1.0f };
-				float padding = 0;
-			};
-			PSColorConstant colorConst = {};
-			AddBind(PixelConstantBuffer<PSColorConstant>::Resolve(gfx, colorConst,1u));
-			
-			AddBind(InputLayout::Resolve(gfx, model._mVertices.GetLayout(), pvsbyte));
+				Technique solid;
+				Step only(0);
+				auto pvs = VertexShader::Resolve(gfx, "SolidVS.cso");
+				auto pvsbyte = pvs->GetBytecode();
 
-			
-			AddBind(Topology::Resolve(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
+				only.AddContext(std::move(pvs));
+				only.AddContext(PixelShader::Resolve(gfx, "SolidPS.cso"));
 
-			AddBind(std::make_shared<TransformCBuf>(gfx, *this));
+				struct PSColorConstant
+				{
+					DirectX::XMFLOAT3 color = { 1.0f,1.0f,1.0f };
+					float padding = 0;
+				}colorConst;
+				
+				only.AddContext(PixelConstantBuffer<PSColorConstant>::Resolve(gfx, colorConst, 1u));
+				only.AddContext(InputLayout::Resolve(gfx, model._mVertices.GetLayout(), pvsbyte));
+				only.AddContext(std::make_shared<TransformCBuf>(gfx));
 
-			AddBind(Blending::Resolve(gfx, false));
-			AddBind(Rasterizer::Resolve(gfx, false));
-			AddBind(std::make_shared<Stencil>(gfx, Stencil::Mode::Off));
+				only.AddContext(Blending::Resolve(gfx, false));
+				only.AddContext(Rasterizer::Resolve(gfx, false));
+
+				solid.AddStep(std::move(only));
+				AddTechnique(std::move(solid));
+			}
+
 	}
 
 

@@ -7,11 +7,12 @@
 #include "ImGui/imgui.h"
 #include "Mesh.h"
 #include "Core/Debugging/Exceptions/FraplesException.h"
-#include <unordered_map>
-#include <optional>
 #include "RendererAPI/ConstantBuffers.h"
-#include <filesystem>
 #include "Core/MetaProgramming/DynamicConstant.h"
+#include "RendererAPI/RenderPriority/FrameCommander.h"
+#include <unordered_map>
+#include <filesystem>
+#include <optional>
 namespace FraplesDev
 {
 	
@@ -21,12 +22,12 @@ namespace FraplesDev
 	friend class Model;
 	public:
 		Node(int id,const std::string& name,std::vector<Mesh*>meshPtrs, const DirectX::XMMATRIX& transform)noexcept(!IS_DEBUG);
-		void Render(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform)const noexcept(!IS_DEBUG);
+		void Submit(FrameCommander& frame, DirectX::FXMMATRIX accumulatedTransform)const noexcept(!IS_DEBUG);
 		void SetAppliedTransform(DirectX::FXMMATRIX transform)noexcept;
 		inline const DirectX::XMFLOAT4X4& GetAppliedTransform() noexcept { return appliedTransform; }
 		inline const int GetId()const noexcept { return _mID; }
-		const MP::Buffer* GetMaterialConstants()const noexcept(!IS_DEBUG);
-		void SetMaterialConstants(const MP::Buffer& buff)noexcept(!IS_DEBUG);
+		//const MP::Buffer* GetMaterialConstants()const noexcept(!IS_DEBUG);
+		//void SetMaterialConstants(const MP::Buffer& buff)noexcept(!IS_DEBUG);
 	private:
 		void AddChild(std::unique_ptr<Node>pChild)noexcept(!IS_DEBUG);
 		void RenderTree(Node*& pSelectedNode) const noexcept;
@@ -93,7 +94,7 @@ namespace FraplesDev
 
 
 		Model(Graphics& gfx, const std::string& path, float scale = 1.0f);
-		void Render(Graphics& gfx) const;
+		void Submit(FrameCommander& frame) const noexcept(!IS_DEBUG);
 		static std::unique_ptr<Mesh>ParseMesh(Graphics& gfx, const aiMesh& mesh, const aiMaterial* const* pMaterials, const std::filesystem::path& path,const float& scale);
 		std::unique_ptr<Node>ParseNode(int& nextId,const aiNode& node)noexcept;
 		void SetRootTransform(DirectX::FXMMATRIX tf);

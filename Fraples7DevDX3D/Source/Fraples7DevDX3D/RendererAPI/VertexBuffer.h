@@ -15,6 +15,8 @@ namespace FraplesDev
 
 
 		void Bind(Graphics& gfx)noexcept override;
+		const MP::VertexLayout& GetLayout()const noexcept;
+
 		static std::shared_ptr<VertexBuffer>Resolve(Graphics& gfx, const std::string& tag, const MP::VertexBuffer& vbuf);
 		template <typename... Ignore>
 		static std::string GenerateUID(const std::string& tag, Ignore&&...ignore)
@@ -27,7 +29,7 @@ namespace FraplesDev
 		std::string _mTag;
 		UINT _mStride;
 		Microsoft::WRL::ComPtr<ID3D11Buffer> _mpVertexBuffer;
-
+		MP::VertexLayout _mLayout;
 	};
 
 }

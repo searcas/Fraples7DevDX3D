@@ -22,6 +22,8 @@ namespace FraplesDev
 	Application::Application(const char* name, int width, int height, const std::string& commandLine)
 		:_mWin(name, width, height), light(_mWin.GetGFX()), scriptCommander(Utility::TokenizeQuoted(commandLine))
 	{
+		cube1.SetPos({ 4.0f,0.0f,0.0f });
+		cube2.SetPos({ 0.0f,4.0f,0.0f });
 		QA::TestDynamicConstant();
 		//bluePlane.SetPosXYZ(_mCamera.GetPos());
 		//redPlane.SetPosXYZ(_mCamera.GetPos());
@@ -50,7 +52,7 @@ namespace FraplesDev
 
 	void Application::SpawnFunc()
 	{
-		_mSponza.ShowModelInfo(_mWin.GetGFX(), "SPONZAAAAAAAAAAaaaa");
+		//_mSponza.ShowModelInfo(_mWin.GetGFX(), "SPONZAAAAAAAAAAaaaa");
 		_mCamera.SpawnControllWindow();
 		light.SpawnControlWindow();
 		SpawnAppInfoWindow();
@@ -59,20 +61,19 @@ namespace FraplesDev
 	//	redPlane.SpawnControlWindow(_mWin.GetGFX(), "RED ONE");
 		cube1.SpawnControlWindow(_mWin.GetGFX(), "Cube 1");
 		cube2.SpawnControlWindow(_mWin.GetGFX(), "Cube 2");
-		cube1.RenderOutline(_mWin.GetGFX());
-		cube2.RenderOutline(_mWin.GetGFX());
 	}
 
 	void Application::RenderObj()
 	{
 
-		_mSponza.Render(_mWin.GetGFX());
-		light.Render(_mWin.GetGFX());
+		//_mSponza.Render(_mWin.GetGFX());
+		light.Submit(fc);
 	//	bluePlane.Render(_mWin.GetGFX());
 		//redPlane.Render(_mWin.GetGFX());
 
-		cube1.Render(_mWin.GetGFX());
-		cube2.Render(_mWin.GetGFX());
+		cube1.Submit(fc);
+		cube2.Submit(fc);
+		fc.Execute(_mWin.GetGFX());
 	}
 
 	void Application::DoFrame()
@@ -148,6 +149,7 @@ namespace FraplesDev
 		}
 		SpawnFunc();
 		_mWin.GetGFX().EndFrame();
+		fc.Reset();
 	}
 
 	void Application::ShowImguiDemoWindow()
