@@ -89,9 +89,9 @@ namespace FraplesDev
 			}
 			PixelConstantBufferEx::Bind(gfx);
 		}
-		void Accept(TechniqueProbe& probe)override
+		void Accept(TechniqueProbe& probe) override
 		{
-			if (probe.OnVisitBuffer(_mBuf))
+			if (probe.VisitBuffer(_mBuf))
 			{
 				dirty = true;
 			}

@@ -1,3 +1,4 @@
+#define DVTX_SOURCE_FILE
 #include "Vertex.h"
 
 
@@ -5,51 +6,72 @@ namespace FraplesDev
 {
 	namespace MP
 	{
+	
+		VertexLayout::Element::Element(ElementType type, size_t offset)
+			: _mType(type),
+			_mOffset(offset)
+		{
 
+		}
+		size_t VertexLayout::Element::GetOffsetAfter() const noexcept(!IS_DEBUG)
+		{
+			return _mOffset + Size();
+		}
+		template<ElementType type>
+		struct SysSizeLookup
+		{
+			static constexpr auto Exec()noexcept
+			{
+				return sizeof(MP::VertexLayout::Map<type>::SysType);
+			}
+		};
+		constexpr size_t VertexLayout::Element::SizeOf(ElementType type) noexcept(!IS_DEBUG)
+		{
+			return Bridge<SysSizeLookup>(type);
+		}
+		size_t VertexLayout::Element::Size() const noexcept(!IS_DEBUG)
+		{
+			return SizeOf(_mType);
+		}
+
+		ElementType VertexLayout::Element::GetType() const noexcept
+		{
+			return _mType;
+		}
+
+		template<ElementType type>
+		struct CodeLookup
+		{
+			static constexpr auto Exec()noexcept
+			{
+				return VertexLayout::Map<type>::code;
+			}
+		};
 		const char* VertexLayout::Element::GetCode()const noexcept
 		{
-			switch (_mType)
+
+			return Bridge<CodeLookup>(_mType);
+
+		}
+		template<ElementType type>struct DescGenerate
+		{
+			static constexpr D3D11_INPUT_ELEMENT_DESC Exec(size_t offset)noexcept
 			{
-			case ElementType::Position2D:
-				return Map<ElementType::Position2D>::code;
-				break;
-			case ElementType::Position3D:
-				return Map<ElementType::Position3D>::code;
-				break;
-			case ElementType::Texture2D:
-				return Map<ElementType::Texture2D>::code;
-				break;
-			case ElementType::Normal:
-				return Map<ElementType::Normal>::code;
-				break;
-			case ElementType::Tangent:
-				return Map<ElementType::Tangent>::code;
-				break;
-			case ElementType::Bitangent:
-				return Map<ElementType::Bitangent>::code;
-				break;
-
-			case ElementType::Float3Color:
-				return Map<ElementType::Float3Color>::code;
-				break;
-			case ElementType::Float4Color:
-				return Map<ElementType::Float4Color>::code;
-				break;
-			case ElementType::BGRAColor:
-				return Map<ElementType::BGRAColor>::code;
-				break;
-			default:
-				assert("Invalid element type" && false);
-				return "Invalid";
+				return { VertexLayout::Map<type>::semantic,0,
+					VertexLayout::Map<type>::dxgiFormat,0,
+					(UINT)offset, D3D11_INPUT_PER_VERTEX_DATA, 0 };
 			}
-
+		};
+		D3D11_INPUT_ELEMENT_DESC VertexLayout::Element::GetDesc() const noexcept(!IS_DEBUG)
+		{
+			return Bridge<DescGenerate>(_mType, GetOffset());
 		}
 		VertexLayout& VertexLayout::Append(ElementType type) noexcept(!IS_DEBUG)
 		{
 			_mElements.emplace_back(type, Size());
 			return *this;
 		}
-		size_t VertexLayout::Size() const noexcept(!IS_DEBUG)
+		size_t MP::VertexLayout::Size()const noexcept(!IS_DEBUG)
 		{
 			return _mElements.empty() ? 0u : _mElements.back().GetOffsetAfter();
 		}
@@ -137,5 +159,5 @@ namespace FraplesDev
 		{
 
 		}
-}
+	}
 }

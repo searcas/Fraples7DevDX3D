@@ -416,6 +416,9 @@
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderPriority\TechniqueProbe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\Material.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Fraples7DevDX3D.rc">
