@@ -276,6 +276,8 @@ LAYOUT_ELEMENT_TYPES
 		class VertexBuffer
 		{
 		public:
+
+			VertexBuffer(VertexLayout layout_in, const aiMesh& mesh);
 			VertexBuffer(VertexLayout layout, size_t size = 0u)noexcept(!IS_DEBUG);
 			void Resize(size_t newSize)noexcept(!IS_DEBUG);
 			const char* GetData()const noexcept(!IS_DEBUG);
