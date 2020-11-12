@@ -67,7 +67,7 @@ namespace FraplesDev
 				MP::RawLayout layout;
 				layout.Add<MP::Float4>("color");
 				auto buf = MP::Buffer(std::move(layout));
-				buf["color"] = DirectX::XMFLOAT4{ 1.0f,0.4f,0.4f,1.0f };
+				buf["color"] = DirectX::XMFLOAT4{ 1.0f,0.2f,0.2f,0.8f };
 				draw.AddContext(std::make_shared<CachingPixelConstantBufferEx>(gfx, buf, 1u));
 				auto pvsbyte = pvs->GetBytecode();
 				draw.AddContext(std::move(pvs));
@@ -82,10 +82,10 @@ namespace FraplesDev
 				class TransformCbufScaling : public TransformCBuf
 				{
 				public:
-					TransformCbufScaling(Graphics& gfx, float scale = 1.04f)
+					TransformCbufScaling(Graphics& gfx, float scale_in = 1.02f)
 						:TransformCBuf(gfx),_mBuf(MakeLayout())
 					{
-
+						_mBuf["scale"] = std::move(scale_in);
 					}
 					void Accept(TechniqueProbe& probe)override
 					{
@@ -154,7 +154,7 @@ namespace FraplesDev
 				{
 					using namespace std::string_literals;
 
-					ImGui::TextColored({ 0.4f, 1.0f,0.6f,1.0f },_mPtech->GetName().c_str());
+					ImGui::TextColored({ 1.0f, 0.1f,0.1f,0.5f },_mPtech->GetName().c_str());
 					bool active = _mPtech->IsActivated();
 
 					ImGui::Checkbox(("Tech Activate##"s + std::to_string(_mTechIdx)).c_str(), &active);
@@ -172,7 +172,7 @@ namespace FraplesDev
 
 					if (auto v = buf["scale"]; v.Exists())
 					{
-						dCheck(ImGui::SliderFloat(tag("Scale"), &v, 1.04f, 2.0f, "%.3f"));
+						dCheck(ImGui::SliderFloat(tag("Scale"), &v, 1.02f, 2.0f, "%.3f"));
 					}
 					if (auto v = buf["color"]; v.Exists())
 					{

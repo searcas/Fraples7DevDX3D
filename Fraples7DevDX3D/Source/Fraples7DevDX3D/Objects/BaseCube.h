@@ -17,8 +17,6 @@ namespace FraplesDev
 		float roll = 0.0f;
 		float pitch = 0.0f;
 		float yaw = 0.0f;
-	private:
-		std::vector<std::shared_ptr<GfxContext>>outLineEffect;
 	};
 
 	
