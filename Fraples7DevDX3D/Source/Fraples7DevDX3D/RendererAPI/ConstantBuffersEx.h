@@ -91,7 +91,7 @@ namespace FraplesDev
 		}
 		void Accept(TechniqueProbe& probe)override
 		{
-			if (probe.VisitBuffer(_mBuf))
+			if (probe.OnVisitBuffer(_mBuf))
 			{
 				dirty = true;
 			}

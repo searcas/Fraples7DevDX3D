@@ -157,35 +157,39 @@ namespace FraplesDev
 					ImGui::TextColored({ 0.4f, 1.0f,0.6f,1.0f },_mPtech->GetName().c_str());
 					bool active = _mPtech->IsActivated();
 
-					ImGui::Checkbox(("Tech Activate##"s + _mPtech->GetName()).c_str(), &active);
+					ImGui::Checkbox(("Tech Activate##"s + std::to_string(_mTechIdx)).c_str(), &active);
 					_mPtech->SetActiveState(active);
 				}
-				bool VisitBuffer(MP::Buffer& buf)override
+				bool OnVisitBuffer(MP::Buffer& buf)override
 				{
 					bool dirty = false;
 					const auto dCheck = [&dirty](bool changed) {dirty = dirty || changed; };
-
-					if (auto v = buf["scale"];v.Exists())
+					auto tag = [tagScratch = std::string{}, tagString = "##" + std::to_string(_mBufIdx)](const char* label) mutable
 					{
-						dCheck(ImGui::SliderFloat("Scale", &v, 1.0f, 2.0f, "%.3f"));
+						tagScratch = label + tagString;
+						return tagScratch.c_str();
+					};
+
+					if (auto v = buf["scale"]; v.Exists())
+					{
+						dCheck(ImGui::SliderFloat(tag("Scale"), &v, 1.04f, 2.0f, "%.3f"));
 					}
 					if (auto v = buf["color"]; v.Exists())
 					{
-						dCheck(ImGui::ColorPicker4("Color", reinterpret_cast<float*>(&static_cast<DirectX::XMFLOAT4&>(v))));
+						dCheck(ImGui::ColorPicker4(tag("Color"), reinterpret_cast<float*>(&static_cast<DirectX::XMFLOAT4&>(v))));
 					}
 					if (auto v = buf["specularIntensity"]; v.Exists())
 					{
-						dCheck(ImGui::SliderFloat("Specular Intensity", &v, 0.0f, 1.0f));
+						dCheck(ImGui::SliderFloat(tag("Specular Intensity"), &v, 0.0f, 1.0f));
 					}
 					if (auto v = buf["specularPower"]; v.Exists())
 					{
-						dCheck(ImGui::SliderFloat("Glossiness", &v, 1.0f, 100.0f,"%.1f"));
+						dCheck(ImGui::SliderFloat(tag("Glossiness"), &v, 1.0f, 100.0f,"%.1f"));
 					}
 					return dirty;
 				}
 
-			};
-			static Probe probe;
+			}probe;
 			Accept(probe);
 		}
 		ImGui::End();
