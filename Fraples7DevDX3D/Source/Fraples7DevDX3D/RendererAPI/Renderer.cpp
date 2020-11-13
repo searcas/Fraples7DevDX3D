@@ -1,8 +1,22 @@
 #include "Renderer.h"
 #include "GFXContextBase.h"
 #include "GFXContextCodex.h"
+#include "RendererAPI/Mesh/Material.h"
+
 namespace FraplesDev {
-	
+
+
+	Renderer::Renderer(Graphics& gfx, const Material& mat, const aiMesh& mesh) noexcept
+	{
+		_mPvertices = mat.MakeVertexContext(gfx, mesh);
+		_mPindices = mat.MakeIndexContext(gfx, mesh);
+		_mPtopology = Topology::Resolve(gfx);
+
+		for (auto& t : mat.GetTechniques())
+		{
+			AddTechnique(std::move(t));
+		}
+	}
 	void Renderer::AddTechnique(Technique tech_in) noexcept
 	{
 		tech_in.InitializeParentReferences(*this);

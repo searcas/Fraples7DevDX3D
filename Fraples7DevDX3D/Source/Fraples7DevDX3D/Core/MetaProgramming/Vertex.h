@@ -179,18 +179,9 @@ LAYOUT_ELEMENT_TYPES
 			{
 				return _mElements.size();
 			}
-			template <ElementType Type>
-			bool Has()const noexcept
-			{
-				for (auto& e : _mElements)
-				{
-					if (e.GetType() == Type)
-					{
-					return true;
-					}
-				}
-				return false;
-			}
+			
+			bool Has(ElementType type)const noexcept;
+	
 			std::string GetCode()const noexcept(!IS_DEBUG);
 			std::vector<D3D11_INPUT_ELEMENT_DESC>GetD3DLayout()const noexcept(!IS_DEBUG);
 		private:

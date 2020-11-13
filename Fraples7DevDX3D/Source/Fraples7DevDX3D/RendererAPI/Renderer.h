@@ -1,8 +1,9 @@
 #pragma once
-#include "RenderPriority/Technique.h"
 #include <memory>
 #include <DirectXMath.h>
+#include "assimp/scene.h"
 #include "RenderPriority/Technique.h"
+#include "assimp/scene.h"
 namespace FraplesDev
 {
 	class IndexBuffer;
@@ -14,6 +15,7 @@ namespace FraplesDev
 	{
 
 	public:
+		Renderer(Graphics& gfx, const class Material& mat, const aiMesh& mesh)noexcept;
 		Renderer() = default;
 		Renderer(const Renderer&) = delete;
 		void AddTechnique(Technique tech_in)noexcept;

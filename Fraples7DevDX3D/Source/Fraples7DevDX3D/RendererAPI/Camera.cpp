@@ -30,9 +30,9 @@ namespace FraplesDev
 
 	void Camera::Reset()
 	{
-		pos = { 0.0f,0.5f, -5.0f };
+		pos = { 0.0f,0.5f, -3.0f };
 		pitch = 0.0f;
-		yaw = PI / 2.0f;
+		yaw = 0.0f;
 
 	}
 	

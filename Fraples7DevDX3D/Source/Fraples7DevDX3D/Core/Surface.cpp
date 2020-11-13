@@ -73,7 +73,7 @@ namespace FraplesDev
 	{
 
 		DirectX::ScratchImage scratch;
-		HREFTYPE hr = DirectX::LoadFromWICFile(Utility::ToWide(name).c_str(), DirectX::WIC_FLAGS_NONE, nullptr, scratch);
+		HREFTYPE hr = DirectX::LoadFromWICFile(Utility::ToWide(name).c_str(), DirectX::WIC_FLAGS_IGNORE_SRGB, nullptr, scratch);
 		if (FAILED(hr))
 		{
 			throw Surface::Exception(__LINE__, __FILE__, name, "Failed to load image", hr);

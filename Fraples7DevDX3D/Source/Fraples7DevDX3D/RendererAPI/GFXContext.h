@@ -1,5 +1,6 @@
 #pragma once
 #include "../GraphicAPI/Graphics.h"
+#include <memory>
 namespace FraplesDev
 {
     class GfxContext
@@ -19,5 +20,10 @@ namespace FraplesDev
         static ID3D11Device* GetDevice(Graphics& gfx)noexcept;
         static DxgiInfoManager& GetInfoManager(Graphics& gfx);
 
+    };
+    class CloningContext : public GfxContext
+    {
+    public:
+        virtual std::unique_ptr<CloningContext>Clone()const noexcept = 0;
     };
 }

@@ -9,6 +9,25 @@ namespace FraplesDev
 	class Step
 	{
 	public:
+		Step(Step&&) = default;
+		Step(const Step& src)noexcept
+			:_mTargetPass(src._mTargetPass)
+		{
+			_mPcontexts.reserve(src._mPcontexts.size());
+			for (auto& pb : src._mPcontexts)
+			{
+				if (auto* pCloning = dynamic_cast<const CloningContext*>(pb.get()))
+				{
+					_mPcontexts.push_back(pCloning->Clone());
+				}
+				else
+				{
+					_mPcontexts.push_back(pb);
+				}
+			}
+		}
+		Step& operator=(const Step&) = delete;
+		Step& operator=(Step&&) = delete;
 		Step(size_t targetPass_in)
 			:_mTargetPass{ targetPass_in }
 		{

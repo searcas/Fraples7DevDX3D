@@ -68,6 +68,10 @@ namespace FraplesDev
 		}
 		VertexLayout& VertexLayout::Append(ElementType type) noexcept(!IS_DEBUG)
 		{
+			if (!Has(type))
+			{
+				_mElements.emplace_back(type, Size());
+			}
 			_mElements.emplace_back(type, Size());
 			return *this;
 		}
@@ -83,6 +87,17 @@ namespace FraplesDev
 				code += e.GetCode();
 			}
 			return code;
+		}
+		bool VertexLayout::Has(ElementType type)const noexcept
+		{
+			for (auto& e : _mElements)
+			{
+				if (e.GetType() == type)
+				{
+					return true;
+				}
+			}
+			return false;
 		}
 		std::vector<D3D11_INPUT_ELEMENT_DESC> VertexLayout::GetD3DLayout() const noexcept(!IS_DEBUG)
 		{

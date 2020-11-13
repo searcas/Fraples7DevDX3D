@@ -133,7 +133,7 @@ namespace FraplesDev
 		}
 	}
 
-	MP::Vertex Material::ExtractVertices(const aiMesh& mesh) const noexcept
+	MP::VertexBuffer Material::ExtractVertices(const aiMesh& mesh) const noexcept
 	{
 		return { _mVertexLayout,mesh };
 	}
@@ -156,11 +156,11 @@ namespace FraplesDev
 	{
 		return _mTechniques;
 	}
-	std::shared_ptr<MP::VertexBuffer> Material::MakeVertexContext(Graphics& gfx, const aiMesh& mesh) const noexcept(!IS_DEBUG)
+	std::shared_ptr<VertexBuffer> Material::MakeVertexContext(Graphics& gfx, const aiMesh& mesh) const noexcept(!IS_DEBUG)
 	{
 		return VertexBuffer::Resolve(gfx, MakeMeshTag(mesh), ExtractVertices(mesh));
 	}
-	std::shared_ptr<IndexBuffer> Material::MakeIndexxContext(Graphics& gfx, const aiMesh& mesh) const noexcept(!IS_DEBUG)
+	std::shared_ptr<IndexBuffer> Material::MakeIndexContext(Graphics& gfx, const aiMesh& mesh) const noexcept(!IS_DEBUG)
 	{
 		return IndexBuffer::Resolve(gfx, MakeMeshTag(mesh), ExtractIndices(mesh));
 	}

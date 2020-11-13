@@ -12,7 +12,7 @@ namespace FraplesDev
 		
 		void Bind(Graphics& gfx) noexcept override;
 		UINT GetCount() const noexcept;
-		static std::shared_ptr<IndexBuffer>Resolve(Graphics& gfx, const std::string& tag, std::vector<unsigned short>& indices);
+		static std::shared_ptr<IndexBuffer>Resolve(Graphics& gfx, const std::string& tag,const std::vector<unsigned short>& indices);
 		template <typename ... Ignore>
 		static std::string GenerateUID(const std::string&tag, Ignore&&...ignore)
 		{

@@ -5,11 +5,22 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include "TestingQA.h"
+#include "RendererAPI/Mesh/Material.h"
+#include "RendererAPI/Mesh/Mesh.h"
+
 namespace FraplesDev
 {
 
 	namespace QA
 	{
+		void TestMaterialSystemLoading(Graphics& gfx)
+		{
+			std::string path = "Models\\brick_wall\\brick.obj";
+			Assimp::Importer imp;
+			const auto pScene = imp.ReadFile(path, aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_ConvertToLeftHanded | aiProcess_GenNormals | aiProcess_CalcTangentSpace);
+			Material mat{ gfx,*pScene->mMaterials[1],path };
+			Mesh mesh{ gfx,mat,*pScene->mMeshes[0] };
+		}
 		void TestDynamicMeshLoading()
 		{
 			using namespace MP;

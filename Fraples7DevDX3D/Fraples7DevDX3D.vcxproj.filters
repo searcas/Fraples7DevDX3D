@@ -174,6 +174,9 @@
     <ClCompile Include="Source\Fraples7DevDX3D\QualityAssurance\TestingQA.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\Material.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Fraples7.h">
@@ -457,8 +460,6 @@
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\BlendedPhongPS.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\TexturePhongVS.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\TexturePhongPS.hlsl" />
-    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongNormalMapPS.hlsl" />
-    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongNormalMapVS.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongPSSpecNormalMap.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongPSNormalMapObject.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongVSNotex.hlsl" />
@@ -467,5 +468,7 @@
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongPSSpecNormalMask.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\SolidPS.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\SolidVS.hlsl" />
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongDifNormalVS.hlsl" />
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongDifNormalPS.hlsl" />
   </ItemGroup>
 </Project>

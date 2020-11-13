@@ -19,6 +19,10 @@ namespace FraplesDev
 	{
 		_mPparent = &parent;
 	}
+	std::unique_ptr<CloningContext> TransformCBuf::Clone() const noexcept
+	{
+		return std::make_unique<TransformCBuf>(*this);
+	}
 	void TransformCBuf::UpdateBindImpl(Graphics& gfx, const Transforms& tf) noexcept
 	{
 		_spVcbuf->Update(gfx, tf);
