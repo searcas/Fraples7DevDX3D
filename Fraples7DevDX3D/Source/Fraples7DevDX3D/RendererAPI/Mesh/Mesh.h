@@ -2,8 +2,9 @@
 #include "RendererAPI/GFXContextBase.h"
 #include "RendererAPI/renderer.h"
 #include "Material.h"
-
+#include <DirectXMath.h>
 namespace FraplesDev {
+
 	class Mesh : public Renderer
 	{
 	public:

@@ -31,7 +31,7 @@ namespace FraplesDev
 			Assimp::Importer imp;
 			const auto pScene = imp.ReadFile(path, aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_ConvertToLeftHanded | aiProcess_GenNormals | aiProcess_CalcTangentSpace);
 			Material mat{ _mWin.GetGFX(),*pScene->mMaterials[1],path };
-			Mesh mesh{ _mWin.GetGFX(),mat,*pScene->mMeshes[0] };
+			_mPloaded = std::make_unique<Mesh>(_mWin.GetGFX(), mat, *pScene->mMeshes[0]);
 		}
 		//bluePlane.SetPosXYZ(_mCamera.GetPos());
 		//redPlane.SetPosXYZ(_mCamera.GetPos());
@@ -73,15 +73,14 @@ namespace FraplesDev
 
 	void Application::RenderObj()
 	{
-
-		//_mSponza.Render(_mWin.GetGFX());
 		light.Submit(fc);
+		_mPloaded->Submit(fc, DirectX::XMMatrixIdentity());
+		fc.Execute(_mWin.GetGFX());
+		//_mSponza.Render(_mWin.GetGFX());
 	//	bluePlane.Render(_mWin.GetGFX());
 		//redPlane.Render(_mWin.GetGFX());
-		_mPloaded->Submit(fc, DirectX::XMMatrixIdentity());
 		//cube1.Submit(fc);
 		//cube2.Submit(fc);
-		fc.Execute(_mWin.GetGFX());
 	}
 
 	void Application::DoFrame()
@@ -92,7 +91,10 @@ namespace FraplesDev
 		_mWin.GetGFX().SetCamera(_mCamera.GetMatrix());
 		light.Bind(_mWin.GetGFX(), _mCamera.GetMatrix());
 		
+		
 		RenderObj();
+
+
 
 		while (const auto e = _mWin._mKey.Readkey())
 		{

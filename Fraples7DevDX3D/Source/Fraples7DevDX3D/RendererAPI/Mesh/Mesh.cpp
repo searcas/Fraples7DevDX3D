@@ -6,6 +6,7 @@ namespace FraplesDev
 	Mesh::Mesh(Graphics& gfx, const Material& mat, const aiMesh& mesh) noexcept(!IS_DEBUG)
 		: Renderer(gfx, mat, mesh)
 	{
+		_mTransform = {};
 	}
 	void Mesh::Submit(FrameCommander& frame, DirectX::FXMMATRIX accumulatedTransform)const noexcept(!IS_DEBUG)
 	{
