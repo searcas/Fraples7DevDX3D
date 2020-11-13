@@ -468,7 +468,7 @@
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongPSSpecNormalMask.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\SolidPS.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\SolidVS.hlsl" />
-    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongDifNormalVS.hlsl" />
-    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongDifNormalPS.hlsl" />
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongDiffuseNormalPS.hlsl" />
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongDiffuseNormalVS.hlsl" />
   </ItemGroup>
 </Project>

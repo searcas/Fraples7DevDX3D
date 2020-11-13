@@ -35,7 +35,7 @@ namespace FraplesDev
 			if (material.GetTexture(aiTextureType_DIFFUSE, 0, &texFileName) == aiReturn_SUCCESS)
 			{
 				hasTexture = true;
-				shaderCode += "Dif";
+				shaderCode += "Diffuse";
 				_mVertexLayout.Append(MP::ElementType::Texture2D);
 				auto tex = Texture::Resolve(gfx, rootPath + texFileName.C_Str());
 				if (tex->HasAlhpa())
@@ -56,7 +56,7 @@ namespace FraplesDev
 				if (material.GetTexture(aiTextureType_SPECULAR, 0, &texFileName) == aiReturn_SUCCESS)
 				{
 					hasTexture = true;
-					shaderCode += "Spc";
+					shaderCode += "Specular";
 					_mVertexLayout.Append(MP::ElementType::Texture2D);
 					auto tex = Texture::Resolve(gfx, rootPath + texFileName.C_Str(), 1);
 					hasGlossAlpha = tex->HasAlhpa();
@@ -73,7 +73,7 @@ namespace FraplesDev
 				if (material.GetTexture(aiTextureType_NORMALS, 0, &texFileName) == aiReturn_SUCCESS)
 				{
 					hasTexture = true;
-					shaderCode += "Nrm";
+					shaderCode += "Normal";
 					_mVertexLayout.Append(MP::ElementType::Texture2D);
 					_mVertexLayout.Append(MP::ElementType::Tangent);
 					_mVertexLayout.Append(MP::ElementType::Bitangent);
@@ -86,11 +86,11 @@ namespace FraplesDev
 			{
 				step.AddContext(std::make_shared<TransformCBuf>(gfx, 0u));
 				step.AddContext(Blending::Resolve(gfx, false));
-				auto pvs = VertexShader::Resolve(gfx, "VS.cso");
+				auto pvs = VertexShader::Resolve(gfx, shaderCode + "VS.cso");
 				auto pvsbyte = pvs->GetBytecode();
 
 				step.AddContext(std::move(pvs));
-				step.AddContext(PixelShader::Resolve(gfx, "PS.cso"));
+				step.AddContext(PixelShader::Resolve(gfx, shaderCode + "PS.cso"));
 
 				step.AddContext(InputLayout::Resolve(gfx, _mVertexLayout, pvsbyte));
 				if (hasTexture)

@@ -22,17 +22,17 @@ namespace FraplesDev
 	Application::Application(const char* name, int width, int height, const std::string& commandLine)
 		:_mWin(name, width, height), light(_mWin.GetGFX()), scriptCommander(Utility::TokenizeQuoted(commandLine))
 	{
-	//	QA::TestMaterialSystemLoading(_mWin.GetGFX());
+		QA::TestMaterialSystemLoading(_mWin.GetGFX());
 		cube1.SetPos({ 4.0f,0.0f,0.0f });
 		cube2.SetPos({ 0.0f,4.0f,0.0f });
 		
-	/*	{
+		{
 			std::string path = "Models\\brick_wall\\brick_wall.obj";
 			Assimp::Importer imp;
 			const auto pScene = imp.ReadFile(path, aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_ConvertToLeftHanded | aiProcess_GenNormals | aiProcess_CalcTangentSpace);
 			Material mat{ _mWin.GetGFX(),*pScene->mMaterials[1],path };
 			Mesh mesh{ _mWin.GetGFX(),mat,*pScene->mMeshes[0] };
-		}*/
+		}
 		//bluePlane.SetPosXYZ(_mCamera.GetPos());
 		//redPlane.SetPosXYZ(_mCamera.GetPos());
 		_mWin.GetGFX().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 800.0f));

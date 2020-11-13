@@ -15,7 +15,7 @@ namespace FraplesDev
 	{
 		void TestMaterialSystemLoading(Graphics& gfx)
 		{
-			std::string path = "Models\\brick_wall\\brick.obj";
+			std::string path = "Models\\brick_wall\\brick_wall.obj";
 			Assimp::Importer imp;
 			const auto pScene = imp.ReadFile(path, aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_ConvertToLeftHanded | aiProcess_GenNormals | aiProcess_CalcTangentSpace);
 			Material mat{ gfx,*pScene->mMaterials[1],path };
