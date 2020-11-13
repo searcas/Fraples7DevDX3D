@@ -87,7 +87,7 @@ namespace FraplesDev
 				step.AddContext(std::make_shared<TransformCBuf>(gfx, 0u));
 				step.AddContext(Blending::Resolve(gfx, false));
 				auto pvs = VertexShader::Resolve(gfx, shaderCode + "VS.cso");
-				auto pvsbyte = pvs->GetBytecode();
+				auto pvsbyte = pvs->GetByteCode();
 
 				step.AddContext(std::move(pvs));
 				step.AddContext(PixelShader::Resolve(gfx, shaderCode + "PS.cso"));
@@ -130,6 +130,82 @@ namespace FraplesDev
 
 		//outline technique
 		{
+			Technique outline("Outline");
+			{
+				Step mask(1);
+
+				auto pvs = VertexShader::Resolve(gfx, "SolidVS.cso");
+				auto pvsbyte = pvs->GetByteCode();
+				mask.AddContext(std::move(pvs));
+
+				//TODO: better sub-layout generation tech for future consideration maybe
+				mask.AddContext(InputLayout::Resolve(gfx, _mVertexLayout, pvsbyte));
+				mask.AddContext(std::make_shared<TransformCBuf>(gfx));
+
+				//TODO: might need to specify rasterizer when doubled-sided models start being used
+				outline.AddStep(std::move(mask));
+			}
+			{
+				Step draw(2);
+				//these can be pass-constant (tricky due to layout issues)
+				auto pvs = VertexShader::Resolve(gfx, "SolidVS.cso");
+				auto pvsbyte = pvs->GetByteCode();
+				draw.AddContext(std::move(pvs));
+
+				//this can be pass-constant
+				draw.AddContext(PixelShader::Resolve(gfx, "SolidPS.cso"));
+				MP::RawLayout layout;
+				layout.Add<MP::Float4>("materialColor");
+				auto buf = MP::Buffer(std::move(layout));
+				buf["materialColor"] = DirectX::XMFLOAT4{ 1.0f,0.4f,0.4f,1.0f };
+				draw.AddContext(std::make_shared<CachingPixelConstantBufferEx>(gfx, buf, 1u));
+
+				//TODO: better sub-layout generation tech for future consideration maybe
+				draw.AddContext(InputLayout::Resolve(gfx, _mVertexLayout, pvsbyte));
+
+				//quic and dirty.. nicer soulution maybe takes a lamba ..
+
+				class TransformCbufScaling : public TransformCBuf
+				{
+				public:
+					TransformCbufScaling(Graphics& gfx, float scale = 1.04f)
+						:TransformCBuf(gfx), _mBuf(MakeLayout())
+					{
+						_mBuf["scale"] = scale;
+					}
+					void Accept(TechniqueProbe& probe)override
+					{
+						probe.VisitBuffer(_mBuf);
+					}
+					void Bind(Graphics& gfx)noexcept override
+					{
+						const float scale = _mBuf["scale"];
+						const auto scaleMatrix = DirectX::XMMatrixScaling(scale, scale, scale);
+						auto xf = GetTransforms(gfx);
+						xf.modelView = xf.modelView * scaleMatrix;
+						xf.modelViewProj = xf.modelViewProj * scaleMatrix;
+						UpdateBindImpl(gfx, xf);
+					}
+					std::unique_ptr<CloningContext>Clone()const noexcept override
+					{
+						return std::make_unique<TransformCbufScaling>(*this);
+					}
+					static MP::RawLayout MakeLayout()
+					{
+						MP::RawLayout layout;
+						layout.Add<MP::Float>("scale");
+						return layout;
+					}
+				private:
+					MP::Buffer _mBuf;
+				};
+				draw.AddContext(std::make_shared<TransformCbufScaling>(gfx));
+
+				//TODO: might need to specify resterizer when doubled-sided models start being used
+
+				outline.AddStep(std::move(draw));
+			}
+			_mTechniques.push_back(std::move(outline));
 		}
 	}
 

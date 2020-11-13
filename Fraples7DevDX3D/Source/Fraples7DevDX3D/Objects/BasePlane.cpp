@@ -15,7 +15,7 @@ namespace FraplesDev
 		AddBind(IndexBuffer::Resolve(gfx, geometryTag, model._mIndices));
 		
 		auto pvs = VertexShader::Resolve(gfx, "SolidVS.cso");
-		auto pvsbc = pvs->GetBytecode();
+		auto pvsbc = pvs->GetByteCode();
 		AddBind(std::move(pvs));
 
 		AddBind(PixelShader::Resolve(gfx, "SolidPS.cso"));

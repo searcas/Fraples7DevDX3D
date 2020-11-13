@@ -16,7 +16,7 @@ namespace FraplesDev
 	{
 		GetContext(gfx)->VSSetShader(_mpVertexShader.Get(), nullptr, 0u);
 	}
-	ID3DBlob* VertexShader::GetBytecode() const noexcept
+	ID3DBlob* VertexShader::GetByteCode() const noexcept
 	{
 		return _mpBytecodeBlob.Get();
 	}

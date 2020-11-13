@@ -75,12 +75,12 @@ namespace FraplesDev
 	{
 		light.Submit(fc);
 		_mPloaded->Submit(fc, DirectX::XMMatrixIdentity());
-		fc.Execute(_mWin.GetGFX());
 		//_mSponza.Render(_mWin.GetGFX());
 	//	bluePlane.Render(_mWin.GetGFX());
 		//redPlane.Render(_mWin.GetGFX());
 		//cube1.Submit(fc);
 		//cube2.Submit(fc);
+		fc.Execute(_mWin.GetGFX());
 	}
 
 	void Application::DoFrame()

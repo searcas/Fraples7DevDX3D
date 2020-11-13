@@ -19,7 +19,7 @@ namespace FraplesDev
 				Technique solid;
 				Step only(0);
 				auto pvs = VertexShader::Resolve(gfx, "SolidVS.cso");
-				auto pvsbyte = pvs->GetBytecode();
+				auto pvsbyte = pvs->GetByteCode();
 
 				only.AddContext(std::move(pvs));
 				only.AddContext(PixelShader::Resolve(gfx, "SolidPS.cso"));

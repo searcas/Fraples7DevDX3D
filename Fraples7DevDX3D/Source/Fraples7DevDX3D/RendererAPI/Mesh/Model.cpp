@@ -201,7 +201,7 @@ namespace FraplesDev
 			bindablePtrs.push_back(IndexBuffer::Resolve(gfx, meshTag, indices));
 
 			auto pvs = VertexShader::Resolve(gfx, "PhongNormalMapVS.cso");
-			auto pvsbyte = pvs->GetBytecode();
+			auto pvsbyte = pvs->GetByteCode();
 			bindablePtrs.push_back(std::move(pvs));
 
 			bindablePtrs.push_back(PixelShader::Resolve(gfx, hasAlphaDiffuse?"PhongPSSpecNormalMask.cso": "PhongPSSpecNormalMap.cso"));
@@ -260,7 +260,7 @@ namespace FraplesDev
 			bindablePtrs.push_back(IndexBuffer::Resolve(gfx, meshTag, indices));
 
 			auto pvs = VertexShader::Resolve(gfx, "PhongNormalMapVS.cso");
-			auto pvsbyte = pvs->GetBytecode();
+			auto pvsbyte = pvs->GetByteCode();
 			bindablePtrs.push_back(std::move(pvs));
 
 			bindablePtrs.push_back(PixelShader::Resolve(gfx, "PhongNormalMapPS.cso"));
@@ -304,7 +304,7 @@ namespace FraplesDev
 			bindablePtrs.push_back(IndexBuffer::Resolve(gfx, meshTag, indices));
 
 			auto pvs = VertexShader::Resolve(gfx, "PhongVSNotex.cso");
-			auto pvsbyte = pvs->GetBytecode();
+			auto pvsbyte = pvs->GetByteCode();
 			bindablePtrs.push_back(std::move(pvs));
 			bindablePtrs.push_back(PixelShader::Resolve(gfx, "PhongPSNotex.cso"));
 			bindablePtrs.push_back(InputLayout::Resolve(gfx, vbuf.GetLayout(), pvsbyte));
@@ -341,7 +341,7 @@ namespace FraplesDev
 			bindablePtrs.push_back(IndexBuffer::Resolve(gfx, meshTag, indices));
 
 			auto pvs = VertexShader::Resolve(gfx, "PhongVS.cso");
-			auto pvsbyte = pvs->GetBytecode();
+			auto pvsbyte = pvs->GetByteCode();
 
 			bindablePtrs.push_back(std::move(pvs));
 
@@ -394,7 +394,7 @@ namespace FraplesDev
 		bindablePtrs.push_back(IndexBuffer::Resolve(gfx, meshTag, indices));
 
 		auto pvs = VertexShader::Resolve(gfx, "PhongVS.cso");
-		auto pvsbyte = pvs->GetBytecode();
+		auto pvsbyte = pvs->GetByteCode();
 		bindablePtrs.push_back(std::move(pvs));
 
 		bindablePtrs.push_back(PixelShader::Resolve(gfx, "PhongPS.cso"));
