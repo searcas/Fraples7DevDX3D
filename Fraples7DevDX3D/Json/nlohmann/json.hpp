@@ -8794,6 +8794,4 @@ inline nlohmann::json::json_pointer operator "" _json_pointer(const char* s, std
 }
 
 #include <nlohmann/detail/macro_unscope.hpp>
-#include "..\..\Source\Fraples7DevDX3D\Core\MetaProgramming\Vertex.h"
-
 #endif  // INCLUDE_NLOHMANN_JSON_HPP_

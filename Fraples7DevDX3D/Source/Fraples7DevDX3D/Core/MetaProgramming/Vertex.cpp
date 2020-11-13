@@ -72,7 +72,6 @@ namespace FraplesDev
 			{
 				_mElements.emplace_back(type, Size());
 			}
-			_mElements.emplace_back(type, Size());
 			return *this;
 		}
 		size_t MP::VertexLayout::Size()const noexcept(!IS_DEBUG)
