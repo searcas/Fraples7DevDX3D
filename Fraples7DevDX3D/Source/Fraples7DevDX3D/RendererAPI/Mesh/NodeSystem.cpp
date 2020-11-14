@@ -1,5 +1,5 @@
 #include "NodeSystem.h"
-
+#include "ModelProbe.h"
 
 namespace FraplesDev
 {
@@ -26,35 +26,24 @@ namespace FraplesDev
 	{
 		DirectX::XMStoreFloat4x4(&appliedTransform, transform);
 	}
-
-	/*void Node::RenderTree(Node*& pSelectedNode) const noexcept
+	bool Node::HasChildren() const noexcept
 	{
-		//if there is no selected node, set selectedId to an impossible value
-		const int selectedId = (pSelectedNode == nullptr) ? -1 : pSelectedNode->GetId();
-		//noindex serves as the uid for gui tree nodes, incremented troughout recursion
-		const auto node_flags = ImGuiTreeNodeFlags_OpenOnArrow |
-			((GetId() == selectedId) ?
-				ImGuiTreeNodeFlags_Selected : 0) |
-				((_mChildPtrs.size() == 0) ? ImGuiTreeNodeFlags_Leaf : 0);
-
-		//if tree node expanded, recurively render all children
-		auto ifClicked = ImGui::TreeNodeEx((void*)GetId(), node_flags, _mName.c_str());
-
-
-		if (ImGui::IsItemClicked())
-		{
-			pSelectedNode = const_cast<Node*>(this);
-		}
-		if (ifClicked)
-		{
-			for (const auto& pChild : _mChildPtrs)
-			{
-				pChild->RenderTree(pSelectedNode);
-			}
-			ImGui::TreePop();
-		}
+		return _mChildPtrs.size() > 0;
 	}
-	*/
+
+	void Node::Accept( ModelProbe& probe)
+	{
+		if (probe.PushNode(*this))
+		{
+			for (auto& cp : _mChildPtrs)
+			{
+				cp->Accept(probe);
+			}
+			probe.PopNode(*this);
+		}
+		
+	}
+
 	void Node::AddChild(std::unique_ptr<Node>pChild)noexcept(!IS_DEBUG)
 	{
 		assert(pChild);

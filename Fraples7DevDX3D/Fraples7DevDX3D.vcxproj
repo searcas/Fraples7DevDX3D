@@ -177,6 +177,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\Material.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\ModelException.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\ModelProbe.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\ModelWindow.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\NodeSystem.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderPriority\TechniqueProbe.h" />

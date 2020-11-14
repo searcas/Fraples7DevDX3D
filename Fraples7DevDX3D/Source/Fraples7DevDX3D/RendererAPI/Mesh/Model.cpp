@@ -81,6 +81,10 @@ namespace FraplesDev
 	{
 		_mRoot->SetAppliedTransform(tf);
 	}
+	void Model::Accept(ModelProbe& probe)
+	{
+		_mRoot->Accept(probe);
+	}
 	Model::~Model()
 	{
 	}

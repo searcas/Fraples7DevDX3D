@@ -15,11 +15,15 @@ namespace FraplesDev
 		void SetAppliedTransform(DirectX::FXMMATRIX transform)noexcept;
 		inline const DirectX::XMFLOAT4X4& GetAppliedTransform() noexcept { return appliedTransform; }
 		inline const int GetId()const noexcept { return _mID; }
-		//const MP::Buffer* GetMaterialConstants()const noexcept(!IS_DEBUG);
-		//void SetMaterialConstants(const MP::Buffer& buff)noexcept(!IS_DEBUG);
+		bool HasChildren()const noexcept;
+		void Accept(class ModelProbe& probe);
+
+		inline const std::string& GetName()const
+		{
+			return _mName;
+		}
 	private:
 		void AddChild(std::unique_ptr<Node>pChild)noexcept(!IS_DEBUG);
-	//	void RenderTree(Node*& pSelectedNode) const noexcept;
 	private:
 		int _mID = 0;
 		std::string _mName = {};
