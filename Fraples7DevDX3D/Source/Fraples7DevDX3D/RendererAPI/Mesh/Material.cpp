@@ -41,7 +41,7 @@ namespace FraplesDev
 				if (tex->HasAlhpa())
 				{
 					hasAlpha = true;
-					shaderCode += "Msk";
+					shaderCode += "Mask";
 				}
 				step.AddContext(std::move(tex));
 			}
@@ -86,11 +86,11 @@ namespace FraplesDev
 			{
 				step.AddContext(std::make_shared<TransformCBuf>(gfx, 0u));
 				step.AddContext(Blending::Resolve(gfx, false));
-				auto pvs = VertexShader::Resolve(gfx, shaderCode + "VS.cso");
+				auto pvs = VertexShader::Resolve(gfx, shaderCode + "_VS.cso");
 				auto pvsbyte = pvs->GetByteCode();
 
 				step.AddContext(std::move(pvs));
-				step.AddContext(PixelShader::Resolve(gfx, shaderCode + "PS.cso"));
+				step.AddContext(PixelShader::Resolve(gfx, shaderCode + "_PS.cso"));
 
 				step.AddContext(InputLayout::Resolve(gfx, _mVertexLayout, pvsbyte));
 				if (hasTexture)
@@ -134,7 +134,7 @@ namespace FraplesDev
 			{
 				Step mask(1);
 
-				auto pvs = VertexShader::Resolve(gfx, "SolidVS.cso");
+				auto pvs = VertexShader::Resolve(gfx, "Solid_VS.cso");
 				auto pvsbyte = pvs->GetByteCode();
 				mask.AddContext(std::move(pvs));
 
@@ -148,16 +148,16 @@ namespace FraplesDev
 			{
 				Step draw(2);
 				//these can be pass-constant (tricky due to layout issues)
-				auto pvs = VertexShader::Resolve(gfx, "SolidVS.cso");
+				auto pvs = VertexShader::Resolve(gfx, "Solid_VS.cso");
 				auto pvsbyte = pvs->GetByteCode();
 				draw.AddContext(std::move(pvs));
 
 				//this can be pass-constant
-				draw.AddContext(PixelShader::Resolve(gfx, "SolidPS.cso"));
+				draw.AddContext(PixelShader::Resolve(gfx, "Solid_PS.cso"));
 				MP::RawLayout layout;
-				layout.Add<MP::Float4>("materialColor");
+				layout.Add<MP::Float3>("materialColor");
 				auto buf = MP::Buffer(std::move(layout));
-				buf["materialColor"] = DirectX::XMFLOAT4{ 1.0f,0.4f,0.4f,1.0f };
+				buf["materialColor"] = DirectX::XMFLOAT3{ 1.0f,0.4f,0.4f};
 				draw.AddContext(std::make_shared<CachingPixelConstantBufferEx>(gfx, buf, 1u));
 
 				//TODO: better sub-layout generation tech for future consideration maybe

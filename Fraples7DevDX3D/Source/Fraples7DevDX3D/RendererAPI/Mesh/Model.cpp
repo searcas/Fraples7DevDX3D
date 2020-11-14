@@ -1,34 +1,12 @@
 #include "Model.h"
-#include <memory>
-#include <sstream>
-#include "RendererAPI/GFXContextBase.h"
-#include "Core/Math/FraplesXM.h"
-#include "Core/MetaProgramming/DynamicConstant.h"
-#include "RendererAPI/ConstantBuffersEx.h"
-#include "RendererAPI/Stencil.h"
-#include "RendererAPI/RenderPriority/FrameCommander.h"
+#include "NodeSystem.h"
+#include "ModelException.h"
+#include "assimp/Importer.hpp"
+#include  "assimp/postprocess.h"
 namespace FraplesDev
 {
 	
-	Node::Node(int id, const std::string&name,std::vector<Mesh*>meshPtrs, const DirectX::XMMATRIX& transform)noexcept(!IS_DEBUG)
-		:_mName(name),_mMeshPtrs(std::move(meshPtrs)),_mID(id)
-	{
-		DirectX::XMStoreFloat4x4(&_mTransform, transform);
-		DirectX::XMStoreFloat4x4(&appliedTransform, DirectX::XMMatrixIdentity());
-	}
-	void Node::Submit(FrameCommander& frame, DirectX::FXMMATRIX accumulatedTransform)const noexcept(!IS_DEBUG)
-	{
-		const auto built = DirectX::XMLoadFloat4x4(&appliedTransform) * DirectX::XMLoadFloat4x4(&_mTransform) * accumulatedTransform;
-
-		for (const auto pm : _mMeshPtrs)
-		{
-			pm->Submit(frame, accumulatedTransform);
-		}
-		for (const auto& pc : _mChildPtrs)
-		{
-			pc->Submit(frame, accumulatedTransform);
-		}
-	}
+	
 	/*const MP::Buffer* Node::GetMaterialConstants()const noexcept(!IS_DEBUG)
 	{
 		if (_mMeshPtrs.size() == 0)
@@ -44,48 +22,7 @@ namespace FraplesDev
 		assert(pcb != nullptr);
 		pcb->SetBuffer(buf_in);
 	}*/
-	void Node::SetAppliedTransform(DirectX::FXMMATRIX transform) noexcept
-	{
-		DirectX::XMStoreFloat4x4(&appliedTransform, transform);
-	}
-
-	void Node::RenderTree(Node*& pSelectedNode) const noexcept
-	{
-		//if there is no selected node, set selectedId to an impossible value
-		const int selectedId = (pSelectedNode == nullptr) ? -1 : pSelectedNode->GetId();
-		//noindex serves as the uid for gui tree nodes, incremented troughout recursion
-		const auto node_flags = ImGuiTreeNodeFlags_OpenOnArrow | 
-			((GetId() == selectedId) ? 
-				ImGuiTreeNodeFlags_Selected : 0) | 
-				((_mChildPtrs.size() == 0) ? ImGuiTreeNodeFlags_Leaf : 0);
-
-		//if tree node expanded, recurively render all children
-		auto ifClicked = ImGui::TreeNodeEx((void*)GetId(), node_flags, _mName.c_str());
-		
-		
-			if (ImGui::IsItemClicked())
-			{
-				pSelectedNode = const_cast<Node*>(this);
-			}
-			if (ifClicked)
-			{
-				for (const auto& pChild : _mChildPtrs)
-				{
-					pChild->RenderTree(pSelectedNode);
-				}
-				ImGui::TreePop();
-			}
-	}
-
-
 	
-
-	void Node::AddChild(std::unique_ptr<Node>pChild)noexcept(!IS_DEBUG)
-	{
-		assert(pChild);
-		_mChildPtrs.push_back(std::move(pChild));
-
-	}
 	Model::Model(Graphics& gfx, const std::string& path, float scale)
 		: _mpWindow(std::make_unique<ModelWindow>())
 	{
@@ -456,174 +393,6 @@ namespace FraplesDev
 		_mpWindow->Show(gfx, windowName, *_mRoot);
 	}
 
-	void Model::ModelWindow::Show(Graphics& gfx,const char* windowName, const Node& root)
-	{
-	/*	windowName = windowName ? windowName : "Model ";
-
-		if (ImGui::Begin(windowName))
-		{
-			ImGui::Columns(2, nullptr, true);
-
-			root.RenderTree(_mPselectedNode);
-
-			ImGui::NextColumn();
-			if (_mPselectedNode != nullptr)
-			{
-				const auto id = _mPselectedNode->GetId();
-				auto i = _mTransforms.find(id);
-				if (i ==_mTransforms.end())
-				{
-					const auto& applied = _mPselectedNode->GetAppliedTransform();
-					const auto angles = ExtractEulerAngles(applied);
-					const auto translation = ExtractTranslation(applied);
-					TransformParameters tp;
-					tp.roll = angles.z;
-					tp.pitch = angles.x;
-					tp.yaw = angles.y;
-
-					tp.x = translation.x;
-					tp.y = translation.y;
-					tp.z = translation.z;
-
-					auto pMatConst = _mPselectedNode->GetMaterialConstants();
-					auto buf = pMatConst != nullptr ? std::optional<MP::Buffer>{*pMatConst} : std::optional<MP::Buffer>{};
-					std::tie(i, std::ignore) = _mTransforms.insert({ id,{tp,false,std::move(buf),false} });
-				}
-				// Link imgui ctrl to our cached transform params
-				{
-					auto& transform = i->second.transformParams;
-					// dirty check
-					auto& dirty = i->second.transformParamsDirty;
-					const auto dcheck = [&dirty](bool changed) {dirty = dirty || changed; };
-					// widgets
-					ImGui::Text("Orientation");
-					dcheck(ImGui::SliderAngle("Roll", &transform.roll, -180.0f, 180.0f));
-					dcheck(ImGui::SliderAngle("Pitch", &transform.pitch, -180.0f, 180.0f));
-					dcheck(ImGui::SliderAngle("Yaw", &transform.yaw, -180.0f, 180.0f));
-
-					ImGui::Text("Position");
-					dcheck(ImGui::SliderFloat("X", &transform.x, -20.0f, 20.0f));
-					dcheck(ImGui::SliderFloat("Y", &transform.y, -20.0f, 20.0f));
-					dcheck(ImGui::SliderFloat("Z", &transform.z, -20.0f, 20.0f));
-				}
-				// link imgui ctrl to our cached material params
-				if (i->second.materialCbuf)
-				{
-					auto& mat = *i->second.materialCbuf;
-					//dirty check
-					auto& dirty = i->second.materialCbufDirty;
-					const auto dcheck = [&dirty](bool changed) {dirty = dirty || changed; };
-
-					ImGui::Text("Material");
-					if (auto v = mat["normalMapEnabled"]; v.Exists())
-					{
-						dcheck(ImGui::Checkbox("Norm Map", &v));
-					}
-					if (auto v = mat["specularMapEnabled"]; v.Exists())
-					{
-						dcheck(ImGui::Checkbox("Spec Map", &v));
-					}
-					if (auto v = mat["hasGlossMap"]; v.Exists())
-					{
-						dcheck(ImGui::Checkbox("Gloss Map", &v));
-					}
-					if (auto v = mat["materialColor"]; v.Exists())
-					{
-						dcheck(ImGui::ColorPicker3("Diff Color", reinterpret_cast<float*>(&static_cast<DirectX::XMFLOAT3&>(v))));
-					}
-					if (auto v = mat["specularPower"]; v.Exists())
-					{
-						dcheck(ImGui::SliderFloat("Spec Power", &v, 0.0f, 100.0f, "%.1f"));
-					}
-					if (auto v = mat["specularColor"]; v.Exists())
-					{
-						dcheck(ImGui::ColorPicker3("Spec Color", reinterpret_cast<float*>(&static_cast<DirectX::XMFLOAT3&>(v))));
-					}
-					if (auto v = mat["specularMapWeight"]; v.Exists())
-					{
-						dcheck(ImGui::SliderFloat("Spec Weight", &v, 0.0f, 4.0f));
-					}
-					if (auto v = mat["specularIntensity"]; v.Exists())
-					{
-						dcheck(ImGui::SliderFloat("Spec Intens", &v, 0.0f, 1.0f));
-					}
-				}
-			}
-		}
-		ImGui::End();
-		*/
-	}
-	void Model::ModelWindow::ApplyParameters() noexcept
-	{
-		/*
-		if (TransformDirty())
-		{
-			_mPselectedNode->SetAppliedTransform(GetTransform());
-			ResetTransformDirty();
-		}
-		if (MaterialDirty())
-		{
-			_mPselectedNode->SetMaterialConstants(GetMaterial());
-			ResetTransformDirty();
-		}
-		*/
-	}
-
-	DirectX::XMMATRIX Model::ModelWindow::GetTransform() const noexcept
-	{
-		assert(_mPselectedNode != nullptr);
-
-		const auto& transform = _mTransforms.at(_mPselectedNode->GetId()).transformParams;
-		return DirectX::XMMatrixRotationRollPitchYaw(transform.roll, transform.pitch, transform.yaw) *
-			DirectX::XMMatrixTranslation(transform.x, transform.y, transform.z);
-	}
-	const MP::Buffer& Model::ModelWindow::GetMaterial()const noexcept(!IS_DEBUG)
-	{
-		assert(_mPselectedNode != nullptr);
-		const auto& mat = _mTransforms.at(_mPselectedNode->GetId()).materialCbuf;
-		assert(mat);
-		return *mat;
-
-	}
-	bool Model::ModelWindow::TransformDirty()const noexcept(!IS_DEBUG)
-	{
-		return _mPselectedNode && _mTransforms.at(_mPselectedNode->GetId()).transformParamsDirty;
-	}
-	void Model::ModelWindow::ResetTransformDirty()noexcept(!IS_DEBUG)
-	{
-		_mTransforms.at(_mPselectedNode->GetId()).transformParamsDirty = false;
-	}
-	bool Model::ModelWindow::MaterialDirty()const noexcept(!IS_DEBUG)
-	{
-		return _mPselectedNode && _mTransforms.at(_mPselectedNode->GetId()).materialCbufDirty;
-	}
-	void Model::ModelWindow::ResetMaterialDirty()noexcept(!IS_DEBUG)
-	{
-		_mTransforms.at(_mPselectedNode->GetId()).materialCbufDirty = false;
-	}
-	bool Model::ModelWindow::IsDirty()const noexcept(!IS_DEBUG)
-	{
-		return TransformDirty() || MaterialDirty();
-	}
 	
-	Model::ModelException::ModelException(std::string note, int line, const char* file) 
-		: FraplesException(line,file), note(std::move(note))
-	{
-
-	}
-	const char* Model::ModelException::what() const noexcept
-	{
-		std::ostringstream oss;
-		oss << FraplesException::what() << std::endl << "[Note] " << GetNote();
-		_mWhatBuffer = oss.str();
-		return _mWhatBuffer.c_str();
-	}
-	const char* Model::ModelException::GetType() const noexcept
-	{
-		return "Fraples7 Studio Engine Exception";
-	}
-	const std::string& Model::ModelException::GetNote() const noexcept
-	{
-		return note;
-	}
+	
 }

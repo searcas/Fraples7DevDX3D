@@ -3,7 +3,8 @@
 #include "Core/Math/Math.h"
 #include <sstream>
 #include <filesystem>
-
+#include "assimp/Importer.hpp"
+#include "RendererAPI/Mesh/ModelException.h"
 
 namespace FraplesDev
 {
@@ -42,7 +43,7 @@ namespace FraplesDev
 
 			if (pScene ==nullptr)
 			{
-				throw Model::ModelException(__FILE__, __LINE__, imp.GetErrorString());
+				throw ModelException(__FILE__, __LINE__, imp.GetErrorString());
 			}
 
 

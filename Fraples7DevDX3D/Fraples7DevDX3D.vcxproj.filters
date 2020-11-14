@@ -177,6 +177,15 @@
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\Material.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\NodeSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\ModelException.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\ModelWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Fraples7.h">
@@ -425,6 +434,15 @@
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\Material.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\NodeSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\ModelException.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\ModelWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Fraples7DevDX3D.rc">
@@ -453,22 +471,25 @@
   <ItemGroup>
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\ColorBlendVS.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\ColorBlendPS.hlsl" />
-    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongVS.hlsl" />
-    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongPS.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\IndexedPhongPS.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\BlendedPhongVS.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\BlendedPhongPS.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\TexturePhongVS.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\TexturePhongPS.hlsl" />
-    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongPSSpecNormalMap.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongPSNormalMapObject.hlsl" />
-    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongVSNotex.hlsl" />
-    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongPSNotex.hlsl" />
-    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongSpecPS.hlsl" />
-    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongPSSpecNormalMask.hlsl" />
-    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\SolidPS.hlsl" />
-    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\SolidVS.hlsl" />
-    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongDiffuseNormalPS.hlsl" />
-    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongDiffuseNormalVS.hlsl" />
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\Solid_VS.hlsl" />
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\Solid_PS.hlsl" />
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\Phong_PS.hlsl" />
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\Phong_VS.hlsl" />
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongDiffuse_VS.hlsl" />
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongDiffuseNormal_VS.hlsl" />
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongDiffuseNormal_PS.hlsl" />
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongDiffuse_PS.hlsl" />
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongDiffuseSpecularNormal_PS.hlsl" />
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongDiffuseSpecular_PS.hlsl" />
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongDiffuseSpecular_VS.hlsl" />
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongDiffuseSpecularNormal_VS.hlsl" />
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongDiffuseMaskSpecularNormal_PS.hlsl" />
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongDiffuseMaskSpecularNormal_VS.hlsl" />
   </ItemGroup>
 </Project>
