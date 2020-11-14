@@ -23,17 +23,8 @@ namespace FraplesDev
 	Application::Application(const char* name, int width, int height, const std::string& commandLine)
 		:_mWin(name, width, height), light(_mWin.GetGFX()), scriptCommander(Utility::TokenizeQuoted(commandLine))
 	{
-		QA::TestMaterialSystemLoading(_mWin.GetGFX());
-		cube1.SetPos({ 4.0f,0.0f,0.0f });
-		cube2.SetPos({ 0.0f,4.0f,0.0f });
+		//QA::TestMaterialSystemLoading(_mWin.GetGFX());
 		
-		{
-			std::string path = "Models\\brick_wall\\brick_wall.obj";
-			Assimp::Importer imp;
-			const auto pScene = imp.ReadFile(path, aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_ConvertToLeftHanded | aiProcess_GenNormals | aiProcess_CalcTangentSpace);
-			Material mat{ _mWin.GetGFX(),*pScene->mMaterials[1],path };
-			_mPloaded = std::make_unique<Mesh>(_mWin.GetGFX(), mat, *pScene->mMeshes[0]);
-		}
 		//bluePlane.SetPosXYZ(_mCamera.GetPos());
 		//redPlane.SetPosXYZ(_mCamera.GetPos());
 		_mWin.GetGFX().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 800.0f));
@@ -68,8 +59,8 @@ namespace FraplesDev
 		ShowRawInputWindow();
 	//	bluePlane.SpawnControlWindow(_mWin.GetGFX(),"BLUE ONE");
 	//	redPlane.SpawnControlWindow(_mWin.GetGFX(), "RED ONE");
-		cube1.SpawnControlWindow(_mWin.GetGFX(), "Cube 1");
-		cube2.SpawnControlWindow(_mWin.GetGFX(), "Cube 2");
+	//	cube1.SpawnControlWindow(_mWin.GetGFX(), "Cube 1");
+	//	cube2.SpawnControlWindow(_mWin.GetGFX(), "Cube 2");
 	}
 
 	void Application::RenderObj()
@@ -81,6 +72,7 @@ namespace FraplesDev
 		//redPlane.Render(_mWin.GetGFX());
 		//cube1.Submit(fc);
 		//cube2.Submit(fc);
+		gobber.Submit(fc);
 		fc.Execute(_mWin.GetGFX());
 	}
 
@@ -146,8 +138,8 @@ namespace FraplesDev
 				}
 				return dirty;
 			}
-		}probe;
-		_mPloaded->Accept(probe);
+		};
+
 		while (const auto e = _mWin._mKey.Readkey())
 		{
 			if (!e->isPressed())

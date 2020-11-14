@@ -19,7 +19,7 @@ namespace FraplesDev
 		//void SetMaterialConstants(const MP::Buffer& buff)noexcept(!IS_DEBUG);
 	private:
 		void AddChild(std::unique_ptr<Node>pChild)noexcept(!IS_DEBUG);
-		void RenderTree(Node*& pSelectedNode) const noexcept;
+	//	void RenderTree(Node*& pSelectedNode) const noexcept;
 	private:
 		int _mID = 0;
 		std::string _mName = {};

@@ -130,7 +130,7 @@ namespace FraplesDev
 
 		//outline technique
 		{
-			Technique outline("Outline");
+			Technique outline("Outline",false);
 			{
 				Step mask(1);
 

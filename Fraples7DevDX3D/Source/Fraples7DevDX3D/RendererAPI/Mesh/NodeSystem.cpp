@@ -15,11 +15,11 @@ namespace FraplesDev
 
 		for (const auto pm : _mMeshPtrs)
 		{
-			pm->Submit(frame, accumulatedTransform);
+			pm->Submit(frame, built);
 		}
 		for (const auto& pc : _mChildPtrs)
 		{
-			pc->Submit(frame, accumulatedTransform);
+			pc->Submit(frame, built);
 		}
 	}
 	void Node::SetAppliedTransform(DirectX::FXMMATRIX transform) noexcept
@@ -27,7 +27,7 @@ namespace FraplesDev
 		DirectX::XMStoreFloat4x4(&appliedTransform, transform);
 	}
 
-	void Node::RenderTree(Node*& pSelectedNode) const noexcept
+	/*void Node::RenderTree(Node*& pSelectedNode) const noexcept
 	{
 		//if there is no selected node, set selectedId to an impossible value
 		const int selectedId = (pSelectedNode == nullptr) ? -1 : pSelectedNode->GetId();
@@ -54,6 +54,7 @@ namespace FraplesDev
 			ImGui::TreePop();
 		}
 	}
+	*/
 	void Node::AddChild(std::unique_ptr<Node>pChild)noexcept(!IS_DEBUG)
 	{
 		assert(pChild);

@@ -44,9 +44,9 @@ namespace FraplesDev
 		Camera _mCamera;
 		FrameCommander fc;
 		std::unique_ptr<Mesh>_mPloaded;
-		BaseCube cube1 = { _mWin.GetGFX(),4.0f };
-		BaseCube cube2 = { _mWin.GetGFX(),4.0f };
-	
+		//BaseCube cube1 = { _mWin.GetGFX(),4.0f };
+		//BaseCube cube2 = { _mWin.GetGFX(),4.0f };
+		Model gobber{ _mWin.GetGFX(),"Models\\gobber\\GoblinX.obj", 4.0f};
 
 		//Model _mSponza{ _mWin.GetGFX(),"Models\\Sponza\\sponza.obj",0.1f };
 		//	BasePlane bluePlane{ _mWin.GetGFX(),6.0f,{0.3,0.3,1.0f,0.0f} };
