@@ -66,13 +66,11 @@ namespace FraplesDev
 	void Application::RenderObj()
 	{
 		light.Submit(fc);
-		_mPloaded->Submit(fc, DirectX::XMMatrixIdentity());
-		//_mSponza.Render(_mWin.GetGFX());
-	//	bluePlane.Render(_mWin.GetGFX());
-		//redPlane.Render(_mWin.GetGFX());
+		//_mPloaded->Submit(fc, DirectX::XMMatrixIdentity());
+		_mSponza.Submit(fc);
 		//cube1.Submit(fc);
 		//cube2.Submit(fc);
-		gobber.Submit(fc);
+	//	gobber.Submit(fc);
 		fc.Execute(_mWin.GetGFX());
 	}
 
