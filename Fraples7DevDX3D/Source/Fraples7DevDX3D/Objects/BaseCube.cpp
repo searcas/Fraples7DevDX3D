@@ -23,7 +23,7 @@ namespace FraplesDev
 			Technique shade("Shade");
 			{
 				Step only(0);
-				only.AddContext(Texture::Resolve(gfx, "Images\\brickwall.jpg", 0));
+				only.AddContext(Texture::Resolve(gfx, "Images\\brickwall.jpg"));
 				only.AddContext(Sampler::Resolve(gfx));
 
 				auto pvs = VertexShader::Resolve(gfx, "PhongDiffuse_VS.cso");
@@ -66,16 +66,17 @@ namespace FraplesDev
 
 				//these can be pass-constant (tricky due to layout issues)
 				auto pvs = VertexShader::Resolve(gfx, "Solid_VS.cso");
-				MP::RawLayout layout;
-				layout.Add<MP::Float4>("color");
-				auto buf = MP::Buffer(std::move(layout));
-				buf["color"] = DirectX::XMFLOAT4{ 1.0f,0.2f,0.2f,0.8f };
-				draw.AddContext(std::make_shared<CachingPixelConstantBufferEx>(gfx, buf, 1u));
 				auto pvsbyte = pvs->GetByteCode();
 				draw.AddContext(std::move(pvs));
 
 				// this can be pass-constant
 				draw.AddContext(PixelShader::Resolve(gfx, "Solid_PS.cso"));
+
+				MP::RawLayout layout;
+				layout.Add<MP::Float4>("color");
+				auto buf = MP::Buffer(std::move(layout));
+				buf["color"] = DirectX::XMFLOAT4{ 1.0f,0.2f,0.2f,0.8f };
+				draw.AddContext(std::make_shared<CachingPixelConstantBufferEx>(gfx, buf, 1u));
 
 				//TODO: Better Sub-Layout generation tech for future consideration maybe
 				draw.AddContext(InputLayout::Resolve(gfx, model._mVertices.GetLayout(), pvsbyte));

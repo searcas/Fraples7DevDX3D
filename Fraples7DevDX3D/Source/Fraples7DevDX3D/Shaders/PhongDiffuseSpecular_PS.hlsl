@@ -16,18 +16,19 @@ Texture2D tex;
 Texture2D spec;
 
 SamplerState splr;
-float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal,float2 texcoord : Texcoord) : SV_TARGET
+
+
+float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc : Texcoord) : SV_Target
 {
-    //normalize the mesh normal
+    // normalize the mesh normal
     viewNormal = normalize(viewNormal);
-    //fragemnt to light vector data
+	// fragment to light vector data
     const LightVectorData lv = CalculateLightVectorData(viewLightPos, viewFragPos);
-    //specular parameters
+    // specular parameters
     float specularPowerLoaded = specularGloss;
-    const float4 specularSample = spec.Sample(splr, texcoord);
+    const float4 specularSample = spec.Sample(splr, tc);
     float3 specularReflectionColor;
-    
-    if(useSpecularMap)
+    if (useSpecularMap)
     {
         specularReflectionColor = specularSample.rgb;
     }
@@ -35,19 +36,19 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal,float2 tex
     {
         specularReflectionColor = specularColor;
     }
-   
-    if(useGlossAlpha)
+    if (useGlossAlpha)
     {
         specularPowerLoaded = pow(2.0f, specularSample.a * 13.0f);
     }
-    
-    //attenuation
+	// attenuation
     const float att = Attenuate(attConst, attLin, attQuad, lv.distToL);
-    //diffuse light
-    const float3 diffuse = Diffuse(diffuseColor,diffuseIntensity,att,lv.dirToL,viewNormal);
-    const float3 specularReflected = Speculate(diffuseColor * specularReflectionColor, specularWeight, viewNormal, lv.vToL, viewFragPos, att, specularPowerLoaded);
-    
-    //final color = attenuate diffuse & ambient by diffuse texture color and add specular reflected
-    
-    return float4(saturate((diffuse + ambient) * tex.Sample(splr, texcoord).rgb + specularReflected), 1.0f);
+	// diffuse light
+    const float3 diffuse = Diffuse(diffuseColor, diffuseIntensity, att, lv.dirToL, viewNormal);
+    // specular reflected
+    const float3 specularReflected = Speculate(
+        diffuseColor * specularReflectionColor, specularWeight, viewNormal,
+        lv.vToL, viewFragPos, att, specularPowerLoaded
+    );
+	// final color = attenuate diffuse & ambient by diffuse texture color and add specular reflected
+    return float4(saturate((diffuse + ambient) * tex.Sample(splr, tc).rgb + specularReflected), 1.0f);
 }

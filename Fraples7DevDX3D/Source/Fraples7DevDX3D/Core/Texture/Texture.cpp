@@ -11,7 +11,6 @@ namespace FraplesDev
 	{
 		INFOMAN(gfx);
 
-
 		const auto s = Surface::FromFile(path);
 		hasAlpha = s.AlphaLoaded();
 		//create texture resource 

@@ -14,7 +14,6 @@ namespace FraplesDev
 		}
 
 		// phong technique
-
 		{
 			Technique phong{ "Phong" };
 			Step step(0);
@@ -29,7 +28,7 @@ namespace FraplesDev
 			bool hasTexture = false;
 			bool hasGlossAlpha = false;
 
-//diffuse
+			//diffuse
 			{
 			bool hasAlpha = false;
 			if (material.GetTexture(aiTextureType_DIFFUSE, 0, &texFileName) == aiReturn_SUCCESS)
@@ -69,7 +68,6 @@ namespace FraplesDev
 				pscLayout.Add<MP::Float>("specularGloss");
 			}
 			// normal
-
 			{
 				if (material.GetTexture(aiTextureType_NORMALS, 0, &texFileName) == aiReturn_SUCCESS)
 				{
@@ -170,14 +168,12 @@ namespace FraplesDev
 					auto buf = MP::Buffer(std::move(lay));
 					buf["offset"] = 0.1f;
 					draw.AddContext(std::make_shared<CachingVertexConstantBufferEx>(gfx, buf, 1u));
-				
 				}
 				//TODO: better sub-layout generation tech for future consideration maybe
 				draw.AddContext(InputLayout::Resolve(gfx, _mVertexLayout, pvsbyte));
 				draw.AddContext(std::make_shared<TransformCBuf>(gfx));
 
 				//TODO: might need to specify resterizer when doubled-sided models start being used
-
 				outline.AddStep(std::move(draw));
 			}
 			_mTechniques.push_back(std::move(outline));

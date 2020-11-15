@@ -442,11 +442,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="Fraples7DevDX3D.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Source\Fraples7DevDX3D\Shaders\ShaderOps.hlsli" />
     <None Include="Source\Fraples7DevDX3D\Shaders\PointLight.hlsli" />
     <None Include="Source\Fraples7DevDX3D\Shaders\LightVectorData.hlsli" />

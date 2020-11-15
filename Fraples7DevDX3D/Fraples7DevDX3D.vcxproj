@@ -244,9 +244,6 @@
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Renderer.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="Fraples7DevDX3D.rc" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="DirectXTex\DirectXTex.inl" />
     <None Include="Source\Fraples7DevDX3D\Core\Common\DXGetErrorDescription.inl" />
     <None Include="Source\Fraples7DevDX3D\Core\Common\DXGetErrorString.inl" />
