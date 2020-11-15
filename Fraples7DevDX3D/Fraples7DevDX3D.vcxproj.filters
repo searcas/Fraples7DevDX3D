@@ -494,5 +494,6 @@
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongDiffuseSpecularNormal_VS.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongDiffuseMaskSpecularNormal_PS.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongDiffuseMaskSpecularNormal_VS.hlsl" />
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\Offset_VS.hlsl" />
   </ItemGroup>
 </Project>
