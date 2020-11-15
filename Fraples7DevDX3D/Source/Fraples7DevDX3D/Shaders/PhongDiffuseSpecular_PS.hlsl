@@ -6,6 +6,7 @@
 cbuffer ObjectCBuf
 {
     bool useGlossAlpha;
+    bool useSpecularMap;
     float3 specularColor;
     float specularWeight;
     float specularGloss;
@@ -24,7 +25,16 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal,float2 tex
     //specular parameters
     float specularPowerLoaded = specularGloss;
     const float4 specularSample = spec.Sample(splr, texcoord);
-    const float3 specularReflectionColor = specularSample.rgb;
+    float3 specularReflectionColor;
+    
+    if(useSpecularMap)
+    {
+        specularReflectionColor = specularSample.rgb;
+    }
+    else
+    {
+        specularReflectionColor = specularColor;
+    }
    
     if(useGlossAlpha)
     {

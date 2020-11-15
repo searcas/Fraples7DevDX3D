@@ -9,7 +9,7 @@ namespace FraplesDev
 	class TechniqueProbe
 	{
 	public:
-		
+		// TODO: Add callback for visiting each mesh
 		void SetTechnique(class Technique* pTech_in)
 		{
 			_mPtech = pTech_in;

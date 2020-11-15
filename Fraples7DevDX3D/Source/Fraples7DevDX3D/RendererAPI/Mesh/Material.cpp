@@ -62,6 +62,7 @@ namespace FraplesDev
 					hasGlossAlpha = tex->HasAlhpa();
 					step.AddContext(std::move(tex));
 					pscLayout.Add<MP::Bool>("UseGlossAlpha");
+					pscLayout.Add<MP::Bool>("useSpecularMap");
 				}
 				pscLayout.Add<MP::Float3>("specularColor");
 				pscLayout.Add<MP::Float>("specularWeight");
@@ -106,6 +107,7 @@ namespace FraplesDev
 					r = reinterpret_cast<DirectX::XMFLOAT3&>(color);
 				}
 				buf["useGlossAlpha"].SetIfExists(hasGlossAlpha);
+				buf["useSpecularMap"].SetIfExists(true);
 				if (auto r = buf["specularColor"]; r.Exists())
 				{
 					aiColor3D color = { 0.18f,0.18f,0.18f };

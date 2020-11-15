@@ -43,6 +43,14 @@ namespace FraplesDev
 		}
 	}
 
+	void Node::Accept(TechniqueProbe& probe)
+	{
+		for (auto& mp : _mMeshPtrs)
+		{
+			mp->Accept(probe);
+		}
+	}
+
 	void Node::AddChild(std::unique_ptr<Node>pChild) noexcept(!IS_DEBUG)
 	{
 		assert(pChild);

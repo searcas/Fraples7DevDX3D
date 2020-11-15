@@ -17,6 +17,7 @@ namespace FraplesDev
 		inline const int GetId()const noexcept { return _mID; }
 		bool HasChildren()const noexcept;
 		void Accept(class ModelProbe& probe);
+		void Accept(class TechniqueProbe& probe);
 
 		inline const std::string& GetName()const
 		{

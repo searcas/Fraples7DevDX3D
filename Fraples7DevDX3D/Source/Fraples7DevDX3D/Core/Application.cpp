@@ -129,17 +129,21 @@ namespace FraplesDev
 				{
 					dCheck(ImGui::SliderFloat(tag("Specular Weight"), &v, 0.0f, 2.0f));
 				}
+				if (auto v = buf["useSpecularMap"]; v.Exists())
+				{
+					dCheck(ImGui::Checkbox(tag("Enable Specular Map"), &v));
+				}
 				if (auto v = buf["useNormalMap"]; v.Exists())
 				{
 					dCheck(ImGui::Checkbox(tag("Enable Normal Map"), &v));
 				}
 				if (auto v = buf["normalMapWeight"]; v.Exists())
 				{
-					dCheck(ImGui::SliderFloat(tag("Enable Normal Map"), &v,0.0f,2.0f));
+					dCheck(ImGui::SliderFloat(tag("Normal Map Weight"), &v,0.0f,2.0f));
 				}
 				return dirty;
 			}
-		}probe;
+		};
 		class MP : public ModelProbe
 		{
 		public:
@@ -188,8 +192,14 @@ namespace FraplesDev
 
 					}
 				}
+				if (pSelectedNode != nullptr)
+				{
+					TechProbe probe;
+					pSelectedNode->Accept(probe);
+				}
 				ImGui::End();
 			}
+		
 		protected:
 			Node* pSelectedNode = nullptr;
 			struct TransformParameters
