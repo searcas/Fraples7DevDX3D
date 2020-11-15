@@ -38,7 +38,7 @@ namespace FraplesDev
 				shaderCode += "Diffuse";
 				_mVertexLayout.Append(MP::ElementType::Texture2D);
 				auto tex = Texture::Resolve(gfx, rootPath + texFileName.C_Str());
-				if (tex->HasAlhpa())
+				if (tex->HasAlpha())
 				{
 					hasAlpha = true;
 					shaderCode += "Mask";
@@ -59,7 +59,7 @@ namespace FraplesDev
 					shaderCode += "Specular";
 					_mVertexLayout.Append(MP::ElementType::Texture2D);
 					auto tex = Texture::Resolve(gfx, rootPath + texFileName.C_Str(), 1);
-					hasGlossAlpha = tex->HasAlhpa();
+					hasGlossAlpha = tex->HasAlpha();
 					step.AddContext(std::move(tex));
 					pscLayout.Add<MP::Bool>("UseGlossAlpha");
 					pscLayout.Add<MP::Bool>("useSpecularMap");

@@ -67,7 +67,7 @@ namespace FraplesDev
 		using ConstantBufferEx::ConstantBufferEx;
 		void Bind(Graphics& gfx)noexcept override
 		{
-			GetContext(gfx)->PSSetConstantBuffers(_mSlot, 1u, _mPConstantBuffer.GetAddressOf());
+			GetContext(gfx)->VSSetConstantBuffers(_mSlot, 1u, _mPConstantBuffer.GetAddressOf());
 		}
 	};
 	template<typename T>

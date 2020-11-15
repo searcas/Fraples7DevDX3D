@@ -26,16 +26,18 @@ namespace FraplesDev
 				only.AddContext(Texture::Resolve(gfx, "Images\\brickwall.jpg", 0));
 				only.AddContext(Sampler::Resolve(gfx));
 
-				auto pvs = VertexShader::Resolve(gfx, "PhongVS.cso");
+				auto pvs = VertexShader::Resolve(gfx, "PhongDiffuse_VS.cso");
 				auto pvsbyte = pvs->GetByteCode();
 				only.AddContext(std::move(pvs));
-				only.AddContext(PixelShader::Resolve(gfx, "PhongPS.cso"));
+				only.AddContext(PixelShader::Resolve(gfx, "PhongDiffuse_PS.cso"));
 				MP::RawLayout layout;
-				layout.Add<MP::Float>("specularIntensity");
-				layout.Add<MP::Float>("specularPower");
+				layout.Add<MP::Float3>("specularColor");
+				layout.Add<MP::Float>("specularWeight");
+				layout.Add<MP::Float>("specularGloss");
 				auto buf = MP::Buffer(std::move(layout));
-				buf["specularIntensity"] = 0.1f;
-				buf["specularPower"] = 20.0f;
+				buf["specularColor"] = DirectX::XMFLOAT3{ 1.0f,1.0f,1.0f };
+				buf["specularWeight"] = 0.1f;
+				buf["specularGloss"] = 20.0f;
 				only.AddContext(std::make_shared<CachingPixelConstantBufferEx>(gfx, buf, 1u));
 				only.AddContext(InputLayout::Resolve(gfx, model._mVertices.GetLayout(), pvsbyte));
 				only.AddContext(std::make_shared<TransformCBuf>(gfx));
@@ -48,7 +50,7 @@ namespace FraplesDev
 			{
 				Step mask(1);
 
-				auto pvs = VertexShader::Resolve(gfx, "SolidVS.cso");
+				auto pvs = VertexShader::Resolve(gfx, "Solid_VS.cso");
 				auto pvsbyte = pvs->GetByteCode();
 				mask.AddContext(std::move(pvs));
 
@@ -63,7 +65,7 @@ namespace FraplesDev
 				Step draw(2);
 
 				//these can be pass-constant (tricky due to layout issues)
-				auto pvs = VertexShader::Resolve(gfx, "SolidVS.cso");
+				auto pvs = VertexShader::Resolve(gfx, "Solid_VS.cso");
 				MP::RawLayout layout;
 				layout.Add<MP::Float4>("color");
 				auto buf = MP::Buffer(std::move(layout));
@@ -73,7 +75,7 @@ namespace FraplesDev
 				draw.AddContext(std::move(pvs));
 
 				// this can be pass-constant
-				draw.AddContext(PixelShader::Resolve(gfx, "SolidPS.cso"));
+				draw.AddContext(PixelShader::Resolve(gfx, "Solid_PS.cso"));
 
 				//TODO: Better Sub-Layout generation tech for future consideration maybe
 				draw.AddContext(InputLayout::Resolve(gfx, model._mVertices.GetLayout(), pvsbyte));

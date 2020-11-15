@@ -18,12 +18,4 @@ namespace FraplesDev
 		float pitch = 0.0f;
 		float yaw = 0.0f;
 	};
-
-	
-	
-	
-
-	
-	
-	
 }

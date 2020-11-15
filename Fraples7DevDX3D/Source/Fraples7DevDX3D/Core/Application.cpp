@@ -117,7 +117,7 @@ namespace FraplesDev
 				}
 				if (auto v = buf["offset"]; v.Exists())
 				{
-					dCheck(ImGui::SliderFloat(tag("offset"), &v, 0.0f, 1.0f, "%.3f"));
+					dCheck(ImGui::SliderFloat(tag("Scale"), &v, 0.0f, 1.0f, "%.3f"));
 				}
 				if (auto v = buf["materialColor"]; v.Exists())
 				{
