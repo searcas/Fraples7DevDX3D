@@ -6,9 +6,9 @@
 namespace FraplesDev {
 
 
-	Renderer::Renderer(Graphics& gfx, const Material& mat, const aiMesh& mesh) noexcept
+	Renderer::Renderer(Graphics& gfx, const Material& mat, const aiMesh& mesh, float scale) noexcept
 	{
-		_mPvertices = mat.MakeVertexContext(gfx, mesh);
+		_mPvertices = mat.MakeVertexContext(gfx, mesh,scale);
 		_mPindices = mat.MakeIndexContext(gfx, mesh);
 		_mPtopology = Topology::Resolve(gfx);
 

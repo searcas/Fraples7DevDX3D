@@ -3,6 +3,8 @@
 #include "ModelException.h"
 #include "assimp/Importer.hpp"
 #include  "assimp/postprocess.h"
+#include "Core/Math/FraplesXM.h"
+#include "Core/Math/Math.h"
 namespace FraplesDev
 {
 	
@@ -42,10 +44,10 @@ namespace FraplesDev
 		for (int i = 0; i < pScene->mNumMeshes; i++)
 		{
 			const auto& mesh = *pScene->mMeshes[i];
-			_mMeshPtrs.push_back(std::make_unique<Mesh>(gfx, materials[mesh.mMaterialIndex], mesh));
+			_mMeshPtrs.push_back(std::make_unique<Mesh>(gfx, materials[mesh.mMaterialIndex], mesh, scale));
 		}
 		int nextId;
-		_mRoot = ParseNode(nextId, *pScene->mRootNode, DirectX::XMMatrixScaling(scale, scale, scale));
+		_mRoot = ParseNode(nextId, *pScene->mRootNode, scale);
 	}
 
 	void Model::Submit(FrameCommander& frame) const noexcept(!IS_DEBUG)
@@ -59,9 +61,10 @@ namespace FraplesDev
 		_mRoot->Submit(frame, DirectX::XMMatrixIdentity());
 	}
 
-	std::unique_ptr<Node>Model::ParseNode(int& nextId, const aiNode& node, DirectX::FXMMATRIX additionalTransform)noexcept
+	std::unique_ptr<Node>Model::ParseNode(int& nextId, const aiNode& node, float scale)noexcept
 	{
-		const auto transform = additionalTransform * DirectX::XMMatrixTranspose(DirectX::XMLoadFloat4x4(reinterpret_cast<const DirectX::XMFLOAT4X4*>(&node.mTransformation)));
+		
+		const auto transform = ScaleTranslation(DirectX::XMMatrixTranspose(DirectX::XMLoadFloat4x4(reinterpret_cast<const DirectX::XMFLOAT4X4*>(&node.mTransformation))),scale);
 		std::vector<Mesh*> curMeshPtrs;
 		curMeshPtrs.reserve(node.mNumMeshes);
 
@@ -73,7 +76,7 @@ namespace FraplesDev
 		auto pNode = std::make_unique<Node>(nextId++,node.mName.C_Str(), std::move(curMeshPtrs), transform);
 		for (size_t i = 0; i < node.mNumChildren; i++)
 		{
-			pNode->AddChild(ParseNode(nextId, *node.mChildren[i],DirectX::XMMatrixIdentity()));
+			pNode->AddChild(ParseNode(nextId, *node.mChildren[i],scale));
 		}
 		return pNode;
 	}

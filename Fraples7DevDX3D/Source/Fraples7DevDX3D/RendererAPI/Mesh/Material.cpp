@@ -232,9 +232,21 @@ namespace FraplesDev
 	{
 		return _mTechniques;
 	}
-	std::shared_ptr<VertexBuffer> Material::MakeVertexContext(Graphics& gfx, const aiMesh& mesh) const noexcept(!IS_DEBUG)
+	std::shared_ptr<VertexBuffer> Material::MakeVertexContext(Graphics& gfx, const aiMesh& mesh, float scale) const noexcept(!IS_DEBUG)
 	{
-		return VertexBuffer::Resolve(gfx, MakeMeshTag(mesh), ExtractVertices(mesh));
+		auto vtc = ExtractVertices(mesh);
+
+		if (scale != 1.0f)
+		{
+			for (auto i = 0u; i < vtc.Size(); i++)
+			{
+				DirectX::XMFLOAT3& pos = vtc[i].Attr<MP::ElementType::Position3D>();
+				pos.x *= scale;
+				pos.y *= scale;
+				pos.z *= scale;
+			}
+		}
+		return VertexBuffer::Resolve(gfx, MakeMeshTag(mesh), std::move(vtc));
 	}
 	std::shared_ptr<IndexBuffer> Material::MakeIndexContext(Graphics& gfx, const aiMesh& mesh) const noexcept(!IS_DEBUG)
 	{

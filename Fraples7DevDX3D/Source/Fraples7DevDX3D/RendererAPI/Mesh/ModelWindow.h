@@ -32,15 +32,5 @@ namespace FraplesDev
 			float y = 0.0f;
 			float z = 0.0f;
 		};
-		struct NodeData
-		{
-			TransformParameters transformParams;
-			bool transformParamsDirty = false;
-			std::optional<MP::Buffer>materialCbuf;
-			bool materialCbufDirty = false;
-		};
-		/*Node::PSMaterialConstantFullmonte _mSkinMaterial = {};
-		Node::PSMaterialConstantNotex _mRingMaterial = {};*/
-		std::unordered_map<int, NodeData>_mTransforms = {};
 	};
 }

@@ -3,8 +3,8 @@
 
 namespace FraplesDev
 {
-	Mesh::Mesh(Graphics& gfx, const Material& mat, const aiMesh& mesh) noexcept(!IS_DEBUG)
-		: Renderer(gfx, mat, mesh)
+	Mesh::Mesh(Graphics& gfx, const Material& mat, const aiMesh& mesh,float scale) noexcept(!IS_DEBUG)
+		: Renderer(gfx, mat, mesh,scale)
 	{
 		_mTransform = {};
 	}

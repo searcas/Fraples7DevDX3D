@@ -1,13 +1,13 @@
+#include "TestingQA.h"
 #include "RendererAPI/LayoutCodex.h"
 #include "Core/MetaProgramming/DynamicConstant.h"
 #include "Core/MetaProgramming/Vertex.h"
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
-#include "TestingQA.h"
-#include "RendererAPI/Mesh/Material.h"
 #include "RendererAPI/Mesh/Mesh.h"
-
+#include "RendererAPI/Mesh/Material.h"
+#include "Core/Math/FraplesXM.h"
 namespace FraplesDev
 {
 
@@ -20,6 +20,15 @@ namespace FraplesDev
 			const auto pScene = imp.ReadFile(path, aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_ConvertToLeftHanded | aiProcess_GenNormals | aiProcess_CalcTangentSpace);
 			Material mat{ gfx,*pScene->mMaterials[1],path };
 			Mesh mesh{ gfx,mat,*pScene->mMeshes[0] };
+		}
+		void TestScaleMatrixTranslation()
+		{
+			auto tlMat = DirectX::XMMatrixTranslation(20.0f, 30.0f, 40.0f);
+			tlMat = ScaleTranslation(tlMat, 0.1f);
+			DirectX::XMFLOAT4X4 f4;
+			DirectX::XMStoreFloat4x4(&f4, tlMat);
+			auto etl = ExtractTranslation(f4);
+			assert(etl.x == 2.0f && etl.y == 3.0f && etl.z == 4.0f);
 		}
 		void TestDynamicMeshLoading()
 		{

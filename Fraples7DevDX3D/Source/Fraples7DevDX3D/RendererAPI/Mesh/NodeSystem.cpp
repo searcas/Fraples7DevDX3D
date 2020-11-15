@@ -41,13 +41,11 @@ namespace FraplesDev
 			}
 			probe.PopNode(*this);
 		}
-		
 	}
 
-	void Node::AddChild(std::unique_ptr<Node>pChild)noexcept(!IS_DEBUG)
+	void Node::AddChild(std::unique_ptr<Node>pChild) noexcept(!IS_DEBUG)
 	{
 		assert(pChild);
 		_mChildPtrs.push_back(std::move(pChild));
-
 	}
 }

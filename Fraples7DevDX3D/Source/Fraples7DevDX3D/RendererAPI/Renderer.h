@@ -15,7 +15,7 @@ namespace FraplesDev
 	{
 
 	public:
-		Renderer(Graphics& gfx, const class Material& mat, const aiMesh& mesh)noexcept;
+		Renderer(Graphics& gfx, const class Material& mat, const aiMesh& mesh, float scale = 1.0f)noexcept;
 		Renderer() = default;
 		Renderer(const Renderer&) = delete;
 		void AddTechnique(Technique tech_in)noexcept;

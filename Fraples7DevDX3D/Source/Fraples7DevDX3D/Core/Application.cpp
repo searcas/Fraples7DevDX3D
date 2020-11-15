@@ -18,6 +18,7 @@
 #include "assimp/Importer.hpp"
 #include "assimp/postprocess.h"
 #include "RendererAPI/Mesh/ModelProbe.h"
+#include "Core/Math/FraplesXM.h"
 namespace FraplesDev
 {
 	
@@ -25,7 +26,8 @@ namespace FraplesDev
 		:_mWin(name, width, height), light(_mWin.GetGFX()), scriptCommander(Utility::TokenizeQuoted(commandLine))
 	{
 		//QA::TestMaterialSystemLoading(_mWin.GetGFX());
-		
+		cube1.SetPos({ 4.0f,0.0f,0.0f });
+		cube2.SetPos({ 0.0f,4.0f,0.0f });
 		//bluePlane.SetPosXYZ(_mCamera.GetPos());
 		//redPlane.SetPosXYZ(_mCamera.GetPos());
 		_mWin.GetGFX().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 800.0f));
@@ -60,8 +62,8 @@ namespace FraplesDev
 		ShowRawInputWindow();
 	//	bluePlane.SpawnControlWindow(_mWin.GetGFX(),"BLUE ONE");
 	//	redPlane.SpawnControlWindow(_mWin.GetGFX(), "RED ONE");
-	//	cube1.SpawnControlWindow(_mWin.GetGFX(), "Cube 1");
-	//	cube2.SpawnControlWindow(_mWin.GetGFX(), "Cube 2");
+		cube1.SpawnControlWindow(_mWin.GetGFX(), "Cube 1");
+		cube2.SpawnControlWindow(_mWin.GetGFX(), "Cube 2");
 	}
 
 	void Application::RenderObj()
@@ -69,8 +71,8 @@ namespace FraplesDev
 		light.Submit(fc);
 		//_mPloaded->Submit(fc, DirectX::XMMatrixIdentity());
 		_mSponza.Submit(fc);
-		//cube1.Submit(fc);
-		//cube2.Submit(fc);
+		cube1.Submit(fc);
+		cube2.Submit(fc);
 	//	gobber.Submit(fc);
 		fc.Execute(_mWin.GetGFX());
 	}
@@ -151,11 +153,80 @@ namespace FraplesDev
 
 				if (pSelectedNode != nullptr)
 				{
+					bool dirty = false;
+					const auto dcheck = [&dirty](bool changed) {dirty = dirty || changed; };
+					auto& tf = ResolveTransform();
 
+					ImGui::TextColored({ 1.0f,0.2f,0.2f,0.7f }, "Translation");
+					dcheck(ImGui::SliderFloat("X", &tf.x, -60.0f, 60.0f));
+					dcheck(ImGui::SliderFloat("Y", &tf.y, -60.0f, 60.0f));
+					dcheck(ImGui::SliderFloat("Z", &tf.z, -60.0f, 60.0f));
+
+					//So we gotta be careful here cuz We can't name again X Y Z
+					//Gonna Trigger both childs and move both coords
+					ImGui::TextColored({ 0.2f,1.0f,0.2f,0.7f }, "Orientation");
+					dcheck(ImGui::SliderAngle("X-Rot", &tf.xRot, -180.0f, 180.0f));
+					dcheck(ImGui::SliderAngle("Y-Rot", &tf.yRot, -180.0f, 180.0f));
+					dcheck(ImGui::SliderAngle("Z-Rot", &tf.zRot, -180.0f, 180.0f));
+
+					if (dirty)
+					{
+						pSelectedNode->SetAppliedTransform(
+							DirectX::XMMatrixRotationX(tf.xRot) * 
+							DirectX::XMMatrixRotationY(tf.yRot) * 
+							DirectX::XMMatrixRotationZ(tf.zRot) * 
+							DirectX::XMMatrixTranslation(tf.x, tf.y, tf.z));
+					}
+					if (ImGui::Button("Reset"))
+					{
+						tf = {};
+						pSelectedNode->SetAppliedTransform(
+							DirectX::XMMatrixRotationX(tf.xRot) *
+							DirectX::XMMatrixRotationY(tf.yRot) *
+							DirectX::XMMatrixRotationZ(tf.zRot) *
+							DirectX::XMMatrixTranslation(tf.x, tf.y, tf.z));
+
+					}
 				}
 				ImGui::End();
 			}
 		protected:
+			Node* pSelectedNode = nullptr;
+			struct TransformParameters
+			{
+				float xRot = 0.0f;
+				float yRot = 0.0f;
+				float zRot = 0.0f;
+				float x = 0.0f;
+				float y = 0.0f;
+				float z = 0.0f;
+			};
+			std::unordered_map<int, TransformParameters>_mTransformParams;
+
+			TransformParameters& ResolveTransform()noexcept
+			{
+				const auto id = pSelectedNode->GetId();
+				auto i = _mTransformParams.find(id);
+				if (i ==_mTransformParams.end())
+				{
+					return LoadTransform(id);
+				}
+				return i->second;
+			}
+			TransformParameters& LoadTransform(int id)noexcept
+			{
+				const auto& applied = pSelectedNode->GetAppliedTransform();
+				const auto angles = ExtractEulerAngles(applied);
+				const auto translation = ExtractTranslation(applied);
+				TransformParameters tp;
+				tp.xRot = angles.x;
+				tp.yRot = angles.y;
+				tp.zRot = angles.z;
+				tp.x = translation.x;
+				tp.y = translation.y;
+				tp.z = translation.z;
+				return _mTransformParams.insert({ id,{ tp }}).first->second;
+			}
 			bool PushNode(Node& node)override
 			{
 				// if there is no selected node,  set selectedId to an impossible value;
@@ -177,8 +248,7 @@ namespace FraplesDev
 			{
 				ImGui::TreePop();
 			}
-		protected:
-			Node* pSelectedNode = nullptr;
+	
 		};
 		static MP modelProbe;
 		modelProbe.SpawnWindow(_mSponza);

@@ -117,34 +117,24 @@ namespace FraplesDev
 	DirectX::XMMATRIX ModelWindow::GetTransform() const noexcept
 	{
 		assert(_mPselectedNode != nullptr);
-
-		const auto& transform = _mTransforms.at(_mPselectedNode->GetId()).transformParams;
-		return DirectX::XMMatrixRotationRollPitchYaw(transform.roll, transform.pitch, transform.yaw) *
-			DirectX::XMMatrixTranslation(transform.x, transform.y, transform.z);
+		return DirectX::XMMatrixIdentity();
 	}
-	const MP::Buffer& ModelWindow::GetMaterial()const noexcept(!IS_DEBUG)
-	{
-		assert(_mPselectedNode != nullptr);
-		const auto& mat = _mTransforms.at(_mPselectedNode->GetId()).materialCbuf;
-		assert(mat);
-		return *mat;
 
-	}
 	bool ModelWindow::TransformDirty()const noexcept(!IS_DEBUG)
 	{
-		return _mPselectedNode && _mTransforms.at(_mPselectedNode->GetId()).transformParamsDirty;
+		return false;//_mPselectedNode && _mTransforms.at(_mPselectedNode->GetId()).transformParamsDirty;
 	}
 	void ModelWindow::ResetTransformDirty()noexcept(!IS_DEBUG)
 	{
-		_mTransforms.at(_mPselectedNode->GetId()).transformParamsDirty = false;
+		//_mTransforms.at(_mPselectedNode->GetId()).transformParamsDirty = false;
 	}
 	bool ModelWindow::MaterialDirty()const noexcept(!IS_DEBUG)
 	{
-		return _mPselectedNode && _mTransforms.at(_mPselectedNode->GetId()).materialCbufDirty;
+		return false;//_mPselectedNode && _mTransforms.at(_mPselectedNode->GetId()).materialCbufDirty;
 	}
 	void ModelWindow::ResetMaterialDirty()noexcept(!IS_DEBUG)
 	{
-		_mTransforms.at(_mPselectedNode->GetId()).materialCbufDirty = false;
+		//_mTransforms.at(_mPselectedNode->GetId()).materialCbufDirty = false;
 	}
 	bool ModelWindow::IsDirty()const noexcept(!IS_DEBUG)
 	{
