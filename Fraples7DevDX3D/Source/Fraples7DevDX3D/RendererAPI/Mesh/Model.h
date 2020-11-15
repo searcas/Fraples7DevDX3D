@@ -1,5 +1,4 @@
 #pragma once
-#include "ModelWindow.h"
 #include <memory>
 #include <GraphicAPI/Graphics.h>
 #include "Mesh.h"

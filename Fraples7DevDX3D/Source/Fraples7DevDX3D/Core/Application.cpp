@@ -19,6 +19,8 @@
 #include "assimp/postprocess.h"
 #include "RendererAPI/Mesh/ModelProbe.h"
 #include "Core/Math/FraplesXM.h"
+#include "RendererAPI/Mesh/NodeSystem.h"
+
 namespace FraplesDev
 {
 	
@@ -112,6 +114,10 @@ namespace FraplesDev
 				if (auto v = buf["scale"];v.Exists())
 				{
 					dCheck(ImGui::SliderFloat(tag("Scale"), &v, 1.0f, 2.0f, "%.3f"));
+				}
+				if (auto v = buf["offset"]; v.Exists())
+				{
+					dCheck(ImGui::SliderFloat(tag("offset"), &v, 0.0f, 1.0f, "%.3f"));
 				}
 				if (auto v = buf["materialColor"]; v.Exists())
 				{
@@ -249,6 +255,27 @@ namespace FraplesDev
 				// processing for selectin node
 				if (ImGui::IsItemClicked())
 				{
+					//used to change the highlighted node on selection change
+					struct Probe : public TechniqueProbe
+					{
+						virtual void OnSetTechnique()
+						{
+							if (_mPtech->GetName() == "Outline")
+							{
+								_mPtech->SetActiveState(highlighted);
+							}
+						}
+						bool highlighted = true;
+					}probe;
+					// remove highlight on prev-selected node
+					if (pSelectedNode != nullptr)
+					{
+						pSelectedNode->Accept(probe);
+					}
+					//add highlight to newly-selected node
+					probe.highlighted = true;
+					node.Accept(probe);
+
 					pSelectedNode = &node;
 				}
 				// signal if children should also be recursed

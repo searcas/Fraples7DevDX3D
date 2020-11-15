@@ -125,14 +125,14 @@ namespace FraplesDev
 				buf["useNormalMap"].SetIfExists(true);
 				buf["normalMapWeight"].SetIfExists(1.0f);
 				step.AddContext(std::make_unique<CachingPixelConstantBufferEx>(gfx, std::move(buf), 1u));
-				phong.AddStep(std::move(step));
-				_mTechniques.push_back(std::move(phong));
 			}
+			phong.AddStep(std::move(step));
+			_mTechniques.push_back(std::move(phong));
 		}
 
 		//outline technique
 		{
-			Technique outline("Outline",false);
+			Technique outline("Outline", true);
 			{
 				Step mask(1);
 
@@ -156,59 +156,25 @@ namespace FraplesDev
 
 				//this can be pass-constant
 				draw.AddContext(PixelShader::Resolve(gfx, "Solid_PS.cso"));
-				MP::RawLayout layout;
-				layout.Add<MP::Float3>("materialColor");
-				auto buf = MP::Buffer(std::move(layout));
-				buf["materialColor"] = DirectX::XMFLOAT3{ 1.0f,0.4f,0.4f};
-				draw.AddContext(std::make_shared<CachingPixelConstantBufferEx>(gfx, buf, 1u));
+				{
+					MP::RawLayout layout;
+					layout.Add<MP::Float3>("materialColor");
+					auto buf = MP::Buffer(std::move(layout));
+					buf["materialColor"] = DirectX::XMFLOAT3{ 1.0f,0.4f,0.4f };
+					draw.AddContext(std::make_shared<CachingPixelConstantBufferEx>(gfx, buf, 1u));
+				}
+				{
 
-				/*MP::RawLayout lay;
-				lay.Add<MP::Float>("offset");
-				auto buf = MP::Buffer(std::move(lay));
-				buf["offset"] = 0.5f;
-				draw["offset"] = 0.5f;
-				draw.AddContext(std::make_shared<CachingVertexConstantBufferEx>(gfx, buf, 1u));
-				*/
+					MP::RawLayout lay;
+					lay.Add<MP::Float>("offset");
+					auto buf = MP::Buffer(std::move(lay));
+					buf["offset"] = 0.1f;
+					draw.AddContext(std::make_shared<CachingVertexConstantBufferEx>(gfx, buf, 1u));
+				
+				}
 				//TODO: better sub-layout generation tech for future consideration maybe
 				draw.AddContext(InputLayout::Resolve(gfx, _mVertexLayout, pvsbyte));
-
-				//quic and dirty.. nicer soulution maybe takes a lamba ..
-
-				class TransformCbufScaling : public TransformCBuf
-				{
-				public:
-					TransformCbufScaling(Graphics& gfx, float scale = 1.04f)
-						:TransformCBuf(gfx), _mBuf(MakeLayout())
-					{
-						_mBuf["scale"] = scale;
-					}
-					void Accept(TechniqueProbe& probe)override
-					{
-						probe.VisitBuffer(_mBuf);
-					}
-					void Bind(Graphics& gfx)noexcept override
-					{
-						const float scale = _mBuf["scale"];
-						const auto scaleMatrix = DirectX::XMMatrixScaling(scale, scale, scale);
-						auto xf = GetTransforms(gfx);
-						xf.modelView = xf.modelView * scaleMatrix;
-						xf.modelViewProj = xf.modelViewProj * scaleMatrix;
-						UpdateBindImpl(gfx, xf);
-					}
-					std::unique_ptr<CloningContext>Clone()const noexcept override
-					{
-						return std::make_unique<TransformCbufScaling>(*this);
-					}
-					static MP::RawLayout MakeLayout()
-					{
-						MP::RawLayout layout;
-						layout.Add<MP::Float>("scale");
-						return layout;
-					}
-				private:
-					MP::Buffer _mBuf;
-				};
-				draw.AddContext(std::make_shared<TransformCbufScaling>(gfx));
+				draw.AddContext(std::make_shared<TransformCBuf>(gfx));
 
 				//TODO: might need to specify resterizer when doubled-sided models start being used
 

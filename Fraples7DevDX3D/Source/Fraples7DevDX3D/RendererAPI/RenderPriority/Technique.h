@@ -7,8 +7,8 @@ namespace FraplesDev
 	{
 	public:
 		Technique() = default;
-		Technique(std::string name, bool outline = true)noexcept
-			:_mName(name),_mActivate(outline)
+		Technique(std::string name, bool isActive = true)noexcept
+			:_mName(name),_mActivate(isActive)
 		{
 
 		}

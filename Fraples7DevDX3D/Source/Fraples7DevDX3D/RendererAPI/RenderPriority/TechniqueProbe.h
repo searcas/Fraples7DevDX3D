@@ -27,7 +27,10 @@ namespace FraplesDev
 			_mBufIdx++;
 			return OnVisitBuffer(buf);
 		}
-		virtual bool OnVisitBuffer( class MP::Buffer&) = 0;
+		virtual bool OnVisitBuffer(class MP::Buffer&)
+		{
+			return false;
+		}
 	protected:
 		virtual void OnSetTechnique() {}
 		virtual void OnSetStep() {}

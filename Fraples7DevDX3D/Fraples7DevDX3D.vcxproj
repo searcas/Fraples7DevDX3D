@@ -108,7 +108,6 @@
     <ClCompile Include="Source\Fraples7DevDX3D\QualityAssurance\TestingQA.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\Material.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\ModelException.cpp" />
-    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\ModelWindow.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\NodeSystem.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Utility\Fraples7Utility.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Utility\NormalMapCMD.h" />
@@ -178,7 +177,6 @@
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\Material.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\ModelException.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\ModelProbe.h" />
-    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\ModelWindow.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\NodeSystem.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderPriority\TechniqueProbe.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Utility\Fraples7Utility.h" />

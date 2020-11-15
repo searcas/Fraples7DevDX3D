@@ -78,7 +78,7 @@ namespace FraplesDev
 				//TODO: Better Sub-Layout generation tech for future consideration maybe
 				draw.AddContext(InputLayout::Resolve(gfx, model._mVertices.GetLayout(), pvsbyte));
 
-				//quick and dirty... nicer soulution maybe takes a lamba... we'll see
+				//quick and dirty... nicer soulution maybe takes a lamba, we'll see
 				class TransformCbufScaling : public TransformCBuf
 				{
 				public:
