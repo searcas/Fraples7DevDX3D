@@ -8,15 +8,32 @@
 #include "RendererAPI/NullPixelShader.h"
 #include "Utility/SpeedLog.h"
 #include "RendererAPI/Stencil/DepthStencil.h"
+#include "RendererAPI/RenderTarget.h"
 namespace FraplesDev
 {
 	class FrameCommander
 	{
 	public:
 		FrameCommander(Graphics& gfx)
-			:_mDepthStencil(gfx, gfx.GetWidth(), gfx.GetHeight())
+			:_mDepthStencil(gfx, gfx.GetWidth(), gfx.GetHeight()),
+			_mRenderTarget(gfx, gfx.GetWidth(), gfx.GetHeight())
 		{
+			MP::VertexLayout lay;
+			lay.Append(MP::ElementType::Position2D);
 
+			MP::VertexBuffer buffFull{ lay };
+			buffFull.EmplaceBack(DirectX::XMFLOAT2{ -1, 1 });
+			buffFull.EmplaceBack(DirectX::XMFLOAT2{  1, 1 });
+			buffFull.EmplaceBack(DirectX::XMFLOAT2{ -1,-1 });
+			buffFull.EmplaceBack(DirectX::XMFLOAT2{  1,-1 });
+			_mPvertexBufferFull = VertexBuffer::Resolve(gfx, "$Full", std::move(buffFull));
+			std::vector<unsigned short> indices = { 0, 1, 2, 1, 3, 2 };
+			_mPindexBufferFull = IndexBuffer::Resolve(gfx, "$Full", std::move(indices));
+
+			// setup fullscreen shaders
+			_mPpixelShaderFull = PixelShader::Resolve(gfx, "Funk_PS.cso");
+			_mPvertexShaderFull = VertexShader::Resolve(gfx, "FullScreen_VS.cso");
+			_mPlayoutFull = InputLayout::Resolve(gfx, lay, _mPvertexShaderFull->GetByteCode());
 		}
 		void Accept(Job job, size_t target)noexcept
 		{
@@ -29,10 +46,10 @@ namespace FraplesDev
 			// be a complex graph with parallel execution contingent
 			// on input / output requirements
 
-			//Setup render target used for all passes
+			//Setup render target used for normal passes
 			_mDepthStencil.Clear(gfx);
-			gfx.BindSwapBuffer(_mDepthStencil);
-
+			_mRenderTarget.BindAsTarget(gfx, _mDepthStencil);
+			
 			// main phong lighting pass
 			Stencil::Resolve(gfx, Stencil::Mode::Off)->Bind(gfx);
 			_mPasses[0].Execute(gfx);
@@ -47,6 +64,15 @@ namespace FraplesDev
 
 			
 			_mPasses[2].Execute(gfx);
+			// fullscreen funky pass
+			gfx.BindSwapBuffer();
+			_mRenderTarget.BindAsTexture(gfx, 0);
+			_mPvertexBufferFull->Bind(gfx);
+			_mPindexBufferFull->Bind(gfx);
+			_mPvertexShaderFull->Bind(gfx);
+			_mPpixelShaderFull->Bind(gfx);
+			_mPlayoutFull->Bind(gfx);
+			gfx.RenderIndexed(_mPindexBufferFull->GetCount());
 		}
 		void Reset()noexcept
 		{
@@ -56,7 +82,21 @@ namespace FraplesDev
 			}
 		}
 	private:
+		static MP::VertexLayout MakeFullScreenQuadLayout()
+		{
+			MP::VertexLayout lay;
+			lay.Append(MP::ElementType::Position2D);
+			return lay;
+		}
+	private:
 		std::array<Pass, 3>_mPasses;
 		 DepthStencil _mDepthStencil;
+	private:
+		RenderTarget _mRenderTarget;
+		std::shared_ptr<VertexBuffer>_mPvertexBufferFull;
+		std::shared_ptr<IndexBuffer>_mPindexBufferFull;
+		std::shared_ptr<VertexShader>_mPvertexShaderFull;
+		std::shared_ptr<PixelShader>_mPpixelShaderFull;
+		std::shared_ptr<InputLayout>_mPlayoutFull;
 	};
 }

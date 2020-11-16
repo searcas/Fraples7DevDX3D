@@ -9,7 +9,7 @@ namespace FraplesDev
 	class IndexBuffer;
 	class VertexBuffer;
 	class Topology;
-	class Inputlayout;
+	class InputLayout;
 
 	class Renderer
 	{

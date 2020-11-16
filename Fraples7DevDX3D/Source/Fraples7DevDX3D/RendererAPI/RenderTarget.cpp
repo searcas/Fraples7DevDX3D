@@ -1,6 +1,5 @@
 #include "RenderTarget.h"
 #include "Core/Common/Exceptions/Macros/GraphicsThrowMacros.h"
-#include "RendererAPI/Stencil/DepthStencil.h"
 namespace FraplesDev
 {
 	RenderTarget::RenderTarget(Graphics& gfx, UINT width, UINT height)
@@ -38,11 +37,11 @@ namespace FraplesDev
 		rtvDesc.Texture2D = D3D11_TEX2D_RTV{ 0 };
 		FPL_GFX_THROW_INFO(GetDevice(gfx)->CreateRenderTargetView(ptexture.Get(), &rtvDesc, &_mPtargetView));
 	}
-	void RenderTarget::BindAsTexture(Graphics& gfx, UINT slot)
+	void RenderTarget::BindAsTexture(Graphics& gfx, UINT slot)const 
 	{
 		GetContext(gfx)->PSSetShaderResources(slot, 1u, _mPtextureView.GetAddressOf());
 	}
-	void RenderTarget::BindAsTarget(Graphics& gfx)
+	void RenderTarget::BindAsTarget(Graphics& gfx)const 
 	{
 		GetContext(gfx)->OMSetRenderTargets(1u, _mPtargetView.GetAddressOf(), nullptr);
 	}
