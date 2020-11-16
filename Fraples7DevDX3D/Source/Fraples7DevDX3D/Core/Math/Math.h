@@ -5,8 +5,8 @@
 constexpr float PI = 3.14159265f;
 constexpr double PI_D = 3.1415926535897932;
 
-template<typename T>
-constexpr auto Sq(const T&& x)noexcept
+template<typename T = double>
+constexpr auto Sq( T&& x)
 {
 	return std::move(x * x);
 }
@@ -42,8 +42,8 @@ constexpr T to_rad(T degree)noexcept
 // https://en.wikipedia.org/wiki/Gaussian_function
 // Scary func
 template<typename T>
-constexpr T gauss(T x, T sigma) noexcept
+constexpr T gauss(T x, T sigma) 
 {
-	const auto ss = sq(sigma);
-	return ((T)1.0 / sqrt((T)2.0 * (T)PI_D * ss)) * exp(-sq(x) / ((T)2.0 * ss));
+	const auto ss = Sq(sigma);
+	return ((T)1.0 / sqrt((T)2.0 * (T)PI_D * ss)) * exp(-Sq(x) / ((T)2.0 * ss));
 }

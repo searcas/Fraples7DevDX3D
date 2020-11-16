@@ -9,6 +9,7 @@
 #include "Utility/SpeedLog.h"
 #include "RendererAPI/Stencil/DepthStencil.h"
 #include "RendererAPI/RenderTarget.h"
+#include "RendererAPI/Filters/BlurPack.h"
 namespace FraplesDev
 {
 	class FrameCommander
@@ -16,7 +17,9 @@ namespace FraplesDev
 	public:
 		FrameCommander(Graphics& gfx)
 			:_mDepthStencil(gfx, gfx.GetWidth(), gfx.GetHeight()),
-			_mRenderTarget(gfx, gfx.GetWidth(), gfx.GetHeight())
+			_mRenderTarget1(gfx, gfx.GetWidth(), gfx.GetHeight()),
+			_mRenderTarget2(gfx, gfx.GetWidth(), gfx.GetHeight()),
+			blur(gfx)
 		{
 			MP::VertexLayout lay;
 			lay.Append(MP::ElementType::Position2D);
@@ -31,17 +34,15 @@ namespace FraplesDev
 			_mPindexBufferFull = IndexBuffer::Resolve(gfx, "$Full", std::move(indices));
 
 			// setup fullscreen shaders
-			_mPpixelShaderFull = PixelShader::Resolve(gfx, "BlurOutline_PS.cso");
 			_mPvertexShaderFull = VertexShader::Resolve(gfx, "FullScreen_VS.cso");
 			_mPlayoutFull = InputLayout::Resolve(gfx, lay, _mPvertexShaderFull->GetByteCode());
 			_mPsamplerFull = Sampler::Resolve(gfx, false, true);
-			_mPblenderFull = Blending::Resolve(gfx, true);
 		}
 		void Accept(Job job, size_t target)noexcept
 		{
 			_mPasses[target].Accept(job);
 		}
-		void Execute(Graphics& gfx)const noexcept(!IS_DEBUG)
+		void Execute(Graphics& gfx) noexcept(!IS_DEBUG)
 		{
 			// Normally this would be a loop with each pass
 			// defining it setup / etc. and later on it would
@@ -50,35 +51,38 @@ namespace FraplesDev
 
 			//Setup render target used for normal passes
 			_mDepthStencil.Clear(gfx);
-			_mRenderTarget.Clear(gfx);
-			gfx.BindSwapBuffer(_mDepthStencil);
+			_mRenderTarget1.Clear(gfx);
+			_mRenderTarget1.BindAsTarget(gfx, _mDepthStencil);
+
 			
 			// main phong lighting pass
 			Blending::Resolve(gfx, false)->Bind(gfx);
 			Stencil::Resolve(gfx, Stencil::Mode::Off)->Bind(gfx);
 			_mPasses[0].Execute(gfx);
-			
-			//outline masking pass
-			Stencil::Resolve(gfx, Stencil::Mode::Write)->Bind(gfx);
-			NullPixelShader::Resolve(gfx)->Bind(gfx);
-			_mPasses[1].Execute(gfx);
+			// Fullscreen blur h-pass
+			_mRenderTarget2.BindAsTarget(gfx);
+			_mRenderTarget1.BindAsTexture(gfx,0);
 
-			// Outline drawing pass
-			_mRenderTarget.BindAsTarget(gfx);
-			Stencil::Resolve(gfx, Stencil::Mode::Off)->Bind(gfx);
-			_mPasses[2].Execute(gfx);
-			// fullscreen blur + blend pass
-			gfx.BindSwapBuffer(_mDepthStencil);
-			_mRenderTarget.BindAsTexture(gfx, 0);
+
+		
 			_mPvertexBufferFull->Bind(gfx);
 			_mPindexBufferFull->Bind(gfx);
 			_mPvertexShaderFull->Bind(gfx);
-			_mPpixelShaderFull->Bind(gfx);
 			_mPlayoutFull->Bind(gfx);
 			_mPsamplerFull->Bind(gfx);
-			_mPblenderFull->Bind(gfx);
-			Stencil::Resolve(gfx, Stencil::Mode::Mask)->Bind(gfx);
+			
+			blur.Bind(gfx);
+			blur.SetHorizontal(gfx);
 			gfx.RenderIndexed(_mPindexBufferFull->GetCount());
+			// fullscreen blur v-pass
+			gfx.BindSwapBuffer();
+			_mRenderTarget2.BindAsTexture(gfx, 0u);
+			blur.SetVertical(gfx);
+			gfx.RenderIndexed(_mPindexBufferFull->GetCount());
+		}
+		void ShowWindow(Graphics& gfx)
+		{
+			blur.ShowWindow(gfx);
 		}
 		void Reset()noexcept
 		{
@@ -90,8 +94,10 @@ namespace FraplesDev
 	private:
 		std::array<Pass, 3>_mPasses;
 		 DepthStencil _mDepthStencil;
+		 RenderTarget _mRenderTarget1;
+		 RenderTarget _mRenderTarget2;
+		 BlurPack blur;
 	private:
-		RenderTarget _mRenderTarget;
 		std::shared_ptr<VertexBuffer>_mPvertexBufferFull;
 		std::shared_ptr<IndexBuffer>_mPindexBufferFull;
 		std::shared_ptr<VertexShader>_mPvertexShaderFull;
