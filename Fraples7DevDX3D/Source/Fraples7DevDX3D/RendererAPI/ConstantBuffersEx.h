@@ -9,7 +9,6 @@ namespace FraplesDev
 	class ConstantBufferEx : public GfxContext
 	{
 	public:
-	
 		void Update(Graphics& gfx, const MP::Buffer& buf)
 		{
 			assert(&buf.GetRootLayoutElement() == &GetRootLayoutElement());

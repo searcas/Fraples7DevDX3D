@@ -9,11 +9,13 @@
 #include <wrl.h>
 #include "imgui_impl_win32.h"
 #define GFX_THROW_FAILED(hrcall) if(FAILED(hr = (hrcall))) throw FraplesDev::Graphics::HrException(__LINE__,__FILE__,hr)
+
 namespace FraplesDev
 {
+
 	class Graphics
 	{
-		friend class GfxContext;
+		friend class GraphicsResource;
 	public:
 		class Exception : public FraplesDev::FraplesException
 		{
@@ -55,14 +57,15 @@ namespace FraplesDev
 		Graphics(HWND hWnd,int width,int height);
 		Graphics(const Graphics&) = delete;
 		Graphics& operator=(const Graphics&) = delete;
-
 		~Graphics();
+		
 	public:
 		void EndFrame();
 		//clear buffer
 		void BeginFrame(float red, float green, float blue) noexcept;
 		void RenderIndexed(UINT count)noexcept(!IS_DEBUG);
-		void SetProjection(DirectX::FXMMATRIX proj) noexcept;
+		void BindSwapBuffer()noexcept;
+		void BindSwapBuffer(const class DepthStencil& depthStencil)noexcept; void SetProjection(DirectX::FXMMATRIX proj) noexcept;
 		const DirectX::XMMATRIX& GetProjection() const noexcept;
 		void SetCamera(DirectX::FXMMATRIX cameraView) noexcept;
 		inline DirectX::XMMATRIX GetCamera()const noexcept
@@ -72,6 +75,8 @@ namespace FraplesDev
 	public:
 		void EnableImGui()noexcept;
 		void DisableImGui()noexcept;
+		UINT GetWidth()const noexcept;
+		UINT GetHeight()const noexcept;
 		constexpr bool IsEnabled() noexcept
 		{
 			return IsImGuiEnabled;
@@ -88,6 +93,8 @@ namespace FraplesDev
 		DirectX::XMMATRIX _mProjection;
 		DirectX::XMMATRIX _mCamera;
 		bool IsImGuiEnabled = true;
+		UINT _mWidth;
+		UINT _mHeight;
 	};
 
 	

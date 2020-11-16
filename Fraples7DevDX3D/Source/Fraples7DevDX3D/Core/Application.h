@@ -42,7 +42,7 @@ namespace FraplesDev
 		//objects
 		PointLight light;
 		Camera _mCamera;
-		FrameCommander fc;
+		FrameCommander fc{_mWin.GetGFX()};
 		//std::unique_ptr<Mesh>_mPloaded;
 		BaseCube cube1 = { _mWin.GetGFX(),4.0f };
 		BaseCube cube2 = { _mWin.GetGFX(),4.0f };

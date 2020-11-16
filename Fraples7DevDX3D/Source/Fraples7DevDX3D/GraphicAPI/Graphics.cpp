@@ -1,19 +1,21 @@
-#include "../../Fraples7DevDX3D/Core/Fraples7.h"
-#include "../Core/Common/Exceptions/Macros/GraphicsThrowMacros.h"
-#include "../Core/Common/dxerr.h"
-#include "../Core/Common/DxgiInfoManager.h"
+#include "Core/Fraples7.h"
+#include "Core/Common/Exceptions/Macros/GraphicsThrowMacros.h"
+#include "Core/Common/dxerr.h"
+#include "Core/Common/DxgiInfoManager.h"
 #include "imgui_impl_dx11.h"
 #include "Graphics.h"
+#include "RendererAPI/Stencil/DepthStencil.h"
 #include <sstream>
 #include <random>
 #pragma comment(lib,"d3d11.lib")
 
 namespace FraplesDev {
 	FraplesDev::Graphics::Graphics(HWND hWnd,int width,int height)
+		: _mWidth(std::move(width)),_mHeight(std::move(height))
 	{
 		DXGI_SWAP_CHAIN_DESC swap;
-		swap.BufferDesc.Width = width;
-		swap.BufferDesc.Height = height;
+		swap.BufferDesc.Width = _mWidth;
+		swap.BufferDesc.Height = _mHeight;
 		swap.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
 		swap.BufferDesc.RefreshRate.Numerator = 0;
 		swap.BufferDesc.RefreshRate.Denominator = 0;
@@ -53,33 +55,10 @@ namespace FraplesDev {
 		FPL_GFX_THROW_INFO(_mpSwap->GetBuffer(0, __uuidof(ID3D11Resource),&pBackBuffer));
 		FPL_GFX_THROW_INFO(_mpDevice->CreateRenderTargetView(pBackBuffer.Get(), nullptr, &_mpTarget));
 
-		
-
-		Microsoft::WRL::ComPtr<ID3D11Texture2D> pDepthStencil;
-		D3D11_TEXTURE2D_DESC descDepth = {};
-		descDepth.Width = width;
-		descDepth.Height = height;
-		descDepth.MipLevels = 1u;
-		descDepth.ArraySize = 1u;
-		descDepth.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-		descDepth.SampleDesc.Count = 1u;
-		descDepth.SampleDesc.Quality = 0u;
-		descDepth.Usage = D3D11_USAGE_DEFAULT;
-		descDepth.BindFlags = D3D11_BIND_DEPTH_STENCIL;
-		FPL_GFX_THROW_INFO(_mpDevice->CreateTexture2D(&descDepth, nullptr, &pDepthStencil));
-
-		//create view of depth stensil texture
-		D3D11_DEPTH_STENCIL_VIEW_DESC descDSV = {};
-		descDSV.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-		descDSV.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
-		descDSV.Texture2D.MipSlice = 0u;
-		FPL_GFX_THROW_INFO(_mpDevice->CreateDepthStencilView(pDepthStencil.Get(), &descDSV, &_mpDSV));
-
-		_mpContext->OMSetRenderTargets(1u, _mpTarget.GetAddressOf(), _mpDSV.Get());
-
+	
 		D3D11_VIEWPORT vp = {};
-		vp.Width = (float)width;
-		vp.Height = (float)height;
+		vp.Width = (float)_mWidth;
+		vp.Height = (float)_mHeight;
 		vp.MinDepth = 0.0f;
 		vp.MaxDepth = 1.0f;
 		vp.TopLeftX = 0.0f;
@@ -159,7 +138,6 @@ namespace FraplesDev {
 		}
 		const float color[] = { red,green,blue,1.0f };
 		_mpContext->ClearRenderTargetView(_mpTarget.Get(), color);
-		_mpContext->ClearDepthStencilView(_mpDSV.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0u);
 	}
 	void FraplesDev::Graphics::EndFrame()
 	{
@@ -192,6 +170,11 @@ namespace FraplesDev {
 	void Graphics::RenderIndexed(UINT count)noexcept(!IS_DEBUG)
 	{
 		FPL_GFX_THROW_INFO_ONLY(_mpContext->DrawIndexed(count, 0u, 0));
+	}
+
+	void Graphics::BindSwapBuffer() noexcept
+	{
+		_mpContext->OMSetRenderTargets(1u, _mpTarget.GetAddressOf(), nullptr);
 	}
 
 	
@@ -235,6 +218,11 @@ namespace FraplesDev {
 		return "Fraples Graphics Eception [Device removed] (DXGI_ERROR_DEVICE_REMOVED)";
 	}
 
+	void Graphics::BindSwapBuffer(const DepthStencil& depthStencil) noexcept
+	{
+		_mpContext->OMSetRenderTargets(1u, _mpTarget.GetAddressOf(), depthStencil._mPdepthStencilView.Get());
+	}
+
 	void Graphics::SetProjection(DirectX::FXMMATRIX proj) noexcept
 	{
 		_mProjection = proj;
@@ -255,5 +243,13 @@ namespace FraplesDev {
 	void Graphics::DisableImGui() noexcept
 	{
 		IsImGuiEnabled = false;
+	}
+	UINT Graphics::GetWidth() const noexcept
+	{
+		return _mWidth;
+	}
+	UINT Graphics::GetHeight() const noexcept
+	{
+		return _mHeight;
 	}
 }

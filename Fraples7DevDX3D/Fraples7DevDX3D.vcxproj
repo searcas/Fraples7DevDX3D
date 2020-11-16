@@ -105,10 +105,13 @@
     <ClCompile Include="ImGui\imgui_impl_dx11.cpp" />
     <ClCompile Include="ImGui\imgui_impl_win32.cpp" />
     <ClCompile Include="ImGui\imgui_widgets.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\GraphicAPI\GraphicsResource.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\QualityAssurance\TestingQA.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\Material.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\ModelException.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\NodeSystem.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderTarget.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Stencil\DepthStencil.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Utility\Fraples7Utility.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Utility\NormalMapCMD.h" />
     <ClCompile Include="Source\Fraples7DevDX3D\Utility\ScriptCommandCenter.cpp" />
@@ -152,7 +155,6 @@
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\TransformCBufDual.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\VertexBuffer.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\VertexShader.cpp" />
-    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\GFXContext.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Renderer.cpp" />
     <ClCompile Include="WinEntryPoint.cpp" />
   </ItemGroup>
@@ -174,11 +176,14 @@
     <ClInclude Include="ImGui\imstb_textedit.h" />
     <ClInclude Include="ImGui\imstb_truetype.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\GraphicAPI\GraphicsResource.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\Material.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\ModelException.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\ModelProbe.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\NodeSystem.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderPriority\TechniqueProbe.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderTarget.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Stencil\DepthStencil.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Utility\Fraples7Utility.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Utility\ScriptCommandCenter.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Utility\SpeedLog.h" />

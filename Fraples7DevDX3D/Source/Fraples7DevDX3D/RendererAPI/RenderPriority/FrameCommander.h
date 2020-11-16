@@ -7,11 +7,17 @@
 #include "RendererAPI/Stencil.h"
 #include "RendererAPI/NullPixelShader.h"
 #include "Utility/SpeedLog.h"
+#include "RendererAPI/Stencil/DepthStencil.h"
 namespace FraplesDev
 {
 	class FrameCommander
 	{
 	public:
+		FrameCommander(Graphics& gfx)
+			:_mDepthStencil(gfx, gfx.GetWidth(), gfx.GetHeight())
+		{
+
+		}
 		void Accept(Job job, size_t target)noexcept
 		{
 			_mPasses[target].Accept(job);
@@ -22,6 +28,10 @@ namespace FraplesDev
 			// defining it setup / etc. and later on it would
 			// be a complex graph with parallel execution contingent
 			// on input / output requirements
+
+			//Setup render target used for all passes
+			_mDepthStencil.Clear(gfx);
+			gfx.BindSwapBuffer(_mDepthStencil);
 
 			// main phong lighting pass
 			Stencil::Resolve(gfx, Stencil::Mode::Off)->Bind(gfx);
@@ -47,5 +57,6 @@ namespace FraplesDev
 		}
 	private:
 		std::array<Pass, 3>_mPasses;
+		 DepthStencil _mDepthStencil;
 	};
 }
