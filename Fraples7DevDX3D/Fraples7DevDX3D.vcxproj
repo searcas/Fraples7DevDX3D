@@ -177,6 +177,7 @@
     <ClInclude Include="ImGui\imstb_truetype.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\GraphicAPI\GraphicsResource.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Filters\BlurPack.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\Material.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\ModelException.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\ModelProbe.h" />
@@ -269,6 +270,14 @@
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\BlendedPhongVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\BlurOutline_PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
     </FxCompile>

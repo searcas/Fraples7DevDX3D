@@ -26,6 +26,7 @@ namespace FraplesDev
 		:_mWin(name, width, height), light(_mWin.GetGFX()), scriptCommander(Utility::TokenizeQuoted(commandLine))
 	{
 		//QA::TestMaterialSystemLoading(_mWin.GetGFX());
+		QA::TestDynamicConstant();
 		cube1.SetPos({ 4.0f,0.0f,0.0f });
 		cube2.SetPos({ 0.0f,4.0f,0.0f });
 		//bluePlane.SetPosXYZ(_mCamera.GetPos());

@@ -146,6 +146,7 @@ namespace FraplesDev
 				//this failes assertion: array out of bounds
 				//cb["arr"s][200];
 			}
+
 			//size test array of arrays
 			{
 				MP::RawLayout s;
@@ -156,6 +157,15 @@ namespace FraplesDev
 
 				auto act = b.GetSizeInBytes();
 				assert(act == 16u * 4u * 4u * 6u);
+			}
+			{
+				MP::RawLayout s;
+				s.Add<MP::Array>("arr");
+				s["arr"].Set<MP::Float>(16);
+				auto b = MP::Buffer(std::move(s));
+
+				auto act = b.GetSizeInBytes();
+				assert(act == 256u);
 			}
 			//size test array of structs with padding
 			{

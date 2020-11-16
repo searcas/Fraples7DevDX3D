@@ -455,6 +455,9 @@
     <ClInclude Include="Source\Fraples7DevDX3D\GraphicAPI\GraphicsResource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Filters\BlurPack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\Fraples7DevDX3D\Shaders\ShaderOps.hlsli" />
@@ -501,5 +504,6 @@
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\Offset_VS.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\FullScreen_VS.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\Blur_PS.hlsl" />
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\BlurOutline_PS.hlsl" />
   </ItemGroup>
 </Project>

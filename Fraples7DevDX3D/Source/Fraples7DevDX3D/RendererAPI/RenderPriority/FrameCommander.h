@@ -31,7 +31,7 @@ namespace FraplesDev
 			_mPindexBufferFull = IndexBuffer::Resolve(gfx, "$Full", std::move(indices));
 
 			// setup fullscreen shaders
-			_mPpixelShaderFull = PixelShader::Resolve(gfx, "Blur_PS.cso");
+			_mPpixelShaderFull = PixelShader::Resolve(gfx, "BlurOutline_PS.cso");
 			_mPvertexShaderFull = VertexShader::Resolve(gfx, "FullScreen_VS.cso");
 			_mPlayoutFull = InputLayout::Resolve(gfx, lay, _mPvertexShaderFull->GetByteCode());
 			_mPsamplerFull = Sampler::Resolve(gfx, false, true);
