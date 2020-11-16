@@ -148,7 +148,7 @@ namespace FraplesDev
 			{
 				Step draw(2);
 				//these can be pass-constant (tricky due to layout issues)
-				auto pvs = VertexShader::Resolve(gfx, "Offset_VS.cso");
+				auto pvs = VertexShader::Resolve(gfx, "Solid_VS.cso");
 				auto pvsbyte = pvs->GetByteCode();
 				draw.AddContext(std::move(pvs));
 
@@ -160,14 +160,6 @@ namespace FraplesDev
 					auto buf = MP::Buffer(std::move(layout));
 					buf["materialColor"] = DirectX::XMFLOAT3{ 1.0f,0.4f,0.4f };
 					draw.AddContext(std::make_shared<CachingPixelConstantBufferEx>(gfx, buf, 1u));
-				}
-				{
-
-					MP::RawLayout lay;
-					lay.Add<MP::Float>("offset");
-					auto buf = MP::Buffer(std::move(lay));
-					buf["offset"] = 0.1f;
-					draw.AddContext(std::make_shared<CachingVertexConstantBufferEx>(gfx, buf, 1u));
 				}
 				//TODO: better sub-layout generation tech for future consideration maybe
 				draw.AddContext(InputLayout::Resolve(gfx, _mVertexLayout, pvsbyte));

@@ -82,39 +82,8 @@ namespace FraplesDev
 				draw.AddContext(InputLayout::Resolve(gfx, model._mVertices.GetLayout(), pvsbyte));
 
 				//quick and dirty... nicer soulution maybe takes a lamba, we'll see
-				class TransformCbufScaling : public TransformCBuf
-				{
-				public:
-					TransformCbufScaling(Graphics& gfx, float scale_in = 1.02f)
-						:TransformCBuf(gfx),_mBuf(MakeLayout())
-					{
-						_mBuf["scale"] = std::move(scale_in);
-					}
-					void Accept(TechniqueProbe& probe)override
-					{
-						probe.VisitBuffer(_mBuf);
-					}
-					void Bind(Graphics& gfx)noexcept override
-					{
-						const auto scale = _mBuf["scale"];
-						const auto scaleMatrix = DirectX::XMMatrixScaling(scale, scale, scale);
-						auto xf = GetTransforms(gfx);
 
-						xf.modelView = xf.modelView * scaleMatrix;
-						xf.modelViewProj = xf.modelViewProj * scaleMatrix;
-						UpdateBindImpl(gfx, xf);
-					}
-				private:
-					static MP::RawLayout MakeLayout()
-					{
-						MP::RawLayout layout;
-						layout.Add<MP::Float>("scale");
-						return layout;
-					}
-				private:
-					MP::Buffer _mBuf;
-				};
-				draw.AddContext(std::make_shared<TransformCbufScaling>(gfx));
+				draw.AddContext(std::make_shared<TransformCBuf>(gfx));
 				//TODO: might need to specify rasterizer when doubled-sided models start being used
 				outLine.AddStep(std::move(draw));
 			}

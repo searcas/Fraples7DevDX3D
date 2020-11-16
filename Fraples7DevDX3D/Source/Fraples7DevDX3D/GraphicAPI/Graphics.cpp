@@ -136,7 +136,7 @@ namespace FraplesDev {
 			ImGui_ImplWin32_NewFrame();
 			ImGui::NewFrame();
 		}
-		const float color[] = { red,green,blue,1.0f };
+		const float color[] = { red, green, blue, 0.0f };
 		_mpContext->ClearRenderTargetView(_mpTarget.Get(), color);
 	}
 	void FraplesDev::Graphics::EndFrame()

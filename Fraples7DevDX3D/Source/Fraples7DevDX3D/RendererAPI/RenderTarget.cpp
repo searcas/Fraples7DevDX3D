@@ -37,7 +37,15 @@ namespace FraplesDev
 		rtvDesc.Texture2D = D3D11_TEX2D_RTV{ 0 };
 		FPL_GFX_THROW_INFO(GetDevice(gfx)->CreateRenderTargetView(ptexture.Get(), &rtvDesc, &_mPtargetView));
 	}
-	void RenderTarget::BindAsTexture(Graphics& gfx, UINT slot)const 
+	void RenderTarget::Clear(Graphics& gfx, const std::array<float, 4>& color) const noexcept
+	{
+		GetContext(gfx)->ClearRenderTargetView(_mPtargetView.Get(), color.data());
+	}
+	void RenderTarget::Clear(Graphics& gfx) const noexcept
+	{
+		Clear(gfx, { 0.0f,0.0f,0.0f,0.0f });
+	}
+	void RenderTarget::BindAsTexture(Graphics& gfx, UINT slot)const
 	{
 		GetContext(gfx)->PSSetShaderResources(slot, 1u, _mPtextureView.GetAddressOf());
 	}

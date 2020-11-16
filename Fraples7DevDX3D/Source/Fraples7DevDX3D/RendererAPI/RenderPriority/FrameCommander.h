@@ -31,9 +31,11 @@ namespace FraplesDev
 			_mPindexBufferFull = IndexBuffer::Resolve(gfx, "$Full", std::move(indices));
 
 			// setup fullscreen shaders
-			_mPpixelShaderFull = PixelShader::Resolve(gfx, "Funk_PS.cso");
+			_mPpixelShaderFull = PixelShader::Resolve(gfx, "Blur_PS.cso");
 			_mPvertexShaderFull = VertexShader::Resolve(gfx, "FullScreen_VS.cso");
 			_mPlayoutFull = InputLayout::Resolve(gfx, lay, _mPvertexShaderFull->GetByteCode());
+			_mPsamplerFull = Sampler::Resolve(gfx, false, true);
+			_mPblenderFull = Blending::Resolve(gfx, true);
 		}
 		void Accept(Job job, size_t target)noexcept
 		{
@@ -48,9 +50,11 @@ namespace FraplesDev
 
 			//Setup render target used for normal passes
 			_mDepthStencil.Clear(gfx);
-			_mRenderTarget.BindAsTarget(gfx, _mDepthStencil);
+			_mRenderTarget.Clear(gfx);
+			gfx.BindSwapBuffer(_mDepthStencil);
 			
 			// main phong lighting pass
+			Blending::Resolve(gfx, false)->Bind(gfx);
 			Stencil::Resolve(gfx, Stencil::Mode::Off)->Bind(gfx);
 			_mPasses[0].Execute(gfx);
 			
@@ -60,18 +64,20 @@ namespace FraplesDev
 			_mPasses[1].Execute(gfx);
 
 			// Outline drawing pass
-			Stencil::Resolve(gfx, Stencil::Mode::Mask)->Bind(gfx);
-
-			
+			_mRenderTarget.BindAsTarget(gfx);
+			Stencil::Resolve(gfx, Stencil::Mode::Off)->Bind(gfx);
 			_mPasses[2].Execute(gfx);
-			// fullscreen funky pass
-			gfx.BindSwapBuffer();
+			// fullscreen blur + blend pass
+			gfx.BindSwapBuffer(_mDepthStencil);
 			_mRenderTarget.BindAsTexture(gfx, 0);
 			_mPvertexBufferFull->Bind(gfx);
 			_mPindexBufferFull->Bind(gfx);
 			_mPvertexShaderFull->Bind(gfx);
 			_mPpixelShaderFull->Bind(gfx);
 			_mPlayoutFull->Bind(gfx);
+			_mPsamplerFull->Bind(gfx);
+			_mPblenderFull->Bind(gfx);
+			Stencil::Resolve(gfx, Stencil::Mode::Mask)->Bind(gfx);
 			gfx.RenderIndexed(_mPindexBufferFull->GetCount());
 		}
 		void Reset()noexcept
@@ -91,5 +97,7 @@ namespace FraplesDev
 		std::shared_ptr<VertexShader>_mPvertexShaderFull;
 		std::shared_ptr<PixelShader>_mPpixelShaderFull;
 		std::shared_ptr<InputLayout>_mPlayoutFull;
+		std::shared_ptr<Sampler>_mPsamplerFull;
+		std::shared_ptr<Blending>_mPblenderFull;
 	};
 }
