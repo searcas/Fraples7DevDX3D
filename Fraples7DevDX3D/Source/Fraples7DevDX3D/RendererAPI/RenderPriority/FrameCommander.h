@@ -82,13 +82,6 @@ namespace FraplesDev
 			}
 		}
 	private:
-		static MP::VertexLayout MakeFullScreenQuadLayout()
-		{
-			MP::VertexLayout lay;
-			lay.Append(MP::ElementType::Position2D);
-			return lay;
-		}
-	private:
 		std::array<Pass, 3>_mPasses;
 		 DepthStencil _mDepthStencil;
 	private:
