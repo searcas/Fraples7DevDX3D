@@ -189,6 +189,15 @@
     <ClCompile Include="Source\Fraples7DevDX3D\GraphicAPI\GraphicsResource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderPriority\FrameCommander.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderPriority\Pass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderPriority\TechniqueProbe.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Fraples7.h">

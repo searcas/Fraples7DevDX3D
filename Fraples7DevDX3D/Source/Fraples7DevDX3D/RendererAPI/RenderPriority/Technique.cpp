@@ -20,4 +20,34 @@ namespace FraplesDev
 			s.InitializeParentReferences(parent);
 		}
 	}
+
+	Technique::Technique(std::string name, bool isActive )noexcept
+		:_mName(name), _mActivate(isActive)
+	{
+
+	}
+	void Technique::AddStep(Step step)noexcept
+	{
+		_mSteps.push_back(std::move(step));
+	}
+	void Technique::SetActiveState(bool active)noexcept
+	{
+		_mActivate = active;
+	}
+	bool Technique::IsActivated()noexcept
+	{
+		return _mActivate;
+	}
+	void Technique::Accept(TechniqueProbe& probe)
+	{
+		probe.SetTechnique(this);
+		for (auto& s : _mSteps)
+		{
+			s.Accept(probe);
+		}
+	}
+	const std::string& Technique::GetName()const noexcept
+	{
+		return _mName;
+	}
 }

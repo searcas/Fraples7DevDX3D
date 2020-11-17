@@ -1,5 +1,5 @@
 #pragma once
-
+#include <limits>
 namespace FraplesDev
 {
 	namespace MP
@@ -10,27 +10,10 @@ namespace FraplesDev
 	{
 	public:
 		// TODO: Add callback for visiting each mesh
-		void SetTechnique(class Technique* pTech_in)
-		{
-			_mPtech = pTech_in;
-			_mTechIdx++;
-			OnSetTechnique();
-		}
-		void SetStep(class Step* pStep_in)
-		{
-			_mPstep = pStep_in;
-			_mStepIdx++;
-			OnSetStep();
-		}
-		virtual bool VisitBuffer(class MP::Buffer&buf)
-		{
-			_mBufIdx++;
-			return OnVisitBuffer(buf);
-		}
-		virtual bool OnVisitBuffer(class MP::Buffer&)
-		{
-			return false;
-		}
+		void SetTechnique(class Technique* pTech_in);
+		void SetStep(class Step* pStep_in);
+		virtual bool VisitBuffer(class MP::Buffer& buf);
+		virtual bool OnVisitBuffer(class MP::Buffer&);
 	protected:
 		virtual void OnSetTechnique() {}
 		virtual void OnSetStep() {}

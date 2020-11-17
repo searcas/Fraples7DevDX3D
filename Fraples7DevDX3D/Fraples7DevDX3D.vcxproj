@@ -110,8 +110,11 @@
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\Material.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\ModelException.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\NodeSystem.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderPriority\FrameCommander.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderPriority\Pass.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderTarget.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Stencil\DepthStencil.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderPriority\TechniqueProbe.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Utility\Fraples7Utility.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Utility\NormalMapCMD.h" />
     <ClCompile Include="Source\Fraples7DevDX3D\Utility\ScriptCommandCenter.cpp" />
