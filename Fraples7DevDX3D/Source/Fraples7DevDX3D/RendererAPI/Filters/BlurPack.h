@@ -12,7 +12,7 @@ namespace FraplesDev
 			:_mShader(gfx, "Blur_PS.cso"),
 			_mCtrlPixelConstBuf(gfx,1u), _mKernelPixConstBuf(gfx,0u),_mRadius(radius),_mSigma(sigma)
 		{
-			SetKernel(gfx, radius, sigma);
+			SetKernelGauss(gfx, radius, sigma);
 		}
 		void Bind(Graphics& gfx)noexcept
 		{
@@ -27,11 +27,49 @@ namespace FraplesDev
 		void ShowWindow(Graphics& gfx)
 		{
 			ImGui::Begin("Blur");
-			bool radChange = ImGui::SliderInt("Radius", &_mRadius, 0, 15);
-			bool sigChange = ImGui::SliderFloat("Sigma", &_mSigma, 0.1f, 15.0f);
-			if (radChange || sigChange)
+			const char* items[] = { "Gauss","Box" };
+			static const char* curItem = items[0];
+			bool filterChange = false;
 			{
-				SetKernel(gfx, _mRadius, _mSigma);
+				if (ImGui::BeginCombo("Filter Type",curItem))
+				{
+					for (int n = 0; n < std::size(items); n++)
+					{
+						const bool isSelected = (curItem == items[n]);
+						if (ImGui::Selectable(items[n],isSelected))
+						{
+							filterChange = true;
+							curItem = items[n];
+							if (curItem == items[0])
+							{
+								kernelType = KernelType::Gauss;
+							}
+							else if (curItem == items[1])
+							{
+								kernelType = KernelType::Box;
+							}
+						}
+						if (isSelected)
+						{
+							ImGui::SetItemDefaultFocus();
+						}
+					}
+					ImGui::EndCombo();
+				}
+			}
+			bool radChange = ImGui::SliderInt("Radius", &_mRadius, 0, 15);
+			bool sigChange = (curItem == items[0]) ? ImGui::SliderFloat("Sigma", &_mSigma, 0.1f, 15.0f) : false;
+			if (radChange || sigChange || filterChange)
+			{
+				if (kernelType == KernelType::Gauss)
+				{
+					SetKernelGauss(gfx, _mRadius, _mSigma);
+				}
+				else if (kernelType == KernelType::Box)
+				{
+
+					SetKernelBox(gfx, _mRadius);
+				}
 			}
 			ImGui::End();
 		}
@@ -39,11 +77,10 @@ namespace FraplesDev
 		{
 			_mCtrlPixelConstBuf.Update(gfx, { FALSE });
 		}
-		// nTaps should be 6 sigma - 1
 		// for more accurate coefs, need to integrate, but no
-		void SetKernel(Graphics& gfx, int radius, float sigma)
+		void SetKernelGauss(Graphics& gfx, int radius, float sigma)noexcept(!IS_DEBUG)
 		{
-			assert(radius <= 15);
+			assert(radius <= maxRadius);
 			Kernel k;
 			k.nTaps = radius * 2 + 1;
 			float sum = 0.0f;
@@ -61,18 +98,37 @@ namespace FraplesDev
 			}
 			_mKernelPixConstBuf.Update(gfx, k);
 		}
+		void SetKernelBox(Graphics& gfx, int radius)noexcept(!IS_DEBUG)
+		{
+			assert(radius <= maxRadius);
+			Kernel k;
+			k.nTaps = radius * 2 + 1;
+			const float c = 1.0f / k.nTaps;
+			for (int i = 0; i < k.nTaps; i++)
+			{
+				k.coefficients[i].x = c;
+			}
+			_mKernelPixConstBuf.Update(gfx, k);
+		}
+		static constexpr int maxRadius = 15;
 		struct Kernel
 		{
 			int nTaps;
 			float padding[3];
-			DirectX::XMFLOAT4 coefficients[31];
+			DirectX::XMFLOAT4 coefficients[maxRadius * 2 + 1];
 		};
 		struct Control
 		{
 			BOOL horizontal;
 			float padding[3];
 		};
+		enum class KernelType
+		{
+			Gauss,
+			Box,
+		};
 	private:
+		KernelType kernelType = KernelType::Gauss;
 		int _mRadius;
 		float _mSigma;
 		PixelShader _mShader;
