@@ -24,7 +24,7 @@ namespace FraplesDev
 		{
 			_mCtrlPixelConstBuf.Update(gfx, { TRUE });
 		}
-		void ShowWindow(Graphics& gfx)
+		void RenderWidgets(Graphics& gfx)
 		{
 			ImGui::Begin("Blur");
 			const char* items[] = { "Gauss","Box" };

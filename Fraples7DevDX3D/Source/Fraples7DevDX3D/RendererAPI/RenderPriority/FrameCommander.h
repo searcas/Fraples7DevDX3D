@@ -17,8 +17,8 @@ namespace FraplesDev
 	public:
 		FrameCommander(Graphics& gfx)
 			:_mDepthStencil(gfx, gfx.GetWidth(), gfx.GetHeight()),
-			_mRenderTarget1(gfx, gfx.GetWidth() / 2, gfx.GetHeight() / 2 ),
-			_mRenderTarget2(gfx, gfx.GetWidth() / 2, gfx.GetHeight() / 2),
+			_mRenderTarget1({ gfx, gfx.GetWidth() / 2, gfx.GetHeight() / 2 }),
+			_mRenderTarget2({ gfx, gfx.GetWidth() / 2, gfx.GetHeight() / 2 }),
 			blur(gfx, 7, 2.6f, "BlurOutline_PS.cso")
 		{
 			MP::VertexLayout lay;
@@ -53,7 +53,7 @@ namespace FraplesDev
 
 			//Setup render target used for normal passes
 			_mDepthStencil.Clear(gfx);
-			_mRenderTarget1.Clear(gfx);
+			_mRenderTarget1->Clear(gfx);
 			gfx.BindSwapBuffer(_mDepthStencil);
 
 			
@@ -66,12 +66,12 @@ namespace FraplesDev
 			NullPixelShader::Resolve(gfx)->Bind(gfx);
 			_mPasses[1].Execute(gfx);
 			//outline drawing pass
-			_mRenderTarget1.BindAsTarget(gfx);
+			_mRenderTarget1->BindAsTarget(gfx);
 			Stencil::Resolve(gfx, Stencil::Mode::Off)->Bind(gfx);
 			_mPasses[2].Execute(gfx);
 			// Fullscreen blur h-pass
-			_mRenderTarget2.BindAsTarget(gfx);
-			_mRenderTarget1.BindAsTexture(gfx,0);
+			_mRenderTarget2->BindAsTarget(gfx);
+			_mRenderTarget1->BindAsTexture(gfx,0);
 
 
 		
@@ -86,7 +86,7 @@ namespace FraplesDev
 			gfx.RenderIndexed(_mPindexBufferFull->GetCount());
 			// fullscreen blur v-pass + combine
 			gfx.BindSwapBuffer(_mDepthStencil);
-			_mRenderTarget2.BindAsTexture(gfx, 0u);
+			_mRenderTarget2->BindAsTexture(gfx, 0u);
 			_mPblenderMerge->Bind(gfx);
 			_mPsamplerFullBilin->Bind(gfx);
 			Stencil::Resolve(gfx, Stencil::Mode::Mask)->Bind(gfx);
@@ -95,7 +95,16 @@ namespace FraplesDev
 		}
 		void ShowWindow(Graphics& gfx)
 		{
-			blur.ShowWindow(gfx);
+			if (ImGui::Begin("Blur"))
+			{
+				if (ImGui::SliderInt("Down Factor",&_mDownFactor,1,16))
+				{
+					_mRenderTarget1.emplace(gfx, gfx.GetWidth() / _mDownFactor, gfx.GetHeight() / _mDownFactor);
+					_mRenderTarget2.emplace(gfx, gfx.GetWidth() / _mDownFactor, gfx.GetHeight() / _mDownFactor);
+				}
+				blur.RenderWidgets(gfx);
+			}
+			ImGui::End();
 		}
 		void Reset()noexcept
 		{
@@ -105,11 +114,13 @@ namespace FraplesDev
 			}
 		}
 	private:
+
 		std::array<Pass, 3>_mPasses;
-		 DepthStencil _mDepthStencil;
-		 RenderTarget _mRenderTarget1;
-		 RenderTarget _mRenderTarget2;
-		 BlurPack blur;
+		int _mDownFactor = 1;
+		DepthStencil _mDepthStencil;
+		std::optional<RenderTarget>_mRenderTarget1;
+		std::optional<RenderTarget>_mRenderTarget2;
+		BlurPack blur;
 	private:
 		std::shared_ptr<VertexBuffer>_mPvertexBufferFull;
 		std::shared_ptr<IndexBuffer>_mPindexBufferFull;
