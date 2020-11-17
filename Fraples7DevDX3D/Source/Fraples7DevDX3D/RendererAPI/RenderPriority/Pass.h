@@ -8,8 +8,8 @@ namespace FraplesDev
 	{
 	public:
 		void Accept(Job job)noexcept;
-		void Execute(Graphics& gfx)const noexcept(!IS_DEBUG);
-		void Reset()noexcept;
+		virtual void Execute(Graphics& gfx)const noexcept(!IS_DEBUG);
+		virtual void Reset()noexcept;
 	private:
 		std::vector<Job>_mJobs;
 	};

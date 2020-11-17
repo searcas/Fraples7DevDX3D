@@ -110,7 +110,7 @@
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\Material.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\ModelException.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\NodeSystem.cpp" />
-    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderPriority\FrameCommander.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\BindingPass.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderPriority\Pass.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderTarget.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Stencil\DepthStencil.cpp" />
@@ -155,7 +155,6 @@
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderPriority\Technique.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Topology.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\TransformCBuf.cpp" />
-    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\TransformCBufDual.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\VertexBuffer.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\VertexShader.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Renderer.cpp" />
@@ -185,6 +184,7 @@
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\ModelException.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\ModelProbe.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\NodeSystem.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\BindingPass.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderPriority\TechniqueProbe.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderTarget.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Stencil\DepthStencil.h" />
@@ -237,7 +237,6 @@
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RendererBase.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Sampler.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Rasterizer\Rasterizer.h" />
-    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderPriority\FrameCommander.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderPriority\Job.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderPriority\Pass.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderPriority\Step.h" />
@@ -245,7 +244,6 @@
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Stencil.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Topology.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\TransformCBuf.h" />
-    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\TransformCBufDual.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\VertexBuffer.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\VertexShader.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\ConstantBuffers.h" />
