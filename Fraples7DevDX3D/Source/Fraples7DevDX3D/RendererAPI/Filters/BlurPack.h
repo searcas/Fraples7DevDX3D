@@ -8,8 +8,8 @@ namespace FraplesDev
 	class BlurPack
 	{
 	public:
-		BlurPack(Graphics& gfx, int radius = 7, float sigma = 2.6f)
-			:_mShader(gfx, "Blur_PS.cso"),
+		BlurPack(Graphics& gfx, int radius = 7, float sigma = 2.6f,const char* shader = "Blur_PS.cso")
+			:_mShader(gfx, shader),
 			_mCtrlPixelConstBuf(gfx,1u), _mKernelPixConstBuf(gfx,0u),_mRadius(radius),_mSigma(sigma)
 		{
 			SetKernelGauss(gfx, radius, sigma);
@@ -128,6 +128,8 @@ namespace FraplesDev
 			Box,
 		};
 	private:
+		UINT width;
+		UINT height;
 		KernelType kernelType = KernelType::Gauss;
 		int _mRadius;
 		float _mSigma;

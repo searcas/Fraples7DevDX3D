@@ -17,6 +17,7 @@ namespace FraplesDev
 	private:
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>_mPtextureView;
 		Microsoft::WRL::ComPtr<ID3D11RenderTargetView>_mPtargetView;
-
+		UINT _mWidth;
+		UINT _mHeight;
 	};
 }

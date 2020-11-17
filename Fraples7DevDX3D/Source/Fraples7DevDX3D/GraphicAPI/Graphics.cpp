@@ -56,14 +56,6 @@ namespace FraplesDev {
 		FPL_GFX_THROW_INFO(_mpDevice->CreateRenderTargetView(pBackBuffer.Get(), nullptr, &_mpTarget));
 
 	
-		D3D11_VIEWPORT vp = {};
-		vp.Width = (float)_mWidth;
-		vp.Height = (float)_mHeight;
-		vp.MinDepth = 0.0f;
-		vp.MaxDepth = 1.0f;
-		vp.TopLeftX = 0.0f;
-		vp.TopLeftY = 0.0f;
-		_mpContext->RSSetViewports(1u, &vp);
 
 		ImGui_ImplDX11_Init(_mpDevice.Get(), _mpContext.Get());
 	}
@@ -175,6 +167,17 @@ namespace FraplesDev {
 	void Graphics::BindSwapBuffer() noexcept
 	{
 		_mpContext->OMSetRenderTargets(1u, _mpTarget.GetAddressOf(), nullptr);
+
+
+		// cfg viewport
+		D3D11_VIEWPORT vp = {};
+		vp.Width = (float)_mWidth;
+		vp.Height = (float)_mHeight;
+		vp.MinDepth = 0.0f;
+		vp.MaxDepth = 1.0f;
+		vp.TopLeftX = 0.0f;
+		vp.TopLeftY = 0.0f;
+		_mpContext->RSSetViewports(1u, &vp);
 	}
 
 	
@@ -220,7 +223,18 @@ namespace FraplesDev {
 
 	void Graphics::BindSwapBuffer(const DepthStencil& depthStencil) noexcept
 	{
+
 		_mpContext->OMSetRenderTargets(1u, _mpTarget.GetAddressOf(), depthStencil._mPdepthStencilView.Get());
+
+		// cfg viewport
+		D3D11_VIEWPORT vp = {};
+		vp.Width = (float)_mWidth;
+		vp.Height = (float)_mHeight;
+		vp.MinDepth = 0.0f;
+		vp.MaxDepth = 1.0f;
+		vp.TopLeftX = 0.0f;
+		vp.TopLeftY = 0.0f;
+		_mpContext->RSSetViewports(1u, &vp);
 	}
 
 	void Graphics::SetProjection(DirectX::FXMMATRIX proj) noexcept

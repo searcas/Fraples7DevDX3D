@@ -3,6 +3,7 @@
 namespace FraplesDev
 {
 	RenderTarget::RenderTarget(Graphics& gfx, UINT width, UINT height)
+		:_mWidth(width),_mHeight(height)
 	{
 		INFOMAN(gfx);
 
@@ -52,9 +53,29 @@ namespace FraplesDev
 	void RenderTarget::BindAsTarget(Graphics& gfx)const 
 	{
 		GetContext(gfx)->OMSetRenderTargets(1u, _mPtargetView.GetAddressOf(), nullptr);
+
+		// cfg viewport
+		D3D11_VIEWPORT vp = {};
+		vp.Width = (float)_mWidth;
+		vp.Height = (float)_mHeight;
+		vp.MinDepth = 0.0f;
+		vp.MaxDepth = 1.0f;
+		vp.TopLeftX = 0.0f;
+		vp.TopLeftY = 0.0f;
+		GetContext(gfx)->RSSetViewports(1u, &vp);
 	}
 	void RenderTarget::BindAsTarget(Graphics& gfx, const DepthStencil& depthStencil) const noexcept
 	{
 		GetContext(gfx)->OMSetRenderTargets(1, _mPtargetView.GetAddressOf(), depthStencil._mPdepthStencilView.Get());
+
+		// cfg viewport
+		D3D11_VIEWPORT vp = {};
+		vp.Width = (float)_mWidth;
+		vp.Height = (float)_mHeight;
+		vp.MinDepth = 0.0f;
+		vp.MaxDepth = 1.0f;
+		vp.TopLeftX = 0.0f;
+		vp.TopLeftY = 0.0f;
+		GetContext(gfx)->RSSetViewports(1u, &vp);
 	}
 }
