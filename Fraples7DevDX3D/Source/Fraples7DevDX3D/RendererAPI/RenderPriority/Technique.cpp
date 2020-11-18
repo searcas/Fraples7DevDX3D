@@ -1,6 +1,5 @@
 #include "Technique.h"
 #include "RendererAPI/Renderer.h"
-#include "FrameCommander.h"
 namespace FraplesDev
 {
 	void Technique::Submit(FrameCommander& frame, const Renderer& renderer) const noexcept

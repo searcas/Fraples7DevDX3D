@@ -6,6 +6,7 @@ namespace FraplesDev
 	BufferClearPass::BufferClearPass(std::string name)
 		:Pass(std::move(name))
 	{
+		
 	}
 	void BufferClearPass::Execute(Graphics& gfx) const noexcept(!IS_DEBUG)
 	{

@@ -1,5 +1,4 @@
 #include "PointLight.h"
-#include "RendererAPI/RenderPriority/FrameCommander.h"
 FraplesDev::PointLight::PointLight(Graphics& gfx, float radius) :
 	_mMesh(gfx, radius), _mCbuf(gfx)
 {
