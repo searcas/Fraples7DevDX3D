@@ -9,7 +9,7 @@ namespace FraplesDev
 		const std::string& GetPassName()const noexcept;
 		const std::string& GetOutputName()const noexcept;
 		void SetTarget(std::string passName, std::string outputName);
-		virtual void Bind(class PassOuput&) = 0;
+		virtual void Bind(class PassOutput&) = 0;
 		virtual void PostLinkValidate()const = 0;
 		virtual ~PassInput() = default;
 	protected:

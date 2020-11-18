@@ -58,7 +58,10 @@ namespace FraplesDev
 		Graphics(const Graphics&) = delete;
 		Graphics& operator=(const Graphics&) = delete;
 		~Graphics();
-		
+		const std::shared_ptr<RenderTarget>& GetTarget()
+		{
+			return _mTarget;
+		}
 	public:
 		void EndFrame();
 		//clear buffer
@@ -88,8 +91,8 @@ namespace FraplesDev
 		Microsoft::WRL::ComPtr<ID3D11Device> _mpDevice;
 		Microsoft::WRL::ComPtr<IDXGISwapChain> _mpSwap;
 		Microsoft::WRL::ComPtr<ID3D11DeviceContext> _mpContext;
-		Microsoft::WRL::ComPtr<ID3D11RenderTargetView> _mpTarget;
-		Microsoft::WRL::ComPtr<ID3D11DepthStencilView> _mpDSV;
+		std::shared_ptr<RenderTarget> _mTarget;
+
 		DirectX::XMMATRIX _mProjection;
 		DirectX::XMMATRIX _mCamera;
 		bool IsImGuiEnabled = true;
