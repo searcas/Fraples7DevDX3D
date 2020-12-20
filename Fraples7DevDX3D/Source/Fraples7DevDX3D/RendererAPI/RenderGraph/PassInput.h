@@ -2,6 +2,7 @@
 #include <string>
 namespace FraplesDev
 {
+	class GfxContext;
 	class PassInput
 	{
 	public:

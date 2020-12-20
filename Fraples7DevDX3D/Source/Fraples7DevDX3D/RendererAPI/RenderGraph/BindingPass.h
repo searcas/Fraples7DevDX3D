@@ -6,7 +6,7 @@ namespace FraplesDev
 	class BindingPass : public Pass
 	{
 	public:
-		BindingPass(std::string name, std::vector<class GfxContext>binds = {});
+		BindingPass(std::string name, std::vector<std::shared_ptr<GfxContext>>binds = {});
 		void AddBind(std::shared_ptr<GfxContext> bind)noexcept;
 		void BindAll(Graphics& gfx)const noexcept;
 	private:
