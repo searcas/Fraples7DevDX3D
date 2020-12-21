@@ -2,17 +2,16 @@
 #include "Core/Fraples7.h"
 #include "Core/Common/Exceptions/FraplesException.h"
 #include "Core/Common/DxgiInfoManager.h"
+#include "imgui_impl_win32.h"
+#include "RendererAPI/RenderTarget.h"
 #include <d3dcompiler.h>
 #include <DirectXMath.h>
 #include <vector>
 #include <d3d11.h>
 #include <wrl.h>
-#include "imgui_impl_win32.h"
 #define GFX_THROW_FAILED(hrcall) if(FAILED(hr = (hrcall))) throw FraplesDev::Graphics::HrException(__LINE__,__FILE__,hr)
-
 namespace FraplesDev
 {
-
 	class Graphics
 	{
 		friend class GraphicsResource;
@@ -58,19 +57,15 @@ namespace FraplesDev
 		Graphics(const Graphics&) = delete;
 		Graphics& operator=(const Graphics&) = delete;
 		~Graphics();
-		const std::shared_ptr<RenderTarget>& GetTarget()
-		{
-			return _mTarget;
-		}
+
 	public:
 		void EndFrame();
 		//clear buffer
 		void BeginFrame(float red, float green, float blue) noexcept;
 		void RenderIndexed(UINT count)noexcept(!IS_DEBUG);
-		void BindSwapBuffer()noexcept;
-		void BindSwapBuffer(const class DepthStencil& depthStencil)noexcept; void SetProjection(DirectX::FXMMATRIX proj) noexcept;
 		const DirectX::XMMATRIX& GetProjection() const noexcept;
 		void SetCamera(DirectX::FXMMATRIX cameraView) noexcept;
+		void SetProjection(DirectX::FXMMATRIX proj) noexcept;
 		inline DirectX::XMMATRIX GetCamera()const noexcept
 		{
 			return _mCamera;
@@ -80,6 +75,7 @@ namespace FraplesDev
 		void DisableImGui()noexcept;
 		UINT GetWidth()const noexcept;
 		UINT GetHeight()const noexcept;
+		std::shared_ptr<RenderTarget>GetTarget();
 		constexpr bool IsEnabled() noexcept
 		{
 			return IsImGuiEnabled;

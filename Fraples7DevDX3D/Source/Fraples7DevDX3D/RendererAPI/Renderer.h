@@ -10,7 +10,7 @@ namespace FraplesDev
 	class VertexBuffer;
 	class Topology;
 	class InputLayout;
-
+	class RenderGraph;
 	class Renderer
 	{
 
@@ -20,11 +20,11 @@ namespace FraplesDev
 		Renderer(const Renderer&) = delete;
 		void AddTechnique(Technique tech_in)noexcept;
 		virtual const DirectX::XMMATRIX GetTransformXM()const noexcept = 0;
-		void Submit(class FrameCommander& frame)const noexcept;
+		void Submit()const noexcept;
 		void Bind(Graphics& gfx)const noexcept;
 		UINT GetIndexCount()const noexcept(!IS_DEBUG);
 		void Accept(class TechniqueProbe& probe);
-
+		void LinkTechniques(RenderGraph&);
 		virtual ~Renderer() = default;
 	protected:
 		std::shared_ptr<IndexBuffer>_mPindices;

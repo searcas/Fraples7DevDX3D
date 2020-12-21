@@ -7,8 +7,6 @@
 #include "Core/Math/Math.h"
 namespace FraplesDev
 {
-	
-	
 	/*const MP::Buffer* Node::GetMaterialConstants()const noexcept(!IS_DEBUG)
 	{
 		if (_mMeshPtrs.size() == 0)
@@ -50,7 +48,7 @@ namespace FraplesDev
 		_mRoot = ParseNode(nextId, *pScene->mRootNode, scale);
 	}
 
-	void Model::Submit(FrameCommander& frame) const noexcept(!IS_DEBUG)
+	void Model::Submit() const noexcept(!IS_DEBUG)
 	{
 		// I'm still not happy about updating parameters
 		// (I.E mutatting a bindable GPU state which is 
@@ -58,7 +56,7 @@ namespace FraplesDev
 		// is const in this call) can probably do this elsewhere
 		
 		//_mpWindow->ApplyParameters();
-		_mRoot->Submit(frame, DirectX::XMMatrixIdentity());
+		_mRoot->Submit(DirectX::XMMatrixIdentity());
 	}
 
 	std::unique_ptr<Node>Model::ParseNode(int& nextId, const aiNode& node, float scale)noexcept

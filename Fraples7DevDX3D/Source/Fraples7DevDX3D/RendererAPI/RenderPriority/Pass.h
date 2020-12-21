@@ -1,11 +1,11 @@
 #pragma once
+#include <string>
+#include <vector>
+#include <array>
+#include "RendererAPI/RenderGraph/PassInput.h"
+#include "RendererAPI/RenderGraph/PassOutput.h"
 #include "GraphicAPI/Graphics.h"
 #include "Job.h"
-#include "RendererAPI/RenderTarget.h"
-#include "RendererAPI/Stencil/DepthStencil.h"
-#include "RendererAPI/RenderGraph/PassInput.h"
-#include <vector>
-#include <memory>
 namespace FraplesDev
 {
 	class Pass
@@ -14,7 +14,7 @@ namespace FraplesDev
 		Pass(std::string name)noexcept;
 		virtual ~Pass() = default;
 		void Reset()noexcept(!IS_DEBUG);
-		const std::string& GetName()noexcept;
+		const std::string& GetName()const noexcept;
 		virtual void Finalize();
 		void Accept(Job job)noexcept;
 		virtual void Execute(Graphics& gfx)const noexcept(!IS_DEBUG) = 0;
@@ -24,7 +24,7 @@ namespace FraplesDev
 		PassInput& GetInput(const std::string& registeredName)const;
 		void SetInputSource(const std::string& registeredName, const std::string& target);
 		void RegisterInput(std::unique_ptr<PassInput>input);
-		void RegisterOutput(std::unique_ptr<PassOutput>ouput);
+		void RegisterOutput(std::unique_ptr<PassOutput>&ouput);
 		void BindBufferResources(Graphics& gfx )const noexcept(!IS_DEBUG);
 		std::shared_ptr<RenderTarget>_mRenderTarget;
 		std::shared_ptr<DepthStencil>_mDepthStencil;

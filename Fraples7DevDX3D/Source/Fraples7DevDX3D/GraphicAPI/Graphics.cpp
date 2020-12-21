@@ -52,11 +52,18 @@ namespace FraplesDev {
 		));
 		
 		Microsoft::WRL::ComPtr<ID3D11Resource> pBackBuffer;
-		FPL_GFX_THROW_INFO(_mpSwap->GetBuffer(0, __uuidof(ID3D11Resource),&pBackBuffer));
-		FPL_GFX_THROW_INFO(_mpDevice->CreateRenderTargetView(pBackBuffer.Get(), nullptr, &_mpTarget));
-
+		FPL_GFX_THROW_INFO(_mpSwap->GetBuffer(0, __uuidof(ID3D11Texture2D),&pBackBuffer));
+		_mTarget = std::shared_ptr<RenderTarget>{ new OutputOnlyrenderTarget(*this, pBackBuffer.Get()) };
 	
-
+		//viewport always fullscreen (for now)
+		D3D11_VIEWPORT vp;
+		vp.Width = _mWidth;
+		vp.Height = _mHeight;
+		vp.MinDepth = 0.0f;
+		vp.MaxDepth = 1.0f;
+		vp.TopLeftX = 0.0f;
+		vp.TopLeftY = 0.0f;
+		_mpContext->RSSetViewports(1u, &vp);
 		ImGui_ImplDX11_Init(_mpDevice.Get(), _mpContext.Get());
 	}
 
@@ -128,8 +135,6 @@ namespace FraplesDev {
 			ImGui_ImplWin32_NewFrame();
 			ImGui::NewFrame();
 		}
-		const float color[] = { red, green, blue, 0.0f };
-		_mpContext->ClearRenderTargetView(_mpTarget.Get(), color);
 	}
 	void FraplesDev::Graphics::EndFrame()
 	{
@@ -157,30 +162,11 @@ namespace FraplesDev {
 		}
 	}
 
-
-
 	void Graphics::RenderIndexed(UINT count)noexcept(!IS_DEBUG)
 	{
 		FPL_GFX_THROW_INFO_ONLY(_mpContext->DrawIndexed(count, 0u, 0));
 	}
 
-	void Graphics::BindSwapBuffer() noexcept
-	{
-		_mpContext->OMSetRenderTargets(1u, _mpTarget.GetAddressOf(), nullptr);
-
-
-		// cfg viewport
-		D3D11_VIEWPORT vp = {};
-		vp.Width = (float)_mWidth;
-		vp.Height = (float)_mHeight;
-		vp.MinDepth = 0.0f;
-		vp.MaxDepth = 1.0f;
-		vp.TopLeftX = 0.0f;
-		vp.TopLeftY = 0.0f;
-		_mpContext->RSSetViewports(1u, &vp);
-	}
-
-	
 	FraplesDev::Graphics::InfoException::InfoException(int line, const char* file, std::vector<std::string> infoMsgs) noexcept : Exception(line, file)
 	{
 		//join all info messages with newlines into single string
@@ -221,22 +207,6 @@ namespace FraplesDev {
 		return "Fraples Graphics Eception [Device removed] (DXGI_ERROR_DEVICE_REMOVED)";
 	}
 
-	void Graphics::BindSwapBuffer(const DepthStencil& depthStencil) noexcept
-	{
-
-		_mpContext->OMSetRenderTargets(1u, _mpTarget.GetAddressOf(), depthStencil._mPdepthStencilView.Get());
-
-		// cfg viewport
-		D3D11_VIEWPORT vp = {};
-		vp.Width = (float)_mWidth;
-		vp.Height = (float)_mHeight;
-		vp.MinDepth = 0.0f;
-		vp.MaxDepth = 1.0f;
-		vp.TopLeftX = 0.0f;
-		vp.TopLeftY = 0.0f;
-		_mpContext->RSSetViewports(1u, &vp);
-	}
-
 	void Graphics::SetProjection(DirectX::FXMMATRIX proj) noexcept
 	{
 		_mProjection = proj;
@@ -265,5 +235,9 @@ namespace FraplesDev {
 	UINT Graphics::GetHeight() const noexcept
 	{
 		return _mHeight;
+	}
+	std::shared_ptr<RenderTarget> Graphics::GetTarget()
+	{
+		return _mTarget;
 	}
 }

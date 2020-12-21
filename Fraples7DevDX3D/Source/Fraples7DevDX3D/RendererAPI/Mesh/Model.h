@@ -9,7 +9,7 @@ namespace FraplesDev
 	{
 	public:
 		Model(Graphics& gfx, const std::string& path, float scale = 1.0f);
-		void Submit(class FrameCommander& frame) const noexcept(!IS_DEBUG);
+		void Submit() const noexcept(!IS_DEBUG);
 		std::unique_ptr<Node>ParseNode(int& nextId,const aiNode& node, float scale)noexcept;
 		void SetRootTransform(DirectX::FXMMATRIX tf);
 		void Accept(class ModelProbe& probe);

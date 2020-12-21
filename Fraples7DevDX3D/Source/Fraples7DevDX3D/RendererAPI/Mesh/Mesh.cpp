@@ -8,10 +8,10 @@ namespace FraplesDev
 	{
 		_mTransform = {};
 	}
-	void Mesh::Submit(FrameCommander& frame, DirectX::FXMMATRIX accumulatedTransform)const noexcept(!IS_DEBUG)
+	void Mesh::Submit(DirectX::FXMMATRIX accumulatedTransform)const noexcept(!IS_DEBUG)
 	{
 		DirectX::XMStoreFloat4x4(&_mTransform, accumulatedTransform);
-		Renderer::Submit(frame);
+		Renderer::Submit();
 	}
 	const DirectX::XMMATRIX Mesh::GetTransformXM()const noexcept 
 	{

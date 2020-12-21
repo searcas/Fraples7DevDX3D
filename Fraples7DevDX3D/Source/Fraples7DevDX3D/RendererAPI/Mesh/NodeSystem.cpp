@@ -9,17 +9,17 @@ namespace FraplesDev
 		DirectX::XMStoreFloat4x4(&_mTransform, transform);
 		DirectX::XMStoreFloat4x4(&appliedTransform, DirectX::XMMatrixIdentity());
 	}
-	void Node::Submit(FrameCommander& frame, DirectX::FXMMATRIX accumulatedTransform)const noexcept(!IS_DEBUG)
+	void Node::Submit(DirectX::FXMMATRIX accumulatedTransform)const noexcept(!IS_DEBUG)
 	{
 		const auto built = DirectX::XMLoadFloat4x4(&appliedTransform) * DirectX::XMLoadFloat4x4(&_mTransform) * accumulatedTransform;
 
 		for (const auto pm : _mMeshPtrs)
 		{
-			pm->Submit(frame, built);
+			pm->Submit(built);
 		}
 		for (const auto& pc : _mChildPtrs)
 		{
-			pc->Submit(frame, built);
+			pc->Submit(built);
 		}
 	}
 	void Node::SetAppliedTransform(DirectX::FXMMATRIX transform) noexcept

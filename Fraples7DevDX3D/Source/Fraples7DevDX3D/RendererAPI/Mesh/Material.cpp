@@ -16,7 +16,7 @@ namespace FraplesDev
 		// phong technique
 		{
 			Technique phong{ "Phong" };
-			Step step(0);
+			Step step("lambertian");
 			std::string shaderCode = "Phong";
 			aiString texFileName;
 

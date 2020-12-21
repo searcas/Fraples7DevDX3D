@@ -22,11 +22,11 @@ namespace FraplesDev {
 		tech_in.InitializeParentReferences(*this);
 		_mTechniques.push_back(std::move(tech_in));
 	}
-	void Renderer::Submit(FrameCommander& frame) const noexcept
+	void Renderer::Submit() const noexcept
 	{
 		for (auto& tech : _mTechniques)
 		{
-			tech.Submit(frame, *this);
+			tech.Submit(*this);
 		}
 	}
 	void Renderer::Bind(Graphics& gfx)const noexcept
@@ -44,6 +44,13 @@ namespace FraplesDev {
 		for (auto& t : _mTechniques)
 		{
 			t.Accept(probe);
+		}
+	}
+	void Renderer::LinkTechniques(RenderGraph& rg)
+	{
+		for (auto& tech : _mTechniques)
+		{
+			tech.Link(rg);
 		}
 	}
 }
