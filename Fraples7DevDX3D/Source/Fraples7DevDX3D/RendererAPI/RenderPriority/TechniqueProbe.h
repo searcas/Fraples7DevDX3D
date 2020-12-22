@@ -1,5 +1,6 @@
 #pragma once
 #include <limits>
+#include "RendererAPI/RenderPriority/Step.h"
 namespace FraplesDev
 {
 	namespace MP
@@ -18,7 +19,7 @@ namespace FraplesDev
 		virtual void OnSetTechnique() {}
 		virtual void OnSetStep() {}
 		class Technique* _mPtech = nullptr;
-		class Step* _mPstep = nullptr;
+		 Step* _mStep = nullptr;
 		size_t _mTechIdx = std::numeric_limits<size_t>::max();
 		size_t _mStepIdx = std::numeric_limits<size_t>::max();
 		size_t _mBufIdx = std::numeric_limits<size_t>::max();

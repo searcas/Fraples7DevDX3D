@@ -1,5 +1,7 @@
 #pragma once
 #include <string>
+#include <memory>
+#include "PassOutput.h"
 namespace FraplesDev
 {
 	class GfxContext;

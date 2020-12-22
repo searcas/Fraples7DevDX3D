@@ -2,14 +2,21 @@
 #include "RendererAPI/Renderer.h"
 namespace FraplesDev
 {
-	void Technique::Submit(FrameCommander& frame, const Renderer& renderer) const noexcept
+	void Technique::Submit(const Renderer& renderer) const noexcept
 	{
 		if (_mActivate)
 		{
 			for (const auto& step : _mSteps)
 			{
-				step.Submint(frame, renderer);
+				step.Submit(renderer);
 			}
+		}
+	}
+	void Technique::Link(RenderGraph& rg)
+	{
+		for (auto& step : _mSteps)
+		{
+			step.Link(rg);
 		}
 	}
 	void Technique::InitializeParentReferences(const Renderer& parent) noexcept

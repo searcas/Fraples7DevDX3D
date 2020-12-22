@@ -4,23 +4,27 @@
 #include "RendererAPI/GFXContext.h"
 #include "GraphicAPI/Graphics.h"	
 #include "TechniqueProbe.h"
+#include "RendererAPI/RenderGraph/RenderQueuePass.h"
+#include "RendererAPI/RenderGraph/RenderGraph.h"
 namespace FraplesDev
 {
 	class Step
 	{
 	public:
+		Step(std::string targetPassName);
 		Step(Step&&) = default;
 		Step(const Step& src)noexcept;
 		Step& operator=(const Step&) = delete;
 		Step& operator=(Step&&) = delete;
-		Step(size_t targetPass_in);
 		void AddContext(std::shared_ptr<GfxContext>context);
-		void Submint(class FrameCommander& frame, const class Renderer& renderer)const;
+		void Submit(const class Renderer& renderer)const;
 		void Bind(Graphics& gfx)const;
 		void Accept(TechniqueProbe& probe);
 		void InitializeParentReferences(const class Renderer& parent)noexcept;
+		void Link(RenderGraph& rg);
 	private:
-		size_t _mTargetPass;
 		std::vector<std::shared_ptr<GfxContext>>_mPcontexts;
+		RenderQueuePass* _mTargetPass;
+		std::string _mTargetPassName;
 	};
 }

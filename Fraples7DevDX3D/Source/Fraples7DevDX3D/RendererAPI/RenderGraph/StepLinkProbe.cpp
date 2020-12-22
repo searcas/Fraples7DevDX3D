@@ -3,6 +3,6 @@ namespace FraplesDev
 {
 	void StepLinkProbe::OnSetStep()
 	{
-		_mPstep->Link(rg);
+		_mStep->Link(rg);
 	}
 }

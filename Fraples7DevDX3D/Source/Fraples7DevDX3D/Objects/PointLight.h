@@ -2,6 +2,7 @@
 #include "GraphicAPI/Graphics.h"
 #include "RendererAPI/ConstantBuffers.h"
 #include "SolidSphere.h"
+#include "RendererAPI/RenderGraph/RenderGraph.h"
 
 
 
@@ -14,7 +15,8 @@ namespace FraplesDev
 		PointLight(Graphics& gfx, float radius = 0.5f);
 		void SpawnControlWindow()noexcept;
 		void Reset()noexcept;
-		void Submit(class FrameCommander& frame) const noexcept(!IS_DEBUG);
+		void Submit() const noexcept(!IS_DEBUG);
+		void LinkTechniques(RenderGraph&);
 		void Bind(Graphics& gfx, DirectX::FXMMATRIX view) const noexcept;
 	private:
 		struct PointLightCBuf

@@ -1,17 +1,19 @@
 #include "Step.h"
-#include "FrameCommander.h"
 #include "RendererAPI/Renderer.h"
 
 namespace FraplesDev
 {
-	Step::Step(size_t targetPass_in)
-		:_mTargetPass{ targetPass_in }
+	Step::Step(std::string targetPassName)
+		:_mTargetPassName{ std::move(targetPassName)}
 	{
 
 	}
 	void Step::AddContext(std::shared_ptr<GfxContext>context)
 	{
 		_mPcontexts.push_back(std::move(context));
+	}
+	void Step::Submit(const Renderer& renderer) const
+	{
 	}
 	void Step::Bind(Graphics& gfx)const
 	{
@@ -29,8 +31,11 @@ namespace FraplesDev
 			pb->Accept(probe);
 		}
 	}
+	Step::Step(std::string targetPassName)
+	{
+	}
 	Step::Step(const Step& src)noexcept
-		:_mTargetPass(src._mTargetPass)
+		:_mTargetPassName(src._mTargetPassName)
 	{
 		_mPcontexts.reserve(src._mPcontexts.size());
 		for (auto& pb : src._mPcontexts)
@@ -45,9 +50,9 @@ namespace FraplesDev
 			}
 		}
 	}
-	void Step::Submint(FrameCommander& frame, const Renderer& renderer) const
+	void Step::Submit(const Renderer& renderer) const
 	{
-		frame.Accept(Job{ this,&renderer }, _mTargetPass);
+		_mTargetPass->Accept(Job{ this,&renderer });
 	}
 	void Step::InitializeParentReferences(const Renderer& parent) noexcept
 	{
@@ -55,5 +60,10 @@ namespace FraplesDev
 		{
 			b->InitializeParentReference(parent);
 		}
+	}
+	void Step::Link(RenderGraph& rg)
+	{
+		assert(_mTargetPass == nullptr);
+		_mTargetPass = &rg.GetRenderQueue(_mTargetPassName);
 	}
 }

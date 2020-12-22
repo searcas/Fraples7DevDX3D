@@ -1,7 +1,6 @@
 #include "BaseCube.h"
 #include "Cube.h"
 #include "RendererAPI/GFXContextBase.h"
-#include "RendererAPI/TransformCBufDual.h"
 #include "ImGui/imgui.h"
 #include "RendererAPI/Stencil.h"
 #include "RendererAPI/RenderPriority/TechniqueProbe.h"
@@ -22,7 +21,7 @@ namespace FraplesDev
 		{
 			Technique shade("Shade");
 			{
-				Step only(0);
+				Step only("lambertian");
 				only.AddContext(Texture::Resolve(gfx, "Images\\brickwall.jpg"));
 				only.AddContext(Sampler::Resolve(gfx));
 
@@ -45,50 +44,50 @@ namespace FraplesDev
 			}
 			AddTechnique(std::move(shade));
 		}
-		{
-			Technique outLine("Outline");
-			{
-				Step mask(1);
+		//{
+		//	Technique outLine("Outline");
+		//	{
+		//		Step mask(1);
 
-				auto pvs = VertexShader::Resolve(gfx, "Solid_VS.cso");
-				auto pvsbyte = pvs->GetByteCode();
-				mask.AddContext(std::move(pvs));
+		//		auto pvs = VertexShader::Resolve(gfx, "Solid_VS.cso");
+		//		auto pvsbyte = pvs->GetByteCode();
+		//		mask.AddContext(std::move(pvs));
 
-				//TODO: Better Sub-Layout generation tech for future consideration maybe
-				mask.AddContext(InputLayout::Resolve(gfx, model._mVertices.GetLayout(), pvsbyte));
-				mask.AddContext(std::make_shared<TransformCBuf>(gfx));
+		//		//TODO: Better Sub-Layout generation tech for future consideration maybe
+		//		mask.AddContext(InputLayout::Resolve(gfx, model._mVertices.GetLayout(), pvsbyte));
+		//		mask.AddContext(std::make_shared<TransformCBuf>(gfx));
 
-				//TODO: might need to specify rasterizer when doubled-sided models start being used
-				outLine.AddStep(std::move(mask));
-			}
-			{
-				Step draw(2);
+		//		//TODO: might need to specify rasterizer when doubled-sided models start being used
+		//		outLine.AddStep(std::move(mask));
+		//	}
+		//	{
+		//		Step draw(2);
 
-				//these can be pass-constant (tricky due to layout issues)
-				auto pvs = VertexShader::Resolve(gfx, "Solid_VS.cso");
-				auto pvsbyte = pvs->GetByteCode();
-				draw.AddContext(std::move(pvs));
+		//		//these can be pass-constant (tricky due to layout issues)
+		//		auto pvs = VertexShader::Resolve(gfx, "Solid_VS.cso");
+		//		auto pvsbyte = pvs->GetByteCode();
+		//		draw.AddContext(std::move(pvs));
 
-				// this can be pass-constant
-				draw.AddContext(PixelShader::Resolve(gfx, "Solid_PS.cso"));
+		//		// this can be pass-constant
+		//		draw.AddContext(PixelShader::Resolve(gfx, "Solid_PS.cso"));
 
-				MP::RawLayout layout;
-				layout.Add<MP::Float4>("color");
-				auto buf = MP::Buffer(std::move(layout));
-				buf["color"] = DirectX::XMFLOAT4{ 1.0f,0.2f,0.2f,0.8f };
-				draw.AddContext(std::make_shared<CachingPixelConstantBufferEx>(gfx, buf, 1u));
+		//		MP::RawLayout layout;
+		//		layout.Add<MP::Float4>("color");
+		//		auto buf = MP::Buffer(std::move(layout));
+		//		buf["color"] = DirectX::XMFLOAT4{ 1.0f,0.2f,0.2f,0.8f };
+		//		draw.AddContext(std::make_shared<CachingPixelConstantBufferEx>(gfx, buf, 1u));
 
-				//TODO: Better Sub-Layout generation tech for future consideration maybe
-				draw.AddContext(InputLayout::Resolve(gfx, model._mVertices.GetLayout(), pvsbyte));
+		//		//TODO: Better Sub-Layout generation tech for future consideration maybe
+		//		draw.AddContext(InputLayout::Resolve(gfx, model._mVertices.GetLayout(), pvsbyte));
 
-				//quick and dirty... nicer soulution maybe takes a lamba, we'll see
+		//		//quick and dirty... nicer soulution maybe takes a lamba, we'll see
 
-				draw.AddContext(std::make_shared<TransformCBuf>(gfx));
-				//TODO: might need to specify rasterizer when doubled-sided models start being used
-				outLine.AddStep(std::move(draw));
-			}
-			AddTechnique(std::move(outLine));
-		}
+		//		draw.AddContext(std::make_shared<TransformCBuf>(gfx));
+		//		//TODO: might need to specify rasterizer when doubled-sided models start being used
+		//		outLine.AddStep(std::move(draw));
+		//	}
+		//	AddTechnique(std::move(outLine));
+		//}
 	}
 	void BaseCube::SetPos(DirectX::XMFLOAT3 pos_in) noexcept
 	{

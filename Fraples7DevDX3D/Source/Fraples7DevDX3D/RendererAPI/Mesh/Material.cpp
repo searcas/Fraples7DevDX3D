@@ -129,47 +129,47 @@ namespace FraplesDev
 		}
 
 		//outline technique
-		{
-			Technique outline("Outline", true);
-			{
-				Step mask(1);
+		//{
+		//	Technique outline("Outline", true);
+		//	{
+		//		Step mask(1);
 
-				auto pvs = VertexShader::Resolve(gfx, "Solid_VS.cso");
-				auto pvsbyte = pvs->GetByteCode();
-				mask.AddContext(std::move(pvs));
+		//		auto pvs = VertexShader::Resolve(gfx, "Solid_VS.cso");
+		//		auto pvsbyte = pvs->GetByteCode();
+		//		mask.AddContext(std::move(pvs));
 
-				//TODO: better sub-layout generation tech for future consideration maybe
-				mask.AddContext(InputLayout::Resolve(gfx, _mVertexLayout, pvsbyte));
-				mask.AddContext(std::make_shared<TransformCBuf>(gfx));
+		//		//TODO: better sub-layout generation tech for future consideration maybe
+		//		mask.AddContext(InputLayout::Resolve(gfx, _mVertexLayout, pvsbyte));
+		//		mask.AddContext(std::make_shared<TransformCBuf>(gfx));
 
-				//TODO: might need to specify rasterizer when doubled-sided models start being used
-				outline.AddStep(std::move(mask));
-			}
-			{
-				Step draw(2);
-				//these can be pass-constant (tricky due to layout issues)
-				auto pvs = VertexShader::Resolve(gfx, "Solid_VS.cso");
-				auto pvsbyte = pvs->GetByteCode();
-				draw.AddContext(std::move(pvs));
+		//		//TODO: might need to specify rasterizer when doubled-sided models start being used
+		//		outline.AddStep(std::move(mask));
+		//	}
+		//	{
+		//		Step draw(2);
+		//		//these can be pass-constant (tricky due to layout issues)
+		//		auto pvs = VertexShader::Resolve(gfx, "Solid_VS.cso");
+		//		auto pvsbyte = pvs->GetByteCode();
+		//		draw.AddContext(std::move(pvs));
 
-				//this can be pass-constant
-				draw.AddContext(PixelShader::Resolve(gfx, "Solid_PS.cso"));
-				{
-					MP::RawLayout layout;
-					layout.Add<MP::Float3>("materialColor");
-					auto buf = MP::Buffer(std::move(layout));
-					buf["materialColor"] = DirectX::XMFLOAT3{ 1.0f,0.4f,0.4f };
-					draw.AddContext(std::make_shared<CachingPixelConstantBufferEx>(gfx, buf, 1u));
-				}
-				//TODO: better sub-layout generation tech for future consideration maybe
-				draw.AddContext(InputLayout::Resolve(gfx, _mVertexLayout, pvsbyte));
-				draw.AddContext(std::make_shared<TransformCBuf>(gfx));
+		//		//this can be pass-constant
+		//		draw.AddContext(PixelShader::Resolve(gfx, "Solid_PS.cso"));
+		//		{
+		//			MP::RawLayout layout;
+		//			layout.Add<MP::Float3>("materialColor");
+		//			auto buf = MP::Buffer(std::move(layout));
+		//			buf["materialColor"] = DirectX::XMFLOAT3{ 1.0f,0.4f,0.4f };
+		//			draw.AddContext(std::make_shared<CachingPixelConstantBufferEx>(gfx, buf, 1u));
+		//		}
+		//		//TODO: better sub-layout generation tech for future consideration maybe
+		//		draw.AddContext(InputLayout::Resolve(gfx, _mVertexLayout, pvsbyte));
+		//		draw.AddContext(std::make_shared<TransformCBuf>(gfx));
 
-				//TODO: might need to specify resterizer when doubled-sided models start being used
-				outline.AddStep(std::move(draw));
-			}
-			_mTechniques.push_back(std::move(outline));
-		}
+		//		//TODO: might need to specify resterizer when doubled-sided models start being used
+		//		outline.AddStep(std::move(draw));
+		//	}
+		//	_mTechniques.push_back(std::move(outline));
+		//}
 	}
 
 	MP::VertexBuffer Material::ExtractVertices(const aiMesh& mesh) const noexcept

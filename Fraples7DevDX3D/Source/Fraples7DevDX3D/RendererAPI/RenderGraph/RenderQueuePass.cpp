@@ -9,6 +9,7 @@ namespace FraplesDev
 	void RenderQueuePass::Execute(Graphics& gfx) const noexcept(!IS_DEBUG)
 	{
 		BindAll(gfx);
+
 		for (auto& j : _mJobs)
 		{
 			j.Execute(gfx);

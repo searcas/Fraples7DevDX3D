@@ -29,7 +29,7 @@ namespace FraplesDev
 		{
 			throw RGC_EXCEPTION("Global sink does not exists: " + sinkName);
 		}
-		auto targetSplit = SplitString(target, ".");
+		auto targetSplit = Utility::SplitString(target, ".");
 		if (targetSplit.size() !=2u)
 		{
 			throw RGC_EXCEPTION("Input target has incorrect format");

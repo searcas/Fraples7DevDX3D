@@ -9,7 +9,7 @@ namespace FraplesDev
 	{
 	public:
 		const std::string& GetName()const noexcept;
-		virtual void PostLinkValidation()const = 0;
+		virtual void PostLinkValidation() const = 0;
 		virtual std::shared_ptr<class GfxContext>YieldImmutable();
 		virtual std::shared_ptr<class BufferResource>YieldBuffer();
 		virtual ~PassOutput() = default;

@@ -1,29 +1,29 @@
 #include "TechniqueProbe.h"
-
+#include "Step.h"
 
 
 namespace FraplesDev
 {
 
 	// TODO: Add callback for visiting each mesh
-	void TechniqueProbe::SetTechnique(class Technique* pTech_in)
+	void TechniqueProbe::SetTechnique(Technique* pTech_in)
 	{
 		_mPtech = pTech_in;
 		_mTechIdx++;
 		OnSetTechnique();
 	}
-	void TechniqueProbe::SetStep(class Step* pStep_in)
+	void TechniqueProbe::SetStep(Step* pStep_in)
 	{
-		_mPstep = pStep_in;
+		_mStep = pStep_in;
 		_mStepIdx++;
 		OnSetStep();
 	}
-	bool TechniqueProbe::VisitBuffer(class MP::Buffer& buf)
+	bool TechniqueProbe::VisitBuffer(MP::Buffer& buf)
 	{
 		_mBufIdx++;
 		return OnVisitBuffer(buf);
 	}
-	bool TechniqueProbe::OnVisitBuffer(class MP::Buffer&)
+	bool TechniqueProbe::OnVisitBuffer(MP::Buffer&)
 	{
 		return false;
 	}
