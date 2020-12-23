@@ -1,5 +1,4 @@
 #pragma once
-#include "GraphicAPI/Graphics.h"
 #include "GraphicAPI/GraphicsResource.h"
 #include <memory>
 namespace FraplesDev
@@ -7,7 +6,6 @@ namespace FraplesDev
     class GfxContext : public GraphicsResource
     {
     public:
-        virtual void Bind(Graphics& gfx) noexcept = 0;
         virtual ~GfxContext() = default;
         virtual std::string GetUID()const noexcept
         {

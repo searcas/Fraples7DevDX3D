@@ -1,24 +1,23 @@
 #pragma once
 #include "RendererAPI/GFXContext.h"
 #include "RendererAPI/RenderGraph/BufferResource.h"
-
+#include "GraphicAPI/Graphics.h"
 
 namespace FraplesDev
 {
-	class Graphics;
 
-	class DepthStencil : public GfxContext, public BufferResource
+	class DepthStencil : public BufferResource, public GfxContext
 	{
 		friend class RenderTarget;
 	public:
 		DepthStencil(Graphics& gfx, UINT width, UINT height, bool canBindShaderInput);
-		void BindAsBuffer(Graphics& gfx);
+		void BindAsBuffer(Graphics& gfx)noexcept override;
 		void BindAsBuffer(Graphics& gfx, BufferResource* renderTarget)noexcept override;
 		void BindAsBuffer(Graphics& gfx, RenderTarget* renderTarget)noexcept;
 		void BindAsDepthStencil(Graphics& gfx)const noexcept;
 		void Clear(Graphics& gfx)const noexcept;
 	protected:
-		Microsoft::WRL::ComPtr<ID3D11DepthStencilView>_mPdepthStencilView;
+		Microsoft::WRL::ComPtr<ID3D11DepthStencilView>_mDepthStencilView;
 	};
 
 	class ShaderInputDepthStencil : public DepthStencil

@@ -2,6 +2,7 @@
 #include <string>
 #include <memory>
 #include "PassOutput.h"
+#include <sstream>
 namespace FraplesDev
 {
 	class GfxContext;
