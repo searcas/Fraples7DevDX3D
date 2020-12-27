@@ -10,9 +10,9 @@ namespace FraplesDev
 	{
 	public:
 		Blending(Graphics& gfx, bool blending, std::optional<float>factor = {});
+		void Bind(Graphics& gfx)noexcept override;
 		void SetFactor(float factor)noexcept(!IS_DEBUG);
 		float GetFactor()noexcept(!IS_DEBUG);
-		void Bind(Graphics& gfx)noexcept override;
 		static std::shared_ptr<Blending>Resolve(Graphics& gfx, bool blending, std::optional<float>factor = {});
 		static std::string GenerateUID(bool blending,std::optional<float>factor);
 		std::string GetUID()const noexcept override;

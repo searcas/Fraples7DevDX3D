@@ -24,11 +24,11 @@ namespace FraplesDev
 		FPL_GFX_THROW_INFO(GetDevice(gfx)->CreateTexture2D(&descDepth, nullptr, &pDepthStencil));
 
 		// create target view of depth stencil texture
-		FPL_GFX_THROW_INFO(GetDevice(gfx)->CreateDepthStencilView(pDepthStencil.Get(), nullptr, &_mPdepthStencilView));
+		FPL_GFX_THROW_INFO(GetDevice(gfx)->CreateDepthStencilView(pDepthStencil.Get(), nullptr, &_mDepthStencilView));
 	}
-	void DepthStencil::BindAsBuffer(Graphics& gfx)
+	void DepthStencil::BindAsBuffer(Graphics& gfx)noexcept
 	{
-		GetContext(gfx)->OMSetRenderTargets(0, nullptr, _mPdepthStencilView.Get());
+		GetContext(gfx)->OMSetRenderTargets(0, nullptr, _mDepthStencilView.Get());
 	}
 	void DepthStencil::BindAsBuffer(Graphics& gfx, BufferResource* renderTarget) noexcept
 	{
@@ -41,11 +41,11 @@ namespace FraplesDev
 	}
 	void DepthStencil::BindAsDepthStencil(Graphics& gfx) const noexcept
 	{
-		GetContext(gfx)->OMSetRenderTargets(0, nullptr, _mPdepthStencilView.Get());
+		GetContext(gfx)->OMSetRenderTargets(0, nullptr, _mDepthStencilView.Get());
 	}
 	void DepthStencil::Clear(Graphics& gfx) const noexcept
 	{
-		GetContext(gfx)->ClearDepthStencilView(_mPdepthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0u);
+		GetContext(gfx)->ClearDepthStencilView(_mDepthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0u);
 
 	}
 	ShaderInputDepthStencil::ShaderInputDepthStencil(Graphics& gfx, UINT slot)
@@ -58,7 +58,7 @@ namespace FraplesDev
 	{
 		INFOMAN(gfx);
 		Microsoft::WRL::ComPtr<ID3D11Resource>pRes;
-		_mPdepthStencilView->GetResource(&pRes);
+		_mDepthStencilView->GetResource(&pRes);
 		D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
 		srvDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT; // this will need to be fixed
 		srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
@@ -67,7 +67,7 @@ namespace FraplesDev
 		FPL_GFX_THROW_INFO(GetDevice(gfx)->CreateShaderResourceView(pRes.Get(), &srvDesc, &_mShaderResourceView));
 		
 	}
-	void ShaderInputDepthStencil::Bind(Graphics& gfx) noexcept
+	void ShaderInputDepthStencil::Bind(Graphics& gfx)noexcept
 	{
 		GetContext(gfx)->PSSetShaderResources(_mSlot, 1u, _mShaderResourceView.GetAddressOf());
 	}
@@ -79,7 +79,7 @@ namespace FraplesDev
 		: DepthStencil(gfx, width, height, false)
 	{
 	}
-	void OutputOnlyDepthStencil::Bind(Graphics& gfx) noexcept
+	void OutputOnlyDepthStencil::Bind(Graphics& gfx)noexcept
 	{
 		assert("OutputonlyDepthStencil cannot be bound as shader input" && false);
 	}

@@ -1,3 +1,4 @@
+#include "GraphicAPI/Graphics.h"
 #include "Texture.h"
 #include "../Surface.h"
 #include "../Common/Exceptions/Macros/GraphicsThrowMacros.h"

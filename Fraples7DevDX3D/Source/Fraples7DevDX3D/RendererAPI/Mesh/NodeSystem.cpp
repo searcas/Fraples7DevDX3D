@@ -1,6 +1,6 @@
 #include "NodeSystem.h"
 #include "ModelProbe.h"
-
+#include "RendererAPI/RenderPriority/TechniqueProbe.h"
 namespace FraplesDev
 {
 	Node::Node(int id, const std::string& name, std::vector<Mesh*>meshPtrs, const DirectX::XMMATRIX& transform)noexcept(!IS_DEBUG)

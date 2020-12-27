@@ -1,22 +1,19 @@
 #pragma once
-#include "GraphicAPI/Graphics.h"
+#include "GFXContext.h"
 #include "RenderGraph/BufferResource.h"
-#include "RendererAPI/Stencil/DepthStencil.h"
 #include <array>
 namespace FraplesDev
 {
-	class RenderTarget : public BufferResource, public GfxContext
+	class RenderTarget : public GfxContext, public BufferResource
 	{
 	public:
-		RenderTarget(Graphics& gfx, UINT width, UINT height);
-		RenderTarget(Graphics& gfx, ID3D11Texture2D* pTexture);
-		void BindAsBuffer(Graphics& gfx)noexcept override;
+		void BindAsBuffer(Graphics& gfx) noexcept override;
 		void BindAsBuffer(Graphics& gfx, BufferResource* depthStencil)noexcept override;
-		void BindAsBuffer(Graphics& gfx, DepthStencil* depthStencil)noexcept;
-		
+		void BindAsBuffer(Graphics& gfx, class DepthStencil* depthStencil)noexcept;
 
+		void Clear(Graphics& gfx)const noexcept override;
 		void Clear(Graphics& gfx, const std::array<float, 4>& color)const noexcept;
-		void Clear(Graphics& gfx)const noexcept;
+		virtual void Bind(Graphics& gfx)noexcept {}
 		UINT GetWidth()const noexcept;
 		UINT GetHeight()const noexcept;
 	private:
@@ -25,7 +22,7 @@ namespace FraplesDev
 		RenderTarget(Graphics& gfx, ID3D11Texture2D* pTexture);
 		RenderTarget(Graphics& gfx, UINT width, UINT height);
 	protected:
-		Microsoft::WRL::ComPtr<ID3D11RenderTargetView>_mPtargetView;
+		Microsoft::WRL::ComPtr<ID3D11RenderTargetView>_mTargetView;
 		UINT _mWidth;
 		UINT _mHeight;
 	};
@@ -45,13 +42,8 @@ namespace FraplesDev
 	{
 		friend Graphics;
 	public:
-		void Bind(Graphics& gfx)noexcept override;
+		void Bind(Graphics& gfx) noexcept override;
 	private:
 		OutputOnlyRenderTarget(Graphics& gfx, ID3D11Texture2D* pTexture);
-
-	private:
 	};
-
-
-	}
 }

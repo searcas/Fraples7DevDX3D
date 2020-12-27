@@ -1,5 +1,8 @@
 #pragma once
+#include "GraphicAPI/Graphics.h"
 #include "GraphicAPI/GraphicsResource.h"
+#include <assert.h>
+#include <string>
 #include <memory>
 namespace FraplesDev
 {
@@ -14,7 +17,9 @@ namespace FraplesDev
         }
         virtual void InitializeParentReference(const class Renderer& parent)noexcept {};
         virtual void Accept(class TechniqueProbe&) {};
+        virtual void Bind(Graphics& gfx) noexcept = 0;
     };
+
     class CloningContext : public GfxContext
     {
     public:

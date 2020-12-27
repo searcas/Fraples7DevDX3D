@@ -1,16 +1,12 @@
-#include "Core/Fraples7.h"
-#include "Core/Common/Exceptions/Macros/GraphicsThrowMacros.h"
-#include "Core/Common/dxerr.h"
-#include "Core/Common/DxgiInfoManager.h"
-#include "imgui_impl_dx11.h"
 #include "Graphics.h"
-#include "RendererAPI/Stencil/DepthStencil.h"
+#include "Core/Common/Exceptions/Macros/GraphicsThrowMacros.h"
+#include "imgui_impl_win32.h"
+#include "imgui_impl_dx11.h"
+#include "Core/Common/dxerr.h"
 #include <sstream>
-#include <random>
-#pragma comment(lib,"d3d11.lib")
-
 namespace FraplesDev {
-	FraplesDev::Graphics::Graphics(HWND hWnd,int width,int height)
+
+	Graphics::Graphics(HWND hWnd,int width,int height)
 		: _mWidth(std::move(width)),_mHeight(std::move(height))
 	{
 		DXGI_SWAP_CHAIN_DESC swap;
@@ -51,9 +47,9 @@ namespace FraplesDev {
 			&_mpContext
 		));
 		
-		Microsoft::WRL::ComPtr<ID3D11Resource> pBackBuffer;
+		Microsoft::WRL::ComPtr<ID3D11Texture2D> pBackBuffer;
 		FPL_GFX_THROW_INFO(_mpSwap->GetBuffer(0, __uuidof(ID3D11Texture2D),&pBackBuffer));
-		_mTarget = std::shared_ptr<RenderTarget>{ new OutputOnlyrenderTarget(*this, pBackBuffer.Get()) };
+		_mTarget = std::shared_ptr<RenderTarget>{ new OutputOnlyRenderTarget(*this, pBackBuffer.Get())};
 	
 		//viewport always fullscreen (for now)
 		D3D11_VIEWPORT vp;

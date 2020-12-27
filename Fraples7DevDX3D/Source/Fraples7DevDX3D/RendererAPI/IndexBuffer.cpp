@@ -1,7 +1,6 @@
 #include "IndexBuffer.h"
 #include "Core/Common/Exceptions/Macros/GraphicsThrowMacros.h"
 #include "GFXContextCodex.h"
-
 namespace FraplesDev
 {
 	IndexBuffer::IndexBuffer(Graphics& gfx, const std::vector<unsigned short>& indices)

@@ -66,18 +66,16 @@ namespace FraplesDev
 		//redPlane.SpawnControlWindow(_mWin.GetGFX(), "RED ONE");
 		cube1.SpawnControlWindow(_mWin.GetGFX(), "Cube 1");
 		cube2.SpawnControlWindow(_mWin.GetGFX(), "Cube 2");
-		fc.ShowWindow(_mWin.GetGFX());
 	}
 
 	void Application::RenderObj()
 	{
-		light.Submit(fc);
+		light.Submit();
 		//_mPloaded->Submit(fc, DirectX::XMMatrixIdentity());
-		_mSponza.Submit(fc);
-		cube1.Submit(fc);
-		cube2.Submit(fc);
+		_mSponza.Submit();
+		cube1.Submit();
+		cube2.Submit();
 	//	gobber.Submit(fc);
-		fc.Execute(_mWin.GetGFX());
 	}
 
 	void Application::DoFrame()
@@ -353,7 +351,6 @@ namespace FraplesDev
 		}
 		SpawnFunc();
 		_mWin.GetGFX().EndFrame();
-		fc.Reset();
 	}
 
 	void Application::ShowImguiDemoWindow()

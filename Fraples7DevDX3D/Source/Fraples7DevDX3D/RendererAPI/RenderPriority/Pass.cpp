@@ -1,6 +1,8 @@
 #include "Pass.h"
 #include "RendererAPI/RenderGraph/Exception/RenderGraphCompileException.h"
 #include "Utility/Fraples7Utility.h"
+#include "RendererAPI/Stencil/DepthStencil.h"
+#include "RendererAPI/RenderTarget.h"
 #include <sstream>
 namespace FraplesDev
 {
@@ -67,7 +69,7 @@ namespace FraplesDev
 		}
 		_mInputs.push_back(std::move(input));
 	}
-	void Pass::RegisterOutput(std::unique_ptr<PassOutput>& output)
+	void Pass::RegisterOutput(std::unique_ptr<PassOutput> output)
 	{
 		// check for overlap of output names
 		for (auto& out : _mOutputs)
@@ -102,14 +104,8 @@ namespace FraplesDev
 		}
 		for (auto& out : _mOutputs)
 		{
-			out->PostLinkValidate();
+			out->PostLinkValidation();
 		}
-	}
-	void Pass::Accept(Job job) noexcept
-	{
-	}
-	void Pass::Execute(Graphics& gfx) const noexcept(!IS_DEBUG)
-	{
 	}
 }
 	

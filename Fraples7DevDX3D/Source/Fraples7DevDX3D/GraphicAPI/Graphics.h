@@ -1,22 +1,22 @@
 #pragma once
 #include "Core/Fraples7.h"
+#include <d3dcompiler.h>
+#include "RendererAPI/RenderTarget.h"	
 #include "Core/Common/Exceptions/FraplesException.h"
 #include "Core/Common/DxgiInfoManager.h"
-#include "imgui_impl_win32.h"
-#include "RendererAPI/RenderTarget.h"
-#include <d3dcompiler.h>
 #include <DirectXMath.h>
 #include <vector>
 #include <d3d11.h>
 #include <wrl.h>
-#define GFX_THROW_FAILED(hrcall) if(FAILED(hr = (hrcall))) throw FraplesDev::Graphics::HrException(__LINE__,__FILE__,hr)
+#include <memory>
+
 namespace FraplesDev
 {
 	class Graphics
 	{
 		friend class GraphicsResource;
 	public:
-		class Exception : public FraplesDev::FraplesException
+		class Exception : public FraplesException
 		{
 			using FraplesException::FraplesException;
 		};

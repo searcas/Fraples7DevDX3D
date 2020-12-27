@@ -8,7 +8,6 @@
 #include "Objects/BaseCube.h"
 #include "Objects/PointLight.h"
 #include "Utility/ScriptCommandCenter.h"
-#include "RendererAPI/RenderPriority/FrameCommander.h"
 #include "RendererAPI/Mesh/Material.h"
 #include <set>
 namespace FraplesDev
@@ -42,7 +41,6 @@ namespace FraplesDev
 		//objects
 		PointLight light;
 		Camera _mCamera;
-		FrameCommander fc{_mWin.GetGFX()};
 		//std::unique_ptr<Mesh>_mPloaded;
 		BaseCube cube1 = { _mWin.GetGFX(),4.0f };
 		BaseCube cube2 = { _mWin.GetGFX(),4.0f };

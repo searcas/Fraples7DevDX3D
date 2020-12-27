@@ -1,5 +1,6 @@
 #include "RenderTarget.h"
 #include "Core/Common/Exceptions/Macros/GraphicsThrowMacros.h"
+#include "RendererAPI/Stencil/DepthStencil.h"
 namespace FraplesDev
 {
 	RenderTarget::RenderTarget(Graphics& gfx, UINT width, UINT height)
@@ -29,7 +30,7 @@ namespace FraplesDev
 		rtvDesc.Format = textureDesc.Format;
 		rtvDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
 		rtvDesc.Texture2D = D3D11_TEX2D_RTV{ 0 };
-		FPL_GFX_THROW_INFO(GetDevice(gfx)->CreateRenderTargetView(ptexture.Get(), &rtvDesc, &_mPtargetView));
+		FPL_GFX_THROW_INFO(GetDevice(gfx)->CreateRenderTargetView(ptexture.Get(), &rtvDesc, &_mTargetView));
 	}
 	RenderTarget::RenderTarget(Graphics& gfx, ID3D11Texture2D* pTexture)
 	{
@@ -46,7 +47,7 @@ namespace FraplesDev
 		rtvDesc.Format = textureDesc.Format;
 		rtvDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
 		rtvDesc.Texture2D = D3D11_TEX2D_RTV{ 0 };
-		FPL_GFX_THROW_INFO(GetDevice(gfx)->CreateRenderTargetView(pTexture, &rtvDesc, &_mPtargetView));
+		FPL_GFX_THROW_INFO(GetDevice(gfx)->CreateRenderTargetView(pTexture, &rtvDesc, &_mTargetView));
 
 	}
 	void RenderTarget::BindAsBuffer(Graphics& gfx) noexcept
@@ -61,15 +62,11 @@ namespace FraplesDev
 	}
 	void RenderTarget::BindAsBuffer(Graphics& gfx, DepthStencil* depthStencil) noexcept
 	{
-		BindAsBuffer(gfx, depthStencil ? depthStencil->_mPdepthStencilView.Get() : nullptr);
+		BindAsBuffer(gfx, depthStencil ? depthStencil->_mDepthStencilView.Get() : nullptr);
 	}
-	void RenderTarget::Clear(Graphics& gfx, const std::array<float, 4>& color) const noexcept
+	void RenderTarget::BindAsBuffer(Graphics& gfx, ID3D11DepthStencilView* pDepthStencilView)noexcept
 	{
-		GetContext(gfx)->ClearRenderTargetView(_mPtargetView.Get(), color.data());
-	}
-	void RenderTarget::BindAsBuffer(Graphics& gfx, ID3D11DepthStencilView* pDepthStencilView)
-	{
-		GetContext(gfx)->OMSetRenderTargets(1, _mPtargetView.GetAddressOf(), pDepthStencilView);
+		GetContext(gfx)->OMSetRenderTargets(1, _mTargetView.GetAddressOf(), pDepthStencilView);
 
 		//configure viewport
 
@@ -82,11 +79,14 @@ namespace FraplesDev
 		vp.TopLeftY = 0.0f;
 		GetContext(gfx)->RSSetViewports(1u, &vp);
 	}
+	void RenderTarget::Clear(Graphics& gfx, const std::array<float, 4>& color) const noexcept
+	{
+		GetContext(gfx)->ClearRenderTargetView(_mTargetView.Get(), color.data());
+	}
 	void RenderTarget::Clear(Graphics& gfx) const noexcept
 	{
 		Clear(gfx, { 0.0f,0.0f,0.0f,0.0f });
 	}
-
 	UINT RenderTarget::GetWidth() const noexcept
 	{
 		return _mWidth;
@@ -102,7 +102,7 @@ namespace FraplesDev
 	{
 		INFOMAN(gfx);
 		Microsoft::WRL::ComPtr<ID3D11Resource>pRes;
-		_mPtargetView->GetResource(&pRes);
+		_mTargetView->GetResource(&pRes);
 
 		// create the resource view on the texture
 		D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
@@ -116,7 +116,7 @@ namespace FraplesDev
 
 	void ShaderInputRenderTarget::Bind(Graphics& gfx) noexcept
 	{
-		GetContext(gfx)->PSSetShaderResources(slot, 1, _mShaderResourceView.GetAdressOf());
+		GetContext(gfx)->PSSetShaderResources(_mSlot, 1, _mShaderResourceView.GetAddressOf());
 	}
 
 	void OutputOnlyRenderTarget::Bind(Graphics& gfx) noexcept

@@ -12,9 +12,6 @@ namespace FraplesDev
 	{
 		_mPcontexts.push_back(std::move(context));
 	}
-	void Step::Submit(const Renderer& renderer) const
-	{
-	}
 	void Step::Bind(Graphics& gfx)const
 	{
 		for (auto& b : _mPcontexts)
@@ -30,9 +27,6 @@ namespace FraplesDev
 		{
 			pb->Accept(probe);
 		}
-	}
-	Step::Step(std::string targetPassName)
-	{
 	}
 	Step::Step(const Step& src)noexcept
 		:_mTargetPassName(src._mTargetPassName)

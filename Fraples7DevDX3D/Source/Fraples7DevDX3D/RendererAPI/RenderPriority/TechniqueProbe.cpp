@@ -4,7 +4,6 @@
 
 namespace FraplesDev
 {
-
 	// TODO: Add callback for visiting each mesh
 	void TechniqueProbe::SetTechnique(Technique* pTech_in)
 	{
@@ -12,9 +11,9 @@ namespace FraplesDev
 		_mTechIdx++;
 		OnSetTechnique();
 	}
-	void TechniqueProbe::SetStep(Step* pStep_in)
+	void TechniqueProbe::SetStep(Step* step)
 	{
-		_mStep = pStep_in;
+		_mStep = step;
 		_mStepIdx++;
 		OnSetStep();
 	}
@@ -27,5 +26,4 @@ namespace FraplesDev
 	{
 		return false;
 	}
-
 }

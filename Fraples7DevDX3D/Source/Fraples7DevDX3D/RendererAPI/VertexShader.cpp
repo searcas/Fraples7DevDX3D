@@ -1,7 +1,8 @@
 #include "VertexShader.h"
-#include "../Core/Common/Exceptions/Macros/GraphicsThrowMacros.h"
+#include "Core/Common/Exceptions/Macros/GraphicsThrowMacros.h"
 #include "RendererAPI/GFXContextCodex.h"
 #include "Utility/Fraples7Utility.h"
+#include "GraphicAPI/Graphics.h"
 namespace FraplesDev
 {
 	VertexShader::VertexShader(Graphics& gfx, const std::string& path) :_mPath(path)

@@ -1,4 +1,5 @@
 #include "PointLight.h"
+#include "imgui.h"
 namespace FraplesDev
 {
 	PointLight::PointLight(Graphics& gfx, float radius) :

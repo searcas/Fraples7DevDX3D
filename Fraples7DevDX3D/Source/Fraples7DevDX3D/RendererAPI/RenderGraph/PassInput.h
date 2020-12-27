@@ -1,11 +1,11 @@
 #pragma once
-#include <string>
-#include <memory>
 #include "PassOutput.h"
+#include "BufferResource.h"
+#include <memory>
 #include <sstream>
+#include <string>
 namespace FraplesDev
 {
-	class GfxContext;
 	class PassInput
 	{
 	public:

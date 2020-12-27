@@ -1,4 +1,6 @@
 #include "GraphicsResource.h"
+#include "GraphicAPI/Graphics.h"
+#include "Core/Common/DxgiInfoManager.h"
 #include <stdexcept>
 namespace FraplesDev
 {
