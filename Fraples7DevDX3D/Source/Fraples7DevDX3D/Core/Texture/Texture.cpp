@@ -1,7 +1,7 @@
 #include "GraphicAPI/Graphics.h"
 #include "Texture.h"
-#include "../Surface.h"
-#include "../Common/Exceptions/Macros/GraphicsThrowMacros.h"
+#include "Core/Surface.h"
+#include "Core/Common/Exceptions/Macros/GraphicsThrowMacros.h"
 #include <algorithm>
 namespace FraplesDev
 {
@@ -11,7 +11,6 @@ namespace FraplesDev
 		_mSlot(slot), _mPath(path)
 	{
 		INFOMAN(gfx);
-
 		const auto s = Surface::FromFile(path);
 		hasAlpha = s.AlphaLoaded();
 		//create texture resource 

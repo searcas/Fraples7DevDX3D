@@ -1,20 +1,20 @@
 #pragma once
 #include "Core/Fraples7.h"
+#include "Core/Common/DxgiInfoManager.h"
+#include "Core/Common/Exceptions/FraplesException.h"
+#include <DirectXMath.h>
+#include <d3d11.h>
+#include <vector>
+#include <memory>
 #include <d3dcompiler.h>
 #include "RendererAPI/RenderTarget.h"	
-#include "Core/Common/Exceptions/FraplesException.h"
-#include "Core/Common/DxgiInfoManager.h"
-#include <DirectXMath.h>
-#include <vector>
-#include <d3d11.h>
-#include <wrl.h>
-#include <memory>
 
 namespace FraplesDev
 {
+	
 	class Graphics
 	{
-		friend class GraphicsResource;
+		friend GraphicsResource;
 	public:
 		class Exception : public FraplesException
 		{

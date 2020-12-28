@@ -13,7 +13,6 @@ namespace FraplesDev
 
 		void Clear(Graphics& gfx)const noexcept override;
 		void Clear(Graphics& gfx, const std::array<float, 4>& color)const noexcept;
-		virtual void Bind(Graphics& gfx)noexcept {}
 		UINT GetWidth()const noexcept;
 		UINT GetHeight()const noexcept;
 	private:

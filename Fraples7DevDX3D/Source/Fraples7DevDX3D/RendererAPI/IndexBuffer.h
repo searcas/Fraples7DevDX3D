@@ -1,7 +1,7 @@
 #pragma once
+#include "GraphicAPI/Graphics.h"
 #include "GFXContext.h"
 #include <memory>
-#include "GraphicAPI/Graphics.h"
 
 namespace FraplesDev
 {

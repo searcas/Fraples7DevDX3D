@@ -1,6 +1,5 @@
 #pragma once
-#include "../../RendererAPI/GFXContext.h"
-#include "../Surface.h"
+#include "RendererAPI/GFXContext.h"
 
 #include "RendererAPI/GFXContextCodex.h"
 #include <memory>

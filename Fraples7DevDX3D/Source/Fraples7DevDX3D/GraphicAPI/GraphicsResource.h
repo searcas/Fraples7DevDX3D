@@ -1,5 +1,6 @@
 #pragma once
 #include "GraphicAPI/Graphics.h"
+
 namespace FraplesDev
 {
 	class GraphicsResource

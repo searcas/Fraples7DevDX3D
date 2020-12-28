@@ -1,5 +1,5 @@
 #pragma once
-#include "../Fraples7.h"
+#include "Core/Fraples7.h"
 #include <dxgidebug.h>
 #include <vector>
 #include <string>
