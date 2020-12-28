@@ -1,6 +1,6 @@
 #include "Step.h"
 #include "RendererAPI/Renderer.h"
-
+#include "TechniqueProbe.h"
 namespace FraplesDev
 {
 	Step::Step(std::string targetPassName)

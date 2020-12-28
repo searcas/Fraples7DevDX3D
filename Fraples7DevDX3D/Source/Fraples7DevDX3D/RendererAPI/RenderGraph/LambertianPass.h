@@ -3,6 +3,8 @@
 #include "PassInput.h"
 #include "PassOutput.h"
 #include "RenderQueuePass.h"
+#include "RendererAPI/RenderTarget.h"
+#include "RendererAPI/Stencil/DepthStencil.h"
 #include <vector>
 namespace FraplesDev
 {
@@ -13,7 +15,7 @@ namespace FraplesDev
 			:RenderQueuePass(std::move(name))
 		{
 			RegisterInput(BufferInput<RenderTarget>::Make("renderTarget",_mRenderTarget));
-			RegisterInput(BufferInput<DepthStencil>::Make("renderTarget",_mDepthStencil));
+			RegisterInput(BufferInput<DepthStencil>::Make("depthStencil",_mDepthStencil));
 			RegisterOutput(BufferOutput<RenderTarget>::Make("renderTarget", _mRenderTarget));
 		}
 

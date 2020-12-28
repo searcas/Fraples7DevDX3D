@@ -7,14 +7,14 @@
 #include <vector>
 #include <memory>
 #include <d3dcompiler.h>
-#include "RendererAPI/RenderTarget.h"	
 
 namespace FraplesDev
 {
-	
+	class RenderTarget;
+
 	class Graphics
 	{
-		friend GraphicsResource;
+		friend class GraphicsResource;
 	public:
 		class Exception : public FraplesException
 		{

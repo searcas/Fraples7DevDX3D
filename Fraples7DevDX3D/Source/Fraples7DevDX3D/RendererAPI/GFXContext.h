@@ -1,9 +1,10 @@
 #pragma once
 #include "GraphicAPI/GraphicsResource.h"
-#include "GraphicAPI/Graphics.h"
 #include <assert.h>
 #include <string>
 #include <memory>
+
+
 namespace FraplesDev
 {
     class GfxContext : public GraphicsResource

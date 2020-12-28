@@ -3,6 +3,7 @@
 #include "imgui_impl_win32.h"
 #include "imgui_impl_dx11.h"
 #include "Core/Common/dxerr.h"
+#include "RendererAPI/RenderTarget.h"
 #include <sstream>
 namespace FraplesDev {
 

@@ -17,7 +17,6 @@ namespace FraplesDev
 		PassOutput(std::string name);
 	private:
 		std::string _mName;
-
 	};
 
 	template<typename T>
