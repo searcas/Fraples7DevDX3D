@@ -7,6 +7,6 @@ namespace FraplesDev
 	protected:
 		void OnSetStep()override;
 	private:
-		class RenderGraph& rg;
+		RenderGraph& rg;
 	};
 }

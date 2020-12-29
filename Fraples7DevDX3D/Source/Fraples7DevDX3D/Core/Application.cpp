@@ -18,7 +18,8 @@
 #include "RendererAPI/Mesh/ModelProbe.h"
 #include "Core/Math/FraplesXM.h"
 #include "RendererAPI/Mesh/NodeSystem.h"
-
+#include "RendererAPI/RenderGraph/BufferClearPass.h"
+#include "RendererAPI/RenderGraph/LambertianPass.h"
 namespace FraplesDev
 {
 	
@@ -29,6 +30,25 @@ namespace FraplesDev
 		QA::TestDynamicConstant();
 		cube1.SetPos({ 4.0f,0.0f,0.0f });
 		cube2.SetPos({ 0.0f,4.0f,0.0f });
+		{
+			{
+				auto bcp = std::make_unique<BufferClearPass>("clear");
+				bcp->SetInputSource("renderTarget", "$.backbuffer");
+				bcp->SetInputSource("depthStencil", "$.masterDepth");
+				renderGraph.AppendPass(std::move(bcp));
+			}
+			{
+				auto lp = std::make_unique<LambertianPass>("lambertian");
+				lp->SetInputSource("renderTarget", "clear.renderTarget");
+				lp->SetInputSource("depthStencil", "clear.depthStencil");
+				renderGraph.AppendPass(std::move(lp));
+			}
+			renderGraph.SetSinkTarget("backbuffer", "lambertian.renderTarget");
+			renderGraph.Finalize();
+			cube1.LinkTechniques(renderGraph);
+			cube2.LinkTechniques(renderGraph);
+			light.LinkTechniques(renderGraph);
+		}
 		//bluePlane.SetPosXYZ(_mCamera.GetPos());
 		//redPlane.SetPosXYZ(_mCamera.GetPos());
 		_mWin.GetGFX().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 800.0f));
@@ -76,6 +96,7 @@ namespace FraplesDev
 		cube1.Submit();
 		cube2.Submit();
 	//	gobber.Submit(fc);
+		renderGraph.Execute(_mWin.GetGFX());
 	}
 
 	void Application::DoFrame()
@@ -351,6 +372,7 @@ namespace FraplesDev
 		}
 		SpawnFunc();
 		_mWin.GetGFX().EndFrame();
+		renderGraph.Reset();
 	}
 
 	void Application::ShowImguiDemoWindow()

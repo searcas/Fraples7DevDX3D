@@ -24,7 +24,7 @@ namespace FraplesDev
 		void Link(RenderGraph& rg);
 	private:
 		std::vector<std::shared_ptr<GfxContext>>_mPcontexts;
-		RenderQueuePass* _mTargetPass;
+		RenderQueuePass* _mTargetPass = nullptr;
 		std::string _mTargetPassName;
 	};
 }

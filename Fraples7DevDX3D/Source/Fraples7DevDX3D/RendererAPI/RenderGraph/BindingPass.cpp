@@ -4,7 +4,7 @@
 namespace FraplesDev
 {
 	BindingPass::BindingPass(std::string name, std::vector<std::shared_ptr<GfxContext>> binds)
-		:Pass(std::move(name)), _mBinds(std::move(binds))
+		: Pass(std::move(name)), _mBinds(std::move(binds))
 	{
 
 	}

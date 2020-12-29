@@ -2,6 +2,10 @@
 
 namespace FraplesDev
 {
+	RenderQueuePass::RenderQueuePass(std::string name,std::vector<Job>jobs)
+		:BindingPass(name),_mJobs(std::move(jobs))
+	{
+	}
 	void RenderQueuePass::Accept(Job job) noexcept
 	{
 		_mJobs.push_back(job);

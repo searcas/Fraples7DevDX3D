@@ -24,7 +24,7 @@ namespace FraplesDev
 			throw RGC_EXCEPTION("Empty output name");
 		}
 		const bool nameCharsValid = std::all_of(_mName.begin(), _mName.end(), [](char c) {return std::isalnum(c) || c == '_'; });
-		if (!nameCharsValid || std::isdigit(name.front()))
+		if (!nameCharsValid || std::isdigit(_mName.front()))
 		{
 			throw RGC_EXCEPTION("Invalid output name" + _mName);
 		}

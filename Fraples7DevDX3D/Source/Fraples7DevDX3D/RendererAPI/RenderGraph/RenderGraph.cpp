@@ -147,7 +147,7 @@ namespace FraplesDev
 
 			for (auto& existingPass : _mPasses)
 			{
-				if (existingPass->GetName()==inputSourcePassName)
+				if (existingPass->GetName() == inputSourcePassName)
 				{
 					auto& source = existingPass->GetOutput(sink->GetOutputName());
 					sink->Bind(source);

@@ -11,7 +11,7 @@ namespace FraplesDev
 	class LambertianPass : public RenderQueuePass
 	{
 	public:
-		LambertianPass(std::string name)
+		LambertianPass(std::string&& name)
 			:RenderQueuePass(std::move(name))
 		{
 			RegisterInput(BufferInput<RenderTarget>::Make("renderTarget",_mRenderTarget));
