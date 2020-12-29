@@ -12,7 +12,7 @@
 namespace FraplesDev
 {
 	RenderGraph::RenderGraph(Graphics& gfx)
-		:_mBackBufferTarget(gfx.GetTarget())
+		:_mBackBufferTarget(gfx.GetTarget()), _mMasterDepth(std::make_shared<OutputOnlyDepthStencil>(gfx))
 	{
 		_mGlobalSources.push_back(BufferOutput<RenderTarget>::Make("backbuffer", _mBackBufferTarget));
 		_mGlobalSources.push_back(BufferOutput<DepthStencil>::Make("masterDepth", _mMasterDepth));

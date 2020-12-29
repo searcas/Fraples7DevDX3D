@@ -23,7 +23,7 @@ namespace FraplesDev
 				throw RGC_EXCEPTION("Empty output name");
 			}
 			const bool nameCharsValid = std::all_of(passName.begin(), passName.end(), [](char c) {return std::isalnum(c) || c == '_'; });
-			if (_mPassName != "$" && (!nameCharsValid || std::isdigit(_mPassName.front())))
+			if (passName != "$" && (!nameCharsValid || std::isdigit(passName.front())))
 			{
 				throw RGC_EXCEPTION("Invalid output name: " + _mRegisteredName);
 			}
@@ -42,12 +42,7 @@ namespace FraplesDev
 			_mOutputName = outputName;
 		}
 	}
-	void PassInput::Bind(PassOutput& out)
-	{
-	}
-	void PassInput::PostLinkValidate() const
-	{
-	}
+
 	PassInput::PassInput(std::string registeredName)
 		: _mRegisteredName(std::move(registeredName))
 	{
