@@ -22,7 +22,7 @@ namespace FraplesDev
 	{
 		for (auto& out : _mOutputs)
 		{
-			if (out->GetName()==_mName)
+			if (out->GetName() == registeredName)
 			{
 				return *out;
 			}
