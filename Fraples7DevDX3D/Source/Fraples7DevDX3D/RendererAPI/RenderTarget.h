@@ -10,6 +10,7 @@ namespace FraplesDev
 		void BindAsBuffer(Graphics& gfx) noexcept override;
 		void BindAsBuffer(Graphics& gfx, BufferResource* depthStencil)noexcept override;
 		void BindAsBuffer(Graphics& gfx, class DepthStencil* depthStencil)noexcept;
+		void Bind(Graphics& gfx) noexcept override {}
 
 		void Clear(Graphics& gfx)const noexcept override;
 		void Clear(Graphics& gfx, const std::array<float, 4>& color)const noexcept;
@@ -37,7 +38,7 @@ namespace FraplesDev
 	};
 
 	// RT for Graphics to create RenderTarget for the back buffer
-	class OutputOnlyRenderTarget : public RenderTarget
+	class OutputOnlyRenderTarget : public RenderTarget 
 	{
 		friend Graphics;
 	public:

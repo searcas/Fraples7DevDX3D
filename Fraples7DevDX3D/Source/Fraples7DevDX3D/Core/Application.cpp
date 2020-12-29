@@ -72,7 +72,7 @@ namespace FraplesDev
 	{
 		light.Submit();
 		//_mPloaded->Submit(fc, DirectX::XMMatrixIdentity());
-		_mSponza.Submit();
+		//_mSponza.Submit();
 		cube1.Submit();
 		cube2.Submit();
 	//	gobber.Submit(fc);
@@ -287,7 +287,7 @@ namespace FraplesDev
 	
 		};
 		static MP modelProbe;
-		modelProbe.SpawnWindow(_mSponza);
+	//	modelProbe.SpawnWindow(_mSponza);
 		while (const auto e = _mWin._mKey.Readkey())
 		{
 			if (!e->isPressed())

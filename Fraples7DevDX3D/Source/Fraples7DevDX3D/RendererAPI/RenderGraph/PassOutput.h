@@ -23,7 +23,7 @@ namespace FraplesDev
 	class BufferOutput : public PassOutput
 	{
 	public:
-		static std::unique_ptr<BufferOutput>Make(std::string&& name, std::shared_ptr<T>& buffer)
+		static std::unique_ptr<BufferOutput>Make(std::string name, std::shared_ptr<T>& buffer)
 		{
 			return std::make_unique<BufferOutput>(std::move(name), buffer);
 		}
@@ -32,7 +32,7 @@ namespace FraplesDev
 		{
 
 		}
-		void PostLinkValidate()const 
+		void PostLinkValidation()const override
 		{}
 		std::shared_ptr<BufferResource>YieldBuffer()
 		{

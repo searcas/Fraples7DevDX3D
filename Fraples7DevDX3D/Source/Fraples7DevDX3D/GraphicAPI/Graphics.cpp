@@ -50,7 +50,7 @@ namespace FraplesDev {
 		
 		Microsoft::WRL::ComPtr<ID3D11Texture2D> pBackBuffer;
 		FPL_GFX_THROW_INFO(_mpSwap->GetBuffer(0, __uuidof(ID3D11Texture2D),&pBackBuffer));
-		_mTarget = std::shared_ptr<RenderTarget>{ new OutputOnlyRenderTarget(*this, pBackBuffer.Get())};
+		_mTarget = std::shared_ptr<RenderTarget>{ new OutputOnlyRenderTarget(*this, pBackBuffer.Get()) };
 	
 		//viewport always fullscreen (for now)
 		D3D11_VIEWPORT vp;

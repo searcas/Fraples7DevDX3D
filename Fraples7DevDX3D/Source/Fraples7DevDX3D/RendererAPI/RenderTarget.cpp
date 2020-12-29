@@ -123,5 +123,9 @@ namespace FraplesDev
 	{
 		assert("Cannot bind OutputOnlyRenderTarget as shader input" && false);
 	}
+	OutputOnlyRenderTarget::OutputOnlyRenderTarget(Graphics& gfx, ID3D11Texture2D* pTexture)
+		:RenderTarget(gfx,pTexture)
+	{
 
+	}
 }
