@@ -7,7 +7,7 @@ namespace FraplesDev
 	{
 	public:
 		Technique() = default;
-		Technique(std::string name, bool isActive = true)noexcept;
+		Technique(std::string name, bool isActive = true) noexcept;
 		void Submit(const class Renderer& renderer)const noexcept;
 		void Link(RenderGraph& rg);
 		void AddStep(Step step)noexcept;

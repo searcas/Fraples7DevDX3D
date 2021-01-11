@@ -230,10 +230,7 @@ namespace FraplesDev
 							DirectX::XMMatrixTranslation(tf.x, tf.y, tf.z));
 
 					}
-				}
-				if (pSelectedNode != nullptr)
-				{
-					TechProbe probe;
+					TechProbe probe{};
 					pSelectedNode->Accept(probe);
 				}
 				ImGui::End();
@@ -288,27 +285,6 @@ namespace FraplesDev
 				// processing for selectin node
 				if (ImGui::IsItemClicked())
 				{
-					//used to change the highlighted node on selection change
-					struct Probe : public TechniqueProbe
-					{
-						virtual void OnSetTechnique()
-						{
-							if (_mPtech->GetName() == "Outline")
-							{
-								_mPtech->SetActiveState(highlighted);
-							}
-						}
-						bool highlighted = true;
-					}probe;
-					// remove highlight on prev-selected node
-					if (pSelectedNode != nullptr)
-					{
-						pSelectedNode->Accept(probe);
-					}
-					//add highlight to newly-selected node
-					probe.highlighted = true;
-					node.Accept(probe);
-
 					pSelectedNode = &node;
 				}
 				// signal if children should also be recursed

@@ -129,16 +129,12 @@ namespace FraplesDev
 
 		//outline technique
 		{
-			Technique outline("Outline", false);
+			Technique outline("Outline", true);
 			{
 				Step mask("outlineMask");
 
-				auto pvs = VertexShader::Resolve(gfx, "Solid_VS.cso");
-				auto pvsbyte = pvs->GetByteCode();
-				mask.AddContext(std::move(pvs));
-
 				//TODO: better sub-layout generation tech for future consideration maybe
-				mask.AddContext(InputLayout::Resolve(gfx, _mVertexLayout, pvsbyte));
+				mask.AddContext(InputLayout::Resolve(gfx, _mVertexLayout, VertexShader::Resolve(gfx,"Solid_VS.cso")->GetByteCode()));
 				mask.AddContext(std::make_shared<TransformCBuf>(gfx));
 
 				//TODO: might need to specify rasterizer when doubled-sided models start being used
@@ -146,13 +142,6 @@ namespace FraplesDev
 			}
 			{
 				Step draw("outlineDraw");
-				//these can be pass-constant (tricky due to layout issues)
-				auto pvs = VertexShader::Resolve(gfx, "Solid_VS.cso");
-				auto pvsbyte = pvs->GetByteCode();
-				draw.AddContext(std::move(pvs));
-
-				//this can be pass-constant
-				draw.AddContext(PixelShader::Resolve(gfx, "Solid_PS.cso"));
 				{
 					MP::RawLayout layout;
 					layout.Add<MP::Float3>("materialColor");
@@ -161,7 +150,7 @@ namespace FraplesDev
 					draw.AddContext(std::make_shared<CachingPixelConstantBufferEx>(gfx, buf, 1u));
 				}
 				//TODO: better sub-layout generation tech for future consideration maybe
-				draw.AddContext(InputLayout::Resolve(gfx, _mVertexLayout, pvsbyte));
+				draw.AddContext(InputLayout::Resolve(gfx, _mVertexLayout, VertexShader::Resolve(gfx, "Solid_VS.cso")->GetByteCode()));
 				draw.AddContext(std::make_shared<TransformCBufScaling>(gfx,1.01f));
 
 				//TODO: might need to specify resterizer when doubled-sided models start being used

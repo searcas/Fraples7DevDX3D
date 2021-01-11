@@ -25,6 +25,11 @@ namespace FraplesDev
 		UpdateBindImpl(gfx, xf);
 	}
 
+	std::unique_ptr<CloningContext> TransformCBufScaling::Clone() const noexcept
+	{
+		return std::make_unique<TransformCBufScaling>(*this);
+	}
+
 	MP::RawLayout TransformCBufScaling::MakeLayout()
 	{
 		MP::RawLayout layout;

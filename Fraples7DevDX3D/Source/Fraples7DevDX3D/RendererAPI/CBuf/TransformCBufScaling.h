@@ -11,6 +11,7 @@ namespace FraplesDev
 		TransformCBufScaling(Graphics& gfx, float scale = 1.01f);
 		void Accept(TechniqueProbe& probe)override;
 		void Bind(Graphics& gfx)noexcept override;
+		std::unique_ptr<CloningContext>Clone()const noexcept override;
 	private:
 		static MP::RawLayout MakeLayout();
 	private:
