@@ -1,10 +1,7 @@
 #include "Application.h"
 #include "ImGui/imgui.h"
 #include "QualityAssurance/TestingQA.h"
-#include "RendererAPI/RenderGraph/BufferClearPass.h"
-#include "RendererAPI/RenderGraph/LambertianPass.h"
-#include "RendererAPI/RenderGraph/OutlineMaskGenerationPass.h"
-#include "RendererAPI/RenderGraph/OutlineRenderingPass.h"
+
 #include "RendererAPI/Probe/ModelProbeBase.h"
 namespace FraplesDev
 {
@@ -16,38 +13,10 @@ namespace FraplesDev
 		QA::TestDynamicConstant();
 		cube1.SetPos({ 4.0f,0.0f,0.0f });
 		cube2.SetPos({ 0.0f,4.0f,0.0f });
-		{
-			{
-				auto bcp = std::make_unique<BufferClearPass>("clear");
-				bcp->SetInputSource("renderTarget", "$.backbuffer");
-				bcp->SetInputSource("depthStencil", "$.masterDepth");
-				renderGraph.AppendPass(std::move(bcp));
-			}
-			{
-				auto lp = std::make_unique<LambertianPass>(_mWin.GetGFX(),"lambertian");
-				lp->SetInputSource("renderTarget", "clear.renderTarget");
-				lp->SetInputSource("depthStencil", "clear.depthStencil");
-				renderGraph.AppendPass(std::move(lp));
-			}
-			{
-				auto pass = std::make_unique<OutlineMaskGenerationPass>(_mWin.GetGFX(), "outlineMask");
-				pass->SetInputSource("depthStencil", "lambertian.depthStencil");
-				renderGraph.AppendPass(std::move(pass));
-			}
-			{
-				auto pass = std::make_unique<OutlineRenderingPass>(_mWin.GetGFX(), "outlineDraw");
-				pass->SetInputSource("renderTarget", "lambertian.renderTarget");
-				pass->SetInputSource("depthStencil", "outlineMask.depthStencil");
-				renderGraph.AppendPass(std::move(pass));
-			}
-
-			renderGraph.SetSinkTarget("backbuffer", "outlineDraw.renderTarget");
-			renderGraph.Finalize();
-			cube1.LinkTechniques(renderGraph);
-			cube2.LinkTechniques(renderGraph);
-			light.LinkTechniques(renderGraph);
-			_mSponza.LinkTechniques(renderGraph);
-		}
+		cube1.LinkTechniques(renderGraph);
+		cube2.LinkTechniques(renderGraph);
+		_mSponza.LinkTechniques(renderGraph);
+		light.LinkTechniques(renderGraph);
 		//bluePlane.SetPosXYZ(_mCamera.GetPos());
 		//redPlane.SetPosXYZ(_mCamera.GetPos());
 		_mWin.GetGFX().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 800.0f));

@@ -1,15 +1,12 @@
 #pragma once
 #include "Platform/Windows/Window.h"
-#include "Utility/Timer.h"
-#include "RendererAPI/Camera.h"
-#include "RendererAPI/Mesh/Model.h"
-#include "Math/Math.h"
-#include "Objects/BasePlane.h"
-#include "Objects/BaseCube.h"
-#include "Objects/PointLight.h"
 #include "Utility/ScriptCommandCenter.h"
-#include "RendererAPI/Mesh/Material.h"
-#include <set>
+#include "Objects/PointLight.h"
+#include "RendererAPI/Camera.h"
+#include "Objects/BaseCube.h"
+#include "RendererAPI/Mesh/Model.h"
+#include "Utility/Timer.h"
+#include "RendererAPI/RenderGraph/RenderGraphBase.h"
 namespace FraplesDev
 {
 
@@ -39,7 +36,7 @@ namespace FraplesDev
 
 	private:
 		ScriptCommander scriptCommander;
-		RenderGraph renderGraph{ _mWin.GetGFX() };
+		BaseRenderGraph renderGraph{ _mWin.GetGFX() };
 		//objects
 		PointLight light;
 		Camera _mCamera;
