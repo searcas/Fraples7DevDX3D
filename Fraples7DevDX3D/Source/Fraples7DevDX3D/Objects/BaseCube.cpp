@@ -18,6 +18,8 @@ namespace FraplesDev
 		_mPvertices = VertexBuffer::Resolve(gfx, geometryTag, model._mVertices);
 		_mPindices = IndexBuffer::Resolve(gfx, geometryTag, model._mIndices);
 		_mPtopology = Topology::Resolve(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+		auto tcb = std::make_shared<TransformCBuf>(gfx);
 		{
 			Technique shade("Shade");
 			{
@@ -44,50 +46,65 @@ namespace FraplesDev
 			}
 			AddTechnique(std::move(shade));
 		}
-		//{
-		//	Technique outLine("Outline");
-		//	{
-		//		Step mask(1);
+		{
+			Technique outLine("Outline");
+			{
+				Step mask("outlineMask");
 
-		//		auto pvs = VertexShader::Resolve(gfx, "Solid_VS.cso");
-		//		auto pvsbyte = pvs->GetByteCode();
-		//		mask.AddContext(std::move(pvs));
 
-		//		//TODO: Better Sub-Layout generation tech for future consideration maybe
-		//		mask.AddContext(InputLayout::Resolve(gfx, model._mVertices.GetLayout(), pvsbyte));
-		//		mask.AddContext(std::make_shared<TransformCBuf>(gfx));
+				//TODO: Better Sub-Layout generation tech for future consideration maybe
+				mask.AddContext(InputLayout::Resolve(gfx, model._mVertices.GetLayout(), VertexShader::Resolve(gfx,"Solid_VS.cso")->GetByteCode()));
+				mask.AddContext(std::move(tcb));
 
-		//		//TODO: might need to specify rasterizer when doubled-sided models start being used
-		//		outLine.AddStep(std::move(mask));
-		//	}
-		//	{
-		//		Step draw(2);
+				//TODO: might need to specify rasterizer when doubled-sided models start being used
+				outLine.AddStep(std::move(mask));
+			}
+			{
+				Step draw("outlineDraw");
 
-		//		//these can be pass-constant (tricky due to layout issues)
-		//		auto pvs = VertexShader::Resolve(gfx, "Solid_VS.cso");
-		//		auto pvsbyte = pvs->GetByteCode();
-		//		draw.AddContext(std::move(pvs));
+				MP::RawLayout lay;
+				lay.Add<MP::Float4>("color");
+				auto buf = MP::Buffer(std::move(lay));
+				buf["color"] = DirectX::XMFLOAT4{ 1.0f,0.4f,0.4f,1.0f };
+				draw.AddContext(std::make_shared<CachingPixelConstantBufferEx>(gfx, buf, 1u));
+				draw.AddContext(InputLayout::Resolve(gfx, model._mVertices.GetLayout(), VertexShader::Resolve(gfx, "Solid_VS.cso")->GetByteCode()));
 
-		//		// this can be pass-constant
-		//		draw.AddContext(PixelShader::Resolve(gfx, "Solid_PS.cso"));
+				class TransformCbufScaling : public TransformCBuf
+				{
+				public:
+					TransformCbufScaling(Graphics& gfx, float scale = 1.04f)
+						:TransformCBuf(gfx), _mBuf(MakeLayout())
+					{
+						_mBuf["scale"] = scale;
+					}
+					void Accept(TechniqueProbe& probe)override
+					{
+						probe.VisitBuffer(_mBuf);
+					}
+					void Bind(Graphics& gfx)noexcept override
+					{
+						const float scale = _mBuf["scale"];
+						const auto scaleMatrix = DirectX::XMMatrixScaling(scale, scale, scale);
+						auto xf = GetTransforms(gfx);
+						xf.modelView *= scaleMatrix;
+						xf.modelViewProj *= scaleMatrix;
+						UpdateBindImpl(gfx, xf);
+					}
+					static MP::RawLayout MakeLayout()
+					{
+						MP::RawLayout layout;
+						layout.Add<MP::Float>("scale");
+						return layout;
+					}
+				private:
+					MP::Buffer _mBuf;
+				};
+				draw.AddContext(std::make_shared<TransformCbufScaling>(gfx));
+				outLine.AddStep(std::move(draw));
+			}
 
-		//		MP::RawLayout layout;
-		//		layout.Add<MP::Float4>("color");
-		//		auto buf = MP::Buffer(std::move(layout));
-		//		buf["color"] = DirectX::XMFLOAT4{ 1.0f,0.2f,0.2f,0.8f };
-		//		draw.AddContext(std::make_shared<CachingPixelConstantBufferEx>(gfx, buf, 1u));
-
-		//		//TODO: Better Sub-Layout generation tech for future consideration maybe
-		//		draw.AddContext(InputLayout::Resolve(gfx, model._mVertices.GetLayout(), pvsbyte));
-
-		//		//quick and dirty... nicer soulution maybe takes a lamba, we'll see
-
-		//		draw.AddContext(std::make_shared<TransformCBuf>(gfx));
-		//		//TODO: might need to specify rasterizer when doubled-sided models start being used
-		//		outLine.AddStep(std::move(draw));
-		//	}
-		//	AddTechnique(std::move(outLine));
-		//}
+			AddTechnique(std::move(outLine));
+		}
 	}
 	void BaseCube::SetPos(DirectX::XMFLOAT3 pos_in) noexcept
 	{

@@ -34,7 +34,6 @@ namespace FraplesDev
 				only.AddContext(InputLayout::Resolve(gfx, model._mVertices.GetLayout(), pvsbyte));
 				only.AddContext(std::make_shared<TransformCBuf>(gfx));
 
-				only.AddContext(Blending::Resolve(gfx, false));
 				only.AddContext(Rasterizer::Resolve(gfx, false));
 
 				solid.AddStep(std::move(only));

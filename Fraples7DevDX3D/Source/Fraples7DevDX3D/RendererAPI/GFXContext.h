@@ -24,6 +24,6 @@ namespace FraplesDev
     class CloningContext : public GfxContext
     {
     public:
-        virtual std::unique_ptr<CloningContext>Clone()const noexcept = 0;
+        virtual std::unique_ptr<CloningContext>Clone() const noexcept = 0;
     };
 }

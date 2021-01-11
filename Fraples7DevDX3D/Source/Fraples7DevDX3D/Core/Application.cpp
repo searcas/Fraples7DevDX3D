@@ -20,6 +20,8 @@
 #include "RendererAPI/Mesh/NodeSystem.h"
 #include "RendererAPI/RenderGraph/BufferClearPass.h"
 #include "RendererAPI/RenderGraph/LambertianPass.h"
+#include "RendererAPI/RenderGraph/OutlineMaskGenerationPass.h"
+#include "RendererAPI/RenderGraph/OutlineRenderingPass.h"
 namespace FraplesDev
 {
 	
@@ -38,12 +40,24 @@ namespace FraplesDev
 				renderGraph.AppendPass(std::move(bcp));
 			}
 			{
-				auto lp = std::make_unique<LambertianPass>("lambertian");
+				auto lp = std::make_unique<LambertianPass>(_mWin.GetGFX(),"lambertian");
 				lp->SetInputSource("renderTarget", "clear.renderTarget");
 				lp->SetInputSource("depthStencil", "clear.depthStencil");
 				renderGraph.AppendPass(std::move(lp));
 			}
-			renderGraph.SetSinkTarget("backbuffer", "lambertian.renderTarget");
+			{
+				auto pass = std::make_unique<OutlineMaskGenerationPass>(_mWin.GetGFX(), "outlineMask");
+				pass->SetInputSource("depthStencil", "lambertian.depthStencil");
+				renderGraph.AppendPass(std::move(pass));
+			}
+			{
+				auto pass = std::make_unique<OutlineRenderingPass>(_mWin.GetGFX(), "outlineDraw");
+				pass->SetInputSource("renderTarget", "lambertian.renderTarget");
+				pass->SetInputSource("depthStencil", "outlineMask.depthStencil");
+				renderGraph.AppendPass(std::move(pass));
+			}
+
+			renderGraph.SetSinkTarget("backbuffer", "outlineDraw.renderTarget");
 			renderGraph.Finalize();
 			cube1.LinkTechniques(renderGraph);
 			cube2.LinkTechniques(renderGraph);

@@ -1,6 +1,6 @@
 #pragma once
 #include "GFXContext.h"
-
+#include "GFXContextCodex.h"
 namespace FraplesDev
 {
 	class Stencil : public GfxContext

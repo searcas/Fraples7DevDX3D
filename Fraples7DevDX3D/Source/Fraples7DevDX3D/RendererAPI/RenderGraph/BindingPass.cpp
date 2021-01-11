@@ -20,4 +20,12 @@ namespace FraplesDev
 		}
 		BindBufferResources(gfx);
 	}
+	void BindingPass::Finalize()
+	{
+		Pass::Finalize();
+		if (!_mRenderTarget && !_mDepthStencil)
+		{
+			throw RGC_EXCEPTION("BindingPass [" + GetName() + "] needs at least one of a renderTarget or depthStencil");
+		}
+	}
 }
