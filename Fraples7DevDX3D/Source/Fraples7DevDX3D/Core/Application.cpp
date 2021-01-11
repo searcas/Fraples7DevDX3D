@@ -128,7 +128,7 @@ namespace FraplesDev
 			{
 				using namespace std::string_literals;
 				ImGui::TextColored({ 0.4f,1.0f,0.6f,1.0f }, _mPtech->GetName().c_str());
-				bool active = _mPtech->IsActivated();
+				bool active = _mPtech->IsActivated() ? true : true;
 				ImGui::Checkbox(("Tech Active##"s + std::to_string(_mTechIdx)).c_str(), &active);
 				_mPtech->SetActiveState(active);
 			}
