@@ -69,7 +69,8 @@ namespace FraplesDev
 				return *ecode;
 			}
 			// execute the game logic
-			// const auto timer = _mTimer.Start() * _mSpeedFactor;
+			 const auto dt = _mTimer.Get() * _mSpeedFactor;
+			HandleEvents(dt);
 			DoFrame();
 		}
 	}
@@ -108,11 +109,19 @@ namespace FraplesDev
 	
 		static ModelProbeBase modelProbe;
 		modelProbe.SpawnWindow(_mSponza);
+
+		SpawnFunc();
+		_mWin.GetGFX().EndFrame();
+		renderGraph.Reset();
+	}
+
+	void Application::HandleEvents(float dt)
+	{
 		while (const auto e = _mWin._mKey.Readkey())
 		{
 			if (!e->isPressed())
 				continue;
-			
+
 			switch (e->GetCode())
 			{
 			case VK_ESCAPE:
@@ -158,7 +167,7 @@ namespace FraplesDev
 			{
 				_mCamera.Translate({ 0.0f, -dt, 0.0f });
 			}
-			
+
 		}
 
 		while (const auto delta = _mWin._mMouse.ReadRawDelta())
@@ -169,10 +178,8 @@ namespace FraplesDev
 			}
 
 		}
-		SpawnFunc();
-		_mWin.GetGFX().EndFrame();
-		renderGraph.Reset();
 	}
+
 
 	void Application::ShowImguiDemoWindow()
 	{

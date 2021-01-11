@@ -23,5 +23,4 @@ namespace FraplesDev
 		return std::chrono::duration<float>(std::chrono::steady_clock::now() - _mLast).count();
 
 	}
-
 }

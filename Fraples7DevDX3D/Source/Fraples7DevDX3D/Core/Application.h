@@ -24,6 +24,7 @@ namespace FraplesDev
 		void SpawnFunc();
 		void RenderObj();
 		void DoFrame();
+		void HandleEvents(float dt);
 		void ShowImguiDemoWindow();
 		void SpawnAppInfoWindow() noexcept;
 		//	Not in use anymore
