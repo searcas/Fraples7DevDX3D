@@ -1,5 +1,5 @@
 #include "Material.h"
-#include "RendererAPI/CBuf/TransformCBufScaling.h"
+#include "RendererAPI/TransformCBuf/TransformCBufScaling.h"
 namespace FraplesDev
 {
 	Material::Material(Graphics& gfx, const aiMaterial& material, const std::filesystem::path& modelPath) noexcept(!IS_DEBUG)

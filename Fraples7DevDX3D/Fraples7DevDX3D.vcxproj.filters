@@ -228,7 +228,13 @@
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\OutlineMaskGenerationPass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\CBuf\TransformCBufScaling.cpp">
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\TransformCBuf\TransformCBufScaling.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Probe\ModelProbeBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Probe\TechProbeBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -533,7 +539,13 @@
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\OutlineMaskGenerationPass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\CBuf\TransformCBufScaling.h">
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\TransformCBuf\TransformCBufScaling.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Probe\ModelProbeBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Probe\TechProbeBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

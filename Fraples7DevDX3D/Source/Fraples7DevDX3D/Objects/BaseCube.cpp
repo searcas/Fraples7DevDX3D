@@ -6,7 +6,7 @@
 #include "RendererAPI/RenderPriority/TechniqueProbe.h"
 #include "Core/MetaProgramming/DynamicConstant.h"
 #include "RendererAPI/ConstantBuffersEx.h"
-#include "RendererAPI/CBuf/TransformCBufScaling.h"
+#include "RendererAPI/TransformCBuf/TransformCBufScaling.h"
 namespace FraplesDev
 {
 	BaseCube::BaseCube(Graphics& gfx, float size)
