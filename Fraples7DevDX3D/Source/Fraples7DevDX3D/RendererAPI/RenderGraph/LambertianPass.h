@@ -19,7 +19,7 @@ namespace FraplesDev
 			RegisterInput(BufferInput<DepthStencil>::Make("depthStencil",_mDepthStencil));
 			RegisterOutput(BufferOutput<RenderTarget>::Make("renderTarget", _mRenderTarget));
 			RegisterOutput(BufferOutput<DepthStencil>::Make("depthStencil", _mDepthStencil));
-			AddBind(Stencil::Resolve(gfx, Stencil::Mode::Mask));
+			AddBind(Stencil::Resolve(gfx, Stencil::Mode::Off));
 		}
 	};
 }

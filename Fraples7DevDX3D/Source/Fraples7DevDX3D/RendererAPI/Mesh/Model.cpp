@@ -7,24 +7,9 @@
 #include "Core/Math/Math.h"
 namespace FraplesDev
 {
-	/*const MP::Buffer* Node::GetMaterialConstants()const noexcept(!IS_DEBUG)
-	{
-		if (_mMeshPtrs.size() == 0)
-		{
-			return nullptr;
-		}
-		auto pBindable = _mMeshPtrs.front()->QueryBindable<CachingPixelConstantBufferEx>();
-		return &pBindable->GetBuffer();
-	}
-	void Node::SetMaterialConstants(const MP::Buffer& buf_in)noexcept(!IS_DEBUG)
-	{
-		auto pcb = _mMeshPtrs.front()->QueryBindable<CachingPixelConstantBufferEx>();
-		assert(pcb != nullptr);
-		pcb->SetBuffer(buf_in);
-	}*/
+	
 	
 	Model::Model(Graphics& gfx, const std::string& path, float scale)
-		//: _mpWindow(std::make_unique<ModelWindow>())
 	{
 		Assimp::Importer imp;
 		const auto pScene = imp.ReadFile(path.c_str(), aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_ConvertToLeftHanded | aiProcess_GenNormals | aiProcess_CalcTangentSpace);
@@ -50,12 +35,6 @@ namespace FraplesDev
 
 	void Model::Submit() const noexcept(!IS_DEBUG)
 	{
-		// I'm still not happy about updating parameters
-		// (I.E mutatting a bindable GPU state which is 
-		// part of a node which is part of the model that
-		// is const in this call) can probably do this elsewhere
-		
-		//_mpWindow->ApplyParameters();
 		_mRoot->Submit(DirectX::XMMatrixIdentity());
 	}
 
@@ -78,6 +57,13 @@ namespace FraplesDev
 		}
 		return pNode;
 	}
+	void Model::LinkTechniques(RenderGraph& rg)
+	{
+		for (auto& pMesh : _mMeshPtrs)
+		{
+			pMesh->LinkTechniques(rg);
+		}
+	}
 	void Model::SetRootTransform(DirectX::FXMMATRIX tf)
 	{
 		_mRoot->SetAppliedTransform(tf);
@@ -89,12 +75,4 @@ namespace FraplesDev
 	Model::~Model()
 	{
 	}
-
-	/*void Model::ShowModelInfo(Graphics& gfx, const char* windowName)
-	{
-		_mpWindow->Show(gfx, windowName, *_mRoot);
-	}
-	*/
-	
-	
 }

@@ -107,6 +107,7 @@
     <ClCompile Include="ImGui\imgui_widgets.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\GraphicAPI\GraphicsResource.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\QualityAssurance\TestingQA.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\CBuf\TransformCBufScaling.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\Material.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\ModelException.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\NodeSystem.cpp" />
@@ -190,6 +191,7 @@
     <ClInclude Include="ImGui\imstb_truetype.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\GraphicAPI\GraphicsResource.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\CBuf\TransformCBufScaling.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Filters\BlurPack.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\Material.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\ModelException.h" />

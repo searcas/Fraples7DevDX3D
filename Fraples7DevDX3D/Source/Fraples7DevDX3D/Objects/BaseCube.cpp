@@ -6,6 +6,7 @@
 #include "RendererAPI/RenderPriority/TechniqueProbe.h"
 #include "Core/MetaProgramming/DynamicConstant.h"
 #include "RendererAPI/ConstantBuffersEx.h"
+#include "RendererAPI/CBuf/TransformCBufScaling.h"
 namespace FraplesDev
 {
 	BaseCube::BaseCube(Graphics& gfx, float size)
@@ -68,38 +69,7 @@ namespace FraplesDev
 				buf["color"] = DirectX::XMFLOAT4{ 1.0f,0.4f,0.4f,1.0f };
 				draw.AddContext(std::make_shared<CachingPixelConstantBufferEx>(gfx, buf, 1u));
 				draw.AddContext(InputLayout::Resolve(gfx, model._mVertices.GetLayout(), VertexShader::Resolve(gfx, "Solid_VS.cso")->GetByteCode()));
-
-				class TransformCbufScaling : public TransformCBuf
-				{
-				public:
-					TransformCbufScaling(Graphics& gfx, float scale = 1.04f)
-						:TransformCBuf(gfx), _mBuf(MakeLayout())
-					{
-						_mBuf["scale"] = scale;
-					}
-					void Accept(TechniqueProbe& probe)override
-					{
-						probe.VisitBuffer(_mBuf);
-					}
-					void Bind(Graphics& gfx)noexcept override
-					{
-						const float scale = _mBuf["scale"];
-						const auto scaleMatrix = DirectX::XMMatrixScaling(scale, scale, scale);
-						auto xf = GetTransforms(gfx);
-						xf.modelView *= scaleMatrix;
-						xf.modelViewProj *= scaleMatrix;
-						UpdateBindImpl(gfx, xf);
-					}
-					static MP::RawLayout MakeLayout()
-					{
-						MP::RawLayout layout;
-						layout.Add<MP::Float>("scale");
-						return layout;
-					}
-				private:
-					MP::Buffer _mBuf;
-				};
-				draw.AddContext(std::make_shared<TransformCbufScaling>(gfx));
+				draw.AddContext(std::make_shared<TransformCBufScaling>(gfx, 1.04f));
 				outLine.AddStep(std::move(draw));
 			}
 

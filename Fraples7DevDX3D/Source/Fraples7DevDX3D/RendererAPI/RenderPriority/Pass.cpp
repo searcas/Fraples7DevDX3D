@@ -64,7 +64,6 @@ namespace FraplesDev
 			if (in->GetRegisteredName() ==input->GetRegisteredName())
 			{
 				throw RGC_EXCEPTION("Registered input overlaps with existing: " + input->GetRegisteredName());
-
 			}
 		}
 		_mInputs.push_back(std::move(input));

@@ -62,6 +62,7 @@ namespace FraplesDev
 			cube1.LinkTechniques(renderGraph);
 			cube2.LinkTechniques(renderGraph);
 			light.LinkTechniques(renderGraph);
+			_mSponza.LinkTechniques(renderGraph);
 		}
 		//bluePlane.SetPosXYZ(_mCamera.GetPos());
 		//redPlane.SetPosXYZ(_mCamera.GetPos());
@@ -91,7 +92,6 @@ namespace FraplesDev
 
 	void Application::SpawnFunc()
 	{
-		//_mSponza.ShowModelInfo(_mWin.GetGFX(), "SPONZAAAAAAAAAAaaaa");
 		_mCamera.SpawnControllWindow();
 		light.SpawnControlWindow();
 		SpawnAppInfoWindow();
@@ -105,8 +105,7 @@ namespace FraplesDev
 	void Application::RenderObj()
 	{
 		light.Submit();
-		//_mPloaded->Submit(fc, DirectX::XMMatrixIdentity());
-		//_mSponza.Submit();
+		_mSponza.Submit();
 		cube1.Submit();
 		cube2.Submit();
 	//	gobber.Submit(fc);
@@ -322,7 +321,7 @@ namespace FraplesDev
 	
 		};
 		static MP modelProbe;
-	//	modelProbe.SpawnWindow(_mSponza);
+		modelProbe.SpawnWindow(_mSponza);
 		while (const auto e = _mWin._mKey.Readkey())
 		{
 			if (!e->isPressed())
