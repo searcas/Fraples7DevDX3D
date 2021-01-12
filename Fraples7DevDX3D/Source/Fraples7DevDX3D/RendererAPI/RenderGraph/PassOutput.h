@@ -59,11 +59,11 @@ namespace FraplesDev
 			{
 
 			}
-			void PostLinkValidate()const 
+			void PostLinkValidation()const override
 			{}
 			std::shared_ptr<GfxContext>YieldImmutable()
 			{
-				_mBind;
+				return _mBind;
 			}
 	private:
 		std::shared_ptr<T>& _mBind;

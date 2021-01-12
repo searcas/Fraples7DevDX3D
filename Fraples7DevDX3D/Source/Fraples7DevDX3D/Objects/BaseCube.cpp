@@ -69,7 +69,7 @@ namespace FraplesDev
 				buf["color"] = DirectX::XMFLOAT4{ 1.0f,0.4f,0.4f,1.0f };
 				draw.AddContext(std::make_shared<CachingPixelConstantBufferEx>(gfx, buf, 1u));
 				draw.AddContext(InputLayout::Resolve(gfx, model._mVertices.GetLayout(), VertexShader::Resolve(gfx, "Solid_VS.cso")->GetByteCode()));
-				draw.AddContext(std::make_shared<TransformCBufScaling>(gfx, 1.04f));
+				draw.AddContext(std::make_shared<TransformCBuf>(gfx));
 				outLine.AddStep(std::move(draw));
 			}
 

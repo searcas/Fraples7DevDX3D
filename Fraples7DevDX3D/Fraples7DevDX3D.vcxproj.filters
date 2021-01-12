@@ -237,7 +237,19 @@
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Probe\TechProbeBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\RenderGraphBase.cpp">
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\VerticalBlurPass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\ScaleOutlineRenderGraph.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\HorizontalBlurPass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\BlurOutlineRenderGraph.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\BlurOutlineRenderPass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -551,7 +563,19 @@
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Probe\TechProbeBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\RenderGraphBase.h">
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\VerticalBlurPass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\ScaleOutlineRenderGraph.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\HorizontalBlurPass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\BlurOutlineRenderGraph.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\BlurOutlineRenderPass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

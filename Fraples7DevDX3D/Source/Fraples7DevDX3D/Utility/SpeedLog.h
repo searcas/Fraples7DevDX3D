@@ -21,13 +21,14 @@ namespace FraplesDev
 				}
 				void WriteTo(std::ostream& out)const noexcept
 				{
+					using namespace std::string_literals;
 					if (_mLabel.empty())
 					{
 						out << _mTime * 1000.0f << "ms\n";
 					}
 					else
 					{
-						out << "[" << _mLabel << "]" << _mTime * 1000.0f << "ms\n";
+						out << std::setw(16)<<std::left<<"["s +  _mLabel + "]"s <<std::setw(6)<<std::right<<_mTime * 1000.0f << "ms\n";
 					}
 				}
 				std::string _mLabel;

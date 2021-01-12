@@ -12,9 +12,11 @@ namespace FraplesDev
 	public:
 		RenderGraph(class Graphics& gfx);
 		~RenderGraph();
-		void SetSinkTarget(const std::string& skinName, const std::string& target);
 		void AppendPass(std::unique_ptr<class Pass>pass);
+		void AddGlobalSource(std::unique_ptr<class PassOutput>);
+		void AddGlobalSink(std::unique_ptr<class PassInput>);
 		void Execute(Graphics& gfx)noexcept(!IS_DEBUG);
+		void SetSinkTarget(const std::string& skinName, const std::string& target);
 		void Reset()noexcept;
 		void Finalize();
 		RenderQueuePass& GetRenderQueue(const std::string& passName);

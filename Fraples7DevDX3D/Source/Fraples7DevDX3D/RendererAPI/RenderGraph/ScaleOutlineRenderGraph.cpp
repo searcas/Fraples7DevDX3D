@@ -1,4 +1,4 @@
-#include "RenderGraphBase.h"
+#include "ScaleOutlineRenderGraph.h"
 #include "RendererAPI/RenderGraph/BufferClearPass.h"
 #include "RendererAPI/RenderGraph/LambertianPass.h"
 #include "RendererAPI/RenderGraph/OutlineMaskGenerationPass.h"
@@ -7,7 +7,7 @@
 #include <memory>
 namespace FraplesDev
 {
-	BaseRenderGraph::BaseRenderGraph(Graphics& gfx)
+	ScaleOutlineRenderGraph::ScaleOutlineRenderGraph(Graphics& gfx)
 		: RenderGraph(gfx)
 	{
 		{

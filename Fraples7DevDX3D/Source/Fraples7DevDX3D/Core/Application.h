@@ -6,7 +6,8 @@
 #include "Objects/BaseCube.h"
 #include "RendererAPI/Mesh/Model.h"
 #include "Utility/Timer.h"
-#include "RendererAPI/RenderGraph/RenderGraphBase.h"
+#include "RendererAPI/RenderGraph/ScaleOutlineRenderGraph.h"
+#include "RendererAPI/RenderGraph/BlurOutlineRenderGraph.h"
 namespace FraplesDev
 {
 
@@ -36,7 +37,7 @@ namespace FraplesDev
 
 	private:
 		ScriptCommander scriptCommander;
-		BaseRenderGraph renderGraph{ _mWin.GetGFX() };
+		BlurOutlineRenderGraph renderGraph{ _mWin.GetGFX() };
 		//objects
 		PointLight light;
 		Camera _mCamera;

@@ -14,9 +14,9 @@ namespace FraplesDev
 	RenderGraph::RenderGraph(Graphics& gfx)
 		:_mBackBufferTarget(gfx.GetTarget()), _mMasterDepth(std::make_shared<OutputOnlyDepthStencil>(gfx))
 	{
-		_mGlobalSources.push_back(BufferOutput<RenderTarget>::Make("backbuffer", _mBackBufferTarget));
-		_mGlobalSources.push_back(BufferOutput<DepthStencil>::Make("masterDepth", _mMasterDepth));
-		_mGlobalSinks.push_back(BufferInput<RenderTarget>::Make("backbuffer", _mBackBufferTarget));
+		AddGlobalSource(BufferOutput<RenderTarget>::Make("backbuffer", _mBackBufferTarget));
+		AddGlobalSource(BufferOutput<DepthStencil>::Make("masterDepth", _mMasterDepth));
+		AddGlobalSink(BufferInput<RenderTarget>::Make("backbuffer", _mBackBufferTarget));
 	}
 	RenderGraph::~RenderGraph()
 	{
@@ -52,6 +52,14 @@ namespace FraplesDev
 
 		// add to container of passes 
 		_mPasses.push_back(std::move(pass));
+	}
+	void RenderGraph::AddGlobalSource(std::unique_ptr<PassOutput>out)
+	{
+		_mGlobalSources.push_back(std::move(out));
+	}
+	void RenderGraph::AddGlobalSink(std::unique_ptr<PassInput>in)
+	{
+		_mGlobalSinks.push_back(std::move(in));
 	}
 	void RenderGraph::Execute(Graphics& gfx) noexcept(!IS_DEBUG)
 	{

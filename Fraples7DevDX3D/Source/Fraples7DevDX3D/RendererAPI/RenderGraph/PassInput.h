@@ -68,14 +68,14 @@ namespace FraplesDev
 	template <typename T>
 	class ImmutableInput : public PassInput
 	{
-		static_assert(std::is_base_of<GfxContext, T>, "ImmutableInput target type must be a from a GfxContext");
-
+		static_assert(std::is_base_of_v<GfxContext, T>, "ImmutableInput target type must be a from a GfxContext");
 	public:
 		static std::unique_ptr<PassInput>Make(std::string registeredName, std::shared_ptr<T>& target)
 		{
 			return std::make_unique<ImmutableInput>(std::move(registeredName), target);
 		}
-		void PostValidate()const override
+
+		void PostLinkValidate()const override
 		{
 			if (!_mLinked)
 			{
@@ -93,8 +93,9 @@ namespace FraplesDev
 				throw RGC_EXCEPTION(oss.str());
 			}
 			_mTarget = std::move(p);
+			_mLinked = true;
 		}
-		ImmutableInput(std::string registeredName, std::shared_ptr<GfxContext>& target)
+		ImmutableInput(std::string registeredName, std::shared_ptr<T>& target)
 			:PassInput(std::move(registeredName)), _mTarget(target)
 		{
 

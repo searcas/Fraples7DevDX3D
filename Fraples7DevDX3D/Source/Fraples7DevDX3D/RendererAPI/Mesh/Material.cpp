@@ -151,7 +151,7 @@ namespace FraplesDev
 				}
 				//TODO: better sub-layout generation tech for future consideration maybe
 				draw.AddContext(InputLayout::Resolve(gfx, _mVertexLayout, VertexShader::Resolve(gfx, "Solid_VS.cso")->GetByteCode()));
-				draw.AddContext(std::make_shared<TransformCBufScaling>(gfx,1.01f));
+				draw.AddContext(std::make_shared<TransformCBuf>(gfx));
 
 				//TODO: might need to specify resterizer when doubled-sided models start being used
 				outline.AddStep(std::move(draw));
