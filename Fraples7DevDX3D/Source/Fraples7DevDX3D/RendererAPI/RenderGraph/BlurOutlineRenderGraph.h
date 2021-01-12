@@ -12,7 +12,7 @@ namespace FraplesDev
 	private:
 		void SetKernelGauss(int radius, float sigma) noexcept(!IS_DEBUG);
 	private:
-		static constexpr int maxRadious = 15;
+		static constexpr int maxRadious = 7;
 		static constexpr int radius = 4;
 		static constexpr float sigma = 2.0f;
 

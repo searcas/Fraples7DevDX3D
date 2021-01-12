@@ -12,7 +12,7 @@ cbuffer Control
 };
 float4 main(float2 uv : Texcoord) : SV_TARGET
 {
-    uint width, height;
+    float width, height;
     tex.GetDimensions(width, height);
     float dx, dy;
     if(horizontal)
