@@ -13,9 +13,10 @@ namespace FraplesDev
 		FPL_GFX_THROW_INFO(GetDevice(gfx)->CreateVertexShader(_mpBytecodeBlob->GetBufferPointer(), _mpBytecodeBlob->GetBufferSize(), nullptr, &_mpVertexShader));
 
 	}
-	void VertexShader::Bind(Graphics& gfx) noexcept
+	void VertexShader::Bind(Graphics& gfx)noexcept(!IS_DEBUG)
 	{
-		GetContext(gfx)->VSSetShader(_mpVertexShader.Get(), nullptr, 0u);
+		INFOMAN_NOHR(gfx);
+		FPL_GFX_THROW_INFO_ONLY(GetContext(gfx)->VSSetShader(_mpVertexShader.Get(), nullptr, 0u));
 	}
 	ID3DBlob* VertexShader::GetByteCode() const noexcept
 	{

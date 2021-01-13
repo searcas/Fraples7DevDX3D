@@ -10,9 +10,10 @@ namespace FraplesDev
 		rasterDes.CullMode = _mTwoSide ? D3D11_CULL_NONE : D3D11_CULL_BACK;
 		FPL_GFX_THROW_INFO(GetDevice(gfx)->CreateRasterizerState(&rasterDes, &_mRasterizerState));
 	}
-	void Rasterizer::Bind(Graphics& gfx) noexcept
+	void Rasterizer::Bind(Graphics& gfx)noexcept(!IS_DEBUG)
 	{
-		GetContext(gfx)->RSSetState(_mRasterizerState.Get());
+		INFOMAN_NOHR(gfx);
+		FPL_GFX_THROW_INFO_ONLY(GetContext(gfx)->RSSetState(_mRasterizerState.Get()));
 	}
 	std::shared_ptr<Rasterizer> Rasterizer::Resolve(Graphics& gfx, bool twoSided)
 	{

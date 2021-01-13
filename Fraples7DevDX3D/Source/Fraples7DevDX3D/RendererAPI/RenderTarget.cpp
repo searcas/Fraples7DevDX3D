@@ -50,23 +50,24 @@ namespace FraplesDev
 		FPL_GFX_THROW_INFO(GetDevice(gfx)->CreateRenderTargetView(pTexture, &rtvDesc, &_mTargetView));
 
 	}
-	void RenderTarget::BindAsBuffer(Graphics& gfx) noexcept
+	void RenderTarget::BindAsBuffer(Graphics& gfx) noexcept(!IS_DEBUG)
 	{
 		ID3D11DepthStencilView* const noll = nullptr;
 		BindAsBuffer(gfx, noll);
 	}
-	void RenderTarget::BindAsBuffer(Graphics& gfx, BufferResource* depthStencil) noexcept
+	void RenderTarget::BindAsBuffer(Graphics& gfx, BufferResource* depthStencil) noexcept(!IS_DEBUG)
 	{
 		assert(dynamic_cast<DepthStencil*>(depthStencil) != nullptr);
 		BindAsBuffer(gfx, static_cast<DepthStencil*>(depthStencil));
 	}
-	void RenderTarget::BindAsBuffer(Graphics& gfx, DepthStencil* depthStencil) noexcept
+	void RenderTarget::BindAsBuffer(Graphics& gfx, DepthStencil* depthStencil) noexcept (!IS_DEBUG)
 	{
 		BindAsBuffer(gfx, depthStencil ? depthStencil->_mDepthStencilView.Get() : nullptr);
 	}
-	void RenderTarget::BindAsBuffer(Graphics& gfx, ID3D11DepthStencilView* pDepthStencilView)noexcept
+	void RenderTarget::BindAsBuffer(Graphics& gfx, ID3D11DepthStencilView* pDepthStencilView)noexcept(!IS_DEBUG)
 	{
-		GetContext(gfx)->OMSetRenderTargets(1, _mTargetView.GetAddressOf(), pDepthStencilView);
+		INFOMAN_NOHR(gfx);
+		FPL_GFX_THROW_INFO_ONLY(GetContext(gfx)->OMSetRenderTargets(1, _mTargetView.GetAddressOf(), pDepthStencilView));
 
 		//configure viewport
 
@@ -79,11 +80,12 @@ namespace FraplesDev
 		vp.TopLeftY = 0.0f;
 		GetContext(gfx)->RSSetViewports(1u, &vp);
 	}
-	void RenderTarget::Clear(Graphics& gfx, const std::array<float, 4>& color) const noexcept
+	void RenderTarget::Clear(Graphics& gfx, const std::array<float, 4>& color) const noexcept(!IS_DEBUG)
 	{
-		GetContext(gfx)->ClearRenderTargetView(_mTargetView.Get(), color.data());
+		INFOMAN_NOHR(gfx);
+		FPL_GFX_THROW_INFO_ONLY(GetContext(gfx)->ClearRenderTargetView(_mTargetView.Get(), color.data()));
 	}
-	void RenderTarget::Clear(Graphics& gfx) const noexcept
+	void RenderTarget::Clear(Graphics& gfx) const noexcept(!IS_DEBUG)
 	{
 		Clear(gfx, { 0.0f,0.0f,0.0f,0.0f });
 	}
@@ -114,12 +116,13 @@ namespace FraplesDev
 		
 	}
 
-	void ShaderInputRenderTarget::Bind(Graphics& gfx) noexcept
+	void ShaderInputRenderTarget::Bind(Graphics& gfx)noexcept(!IS_DEBUG)
 	{
-		GetContext(gfx)->PSSetShaderResources(_mSlot, 1, _mShaderResourceView.GetAddressOf());
+		INFOMAN_NOHR(gfx);
+		FPL_GFX_THROW_INFO_ONLY(GetContext(gfx)->PSSetShaderResources(_mSlot, 1, _mShaderResourceView.GetAddressOf()));
 	}
 
-	void OutputOnlyRenderTarget::Bind(Graphics& gfx) noexcept
+	void OutputOnlyRenderTarget::Bind(Graphics& gfx)noexcept(!IS_DEBUG)
 	{
 		assert("Cannot bind OutputOnlyRenderTarget as shader input" && false);
 	}

@@ -27,7 +27,7 @@ namespace FraplesDev
 
 	}
 
-	void VerticalBlurPass::Execute(Graphics& gfx) const noexcept
+	void VerticalBlurPass::Execute(Graphics& gfx) const noexcept(!IS_DEBUG)
 	{
 		auto buf = _mDirection->GetBuffer();
 		buf["isHorizontal"] = false;

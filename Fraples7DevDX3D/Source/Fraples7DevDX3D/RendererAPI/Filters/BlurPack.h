@@ -14,7 +14,7 @@ namespace FraplesDev
 		{
 			SetKernelGauss(gfx, radius, sigma);
 		}
-		void Bind(Graphics& gfx)noexcept
+		void Bind(Graphics& gfx)noexcept(!IS_DEBUG)
 		{
 			_mShader.Bind(gfx);
 			_mKernelPixConstBuf.Bind(gfx);

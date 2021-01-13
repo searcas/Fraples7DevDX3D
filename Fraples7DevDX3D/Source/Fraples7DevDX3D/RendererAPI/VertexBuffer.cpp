@@ -23,10 +23,11 @@ namespace FraplesDev
 	VertexBuffer::VertexBuffer(Graphics& gfx, const MP::VertexBuffer& vbuf) : VertexBuffer(gfx, "?", vbuf)
 	{
 	}
-	void FraplesDev::VertexBuffer::Bind(Graphics& gfx) noexcept
+	void FraplesDev::VertexBuffer::Bind(Graphics& gfx)noexcept(!IS_DEBUG)
 	{
 		const UINT offset = 0u;
-		GetContext(gfx)->IASetVertexBuffers(0u, 1u, _mpVertexBuffer.GetAddressOf(), &_mStride, &offset);
+		INFOMAN_NOHR(gfx);
+		FPL_GFX_THROW_INFO_ONLY(GetContext(gfx)->IASetVertexBuffers(0u, 1u, _mpVertexBuffer.GetAddressOf(), &_mStride, &offset));
 	}
 	const MP::VertexLayout& VertexBuffer::GetLayout()const noexcept
 	{

@@ -9,7 +9,7 @@ namespace FraplesDev
 	BlurOutlineRenderPass::BlurOutlineRenderPass(Graphics& gfx, std::string name, unsigned int fullWidth, unsigned int fullHeight)
 		:RenderQueuePass(std::move(name))
 	{
-		_mRenderTarget = std::make_unique<ShaderInputRenderTarget>(gfx, fullWidth / 2, fullHeight / 2, 0);
+		_mRenderTarget = std::make_unique<ShaderInputRenderTarget>(gfx, fullWidth / 2, fullHeight / 2, 0u);
 		AddBind(VertexShader::Resolve(gfx, "Solid_VS.cso"));
 		AddBind(PixelShader::Resolve(gfx, "Solid_PS.cso"));
 		AddBind(Stencil::Resolve(gfx, Stencil::Mode::Mask));

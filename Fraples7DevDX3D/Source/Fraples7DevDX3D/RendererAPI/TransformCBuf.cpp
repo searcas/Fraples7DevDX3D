@@ -10,10 +10,10 @@ namespace FraplesDev
 		}
 	}
 
-	void TransformCBuf::Bind(Graphics& gfx) noexcept
+	void TransformCBuf::Bind(Graphics& gfx)noexcept(!IS_DEBUG)
 	{
-		UpdateBindImpl(gfx, GetTransforms(gfx));
-		
+		INFOMAN_NOHR(gfx);
+		FPL_GFX_THROW_INFO_ONLY(UpdateBindImpl(gfx, GetTransforms(gfx)));
 	}
 	void TransformCBuf::InitializeParentReference(const Renderer& parent) noexcept
 	{
@@ -23,12 +23,12 @@ namespace FraplesDev
 	{
 		return std::make_unique<TransformCBuf>(*this);
 	}
-	void TransformCBuf::UpdateBindImpl(Graphics& gfx, const Transforms& tf) noexcept
+	void TransformCBuf::UpdateBindImpl(Graphics& gfx, const Transforms& tf) noexcept(!IS_DEBUG)
 	{
 		_spVcbuf->Update(gfx, tf);
 		_spVcbuf->Bind(gfx);
 	}
-	TransformCBuf::Transforms TransformCBuf::GetTransforms(Graphics& gfx) noexcept
+	TransformCBuf::Transforms TransformCBuf::GetTransforms(Graphics& gfx) noexcept(!IS_DEBUG)
 	{
 		assert(_mPparent != nullptr);
 		const auto modelView = _mPparent->GetTransformXM() * gfx.GetCamera();

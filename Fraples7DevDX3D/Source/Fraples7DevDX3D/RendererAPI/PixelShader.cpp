@@ -12,9 +12,10 @@ namespace FraplesDev
 		FPL_GFX_THROW_INFO(D3DReadFileToBlob(Utility::ToWide( path).c_str(), &pblob));
 		FPL_GFX_THROW_INFO(GetDevice(gfx)->CreatePixelShader(pblob->GetBufferPointer(), pblob->GetBufferSize(), nullptr, &_mPixelShader));
 	}
-	void PixelShader::Bind(Graphics& gfx) noexcept
+	void PixelShader::Bind(Graphics& gfx)noexcept(!IS_DEBUG)
 	{
-		GetContext(gfx)->PSSetShader(_mPixelShader.Get(), nullptr, 0u);
+		INFOMAN_NOHR(gfx);
+		FPL_GFX_THROW_INFO_ONLY(GetContext(gfx)->PSSetShader(_mPixelShader.Get(), nullptr, 0u));
 	}
 
 	std::shared_ptr<PixelShader> PixelShader::Resolve(Graphics& gfx, const std::string& path)

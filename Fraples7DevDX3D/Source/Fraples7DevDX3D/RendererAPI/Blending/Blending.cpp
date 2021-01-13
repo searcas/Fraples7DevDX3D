@@ -48,10 +48,11 @@ namespace FraplesDev
 		assert(_mFactors);
 		return _mFactors->front();
 	}
-	void Blending::Bind(Graphics& gfx) noexcept
+	void Blending::Bind(Graphics& gfx)noexcept(!IS_DEBUG)
 	{
+		INFOMAN_NOHR(gfx);
 		const float* data = _mFactors ? _mFactors->data() : nullptr;
-		GetContext(gfx)->OMSetBlendState(_mPBlender.Get(), data, 0xFFFFFFFFu);
+		FPL_GFX_THROW_INFO_ONLY(GetContext(gfx)->OMSetBlendState(_mPBlender.Get(), data, 0xFFFFFFFFu));
 	}
 	std::shared_ptr<Blending> Blending::Resolve(Graphics& gfx, bool blending, std::optional<float>factor_in)
 	{

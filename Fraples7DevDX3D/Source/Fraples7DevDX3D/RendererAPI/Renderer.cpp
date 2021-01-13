@@ -29,7 +29,7 @@ namespace FraplesDev {
 			tech.Submit(*this);
 		}
 	}
-	void Renderer::Bind(Graphics& gfx)const noexcept
+	void Renderer::Bind(Graphics& gfx)const noexcept(!IS_DEBUG)
 	{
 		_mPtopology->Bind(gfx);
 		_mPindices->Bind(gfx);

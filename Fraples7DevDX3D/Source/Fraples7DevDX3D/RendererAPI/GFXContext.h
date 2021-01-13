@@ -18,7 +18,7 @@ namespace FraplesDev
         }
         virtual void InitializeParentReference(const class Renderer& parent)noexcept {};
         virtual void Accept(class TechniqueProbe&) {};
-        virtual void Bind(Graphics& gfx) noexcept = 0;
+        virtual void Bind(Graphics& gfx)noexcept(!IS_DEBUG) = 0;
     };
 
     class CloningContext : public GfxContext

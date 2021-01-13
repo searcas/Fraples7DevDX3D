@@ -45,10 +45,10 @@ namespace FraplesDev
 		GetContext(gfx)->GenerateMips(_mpTextureView.Get());
 	}
 
-	void FraplesDev::Texture::Bind(Graphics& gfx) noexcept
+	void FraplesDev::Texture::Bind(Graphics& gfx)noexcept(!IS_DEBUG)
 	{
-	
-	GetContext(gfx)->PSSetShaderResources(_mSlot, 1u, _mpTextureView.GetAddressOf());
+		INFOMAN_NOHR(gfx);
+		FPL_GFX_THROW_INFO_ONLY(GetContext(gfx)->PSSetShaderResources(_mSlot, 1u, _mpTextureView.GetAddressOf()));
 	}
 
 	UINT Texture::CalculateNumberOfMipLevels(UINT width, UINT height) noexcept

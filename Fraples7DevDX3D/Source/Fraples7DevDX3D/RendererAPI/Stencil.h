@@ -1,6 +1,7 @@
 #pragma once
 #include "GFXContext.h"
 #include "GFXContextCodex.h"
+#include "Core/Common/Exceptions/Macros/GraphicsThrowMacros.h"
 namespace FraplesDev
 {
 	class Stencil : public GfxContext
@@ -37,9 +38,10 @@ namespace FraplesDev
 			}
 			GetDevice(gfx)->CreateDepthStencilState(&dsDesc, &_mPstencil);
 		}
-		void Bind(Graphics& gfx)noexcept override
+		void Bind(Graphics& gfx)noexcept(!IS_DEBUG) override
 		{
-			GetContext(gfx)->OMSetDepthStencilState(_mPstencil.Get(), 0xFF);
+			INFOMAN_NOHR(gfx);
+			FPL_GFX_THROW_INFO_ONLY(GetContext(gfx)->OMSetDepthStencilState(_mPstencil.Get(), 0xFF));
 		}
 		static std::shared_ptr<Stencil>Resolve(Graphics& gfx, Mode mode)
 		{

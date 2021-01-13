@@ -15,7 +15,7 @@ namespace FraplesDev
 		probe.VisitBuffer(_mBuf);
 	}
 
-	void TransformCBufScaling::Bind(Graphics& gfx) noexcept
+	void TransformCBufScaling::Bind(Graphics& gfx)noexcept(!IS_DEBUG)
 	{
 		const float scale = _mBuf["scale"];
 		const auto scaleMatrix = DirectX::XMMatrixScaling(scale, scale, scale);

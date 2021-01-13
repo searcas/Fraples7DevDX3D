@@ -7,7 +7,7 @@ namespace FraplesDev
 	{
 	public:
 		HorizontalBlurPass(std::string name, Graphics& gfx, unsigned int fullWidth, unsigned int fullHeight);
-		void Execute(Graphics& gfx)const noexcept override;
+		void Execute(Graphics& gfx)const noexcept(!IS_DEBUG) override;
 	private:
 		std::shared_ptr<GfxContext>_mBlurScratchIn;
 		std::shared_ptr<GfxContext>_mControl;

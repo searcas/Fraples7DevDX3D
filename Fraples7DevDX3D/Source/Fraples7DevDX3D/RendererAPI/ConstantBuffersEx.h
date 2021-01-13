@@ -55,18 +55,20 @@ namespace FraplesDev
 	public:
 		using ConstantBufferEx::ConstantBufferEx;
 
-		void Bind(Graphics& gfx)noexcept override
+		void Bind(Graphics& gfx)noexcept(!IS_DEBUG) override
 		{
-			GetContext(gfx)->PSSetConstantBuffers(_mSlot, 1u, _mPConstantBuffer.GetAddressOf());
+			INFOMAN_NOHR(gfx);
+			FPL_GFX_THROW_INFO_ONLY(GetContext(gfx)->PSSetConstantBuffers(_mSlot, 1u, _mPConstantBuffer.GetAddressOf()));
 		}
 	};
 	class VertexConstantBufferEx : public ConstantBufferEx
 	{
 	public:
 		using ConstantBufferEx::ConstantBufferEx;
-		void Bind(Graphics& gfx)noexcept override
+		void Bind(Graphics& gfx)noexcept(!IS_DEBUG)override
 		{
-			GetContext(gfx)->VSSetConstantBuffers(_mSlot, 1u, _mPConstantBuffer.GetAddressOf());
+			INFOMAN_NOHR(gfx);
+			FPL_GFX_THROW_INFO_ONLY(GetContext(gfx)->VSSetConstantBuffers(_mSlot, 1u, _mPConstantBuffer.GetAddressOf()));
 		}
 	};
 	template<typename T>
@@ -96,7 +98,7 @@ namespace FraplesDev
 			_mBuf.CopyFrom(buff_in);
 			dirty = true;
 		}
-		void Bind(Graphics& gfx) noexcept override
+		void Bind(Graphics& gfx)noexcept(!IS_DEBUG) override
 		{
 			if (dirty)
 			{
@@ -118,21 +120,4 @@ namespace FraplesDev
 	};
 	using CachingPixelConstantBufferEx = CachingConstantBufferEx<PixelConstantBufferEx>;
 	using CachingVertexConstantBufferEx = CachingConstantBufferEx<VertexConstantBufferEx>;
-
-	/*class NoCachePixelConstantBufferEx : public PixelConstantBufferEx
-	{
-	public:
-		NoCachePixelConstantBufferEx(Graphics& gfx, const MP::CookedLayout& layout, UINT slot)
-			: PixelConstantBufferEx(gfx, *layout.ShareRoot(), slot, nullptr),_mPLayoutRoot(layout.ShareRoot())
-		{}
-		NoCachePixelConstantBufferEx(Graphics& gfx, const MP::Buffer& buff, UINT slot)
-			: PixelConstantBufferEx(gfx, buff.GetRootLayoutElement(), slot, nullptr), _mPLayoutRoot(buff.ShareLayoutRoot())
-		{}
-		const MP::LayoutElement& GetRootLayoutElement()const noexcept override
-		{
-			return *_mPLayoutRoot;
-		}
-	private:
-		std::shared_ptr<MP::LayoutElement>_mPLayoutRoot;
-	};*/
 }

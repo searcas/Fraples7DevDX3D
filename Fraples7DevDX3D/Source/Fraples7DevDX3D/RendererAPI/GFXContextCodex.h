@@ -1,6 +1,5 @@
 #pragma once
 
-#include "GFXContext.h"
 #include <memory>
 #include <unordered_map>
 #include <type_traits>
@@ -8,6 +7,8 @@
 
 namespace FraplesDev
 {
+	class Graphics;
+	class GfxContext;
 	class Codex
 	{
 	public:

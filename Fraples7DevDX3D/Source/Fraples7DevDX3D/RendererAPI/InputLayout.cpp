@@ -20,9 +20,10 @@ namespace FraplesDev
 		));
 	}
 
-	void InputLayout::Bind(Graphics& gfx) noexcept
+	void InputLayout::Bind(Graphics& gfx)noexcept(!IS_DEBUG)
 	{
-		GetContext(gfx)->IASetInputLayout(_mInputLayout.Get());
+		INFOMAN_NOHR(gfx);
+		FPL_GFX_THROW_INFO_ONLY(GetContext(gfx)->IASetInputLayout(_mInputLayout.Get()));
 	}
 	const MP::VertexLayout InputLayout::GetLayout() const noexcept
 	{

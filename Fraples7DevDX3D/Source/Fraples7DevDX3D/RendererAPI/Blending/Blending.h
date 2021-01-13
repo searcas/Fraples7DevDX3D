@@ -10,7 +10,7 @@ namespace FraplesDev
 	{
 	public:
 		Blending(Graphics& gfx, bool blending, std::optional<float>factor = {});
-		void Bind(Graphics& gfx)noexcept override;
+		void Bind(Graphics& gfx)noexcept(!IS_DEBUG) override;
 		void SetFactor(float factor)noexcept(!IS_DEBUG);
 		float GetFactor()noexcept(!IS_DEBUG);
 		static std::shared_ptr<Blending>Resolve(Graphics& gfx, bool blending, std::optional<float>factor = {});

@@ -27,7 +27,7 @@ namespace FraplesDev
 		AddBind(Rasterizer::Resolve(gfx, false));
 	}
 
-	void FullScreenPass::Execute(Graphics& gfx) const noexcept
+	void FullScreenPass::Execute(Graphics& gfx) const noexcept(!IS_DEBUG)
 	{
 		BindAll(gfx);
 		gfx.RenderIndexed(6u);

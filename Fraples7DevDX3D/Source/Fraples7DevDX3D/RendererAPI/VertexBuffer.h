@@ -14,7 +14,7 @@ namespace FraplesDev
 		VertexBuffer(Graphics& gfx, const std::string& tag, const MP::VertexBuffer& vbuf);
 
 
-		void Bind(Graphics& gfx)noexcept override;
+		void Bind(Graphics& gfx)noexcept(!IS_DEBUG) override;
 		const MP::VertexLayout& GetLayout()const noexcept;
 
 		static std::shared_ptr<VertexBuffer>Resolve(Graphics& gfx, const std::string& tag, const MP::VertexBuffer& vbuf);

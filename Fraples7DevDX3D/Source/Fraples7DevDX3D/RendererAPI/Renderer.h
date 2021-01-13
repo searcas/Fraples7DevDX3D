@@ -21,7 +21,7 @@ namespace FraplesDev
 		void AddTechnique(Technique tech_in)noexcept;
 		virtual const DirectX::XMMATRIX GetTransformXM()const noexcept = 0;
 		void Submit()const noexcept;
-		void Bind(Graphics& gfx)const noexcept;
+		void Bind(Graphics& gfx)const noexcept(!IS_DEBUG);
 		UINT GetIndexCount()const noexcept(!IS_DEBUG);
 		void Accept(class TechniqueProbe& probe);
 		void LinkTechniques(RenderGraph&);

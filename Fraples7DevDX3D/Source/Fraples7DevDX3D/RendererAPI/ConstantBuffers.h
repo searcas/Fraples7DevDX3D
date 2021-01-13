@@ -1,7 +1,8 @@
 #pragma once
-#include "GFXContext.h"
 #include "Core/Common/Exceptions/Macros/GraphicsThrowMacros.h"
+#include "GFXContext.h"
 #include "GFXContextCodex.h"
+
 namespace FraplesDev
 {
 	template<typename C>
@@ -56,12 +57,14 @@ namespace FraplesDev
 	{
 		using ConstantBuffer<C>::_mpConstantBuffer;
 		using ConstantBuffer<C>::_mSlot;
+		using ConstantBuffer<C>::GetInfoManager;
 		using GfxContext::GetContext;
 	public:
 		using ConstantBuffer<C>::ConstantBuffer;
-		void Bind(Graphics& gfx)noexcept override
+		void Bind(Graphics& gfx)noexcept(!IS_DEBUG) override
 		{
-			GetContext(gfx)->VSSetConstantBuffers(_mSlot, 1u, _mpConstantBuffer.GetAddressOf());
+			INFOMAN_NOHR(gfx);
+			FPL_GFX_THROW_INFO_ONLY(GetContext(gfx)->VSSetConstantBuffers(_mSlot, 1u, _mpConstantBuffer.GetAddressOf()));
 		}
 		static std::shared_ptr<VertexConstantBuffer>Resolve(Graphics& gfx)
 		{
@@ -97,13 +100,15 @@ namespace FraplesDev
 		//So this is one of ways arounds
 		using ConstantBuffer<C>::_mpConstantBuffer;
 		using ConstantBuffer<C>::_mSlot;
+		using ConstantBuffer<C>::GetInfoManager;
 		using GfxContext::GetContext;
 	public:
 		using ConstantBuffer<C>::ConstantBuffer;
-		void Bind(Graphics& gfx)noexcept override
+		void Bind(Graphics& gfx)noexcept(!IS_DEBUG) override
 		{
 			//or use this->
-			GetContext(gfx)->PSSetConstantBuffers(_mSlot, 1u, _mpConstantBuffer.GetAddressOf());
+			INFOMAN_NOHR(gfx);
+			FPL_GFX_THROW_INFO_ONLY(GetContext(gfx)->PSSetConstantBuffers(_mSlot, 1u, _mpConstantBuffer.GetAddressOf()));
 
 		}
 		static std::shared_ptr<PixelConstantBuffer>Resolve(Graphics& gfx)

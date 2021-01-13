@@ -25,9 +25,10 @@ namespace FraplesDev
 		FPL_GFX_THROW_INFO(GetDevice(gfx)->CreateBuffer(&ibd, &isd, &_mpIndexBuffer));
 
 	}
-	void IndexBuffer::Bind(Graphics& gfx) noexcept
+	void IndexBuffer::Bind(Graphics& gfx)noexcept(!IS_DEBUG)
 	{
-		GetContext(gfx)->IASetIndexBuffer(_mpIndexBuffer.Get(), DXGI_FORMAT_R16_UINT, 0u);
+		INFOMAN_NOHR(gfx);
+		FPL_GFX_THROW_INFO_ONLY(GetContext(gfx)->IASetIndexBuffer(_mpIndexBuffer.Get(), DXGI_FORMAT_R16_UINT, 0u));
 	}
 	UINT IndexBuffer::GetCount() const noexcept
 	{

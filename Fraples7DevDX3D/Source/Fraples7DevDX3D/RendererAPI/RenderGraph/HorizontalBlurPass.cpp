@@ -21,7 +21,7 @@ namespace FraplesDev
 	// this override is necessary because we cannot (yet) link input bindables directly into
 	// the container of bindables (mainly because vector growth buggers references)
 
-	void HorizontalBlurPass::Execute(Graphics& gfx) const noexcept
+	void HorizontalBlurPass::Execute(Graphics& gfx) const noexcept(!IS_DEBUG)
 	{
 		auto buf = _mDirection->GetBuffer();
 		buf["isHorizontal"] = true;

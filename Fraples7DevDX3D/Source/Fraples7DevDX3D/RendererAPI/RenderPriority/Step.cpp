@@ -12,7 +12,7 @@ namespace FraplesDev
 	{
 		_mPcontexts.push_back(std::move(context));
 	}
-	void Step::Bind(Graphics& gfx)const
+	void Step::Bind(Graphics& gfx)const noexcept(!IS_DEBUG)
 	{
 		for (auto& b : _mPcontexts)
 		{

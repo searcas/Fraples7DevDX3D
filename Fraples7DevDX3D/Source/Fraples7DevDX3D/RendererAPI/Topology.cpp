@@ -1,5 +1,6 @@
 #include "Topology.h"
 #include "GFXContextCodex.h"
+#include "Core/Common/Exceptions/Macros/GraphicsThrowMacros.h"
 namespace FraplesDev
 {
 
@@ -10,9 +11,10 @@ namespace FraplesDev
 
 	}
 
-	void FraplesDev::Topology::Bind(Graphics& gfx) noexcept
+	void FraplesDev::Topology::Bind(Graphics& gfx)noexcept(!IS_DEBUG)
 	{
-		GetContext(gfx)->IASetPrimitiveTopology(_mType);
+		INFOMAN_NOHR(gfx);
+		FPL_GFX_THROW_INFO_ONLY(GetContext(gfx)->IASetPrimitiveTopology(_mType));
 	}
 
 	std::shared_ptr<Topology> FraplesDev::Topology::Resolve(Graphics& gfx, D3D11_PRIMITIVE_TOPOLOGY type)

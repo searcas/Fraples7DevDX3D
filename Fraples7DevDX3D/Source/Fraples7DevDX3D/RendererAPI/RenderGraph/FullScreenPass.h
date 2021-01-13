@@ -9,8 +9,7 @@ namespace FraplesDev
 	{
 	public:
 		FullScreenPass( std::string name, Graphics& gfx) noexcept(!IS_DEBUG);
-		void Execute(Graphics& gfx)const noexcept override;
-
+		void Execute(Graphics& gfx)const noexcept(!IS_DEBUG) override;
 	private:
 
 	};

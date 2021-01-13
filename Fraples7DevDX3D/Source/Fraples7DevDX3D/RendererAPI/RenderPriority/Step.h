@@ -18,7 +18,7 @@ namespace FraplesDev
 		Step& operator=(Step&&) = delete;
 		void AddContext(std::shared_ptr<GfxContext>context);
 		void Submit(const class Renderer& renderer)const;
-		void Bind(Graphics& gfx)const;
+		void Bind(Graphics& gfx)const noexcept(!IS_DEBUG);
 		void Accept(TechniqueProbe& probe);
 		void InitializeParentReferences(const class Renderer& parent)noexcept;
 		void Link(RenderGraph& rg);
