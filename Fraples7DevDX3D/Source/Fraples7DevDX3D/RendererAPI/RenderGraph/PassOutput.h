@@ -34,7 +34,7 @@ namespace FraplesDev
 		}
 		void PostLinkValidation()const override
 		{}
-		std::shared_ptr<BufferResource>YieldBuffer()
+		std::shared_ptr<BufferResource>YieldBuffer() override
 		{
 			if (_mLinked)
 			{
@@ -61,7 +61,7 @@ namespace FraplesDev
 			}
 			void PostLinkValidation()const override
 			{}
-			std::shared_ptr<GfxContext>YieldImmutable()
+			std::shared_ptr<GfxContext>YieldImmutable() override
 			{
 				return _mBind;
 			}

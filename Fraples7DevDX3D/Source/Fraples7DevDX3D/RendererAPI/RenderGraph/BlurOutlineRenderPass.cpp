@@ -15,6 +15,5 @@ namespace FraplesDev
 		AddBind(Stencil::Resolve(gfx, Stencil::Mode::Mask));
 		AddBind(Blending::Resolve(gfx, false));
 		RegisterOutput(ImmutableOutput<RenderTarget>::Make("scratchOut", _mRenderTarget));
-
 	}
 }
