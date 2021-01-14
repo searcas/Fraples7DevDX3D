@@ -13,6 +13,7 @@ namespace FraplesDev
 	class ModelProbeBase : public ModelProbe
 	{
 	public:
+		ModelProbeBase(std::string name);
 		void SpawnWindow(Model& model);
 
 	protected:
@@ -26,7 +27,6 @@ namespace FraplesDev
 			float y = 0.0f;
 			float z = 0.0f;
 		};
-		std::unordered_map<int, TransformParameters>_mTransformParams;
 		TransformParameters& ResolveTransform()noexcept
 		{
 			const auto id = pSelectedNode->GetId();
@@ -51,6 +51,8 @@ namespace FraplesDev
 			tp.z = translation.z;
 			return _mTransformParams.insert({ id,{ tp } }).first->second;
 		}
+		std::unordered_map<int, TransformParameters>_mTransformParams;
+		std::string _mName;
 		bool PushNode(Node& node)override;
 		void PopNode(Node& node)override;
 

@@ -3,9 +3,13 @@
 #include "TechProbeBase.h"
 namespace FraplesDev
 {
+	ModelProbeBase::ModelProbeBase(std::string name)
+		:_mName(std::move(name))
+	{
+	}
 	void ModelProbeBase::SpawnWindow(Model& model)
 	{
-		ImGui::Begin("Model");
+		ImGui::Begin(_mName.c_str());
 		ImGui::Columns(2, nullptr, true);
 		model.Accept(*this);
 

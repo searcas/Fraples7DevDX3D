@@ -44,9 +44,9 @@ namespace FraplesDev
 		//std::unique_ptr<Mesh>_mPloaded;
 		BaseCube cube1 = { _mWin.GetGFX(),4.0f };
 		BaseCube cube2 = { _mWin.GetGFX(),4.0f };
-		//Model gobber{ _mWin.GetGFX(),"Models\\gobber\\GoblinX.obj", 4.0f};
-
-		Model _mSponza{ _mWin.GetGFX(),"Models\\Sponza\\sponza.obj",0.1f };
+		Model gobber{ _mWin.GetGFX(),"Models\\gobber\\GoblinX.obj", 4.0f};
+		Model _mSponza{ _mWin.GetGFX(),"Models\\Sponza\\sponza.obj", 1.0f / 20.0f };
+		Model _mNano{ _mWin.GetGFX(),"Models\\nano_textured\\nanosuit.obj", 2.0f };
 		//	BasePlane bluePlane{ _mWin.GetGFX(),6.0f,{0.3,0.3,1.0f,0.0f} };
 		//	BasePlane redPlane{ _mWin.GetGFX(),6.0f,{1.0,0.3,0.4f,0.0f} };
 		

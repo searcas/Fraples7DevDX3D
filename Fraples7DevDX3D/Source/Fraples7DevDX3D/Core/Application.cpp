@@ -17,6 +17,8 @@ namespace FraplesDev
 		cube2.LinkTechniques(renderGraph);
 		_mSponza.LinkTechniques(renderGraph);
 		light.LinkTechniques(renderGraph);
+		gobber.LinkTechniques(renderGraph);
+		_mNano.LinkTechniques(renderGraph);
 		//bluePlane.SetPosXYZ(_mCamera.GetPos());
 		//redPlane.SetPosXYZ(_mCamera.GetPos());
 		_mWin.GetGFX().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 800.0f));
@@ -77,9 +79,12 @@ namespace FraplesDev
 		RenderObj();
 
 	
-		static ModelProbeBase modelProbe;
-		modelProbe.SpawnWindow(_mSponza);
-
+		static ModelProbeBase sponza{ "Sponza" };
+		static ModelProbeBase nan{ "Nano" };
+		static ModelProbeBase gob("Gobber");
+		sponza.SpawnWindow(_mSponza);
+		nan.SpawnWindow(_mNano);
+		gob.SpawnWindow(gobber);
 		SpawnFunc();
 		_mWin.GetGFX().EndFrame();
 		renderGraph.Reset();

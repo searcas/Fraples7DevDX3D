@@ -20,7 +20,7 @@ inline T wrap_angle(T  theta )noexcept
 	{
 		return mod - twoPi;
 	}
-	else
+	else if (mod < -(T)PI_D)
 	{
 		mod + twoPi;
 	}
