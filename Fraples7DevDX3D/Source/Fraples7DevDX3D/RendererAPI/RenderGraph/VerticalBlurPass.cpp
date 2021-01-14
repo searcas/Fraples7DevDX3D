@@ -14,9 +14,10 @@ namespace FraplesDev
 		AddBind(PixelShader::Resolve(gfx, "BlurOutline_PS.cso"));
 		AddBind(Blending::Resolve(gfx, true));
 		AddBind(Stencil::Resolve(gfx, Stencil::Mode::Mask));
+		
+		AddBindSink<RenderTarget>("scratchIn");
+		AddBindSink<CachingPixelConstantBufferEx>("control");
 
-		RegisterSync(DirectContextSync<GfxContext>::Make("scratchIn", _mBlurScratchIn));
-		RegisterSync(DirectContextSync<GfxContext>::Make("control", _mControl));
 		RegisterSync(DirectContextSync<CachingPixelConstantBufferEx>::Make("direction", _mDirection));
 
 		RegisterSync(DirectBufferSnyc<RenderTarget>::Make("renderTarget", _mRenderTarget));
@@ -33,9 +34,7 @@ namespace FraplesDev
 		buf["isHorizontal"] = false;
 		_mDirection->SetBuffer(buf);
 
-		_mControl->Bind(gfx);
 		_mDirection->Bind(gfx);
-		_mBlurScratchIn->Bind(gfx);
 		FullScreenPass::Execute(gfx);
 	}
 }

@@ -2,7 +2,7 @@
 #include "RendererAPI/PixelShader.h"
 #include "RendererAPI/Blending/Blending.h"
 #include "RendererAPI/RenderTarget.h"
-
+#include "RendererAPI/ConstantBuffersEx.h"
 namespace FraplesDev
 {
 	HorizontalBlurPass::HorizontalBlurPass(std::string name, Graphics& gfx, unsigned int fullWidth, unsigned int fullHeight)
@@ -10,9 +10,9 @@ namespace FraplesDev
 	{
 		AddBind(PixelShader::Resolve(gfx, "BlurOUtline_PS.cso"));
 		AddBind(Blending::Resolve(gfx, false));
-		RegisterSync(DirectContextSync<GfxContext>::Make("control", _mControl));
+		AddBindSink<RenderTarget>("scratchIn");
+		AddBindSink<CachingPixelConstantBufferEx>("control");
 		RegisterSync(DirectContextSync<CachingPixelConstantBufferEx>::Make("direction", _mDirection));
-		RegisterSync(DirectContextSync<GfxContext>::Make("scratchIn", _mBlurScratchIn));
 
 		// the renderTarget is internally sourced and then exporeted as a Context
 		_mRenderTarget = std::make_shared<ShaderInputRenderTarget>(gfx, fullWidth / 2, fullHeight / 2, 0u);
@@ -27,8 +27,6 @@ namespace FraplesDev
 		buf["isHorizontal"] = true;
 		_mDirection->SetBuffer(buf);
 
-		_mBlurScratchIn->Bind(gfx);
-		_mControl->Bind(gfx);
 		_mDirection->Bind(gfx);
 		FullScreenPass::Execute(gfx);
 	}

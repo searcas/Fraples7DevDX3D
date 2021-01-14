@@ -4,6 +4,7 @@
 #include <memory>
 #include <sstream>
 #include <string>
+#include <vector>
 namespace FraplesDev
 {
 	class Sync
@@ -63,6 +64,40 @@ namespace FraplesDev
 	private:
 		std::shared_ptr<T>& _mTarget;
 		bool _mLinked = false;
+	};
+	template<typename T>
+	class ContainerContextSync : public Sync
+	{
+		static_assert(std::is_base_of_v<GfxContext, T>, "DirectContextSync target type must be a Bindable type");
+	public:
+		void PostLinkValidate()const override
+		{
+			if (!_mLinked)
+			{
+				throw RGC_EXCEPTION("Unlinked input: " + GetRegisteredName());
+			}
+		}
+		void Bind(Source& source)override
+		{
+			auto p = std::dynamic_pointer_cast<T>(source.YieldBindable());
+			if (!p)
+			{
+				std::ostringstream oss;
+				oss << "Binding input[" << GetRegisteredName() << "] to output [" << GetPassName() << "." << GetSourceName() << "] " << " { " << typeid(T).name() << " } does not match { " << typeid(*source.YieldBindable().get()).name() << " }";
+				throw RGC_EXCEPTION(oss.str());
+			}
+			_mContainer[_mIndex] = std::move(p);
+			_mLinked = true;
+		}
+		ContainerContextSync(std::string registeredName,std::vector<std::shared_ptr<GfxContext>>&container, size_t index)
+			: Sync(std::move(registeredName)),_mContainer(container),_mIndex(std::move(index))
+		{
+
+		}
+	private:
+		std::vector<std::shared_ptr<GfxContext>>& _mContainer;
+		bool _mLinked = false;
+		size_t _mIndex = 0;
 	};
 
 	template <typename T>
