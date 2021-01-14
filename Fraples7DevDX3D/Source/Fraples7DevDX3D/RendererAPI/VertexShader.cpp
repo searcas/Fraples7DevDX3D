@@ -22,6 +22,7 @@ namespace FraplesDev
 	{
 		return _mpBytecodeBlob.Get();
 	}
+	//path = "PhongDiffuseMaskSpecular_VS.cso"
 	std::shared_ptr<VertexShader> VertexShader::Resolve(Graphics& gfx, const std::string& path)
 	{
 		return Codex::Resolve<VertexShader>(gfx, path);

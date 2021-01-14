@@ -7,7 +7,7 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 {
 	try
 	{
-		return FraplesDev::Application("Fraples7 Engine Studio ", 1200,900, lpCmdLine).StartApp();
+		return FraplesDev::Application("Fraples7 Engine Studio ", 1920,1080, lpCmdLine).StartApp();
 	}
 	catch (const FraplesDev::FraplesException& e)
 	{

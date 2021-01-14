@@ -1,7 +1,7 @@
 #include "Application.h"
 #include "ImGui/imgui.h"
 #include "QualityAssurance/TestingQA.h"
-
+#include "Math/Math.h"
 #include "RendererAPI/Probe/ModelProbeBase.h"
 namespace FraplesDev
 {
@@ -13,12 +13,18 @@ namespace FraplesDev
 		QA::TestDynamicConstant();
 		cube1.SetPos({ 4.0f,0.0f,0.0f });
 		cube2.SetPos({ 0.0f,4.0f,0.0f });
+		_mNano.SetRootTransform( DirectX::XMMatrixRotationY(PI / 2.0f) *
+			DirectX::XMMatrixTranslation(27.f,-0.56f,1.7f) );
+		gobber.SetRootTransform(DirectX::XMMatrixRotationY(-PI / 2.0f) *
+			DirectX::XMMatrixTranslation(-8.0f, 10.0f, 0.f));
 		cube1.LinkTechniques(renderGraph);
 		cube2.LinkTechniques(renderGraph);
 		_mSponza.LinkTechniques(renderGraph);
 		light.LinkTechniques(renderGraph);
+
 		gobber.LinkTechniques(renderGraph);
 		_mNano.LinkTechniques(renderGraph);
+
 		//bluePlane.SetPosXYZ(_mCamera.GetPos());
 		//redPlane.SetPosXYZ(_mCamera.GetPos());
 		_mWin.GetGFX().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 800.0f));
@@ -65,7 +71,8 @@ namespace FraplesDev
 		_mSponza.Submit();
 		cube1.Submit();
 		cube2.Submit();
-	//	gobber.Submit(fc);
+		_mNano.Submit();
+		gobber.Submit();
 		renderGraph.Execute(_mWin.GetGFX());
 	}
 
