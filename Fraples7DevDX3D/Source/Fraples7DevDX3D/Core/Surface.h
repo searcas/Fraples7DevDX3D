@@ -1,7 +1,6 @@
 #pragma once
 #include "Fraples7.h"
 #include <optional>
-#include <string>
 #include "Common/Exceptions/FraplesException.h"
 #include "DirectXTex/DirectXTex.h"
 namespace FraplesDev
@@ -119,8 +118,6 @@ namespace FraplesDev
 
 	private:
 		static constexpr DXGI_FORMAT format = DXGI_FORMAT::DXGI_FORMAT_B8G8R8A8_UNORM;
-		DirectX::ScratchImage scratch = {};
+		DirectX::ScratchImage _mScratch = {};
 	};
-
-
 }

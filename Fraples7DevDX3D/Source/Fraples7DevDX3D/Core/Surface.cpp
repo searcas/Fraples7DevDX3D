@@ -10,7 +10,7 @@ namespace FraplesDev
 {
 	Surface::Surface(unsigned int width, unsigned int height ) 
 	{
-		HRESULT hr = scratch.Initialize2D(format, width, height, 1u, 1u);
+		HRESULT hr = _mScratch.Initialize2D(format, width, height, 1u, 1u);
 		if (FAILED(hr))
 		{
 			throw Surface::Exception(__LINE__, __FILE__, "Failed to initialize ScratchImage", hr);
@@ -22,7 +22,7 @@ namespace FraplesDev
 		const auto width = GetWidth();
 		const auto height = GetHeight();
 
-		auto& imgData = *scratch.GetImage(0, 0, 0);
+		auto& imgData = *_mScratch.GetImage(0, 0, 0);
 
 		for (size_t y = 0u; y < height; y++)
 		{
@@ -36,7 +36,7 @@ namespace FraplesDev
 		assert(y >= 0);
 		assert(x < GetWidth());
 		assert(y < GetHeight());
-		auto& imgData = *scratch.GetImage(0, 0, 0);
+		auto& imgData = *_mScratch.GetImage(0, 0, 0);
 		reinterpret_cast<Color*>(&imgData.pixels[y * imgData.rowPitch])[x] = c;
 	}
 	Surface::Color Surface::GetPixel(unsigned int x, unsigned int y) const noexcept(!IS_DEBUG)
@@ -45,25 +45,25 @@ namespace FraplesDev
 		assert(y >= 0);
 		assert(x < GetWidth());
 		assert(y < GetHeight());
-		auto& imgData = *scratch.GetImage(0, 0, 0);
+		auto& imgData = *_mScratch.GetImage(0, 0, 0);
 		return reinterpret_cast<Color*>(&imgData.pixels[y * imgData.rowPitch])[x];
 	
 	}
 	unsigned int Surface::GetWidth() const noexcept
 	{
-		return (unsigned int)scratch.GetMetadata().width;
+		return (unsigned int)_mScratch.GetMetadata().width;
 	}
 	unsigned int Surface::GetHeight() const noexcept
 	{
-		return (unsigned int)scratch.GetMetadata().height;
+		return (unsigned int)_mScratch.GetMetadata().height;
 	}
 	Surface::Color* Surface::GetBufferPtr()  noexcept
 	{
-		 return reinterpret_cast<Color*>(scratch.GetPixels());
+		 return reinterpret_cast<Color*>(_mScratch.GetPixels());
 	}
 	const Surface::Color* Surface::GetBufferPtr() const noexcept
 	{
-		 return reinterpret_cast<Color*>(scratch.GetPixels());
+		 return reinterpret_cast<Color*>(_mScratch.GetPixels());
 	}
 	const Surface::Color* Surface::GetBufferPtrConst() const noexcept
 	{
@@ -94,7 +94,7 @@ namespace FraplesDev
 	}
 	bool Surface::AlphaLoaded() const noexcept
 	{
-		return !scratch.IsAlphaAllOpaque();
+		return !_mScratch.IsAlphaAllOpaque();
 	}
 	void Surface::Save(const std::string& filename) const
 	{
@@ -118,7 +118,7 @@ namespace FraplesDev
 			throw Exception(__LINE__, __FILE__, filename, "Image format not supported");
 		};
 	
-		HRESULT hr = DirectX::SaveToWICFile(*scratch.GetImage(0, 0, 0),
+		HRESULT hr = DirectX::SaveToWICFile(*_mScratch.GetImage(0, 0, 0),
 		DirectX::WIC_FLAGS_NONE, DirectX::GetWICCodec(GetCodeID(filename)), Utility::ToWide(filename).c_str());
 		
 		if (FAILED(hr))
@@ -127,7 +127,8 @@ namespace FraplesDev
 		}
 	}
 
-	Surface::Surface(DirectX::ScratchImage scratch)noexcept :scratch(std::move(scratch))
+	Surface::Surface(DirectX::ScratchImage scratch)noexcept 
+		: _mScratch(std::move(scratch))
 	{
 	}
 	Surface::Exception::Exception(int line, const char* file, std::string note,std::optional<HRESULT>hr) noexcept
