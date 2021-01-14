@@ -6,11 +6,6 @@ namespace FraplesDev
 	{
 	public:
 		BlurOutlineRenderPass(Graphics& gfx,std::string name,unsigned int fullWidth, unsigned int fullHeight);
-	
-
-	private:
-
+		void Execute(Graphics& gfx) const noexcept(!IS_DEBUG) override;
 	};
-
-	
 }

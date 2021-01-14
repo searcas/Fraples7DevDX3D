@@ -16,4 +16,9 @@ namespace FraplesDev
 		AddBind(Blending::Resolve(gfx, false));
 		RegisterSource(DirectContextSource<RenderTarget>::Make("scratchOut", _mRenderTarget));
 	}
+	void BlurOutlineRenderPass::Execute(Graphics& gfx)const noexcept(!IS_DEBUG)
+	{
+		_mRenderTarget->Clear(gfx);
+		RenderQueuePass::Execute(gfx);
+	}
 }
