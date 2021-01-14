@@ -215,7 +215,7 @@ void ImGui_ImplDX11_RenderDrawData(ImDrawData* draw_data)
     ctx->IAGetPrimitiveTopology(&old.PrimitiveTopology);
     ctx->IAGetIndexBuffer(&old.IndexBuffer, &old.IndexBufferFormat, &old.IndexBufferOffset);
     ctx->IAGetVertexBuffers(0, 1, &old.VertexBuffer, &old.VertexBufferStride, &old.VertexBufferOffset);
-    ctx->IAGetSyncLayout(&old.InputLayout);
+    ctx->IAGetInputLayout(&old.InputLayout);
 
     // Setup desired DX state
     ImGui_ImplDX11_SetupRenderState(draw_data, ctx);
