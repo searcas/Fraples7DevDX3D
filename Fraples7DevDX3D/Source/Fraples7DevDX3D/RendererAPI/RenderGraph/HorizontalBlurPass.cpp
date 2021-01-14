@@ -3,6 +3,7 @@
 #include "RendererAPI/Blending/Blending.h"
 #include "RendererAPI/RenderTarget.h"
 #include "RendererAPI/ConstantBuffersEx.h"
+#include "Core/Sampler.h"
 namespace FraplesDev
 {
 	HorizontalBlurPass::HorizontalBlurPass(std::string name, Graphics& gfx, unsigned int fullWidth, unsigned int fullHeight)
@@ -10,6 +11,7 @@ namespace FraplesDev
 	{
 		AddBind(PixelShader::Resolve(gfx, "BlurOUtline_PS.cso"));
 		AddBind(Blending::Resolve(gfx, false));
+		AddBind(Sampler::Resolve(gfx,Sampler::Type::Point, true));
 		AddBindSink<RenderTarget>("scratchIn");
 		AddBindSink<CachingPixelConstantBufferEx>("control");
 		RegisterSync(DirectContextSync<CachingPixelConstantBufferEx>::Make("direction", _mDirection));

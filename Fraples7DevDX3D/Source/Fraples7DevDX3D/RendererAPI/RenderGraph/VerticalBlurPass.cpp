@@ -6,6 +6,7 @@
 #include "RendererAPI/Blending/Blending.h"
 #include "RendererAPI/RenderTarget.h"
 #include "RendererAPI/Stencil/DepthStencil.h"
+#include "Core/Sampler.h"
 namespace FraplesDev
 {
 	VerticalBlurPass::VerticalBlurPass(std::string name, Graphics& gfx)
@@ -15,6 +16,7 @@ namespace FraplesDev
 		AddBind(Blending::Resolve(gfx, true));
 		AddBind(Stencil::Resolve(gfx, Stencil::Mode::Mask));
 		
+		AddBind(Sampler::Resolve(gfx, Sampler::Type::Bilinear, true));
 		AddBindSink<RenderTarget>("scratchIn");
 		AddBindSink<CachingPixelConstantBufferEx>("control");
 
