@@ -1,6 +1,8 @@
 #pragma once
 #include "BindingPass.h"
 #include "RendererAPI/GFXContext.h"
+#include "RendererAPI/RenderTarget.h"
+#include "RendererAPI/Stencil/DepthStencil.h"
 namespace FraplesDev
 {
 	BindingPass::BindingPass(std::string name, std::vector<std::shared_ptr<GfxContext>> binds)
@@ -14,11 +16,11 @@ namespace FraplesDev
 	}
 	void BindingPass::BindAll(Graphics& gfx) const noexcept
 	{
+		BindBufferResources(gfx);
 		for (auto& bind : _mBinds)
 		{
 			bind->Bind(gfx);
 		}
-		BindBufferResources(gfx);
 	}
 	void BindingPass::Finalize()
 	{
@@ -26,6 +28,17 @@ namespace FraplesDev
 		if (!_mRenderTarget && !_mDepthStencil)
 		{
 			throw RGC_EXCEPTION("BindingPass [" + GetName() + "] needs at least one of a renderTarget or depthStencil");
+		}
+	}
+	void BindingPass::BindBufferResources(Graphics& gfx) const noexcept(!IS_DEBUG)
+	{
+		if (_mRenderTarget)
+		{
+			_mRenderTarget->BindAsBuffer(gfx, _mDepthStencil.get());
+		}
+		else
+		{
+			_mDepthStencil->BindAsBuffer(gfx);
 		}
 	}
 }

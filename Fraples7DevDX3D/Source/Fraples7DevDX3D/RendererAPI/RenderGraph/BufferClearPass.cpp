@@ -7,14 +7,11 @@ namespace FraplesDev
 	BufferClearPass::BufferClearPass(std::string name)
 		:Pass(std::move(name))
 	{
-		RegisterSync(DirectBufferSnyc<RenderTarget>::Make("renderTarget", _mRenderTarget));
-		RegisterSync(DirectBufferSnyc<DepthStencil>::Make("depthStencil", _mDepthStencil));
-		RegisterSource(DirectBufferSource<RenderTarget>::Make("renderTarget", _mRenderTarget));
-		RegisterSource(DirectBufferSource<DepthStencil>::Make("depthStencil", _mDepthStencil));
+		RegisterSync(DirectBufferSnyc<BufferResource>::Make("buffer", _mBuffer));
+		RegisterSource(DirectBufferSource<BufferResource>::Make("buffer", _mBuffer));
 	}
 	void BufferClearPass::Execute(Graphics& gfx) const noexcept(!IS_DEBUG)
 	{
-		_mRenderTarget->Clear(gfx);
-		_mDepthStencil->Clear(gfx);
+		_mBuffer->Clear(gfx);
 	}
 }

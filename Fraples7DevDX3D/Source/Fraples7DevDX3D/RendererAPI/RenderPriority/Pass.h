@@ -24,9 +24,6 @@ namespace FraplesDev
 		void SetSyncLinkage(const std::string& registeredName, const std::string& target);
 		void RegisterSync(std::unique_ptr<Sync>input);
 		void RegisterSource(std::unique_ptr<Source>ouput);
-		void BindBufferResources(Graphics& gfx )const noexcept(!IS_DEBUG);
-		std::shared_ptr<RenderTarget>_mRenderTarget;
-		std::shared_ptr<DepthStencil>_mDepthStencil;
 	private:
 		std::vector<std::unique_ptr<Sync>>_mSyncs;
 		std::vector<std::unique_ptr<Source>>_mSources;

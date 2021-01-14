@@ -8,7 +8,8 @@ namespace FraplesDev
 	public:
 		BufferClearPass(std::string name);
 		void Execute(Graphics& gfx)const noexcept(!IS_DEBUG) override;
-
+	private:
+		std::shared_ptr<BufferResource>_mBuffer;
 	};
 }
 

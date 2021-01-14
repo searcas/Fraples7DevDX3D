@@ -12,15 +12,19 @@ namespace FraplesDev
 		: RenderGraph(gfx)
 	{
 		{
-			auto pass = std::make_unique<BufferClearPass>("clear");
-			pass->SetSyncLinkage("renderTarget", "$.backbuffer");
-			pass->SetSyncLinkage("depthStencil", "$.masterDepth");
+			auto pass = std::make_unique<BufferClearPass>("clearRT");
+			pass->SetSyncLinkage("buffer", "$.backbuffer");
+			AppendPass(std::move(pass));
+		}
+		{
+			auto pass = std::make_unique<BufferClearPass>("clearDS");
+			pass->SetSyncLinkage("buffer", "$.masterDepth");
 			AppendPass(std::move(pass));
 		}
 		{
 			auto pass = std::make_unique<LambertianPass>(gfx, "lambertian");
-			pass->SetSyncLinkage("renderTarget", "clear.renderTarget");
-			pass->SetSyncLinkage("depthStencil", "clear.depthStencil");
+			pass->SetSyncLinkage("renderTarget", "clearRT.buffer");
+			pass->SetSyncLinkage("depthStencil", "clearDS.buffer");
 			AppendPass(std::move(pass));
 		}
 		// setup blur constant buffers

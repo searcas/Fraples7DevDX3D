@@ -80,17 +80,6 @@ namespace FraplesDev
 		}
 		_mSources.push_back(std::move(output));
 	}
-	void Pass::BindBufferResources(Graphics& gfx) const noexcept(!IS_DEBUG)
-	{
-		if (_mRenderTarget)
-		{
-			_mRenderTarget->BindAsBuffer(gfx, _mDepthStencil.get());
-		}
-		else
-		{
-			_mDepthStencil->BindAsBuffer(gfx);
-		}
-	}
 	const std::string& Pass::GetName()const noexcept
 	{
 		return _mName;
