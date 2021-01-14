@@ -18,7 +18,7 @@ namespace FraplesDev
 		
 		AddBind(Sampler::Resolve(gfx, Sampler::Type::Bilinear, true));
 		AddBindSink<RenderTarget>("scratchIn");
-		AddBindSink<CachingPixelConstantBufferEx>("control");
+		AddBindSink<CachingPixelConstantBufferEx>("kernel");
 
 		RegisterSync(DirectContextSync<CachingPixelConstantBufferEx>::Make("direction", _mDirection));
 

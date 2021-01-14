@@ -16,7 +16,7 @@ namespace FraplesDev
 		static constexpr int radius = 4;
 		static constexpr float sigma = 2.0f;
 
-		std::shared_ptr<CachingPixelConstantBufferEx>_mBlurControl;
+		std::shared_ptr<CachingPixelConstantBufferEx>_mBlurKernel;
 		std::shared_ptr<CachingPixelConstantBufferEx>_mBlurDirection;
 	};
 }

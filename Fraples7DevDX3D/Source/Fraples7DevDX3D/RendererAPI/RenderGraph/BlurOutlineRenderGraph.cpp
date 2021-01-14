@@ -41,9 +41,9 @@ namespace FraplesDev
 				l.Add<MP::Array>("coefficients");
 				l["coefficients"].Set<MP::Float>(maxRadious * 2 + 1);
 				MP::Buffer buf{ std::move(l) };
-				_mBlurControl = std::make_shared<CachingPixelConstantBufferEx>(gfx, buf, 0);
+				_mBlurKernel = std::make_shared<CachingPixelConstantBufferEx>(gfx, buf, 0);
 				SetKernelGauss(radius, sigma);
-				AddGlobalSource(DirectContextSource<CachingPixelConstantBufferEx>::Make("blurControl", _mBlurControl));
+				AddGlobalSource(DirectContextSource<CachingPixelConstantBufferEx>::Make("blurKernel", _mBlurKernel));
 			}
 			{
 				MP::RawLayout l;
@@ -61,7 +61,7 @@ namespace FraplesDev
 		{
 			auto pass = std::make_unique<HorizontalBlurPass>("horizontal", gfx, gfx.GetWidth(), gfx.GetHeight());
 			pass->SetSyncLinkage("scratchIn", "outlineDraw.scratchOut");
-			pass->SetSyncLinkage("control", "$.blurControl");
+			pass->SetSyncLinkage("kernel", "$.blurKernel");
 			pass->SetSyncLinkage("direction", "$.blurDirection");
 			AppendPass(std::move(pass));
 		}
@@ -70,7 +70,7 @@ namespace FraplesDev
 			pass->SetSyncLinkage("renderTarget", "lambertian.renderTarget");
 			pass->SetSyncLinkage("depthStencil", "outlineMask.depthStencil");
 			pass->SetSyncLinkage("scratchIn", "horizontal.scratchOut");
-			pass->SetSyncLinkage("control", "$.blurControl");
+			pass->SetSyncLinkage("kernel", "$.blurKernel");
 			pass->SetSyncLinkage("direction", "$.blurDirection");
 			AppendPass(std::move(pass));
 		}
@@ -81,7 +81,7 @@ namespace FraplesDev
 	void BlurOutlineRenderGraph::SetKernelGauss(int radius, float sigma) noexcept(!IS_DEBUG)
 	{
 		assert(radius <= maxRadious);
-		auto k = _mBlurControl->GetBuffer();
+		auto k = _mBlurKernel->GetBuffer();
 		const int nTaps = radius * 2 + 1;
 		k["nTaps"] = nTaps;
 		float sum = 0.0f;
@@ -96,6 +96,6 @@ namespace FraplesDev
 		{
 			k["coefficients"][i] = (float)k["coefficients"][i] / sum;
 		}
-		_mBlurControl->SetBuffer(k);
+		_mBlurKernel->SetBuffer(k);
 	}
 }
