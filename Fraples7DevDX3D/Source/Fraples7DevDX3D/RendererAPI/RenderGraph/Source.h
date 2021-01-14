@@ -5,30 +5,30 @@
 
 namespace FraplesDev
 {
-	class PassOutput
+	class Source
 	{
 	public:
 		const std::string& GetName()const noexcept;
 		virtual void PostLinkValidation() const = 0;
-		virtual std::shared_ptr<class GfxContext>YieldImmutable();
+		virtual std::shared_ptr<class GfxContext>YieldBindable();
 		virtual std::shared_ptr<class BufferResource>YieldBuffer();
-		virtual ~PassOutput() = default;
+		virtual ~Source() = default;
 	protected:
-		PassOutput(std::string name);
+		Source(std::string name);
 	private:
 		std::string _mName;
 	};
 
 	template<typename T>
-	class BufferOutput : public PassOutput
+	class DirectBufferSource : public Source
 	{
 	public:
-		static std::unique_ptr<BufferOutput>Make(std::string name, std::shared_ptr<T>& buffer)
+		static std::unique_ptr<DirectBufferSource>Make(std::string name, std::shared_ptr<T>& buffer)
 		{
-			return std::make_unique<BufferOutput>(std::move(name), buffer);
+			return std::make_unique<DirectBufferSource>(std::move(name), buffer);
 		}
-		BufferOutput(std::string name, std::shared_ptr<T>& buffer)
-			:PassOutput(std::move(name)), _mBuffer(buffer)
+		DirectBufferSource(std::string name, std::shared_ptr<T>& buffer)
+			:Source(std::move(name)), _mBuffer(buffer)
 		{
 
 		}
@@ -47,21 +47,21 @@ namespace FraplesDev
 		bool _mLinked = false;
 	};
 		template<typename T>
-		class ImmutableOutput : public PassOutput
+		class DirectContextSource : public Source
 		{
 		public:
-			static std::unique_ptr<ImmutableOutput>Make(std::string name, std::shared_ptr<T>& buffer)
+			static std::unique_ptr<DirectContextSource>Make(std::string name, std::shared_ptr<T>& buffer)
 			{
-				return std::make_unique<ImmutableOutput>(std::move(name), buffer);
+				return std::make_unique<DirectContextSource>(std::move(name), buffer);
 			}
-			ImmutableOutput(std::string name, std::shared_ptr<T>& bind)
-				: PassOutput(std::move(name)), _mBind(bind)
+			DirectContextSource(std::string name, std::shared_ptr<T>& bind)
+				: Source(std::move(name)), _mBind(bind)
 			{
 
 			}
 			void PostLinkValidation()const override
 			{}
-			std::shared_ptr<GfxContext>YieldImmutable() override
+			std::shared_ptr<GfxContext>YieldBindable() override
 			{
 				return _mBind;
 			}

@@ -14,6 +14,6 @@ namespace FraplesDev
 		AddBind(PixelShader::Resolve(gfx, "Solid_PS.cso"));
 		AddBind(Stencil::Resolve(gfx, Stencil::Mode::Mask));
 		AddBind(Blending::Resolve(gfx, false));
-		RegisterOutput(ImmutableOutput<RenderTarget>::Make("scratchOut", _mRenderTarget));
+		RegisterSource(DirectContextSource<RenderTarget>::Make("scratchOut", _mRenderTarget));
 	}
 }

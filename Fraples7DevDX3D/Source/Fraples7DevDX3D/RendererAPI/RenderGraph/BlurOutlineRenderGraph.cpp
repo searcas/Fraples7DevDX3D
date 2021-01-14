@@ -13,20 +13,20 @@ namespace FraplesDev
 	{
 		{
 			auto pass = std::make_unique<BufferClearPass>("clear");
-			pass->SetInputSource("renderTarget", "$.backbuffer");
-			pass->SetInputSource("depthStencil", "$.masterDepth");
+			pass->SetSyncLinkage("renderTarget", "$.backbuffer");
+			pass->SetSyncLinkage("depthStencil", "$.masterDepth");
 			AppendPass(std::move(pass));
 		}
 		{
 			auto pass = std::make_unique<LambertianPass>(gfx, "lambertian");
-			pass->SetInputSource("renderTarget", "clear.renderTarget");
-			pass->SetInputSource("depthStencil", "clear.depthStencil");
+			pass->SetSyncLinkage("renderTarget", "clear.renderTarget");
+			pass->SetSyncLinkage("depthStencil", "clear.depthStencil");
 			AppendPass(std::move(pass));
 		}
 		// setup blur constant buffers
 		{
 			auto pass = std::make_unique<OutlineMaskGenerationPass>(gfx, "outlineMask");
-			pass->SetInputSource("depthStencil", "lambertian.depthStencil");
+			pass->SetSyncLinkage("depthStencil", "lambertian.depthStencil");
 			AppendPass(std::move(pass));
 		}
 		// setup blur constant buffers
@@ -39,14 +39,14 @@ namespace FraplesDev
 				MP::Buffer buf{ std::move(l) };
 				_mBlurControl = std::make_shared<CachingPixelConstantBufferEx>(gfx, buf, 0);
 				SetKernelGauss(radius, sigma);
-				AddGlobalSource(ImmutableOutput<CachingPixelConstantBufferEx>::Make("blurControl", _mBlurControl));
+				AddGlobalSource(DirectContextSource<CachingPixelConstantBufferEx>::Make("blurControl", _mBlurControl));
 			}
 			{
 				MP::RawLayout l;
 				l.Add<MP::Bool>("isHorizontal");
 				MP::Buffer buf{ std::move(l) };
 				_mBlurDirection = std::make_shared<CachingPixelConstantBufferEx>(gfx, buf, 1);
-				AddGlobalSource(ImmutableOutput<CachingPixelConstantBufferEx>::Make("blurDirection", _mBlurDirection));
+				AddGlobalSource(DirectContextSource<CachingPixelConstantBufferEx>::Make("blurDirection", _mBlurDirection));
 
 			}
 		}
@@ -56,18 +56,18 @@ namespace FraplesDev
 		}
 		{
 			auto pass = std::make_unique<HorizontalBlurPass>("horizontal", gfx, gfx.GetWidth(), gfx.GetHeight());
-			pass->SetInputSource("scratchIn", "outlineDraw.scratchOut");
-			pass->SetInputSource("control", "$.blurControl");
-			pass->SetInputSource("direction", "$.blurDirection");
+			pass->SetSyncLinkage("scratchIn", "outlineDraw.scratchOut");
+			pass->SetSyncLinkage("control", "$.blurControl");
+			pass->SetSyncLinkage("direction", "$.blurDirection");
 			AppendPass(std::move(pass));
 		}
 		{
 			auto pass = std::make_unique<VerticalBlurPass>("vertical", gfx);
-			pass->SetInputSource("renderTarget", "lambertian.renderTarget");
-			pass->SetInputSource("depthStencil", "outlineMask.depthStencil");
-			pass->SetInputSource("scratchIn", "horizontal.scratchOut");
-			pass->SetInputSource("control", "$.blurControl");
-			pass->SetInputSource("direction", "$.blurDirection");
+			pass->SetSyncLinkage("renderTarget", "lambertian.renderTarget");
+			pass->SetSyncLinkage("depthStencil", "outlineMask.depthStencil");
+			pass->SetSyncLinkage("scratchIn", "horizontal.scratchOut");
+			pass->SetSyncLinkage("control", "$.blurControl");
+			pass->SetSyncLinkage("direction", "$.blurDirection");
 			AppendPass(std::move(pass));
 		}
 		SetSinkTarget("backbuffer", "vertical.renderTarget");

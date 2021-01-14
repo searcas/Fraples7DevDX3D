@@ -3839,7 +3839,7 @@ bool ImGui::InputTextEx(const char* label, const char* hint, char* buf, int buf_
         g.MouseCursor = ImGuiMouseCursor_TextInput;
 
     // We are only allowed to access the state if we are already the active widget.
-    ImGuiInputTextState* state = GetInputTextState(id);
+    ImGuiInputTextState* state = GetSyncTextState(id);
 
     const bool focus_requested = FocusableItemRegister(window, id);
     const bool focus_requested_by_code = focus_requested && (g.FocusRequestCurrWindow == window && g.FocusRequestCurrCounterRegular == window->DC.FocusCounterRegular);

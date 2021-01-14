@@ -1,21 +1,21 @@
-#include "PassInput.h"
+#include "Sync.h"
 #include <algorithm>
 
 namespace FraplesDev
 {
-	const std::string& PassInput::GetRegisteredName() const noexcept
+	const std::string& Sync::GetRegisteredName() const noexcept
 	{
 		return _mRegisteredName;
 	}
-	const std::string& PassInput::GetPassName() const noexcept
+	const std::string& Sync::GetPassName() const noexcept
 	{
 		return _mPassName;
 	}
-	const std::string& PassInput::GetOutputName() const noexcept
+	const std::string& Sync::GetSourceName() const noexcept
 	{
 		return _mOutputName;
 	}
-	void PassInput::SetTarget(std::string passName, std::string outputName)
+	void Sync::SetTarget(std::string passName, std::string outputName)
 	{
 		{
 			if (passName.empty())
@@ -43,7 +43,7 @@ namespace FraplesDev
 		}
 	}
 
-	PassInput::PassInput(std::string registeredName)
+	Sync::Sync(std::string registeredName)
 		: _mRegisteredName(std::move(registeredName))
 	{
 		if (_mRegisteredName.empty())

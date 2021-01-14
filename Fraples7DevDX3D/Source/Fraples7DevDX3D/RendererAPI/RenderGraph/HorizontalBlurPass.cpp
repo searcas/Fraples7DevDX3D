@@ -10,13 +10,13 @@ namespace FraplesDev
 	{
 		AddBind(PixelShader::Resolve(gfx, "BlurOUtline_PS.cso"));
 		AddBind(Blending::Resolve(gfx, false));
-		RegisterInput(ImmutableInput<GfxContext>::Make("control", _mControl));
-		RegisterInput(ImmutableInput<CachingPixelConstantBufferEx>::Make("direction", _mDirection));
-		RegisterInput(ImmutableInput<GfxContext>::Make("scratchIn", _mBlurScratchIn));
+		RegisterSync(DirectContextSync<GfxContext>::Make("control", _mControl));
+		RegisterSync(DirectContextSync<CachingPixelConstantBufferEx>::Make("direction", _mDirection));
+		RegisterSync(DirectContextSync<GfxContext>::Make("scratchIn", _mBlurScratchIn));
 
 		// the renderTarget is internally sourced and then exporeted as a Context
 		_mRenderTarget = std::make_shared<ShaderInputRenderTarget>(gfx, fullWidth / 2, fullHeight / 2, 0u);
-		RegisterOutput(ImmutableOutput<RenderTarget>::Make("scratchOut", _mRenderTarget));
+		RegisterSource(DirectContextSource<RenderTarget>::Make("scratchOut", _mRenderTarget));
 	}
 	// this override is necessary because we cannot (yet) link input bindables directly into
 	// the container of bindables (mainly because vector growth buggers references)

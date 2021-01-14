@@ -14,13 +14,13 @@ namespace FraplesDev
 	void Pass::Reset() noexcept(!IS_DEBUG)
 	{
 	}
-	const std::vector<std::unique_ptr<PassInput>>& Pass::GetInputs() const
+	const std::vector<std::unique_ptr<Sync>>& Pass::GetSyncs() const
 	{
-		return _mInputs;
+		return _mSyncs;
 	}
-	PassOutput& Pass::GetOutput(const std::string& registeredName) const
+	Source& Pass::GetSource(const std::string& registeredName) const
 	{
-		for (auto& out : _mOutputs)
+		for (auto& out : _mSources)
 		{
 			if (out->GetName() == registeredName)
 			{
@@ -32,9 +32,9 @@ namespace FraplesDev
 
 		throw RGC_EXCEPTION(oss.str());
 	}
-	PassInput& Pass::GetInput(const std::string& registeredName) const
+	Sync& Pass::GetSync(const std::string& registeredName) const
 	{
-		for (auto& in : _mInputs)
+		for (auto& in : _mSyncs)
 		{
 			if (in->GetRegisteredName() == registeredName)
 			{
@@ -46,9 +46,9 @@ namespace FraplesDev
 
 		throw RGC_EXCEPTION(oss.str());
 	}
-	void Pass::SetInputSource(const std::string& registeredName, const std::string& target)
+	void Pass::SetSyncLinkage(const std::string& registeredName, const std::string& target)
 	{
-		auto& input = GetInput(registeredName);
+		auto& input = GetSync(registeredName);
 		auto targetSplit = Utility::SplitString(target, ".");
 		if (targetSplit.size() != 2u)
 		{
@@ -56,29 +56,29 @@ namespace FraplesDev
 		}
 		input.SetTarget(std::move(targetSplit[0]), std::move(targetSplit[1]));
 	}
-	void Pass::RegisterInput(std::unique_ptr<PassInput> input)
+	void Pass::RegisterSync(std::unique_ptr<Sync> input)
 	{
 		// check for overlap of input names
-		for (auto& in : _mInputs)
+		for (auto& in : _mSyncs)
 		{
 			if (in->GetRegisteredName() ==input->GetRegisteredName())
 			{
 				throw RGC_EXCEPTION("Registered input overlaps with existing: " + input->GetRegisteredName());
 			}
 		}
-		_mInputs.push_back(std::move(input));
+		_mSyncs.push_back(std::move(input));
 	}
-	void Pass::RegisterOutput(std::unique_ptr<PassOutput> output)
+	void Pass::RegisterSource(std::unique_ptr<Source> output)
 	{
 		// check for overlap of output names
-		for (auto& out : _mOutputs)
+		for (auto& out : _mSources)
 		{
 			if (out->GetName() == output->GetName())
 			{
 				throw RGC_EXCEPTION("Registered output overlaps with existing: " + output->GetName());
 			}
 		}
-		_mOutputs.push_back(std::move(output));
+		_mSources.push_back(std::move(output));
 	}
 	void Pass::BindBufferResources(Graphics& gfx) const noexcept(!IS_DEBUG)
 	{
@@ -97,11 +97,11 @@ namespace FraplesDev
 	}
 	void Pass::Finalize()
 	{
-		for (auto& in : _mInputs)
+		for (auto& in : _mSyncs)
 		{
 			in->PostLinkValidate();
 		}
-		for (auto& out : _mOutputs)
+		for (auto& out : _mSources)
 		{
 			out->PostLinkValidation();
 		}

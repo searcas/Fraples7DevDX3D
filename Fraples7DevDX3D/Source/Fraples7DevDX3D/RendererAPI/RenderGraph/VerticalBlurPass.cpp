@@ -1,6 +1,6 @@
 #include "VerticalBlurPass.h"
-#include "PassInput.h"
-#include "PassOutput.h"
+#include "Sync.h"
+#include "Source.h"
 #include "RendererAPI/PixelShader.h"
 #include "RendererAPI/Stencil.h"
 #include "RendererAPI/Blending/Blending.h"
@@ -15,15 +15,15 @@ namespace FraplesDev
 		AddBind(Blending::Resolve(gfx, true));
 		AddBind(Stencil::Resolve(gfx, Stencil::Mode::Mask));
 
-		RegisterInput(ImmutableInput<GfxContext>::Make("scratchIn", _mBlurScratchIn));
-		RegisterInput(ImmutableInput<GfxContext>::Make("control", _mControl));
-		RegisterInput(ImmutableInput<CachingPixelConstantBufferEx>::Make("direction", _mDirection));
+		RegisterSync(DirectContextSync<GfxContext>::Make("scratchIn", _mBlurScratchIn));
+		RegisterSync(DirectContextSync<GfxContext>::Make("control", _mControl));
+		RegisterSync(DirectContextSync<CachingPixelConstantBufferEx>::Make("direction", _mDirection));
 
-		RegisterInput(BufferInput<RenderTarget>::Make("renderTarget", _mRenderTarget));
-		RegisterInput(BufferInput<DepthStencil>::Make("depthStencil", _mDepthStencil));
+		RegisterSync(DirectBufferSnyc<RenderTarget>::Make("renderTarget", _mRenderTarget));
+		RegisterSync(DirectBufferSnyc<DepthStencil>::Make("depthStencil", _mDepthStencil));
 
-		RegisterOutput(BufferOutput<RenderTarget>::Make("renderTarget", _mRenderTarget));
-		RegisterOutput(BufferOutput<DepthStencil>::Make("depthStencil", _mDepthStencil));
+		RegisterSource(DirectBufferSource<RenderTarget>::Make("renderTarget", _mRenderTarget));
+		RegisterSource(DirectBufferSource<DepthStencil>::Make("depthStencil", _mDepthStencil));
 
 	}
 

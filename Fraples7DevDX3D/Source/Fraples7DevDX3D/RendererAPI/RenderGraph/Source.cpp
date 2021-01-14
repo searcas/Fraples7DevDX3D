@@ -1,22 +1,22 @@
-#include "PassOutput.h"
+#include "Source.h"
 #include "BufferResource.h"
 #include "GraphicAPI/Graphics.h"
 #include <algorithm>
 namespace FraplesDev
 {
-	const std::string& PassOutput::GetName() const noexcept
+	const std::string& Source::GetName() const noexcept
 	{
 		return _mName;
 	}
-	std::shared_ptr<GfxContext> PassOutput::YieldImmutable()
+	std::shared_ptr<GfxContext> Source::YieldBindable()
 	{
 		throw RGC_EXCEPTION("Output cannot be accessed as immutable");
 	}
-	std::shared_ptr<BufferResource> PassOutput::YieldBuffer()
+	std::shared_ptr<BufferResource> Source::YieldBuffer()
 	{
 		throw RGC_EXCEPTION("Output cannot be accessed as buffer");
 	}
-	PassOutput::PassOutput(std::string name)
+	Source::Source(std::string name)
 		:_mName(std::move(name))
 	{
 		if (_mName.empty())

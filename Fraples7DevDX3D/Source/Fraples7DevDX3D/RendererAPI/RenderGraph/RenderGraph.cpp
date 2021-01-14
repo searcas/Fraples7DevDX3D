@@ -5,8 +5,8 @@
 #include "RendererAPI/GFXContextBase.h"
 #include "Exception/RenderGraphCompileException.h"
 #include "RenderQueuePass.h"
-#include "PassInput.h"
-#include "PassOutput.h"
+#include "Sync.h"
+#include "Source.h"
 #include <sstream>
 
 namespace FraplesDev
@@ -14,16 +14,16 @@ namespace FraplesDev
 	RenderGraph::RenderGraph(Graphics& gfx)
 		:_mBackBufferTarget(gfx.GetTarget()), _mMasterDepth(std::make_shared<OutputOnlyDepthStencil>(gfx))
 	{
-		AddGlobalSource(BufferOutput<RenderTarget>::Make("backbuffer", _mBackBufferTarget));
-		AddGlobalSource(BufferOutput<DepthStencil>::Make("masterDepth", _mMasterDepth));
-		AddGlobalSink(BufferInput<RenderTarget>::Make("backbuffer", _mBackBufferTarget));
+		AddGlobalSource(DirectBufferSource<RenderTarget>::Make("backbuffer", _mBackBufferTarget));
+		AddGlobalSource(DirectBufferSource<DepthStencil>::Make("masterDepth", _mMasterDepth));
+		AddGlobalSink(DirectBufferSnyc<RenderTarget>::Make("backbuffer", _mBackBufferTarget));
 	}
 	RenderGraph::~RenderGraph()
 	{
 	}
 	void RenderGraph::SetSinkTarget(const std::string& sinkName, const std::string& target)
 	{
-		const auto finder = [&sinkName](const std::unique_ptr<PassInput>& p) {return p->GetRegisteredName() == sinkName; };
+		const auto finder = [&sinkName](const std::unique_ptr<Sync>& p) {return p->GetRegisteredName() == sinkName; };
 		const auto i = std::find_if(_mGlobalSinks.begin(), _mGlobalSinks.end(), finder);
 		if (i == _mGlobalSinks.end())
 		{
@@ -48,16 +48,16 @@ namespace FraplesDev
 			}
 		}
 		// link output from passes (and global outputs) to pass inputs
-		LinkPassInputs(*pass);
+		LinkSyncs(*pass);
 
 		// add to container of passes 
 		_mPasses.push_back(std::move(pass));
 	}
-	void RenderGraph::AddGlobalSource(std::unique_ptr<PassOutput>out)
+	void RenderGraph::AddGlobalSource(std::unique_ptr<Source>out)
 	{
 		_mGlobalSources.push_back(std::move(out));
 	}
-	void RenderGraph::AddGlobalSink(std::unique_ptr<PassInput>in)
+	void RenderGraph::AddGlobalSink(std::unique_ptr<Sync>in)
 	{
 		_mGlobalSinks.push_back(std::move(in));
 	}
@@ -105,9 +105,9 @@ namespace FraplesDev
 		}
 		throw RGC_EXCEPTION("In RenderGraph::GetRenderQueue, pass not found: " + passName);
 	}
-	void RenderGraph::LinkPassInputs(Pass& pass)
+	void RenderGraph::LinkSyncs(Pass& pass)
 	{
-		for (auto& in : pass.GetInputs())
+		for (auto& in : pass.GetSyncs())
 		{
 			const auto& inputSourcePassName = in->GetPassName();
 
@@ -118,7 +118,7 @@ namespace FraplesDev
 				bool bound = false;
 				for (auto& source : _mGlobalSources)
 				{
-					if (source->GetName()== in->GetOutputName())
+					if (source->GetName()== in->GetSourceName())
 					{
 						in->Bind(*source);
 						bound = true;
@@ -128,7 +128,7 @@ namespace FraplesDev
 				if (!bound)
 				{
 					std::ostringstream oss;
-					oss << "Output named [" << in->GetOutputName() << "] not found in globals";
+					oss << "Output named [" << in->GetSourceName() << "] not found in globals";
 					throw RGC_EXCEPTION(oss.str());
 				}
 			}
@@ -139,7 +139,7 @@ namespace FraplesDev
 				{
 					if (existingPass->GetName() == inputSourcePassName)
 					{
-						auto& source = existingPass->GetOutput(in->GetOutputName());
+						auto& source = existingPass->GetSource(in->GetSourceName());
 						in->Bind(source);
 						break;
 					}
@@ -157,7 +157,7 @@ namespace FraplesDev
 			{
 				if (existingPass->GetName() == inputSourcePassName)
 				{
-					auto& source = existingPass->GetOutput(sink->GetOutputName());
+					auto& source = existingPass->GetSource(sink->GetSourceName());
 					sink->Bind(source);
 					break;
 				}

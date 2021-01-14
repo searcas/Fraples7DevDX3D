@@ -11,10 +11,10 @@ namespace FraplesDev
 	OutlineRenderingPass::OutlineRenderingPass(Graphics& gfx, std::string name)
 		: RenderQueuePass(std::move(name))
 	{
-		RegisterInput(BufferInput<RenderTarget>::Make("renderTarget", _mRenderTarget));
-		RegisterInput(BufferInput<DepthStencil>::Make("depthStencil", _mDepthStencil));
-		RegisterOutput(BufferOutput<RenderTarget>::Make("renderTarget", _mRenderTarget));
-		RegisterOutput(BufferOutput<DepthStencil>::Make("depthStencil", _mDepthStencil));
+		RegisterSync(DirectBufferSnyc<RenderTarget>::Make("renderTarget", _mRenderTarget));
+		RegisterSync(DirectBufferSnyc<DepthStencil>::Make("depthStencil", _mDepthStencil));
+		RegisterSource(DirectBufferSource<RenderTarget>::Make("renderTarget", _mRenderTarget));
+		RegisterSource(DirectBufferSource<DepthStencil>::Make("depthStencil", _mDepthStencil));
 		AddBind(VertexShader::Resolve(gfx, "Solid_VS.cso"));
 		AddBind(PixelShader::Resolve(gfx, "Solid_PS.cso"));
 		AddBind(Stencil::Resolve(gfx, Stencil::Mode::Mask));

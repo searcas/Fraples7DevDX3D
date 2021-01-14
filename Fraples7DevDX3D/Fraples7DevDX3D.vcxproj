@@ -126,8 +126,8 @@
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\LambertianPass.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\OutlineMaskGenerationPass.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\OutlineRenderingPass.cpp" />
-    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\PassInput.cpp" />
-    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\PassOutput.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Sync.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Source.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\RenderGraph.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\RenderQueuePass.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\StepLinkProbe.cpp" />
@@ -220,8 +220,8 @@
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\LambertianPass.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\OutlineMaskGenerationPass.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\OutlineRenderingPass.h" />
-    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\PassInput.h" />
-    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\PassOutput.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Sync.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Source.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\RenderGraph.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\RenderQueuePass.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\StepLinkProbe.h" />

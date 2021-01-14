@@ -2,8 +2,8 @@
 #include <string>
 #include <vector>
 #include <array>
-#include "RendererAPI/RenderGraph/PassInput.h"
-#include "RendererAPI/RenderGraph/PassOutput.h"
+#include "RendererAPI/RenderGraph/Sync.h"
+#include "RendererAPI/RenderGraph/Source.h"
 #include "GraphicAPI/Graphics.h"
 #include "Job.h"
 namespace FraplesDev
@@ -18,18 +18,18 @@ namespace FraplesDev
 		virtual void Finalize();
 		virtual void Execute(Graphics& gfx)const noexcept(!IS_DEBUG) = 0;
 		virtual void Reset()noexcept(!IS_DEBUG);
-		const std::vector<std::unique_ptr<PassInput>>& GetInputs()const;
-		PassOutput& GetOutput(const std::string& registeredName)const;
-		PassInput& GetInput(const std::string& registeredName)const;
-		void SetInputSource(const std::string& registeredName, const std::string& target);
-		void RegisterInput(std::unique_ptr<PassInput>input);
-		void RegisterOutput(std::unique_ptr<PassOutput>ouput);
+		const std::vector<std::unique_ptr<Sync>>& GetSyncs()const;
+		Source& GetSource(const std::string& registeredName)const;
+		Sync& GetSync(const std::string& registeredName)const;
+		void SetSyncLinkage(const std::string& registeredName, const std::string& target);
+		void RegisterSync(std::unique_ptr<Sync>input);
+		void RegisterSource(std::unique_ptr<Source>ouput);
 		void BindBufferResources(Graphics& gfx )const noexcept(!IS_DEBUG);
 		std::shared_ptr<RenderTarget>_mRenderTarget;
 		std::shared_ptr<DepthStencil>_mDepthStencil;
 	private:
-		std::vector<std::unique_ptr<PassInput>>_mInputs;
-		std::vector<std::unique_ptr<PassOutput>>_mOutputs;
+		std::vector<std::unique_ptr<Sync>>_mSyncs;
+		std::vector<std::unique_ptr<Source>>_mSources;
 		std::string _mName;
 	};
 }
