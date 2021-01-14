@@ -6,6 +6,7 @@
 #include "VerticalBlurPass.h"
 #include "Core/Math/Math.h"
 #include "BlurOutlineRenderPass.h"
+#include "ImGui/imgui.h"
 namespace FraplesDev
 {
 	BlurOutlineRenderGraph::BlurOutlineRenderGraph(Graphics& gfx)
@@ -39,7 +40,7 @@ namespace FraplesDev
 				MP::RawLayout l;
 				l.Add<MP::Integer>("nTaps");
 				l.Add<MP::Array>("coefficients");
-				l["coefficients"].Set<MP::Float>(maxRadious * 2 + 1);
+				l["coefficients"].Set<MP::Float>(maxRadius * 2 + 1);
 				MP::Buffer buf{ std::move(l) };
 				_mBlurKernel = std::make_shared<CachingPixelConstantBufferEx>(gfx, buf, 0);
 				SetKernelGauss(radius, sigma);
@@ -80,7 +81,7 @@ namespace FraplesDev
 
 	void BlurOutlineRenderGraph::SetKernelGauss(int radius, float sigma) noexcept(!IS_DEBUG)
 	{
-		assert(radius <= maxRadious);
+		assert(radius <= maxRadius);
 		auto k = _mBlurKernel->GetBuffer();
 		const int nTaps = radius * 2 + 1;
 		k["nTaps"] = nTaps;
@@ -97,5 +98,70 @@ namespace FraplesDev
 			k["coefficients"][i] = (float)k["coefficients"][i] / sum;
 		}
 		_mBlurKernel->SetBuffer(k);
+	}
+	void BlurOutlineRenderGraph::SetKernelBox(int radius) noexcept(!IS_DEBUG)
+	{
+		assert(radius <= maxRadius);
+		auto k = _mBlurKernel->GetBuffer();
+		const int nTaps = radius * 2 + 1;
+		k["nTaps"] = nTaps;
+		const float c = 1.0f / nTaps;
+
+		for (int i = 0; i < nTaps; i++)
+		{
+			k["coefficients"][i] = c;
+		}
+		_mBlurKernel->SetBuffer(k);
+	}
+	void BlurOutlineRenderGraph::RenderWidgets(Graphics& gfx)
+	{
+		if (ImGui::Begin("Kernel"))
+		{
+			bool filterChanged = false;
+			{
+				const char* items[] = { "Gauss","Box" };
+				static const char* curItem = items[0];
+				if (ImGui::BeginCombo("Filter Type", curItem))
+				{
+					for (int n = 0; n < std::size(items); n++)
+					{
+						const bool isSelected = (curItem == items[n]);
+						if (ImGui::Selectable(items[n], isSelected))
+						{
+							filterChanged = true;
+							curItem = items[n];
+							if (curItem == items[0])
+							{
+								_mKernelType = KernelType::Gauss;
+							}
+							else if (curItem == items[1])
+							{
+								_mKernelType = KernelType::Box;
+							}
+						}
+						if (isSelected)
+						{
+							ImGui::SetItemDefaultFocus();
+						}
+					}
+				ImGui::EndCombo();
+				}
+			}
+			bool RadChange = ImGui::SliderInt("Radius", &radius, 0, maxRadius);
+			bool sigChange = ImGui::SliderFloat("Sigma", &sigma, 0.1f, 10.0f);
+			if (RadChange || sigChange || filterChanged)
+			{
+				if (_mKernelType == KernelType::Gauss)
+				{
+					SetKernelGauss(radius, sigma);
+				}
+				else if (_mKernelType == KernelType::Box)
+				{
+					SetKernelBox(radius);
+				}
+			}
+			
+		}
+		ImGui::End();
 	}
 }

@@ -54,6 +54,7 @@ namespace FraplesDev
 		//redPlane.SpawnControlWindow(_mWin.GetGFX(), "RED ONE");
 		cube1.SpawnControlWindow(_mWin.GetGFX(), "Cube 1");
 		cube2.SpawnControlWindow(_mWin.GetGFX(), "Cube 2");
+		renderGraph.RenderWidgets(_mWin.GetGFX());
 	}
 
 	void Application::RenderObj()
