@@ -9,7 +9,7 @@ namespace FraplesDev
 	{
 		INFOMAN(gfx);
 
-		FPL_GFX_THROW_INFO(D3DReadFileToBlob(Utility::ToWide(path).c_str(), &_mpBytecodeBlob));
+		FPL_GFX_THROW_INFO(D3DReadFileToBlob(Utility::ToWide("Shaders/"+ path).c_str(), &_mpBytecodeBlob));
 		FPL_GFX_THROW_INFO(GetDevice(gfx)->CreateVertexShader(_mpBytecodeBlob->GetBufferPointer(), _mpBytecodeBlob->GetBufferSize(), nullptr, &_mpVertexShader));
 
 	}

@@ -9,7 +9,7 @@ namespace FraplesDev
 		INFOMAN(gfx);
 
 		Microsoft::WRL::ComPtr<ID3DBlob> pblob;
-		FPL_GFX_THROW_INFO(D3DReadFileToBlob(Utility::ToWide( path).c_str(), &pblob));
+		FPL_GFX_THROW_INFO(D3DReadFileToBlob(Utility::ToWide("Shaders/" + path).c_str(), &pblob));
 		FPL_GFX_THROW_INFO(GetDevice(gfx)->CreatePixelShader(pblob->GetBufferPointer(), pblob->GetBufferSize(), nullptr, &_mPixelShader));
 	}
 	void PixelShader::Bind(Graphics& gfx)noexcept(!IS_DEBUG)
