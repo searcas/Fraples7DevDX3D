@@ -3,7 +3,7 @@
 #include <fstream>
 #include "TexturePreprocessor.h"
 #include "Json/nlohmann/json.hpp"
-
+#include <filesystem>
 namespace FraplesDev
 {
 	using namespace std::string_literals;
@@ -52,6 +52,11 @@ namespace FraplesDev
 						cmd::TexturePreprocessor::MakeStripes(params.at("dest"), params.at("size"), params.at("stripeWidth"));
 						abort = true;
 					}
+					else if (commandName == "publish")
+					{
+						Publish(params.at("dest"));
+						abort = true;
+					}
 					else
 					{
 						throw SCRIPT_ERROR("Unknown Cmmand: "s + commandName);
@@ -63,6 +68,29 @@ namespace FraplesDev
 				}
 			}
 		}
+	}
+	void ScriptCommander::Publish(std::string path) const
+	{
+		std::filesystem::create_directory(path);
+		//copy executable
+		std::filesystem::copy_file(R"(..\x64\Release\Fraples7DevDX3D.exe)", path + R"(\Fraples7DevDX3D.exe)", std::filesystem::copy_options::overwrite_existing);
+		std::filesystem::copy_file("imgui_default.ini", path + R"(\imgui_default.ini)", std::filesystem::copy_options::overwrite_existing);
+
+		// copy all dlls
+		for (auto& p : std::filesystem::directory_iterator(""))
+		{
+			if (p.path().extension() == L".dll")
+			{
+				std::filesystem::copy_file(p.path(), path + "\\" + p.path().filename().string(), std::filesystem::copy_options::overwrite_existing);
+			}
+		}
+		// copy compiled shaders
+		std::filesystem::copy("Shaders", path + R"(\Shaders)", std::filesystem::copy_options::overwrite_existing);
+		// copy assets
+		std::filesystem::copy("Images", path + R"(\Images)", std::filesystem::copy_options::overwrite_existing | std::filesystem::copy_options::recursive);
+		std::filesystem::copy("Models", path + R"(\Models)", std::filesystem::copy_options::overwrite_existing | std::filesystem::copy_options::recursive);
+
+
 	}
 	ScriptCommander::Completion::Completion(const std::string& content )noexcept
 		:FraplesException(69,"@ScriptCommanderAbort"),_mContent(content)
