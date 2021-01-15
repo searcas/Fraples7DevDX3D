@@ -3,6 +3,7 @@ Development the Engine journey with DirectX 11 3D, eventually gonna be merged wi
 # Installation
 If you wanna run project without Visual Studio you will have to move all shaders DLL files in one folder with exe file.
 # Progress of project
-https://youtu.be/TFAi-Ot5M_Y 
-https://www.youtube.com/watch?v=atoQFfHQd6g
-https://www.youtube.com/watch?v=53PGQKCWjkI
+https://youtu.be/TFAi-Ot5M_Y <br>
+https://www.youtube.com/watch?v=atoQFfHQd6g <br>
+https://www.youtube.com/watch?v=53PGQKCWjkI <br>
+<img src = "https://prnt.sc/wntidj">
