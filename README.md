@@ -6,4 +6,4 @@ If you wanna run project without Visual Studio you will have to move all shaders
 https://youtu.be/TFAi-Ot5M_Y <br>
 https://www.youtube.com/watch?v=atoQFfHQd6g <br>
 https://www.youtube.com/watch?v=53PGQKCWjkI <br>
-<img src = "https://prnt.sc/wntidj">
+<img src = "https://image.prntscr.com/image/X1E6Erk8T7yVHKV8NmKDQA.png">
