@@ -23,16 +23,17 @@ namespace FraplesDev
 			ImGui::End();
 	}
 
-	Camera::Camera() noexcept
+	Camera::Camera(DirectX::XMFLOAT3 homePos, float homePitch, float homeYaw) noexcept
+		:_mHomePos(homePos),_mHomePitch(homePitch),_mHomeYaw(homeYaw)
 	{
 		Reset();
 	}
 
 	void Camera::Reset()
 	{
-		pos = { -13.5f,0.5f, -3.5f };
-		pitch = 0.0f;
-		yaw = PI / 2.0f;
+		pos = _mHomePos;
+		pitch = _mHomePitch;
+		yaw = _mHomeYaw;
 
 	}
 	

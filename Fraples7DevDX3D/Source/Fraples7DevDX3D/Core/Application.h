@@ -8,6 +8,8 @@
 #include "Utility/Timer.h"
 #include "RendererAPI/RenderGraph/ScaleOutlineRenderGraph.h"
 #include "RendererAPI/RenderGraph/BlurOutlineRenderGraph.h"
+#include "Math/Math.h"
+
 namespace FraplesDev
 {
 
@@ -40,16 +42,14 @@ namespace FraplesDev
 		BlurOutlineRenderGraph renderGraph{ _mWin.GetGFX() };
 		//objects
 		PointLight light;
-		Camera _mCamera;
+		Camera _mCamera { {-13.5f,6.0f,3.5f}, 0.0f, PI / 2.0f };
+	
 		//std::unique_ptr<Mesh>_mPloaded;
-		BaseCube cube1 = { _mWin.GetGFX(),4.0f };
-		BaseCube cube2 = { _mWin.GetGFX(),4.0f };
+		BaseCube cube1 = { _mWin.GetGFX(), 4.0f };
+		BaseCube cube2 = { _mWin.GetGFX(), 4.0f };
 		Model gobber{ _mWin.GetGFX(),"Models\\gobber\\GoblinX.obj", 4.0f};
-		Model _mSponza{ _mWin.GetGFX(),"Models\\Sponza\\sponza.obj", 1.0f / 20.0f };
+		Model _mSponza{_mWin.GetGFX(),"Models\\Sponza\\sponza.obj", 1.0f / 20.0f };
 		Model _mNano{ _mWin.GetGFX(),"Models\\nano_textured\\nanosuit.obj", 2.0f };
-		//	BasePlane bluePlane{ _mWin.GetGFX(),6.0f,{0.3,0.3,1.0f,0.0f} };
-		//	BasePlane redPlane{ _mWin.GetGFX(),6.0f,{1.0,0.3,0.4f,0.0f} };
-		
 	private:
 		FraplesDev::Timer _mTimer;
 		float _mSpeedFactor = 1.0f;

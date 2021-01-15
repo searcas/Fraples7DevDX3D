@@ -7,7 +7,7 @@ namespace FraplesDev
 	class Camera
 	{
 	public:
-		Camera()noexcept;
+		Camera(DirectX::XMFLOAT3 homePos,float homePitch, float homeYaw)noexcept;
 		void Reset();
 		void SpawnControllWindow() noexcept;
 		DirectX::XMMATRIX GetMatrix() const noexcept;
@@ -15,6 +15,10 @@ namespace FraplesDev
 		void Translate(DirectX::XMFLOAT3 translation) noexcept;
 		inline DirectX::XMFLOAT3 GetPos()const noexcept { return pos; }
 	private:
+		DirectX::XMFLOAT3 _mHomePos;
+		float _mHomePitch;
+		float _mHomeYaw;
+
 		DirectX::XMFLOAT3 pos;
 		static constexpr float travelSpeed = 12.0f;
 		static constexpr float rotationSpeed = 0.004;

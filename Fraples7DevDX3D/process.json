@@ -4,7 +4,7 @@
     {
       "command": "publish",
       "params": {
-        "dest": "C:\\PubTest"
+      "dest": "C:\\PubTest"
       }
     }
   ]
