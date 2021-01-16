@@ -21,10 +21,12 @@ namespace FraplesDev {
 		swap.SampleDesc.Count = 1;
 		swap.SampleDesc.Quality = 0;
 		swap.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-		swap.BufferCount = 1;
+		swap.BufferCount = 2;
 		swap.OutputWindow = hWnd;
 		swap.Windowed = TRUE;
-		swap.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
+		//DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL and DXGI_SWAP_EFFECT_FLIP_DISCARD NEW ONE
+		//DXGI_SWAP_EFFECT_DISCARD OLD
+		swap.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
 		swap.Flags = 0;
 
 		UINT swapCreateFlags = 0u;
