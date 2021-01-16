@@ -25,11 +25,12 @@ namespace FraplesDev
 		UINT _mWidth;
 		UINT _mHeight;
 	};
-
+	class Surface;
 	class ShaderInputRenderTarget : public RenderTarget
 	{
 	public:
 		ShaderInputRenderTarget(Graphics& gfx, UINT width, UINT height, UINT slot);
+		Surface ToSurface(Graphics& gfx)const;
 		void Bind(Graphics& gfx)noexcept(!IS_DEBUG) override;
 	private: 
 		UINT _mSlot;

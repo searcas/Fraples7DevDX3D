@@ -627,5 +627,8 @@
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\BlurOutline_PS.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongDiffuseMaskSpecular_VS.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongDiffuseMaskSpecular_PS.hlsl" />
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\Test_PS.hlsl" />
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\Test1_VS.hlsl" />
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\Test2_VS.hlsl" />
   </ItemGroup>
 </Project>

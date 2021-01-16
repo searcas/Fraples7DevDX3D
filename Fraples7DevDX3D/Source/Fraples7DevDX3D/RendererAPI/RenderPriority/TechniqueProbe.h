@@ -12,6 +12,7 @@ namespace FraplesDev
 	{
 	public:
 		// TODO: Add callback for visiting each mesh
+		virtual ~TechniqueProbe() = default;
 		void SetTechnique(Technique* pTech_in);
 		void SetStep(Step* pStep_in);
 		virtual bool VisitBuffer(class MP::Buffer& buf);

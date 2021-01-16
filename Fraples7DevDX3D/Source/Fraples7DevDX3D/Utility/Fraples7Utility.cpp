@@ -28,6 +28,7 @@ namespace FraplesDev
 	std::string FraplesDev::Utility::ToNarrow(const std::wstring& wide)
 	{
 		char narrow[512];
+		narrow[511] = 0;
 		wcstombs_s(nullptr, narrow, wide.c_str(), _TRUNCATE);
 		return narrow;
 	}

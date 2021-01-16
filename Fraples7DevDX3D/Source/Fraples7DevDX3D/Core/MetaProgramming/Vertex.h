@@ -41,7 +41,6 @@ LAYOUT_ELEMENT_TYPES
 		class VertexLayout
 		{
 		public:
-	
 			template<ElementType> struct Map;
 			template<>struct Map<ElementType::Position2D>
 			{

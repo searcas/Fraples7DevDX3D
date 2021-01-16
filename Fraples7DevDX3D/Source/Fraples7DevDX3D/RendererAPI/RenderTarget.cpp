@@ -1,6 +1,8 @@
 #include "RenderTarget.h"
 #include "Core/Common/Exceptions/Macros/GraphicsThrowMacros.h"
 #include "RendererAPI/Stencil/DepthStencil.h"
+#include "Core/Surface.h"
+
 namespace FraplesDev
 {
 	RenderTarget::RenderTarget(Graphics& gfx, UINT width, UINT height)
@@ -114,6 +116,47 @@ namespace FraplesDev
 		srvDesc.Texture2D.MipLevels = 1;
 		FPL_GFX_THROW_INFO(GetDevice(gfx)->CreateShaderResourceView(pRes.Get(), &srvDesc, &_mShaderResourceView));
 		
+	}
+
+	Surface ShaderInputRenderTarget::ToSurface(Graphics& gfx) const
+	{
+		INFOMAN(gfx);
+		
+		// creating a temp texture compatible with the source, but with cpu read access
+		Microsoft::WRL::ComPtr<ID3D11Resource>pResSource;
+		_mShaderResourceView->GetResource(&pResSource);
+		Microsoft::WRL::ComPtr<ID3D11Texture2D> pTexSource;
+		pResSource.As(&pTexSource);
+		D3D11_TEXTURE2D_DESC textureDesc;
+		pTexSource->GetDesc(&textureDesc);
+		textureDesc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
+		textureDesc.Usage = D3D11_USAGE_STAGING;
+		textureDesc.BindFlags = 0;
+		Microsoft::WRL::ComPtr<ID3D11Texture2D>pTexTemp;
+		FPL_GFX_THROW_INFO(GetDevice(gfx)->CreateTexture2D(&textureDesc, nullptr, &pTexTemp));
+
+		// copy texture contents 
+		FPL_GFX_THROW_INFO_ONLY(GetContext(gfx)->CopyResource(pTexTemp.Get(), pTexSource.Get()));
+
+		//create Surface and copy from temp texture to it
+
+		const auto width = GetWidth();
+		const auto height = GetHeight();
+
+		Surface s{ width,height };
+		D3D11_MAPPED_SUBRESOURCE msr = {};
+		FPL_GFX_THROW_INFO(GetContext(gfx)->Map(pTexTemp.Get(), 0, D3D11_MAP::D3D11_MAP_READ, 0, &msr));
+		auto pSrcBytes = static_cast<const char*>(msr.pData);
+		for (unsigned int y = 0; y < height; y++)
+		{
+			auto pSrcRow = reinterpret_cast<const Surface::Color*>(pSrcBytes + msr.RowPitch * size_t(y));
+			for (unsigned int x = 0; x < width; x++)
+			{
+				s.PutPixel(x, y, *(pSrcRow + x));
+			}
+		}
+		FPL_GFX_THROW_INFO_ONLY(GetContext(gfx)->Unmap(pTexTemp.Get(), 0));
+		return s;
 	}
 
 	void ShaderInputRenderTarget::Bind(Graphics& gfx)noexcept(!IS_DEBUG)

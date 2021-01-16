@@ -8,11 +8,14 @@
 #include "RendererAPI/Mesh/Mesh.h"
 #include "RendererAPI/Mesh/Material.h"
 #include "Core/Math/FraplesXM.h"
+#include "GraphicAPI/Graphics.h"
+#include "Platform/Windows/Window.h"
+#include "RendererAPI/RenderTarget.h"	
+#include "Core/Surface.h"
 #include <algorithm>
 #include <array>
 namespace FraplesDev
 {
-
 	namespace QA
 	{
 		void TestMaterialSystemLoading(Graphics& gfx)
@@ -31,6 +34,46 @@ namespace FraplesDev
 			DirectX::XMStoreFloat4x4(&f4, tlMat);
 			auto etl = ExtractTranslation(f4);
 			assert(etl.x == 2.0f && etl.y == 3.0f && etl.z == 4.0f);
+		}
+		void D3DTestScratchPad(Window& wn)
+		{
+			const auto RenderWithVS = [&gfx = wn.GetGFX()](const std::string& vsName)
+			{
+				const auto bitop = Topology::Resolve(gfx, D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+				const auto layout = MP::VertexLayout{}.Append(MP::ElementType::Position2D).Append(MP::ElementType::Float3Color);
+
+				MP::VertexBuffer vb(layout, 3);
+				vb[0].Attr<MP::ElementType::Position2D>() = DirectX::XMFLOAT2{ 0.0f,0.5f };
+				vb[0].Attr<MP::ElementType::Float3Color>() = DirectX::XMFLOAT3{ 1.0f,0.0f,0.0f, };
+				vb[1].Attr<MP::ElementType::Position2D>() = DirectX::XMFLOAT2{ 0.5, -0.5f };
+				vb[1].Attr<MP::ElementType::Float3Color>() = DirectX::XMFLOAT3{ 0.0f,1.0f,0.0f };
+				vb[2].Attr<MP::ElementType::Position2D>() = DirectX::XMFLOAT2{ -0.5,-0.5 };
+				vb[2].Attr < MP::ElementType::Float3Color>() = DirectX::XMFLOAT3{ 0.0f,0.0f,1.0f };
+				const auto bivb = VertexBuffer::Resolve(gfx, "##?", vb);
+
+				const std::vector<unsigned short> idx = { 0, 1, 2 };
+
+				const auto biidx = IndexBuffer::Resolve(gfx, "##?", idx);
+				const auto bips = PixelShader::Resolve(gfx, "Test_PS.cso");
+				const auto bivs = VertexShader::Resolve(gfx, vsName);
+				const auto bilay = InputLayout::Resolve(gfx, layout, bivs->GetByteCode());
+
+				auto rt = ShaderInputRenderTarget{ gfx,1280,720,0 };
+				biidx->Bind(gfx);
+				bivb->Bind(gfx);
+				bitop->Bind(gfx);
+				bips->Bind(gfx);
+				bivs->Bind(gfx);
+				bilay->Bind(gfx);
+				rt.Clear(gfx, { 0.0f,0.0f,0.0f,1.0f });
+				rt.BindAsBuffer(gfx);
+				gfx.RenderIndexed(biidx->GetCount());
+				gfx.GetTarget()->BindAsBuffer(gfx);
+				rt.ToSurface(gfx).Save("Test_" + vsName + ".png");
+			};
+			RenderWithVS("Test1_VS.cso");
+			RenderWithVS("Test2_VS.cso");
+
 		}
 		void TestDynamicMeshLoading()
 		{
