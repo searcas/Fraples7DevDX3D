@@ -56,7 +56,7 @@ namespace FraplesDev
 				const auto biidx = IndexBuffer::Resolve(gfx, "##?", idx);
 				const auto bips = PixelShader::Resolve(gfx, "Test_PS.cso");
 				const auto bivs = VertexShader::Resolve(gfx, vsName);
-				const auto bilay = InputLayout::Resolve(gfx, layout, bivs->GetByteCode());
+				const auto bilay = InputLayout::Resolve(gfx, layout, *bivs);
 
 				auto rt = ShaderInputRenderTarget{ gfx,1280,720,0 };
 				biidx->Bind(gfx);

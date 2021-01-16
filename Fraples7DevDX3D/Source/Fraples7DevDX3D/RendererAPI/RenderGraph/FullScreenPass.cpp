@@ -21,7 +21,7 @@ namespace FraplesDev
 
 		//setup fullscreen shaders
 		auto vs = VertexShader::Resolve(gfx, "FullScreen_VS.cso");
-		AddBind(InputLayout::Resolve(gfx, lay, vs->GetByteCode()));
+		AddBind(InputLayout::Resolve(gfx, lay, *vs));
 		AddBind(std::move(vs));
 		AddBind(Topology::Resolve(gfx));
 		AddBind(Rasterizer::Resolve(gfx, false));

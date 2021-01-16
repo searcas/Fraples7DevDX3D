@@ -19,8 +19,7 @@ namespace FraplesDev
 				Technique solid;
 				Step only("lambertian");
 				auto pvs = VertexShader::Resolve(gfx, "Solid_VS.cso");
-				auto pvsbyte = pvs->GetByteCode();
-
+				only.AddContext(InputLayout::Resolve(gfx, model._mVertices.GetLayout(), *pvs));
 				only.AddContext(std::move(pvs));
 				only.AddContext(PixelShader::Resolve(gfx, "Solid_PS.cso"));
 
@@ -31,7 +30,6 @@ namespace FraplesDev
 				}colorConst;
 				
 				only.AddContext(PixelConstantBuffer<PSColorConstant>::Resolve(gfx, colorConst, 1u));
-				only.AddContext(InputLayout::Resolve(gfx, model._mVertices.GetLayout(), pvsbyte));
 				only.AddContext(std::make_shared<TransformCBuf>(gfx));
 
 				only.AddContext(Rasterizer::Resolve(gfx, false));

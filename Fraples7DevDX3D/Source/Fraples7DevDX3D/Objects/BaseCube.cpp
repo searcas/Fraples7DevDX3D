@@ -29,7 +29,7 @@ namespace FraplesDev
 				only.AddContext(Sampler::Resolve(gfx));
 
 				auto pvs = VertexShader::Resolve(gfx, "PhongDiffuse_VS.cso");
-				auto pvsbyte = pvs->GetByteCode();
+				only.AddContext(InputLayout::Resolve(gfx, model._mVertices.GetLayout(), *pvs));
 				only.AddContext(std::move(pvs));
 				only.AddContext(PixelShader::Resolve(gfx, "PhongDiffuse_PS.cso"));
 				MP::RawLayout layout;
@@ -41,7 +41,6 @@ namespace FraplesDev
 				buf["specularWeight"] = 0.1f;
 				buf["specularGloss"] = 20.0f;
 				only.AddContext(std::make_shared<CachingPixelConstantBufferEx>(gfx, buf, 1u));
-				only.AddContext(InputLayout::Resolve(gfx, model._mVertices.GetLayout(), pvsbyte));
 				only.AddContext(std::make_shared<TransformCBuf>(gfx));
 				shade.AddStep(std::move(only));
 			}
@@ -54,7 +53,7 @@ namespace FraplesDev
 
 
 				//TODO: Better Sub-Layout generation tech for future consideration maybe
-				mask.AddContext(InputLayout::Resolve(gfx, model._mVertices.GetLayout(), VertexShader::Resolve(gfx,"Solid_VS.cso")->GetByteCode()));
+				mask.AddContext(InputLayout::Resolve(gfx, model._mVertices.GetLayout(), *VertexShader::Resolve(gfx,"Solid_VS.cso")));
 				mask.AddContext(std::move(tcb));
 
 				//TODO: might need to specify rasterizer when doubled-sided models start being used
@@ -68,7 +67,7 @@ namespace FraplesDev
 				auto buf = MP::Buffer(std::move(lay));
 				buf["color"] = DirectX::XMFLOAT4{ 1.0f,0.4f,0.4f,1.0f };
 				draw.AddContext(std::make_shared<CachingPixelConstantBufferEx>(gfx, buf, 1u));
-				draw.AddContext(InputLayout::Resolve(gfx, model._mVertices.GetLayout(), VertexShader::Resolve(gfx, "Solid_VS.cso")->GetByteCode()));
+				draw.AddContext(InputLayout::Resolve(gfx, model._mVertices.GetLayout(), *VertexShader::Resolve(gfx, "Solid_VS.cso")));
 				draw.AddContext(std::make_shared<TransformCBuf>(gfx));
 				outLine.AddStep(std::move(draw));
 			}

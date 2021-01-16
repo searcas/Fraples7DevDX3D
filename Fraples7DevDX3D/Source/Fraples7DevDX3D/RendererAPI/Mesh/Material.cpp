@@ -6,7 +6,6 @@ namespace FraplesDev
 		:_mModelPath(modelPath.string())
 	{
 		const auto rootPath = modelPath.parent_path().string() + "\\";
-		
 		{
 			aiString tempName;
 			material.Get(AI_MATKEY_NAME, tempName);
@@ -85,12 +84,10 @@ namespace FraplesDev
 			{
 				step.AddContext(std::make_shared<TransformCBuf>(gfx, 0u));
 				auto pvs = VertexShader::Resolve(gfx, shaderCode + "_VS.cso");
-				auto pvsbyte = pvs->GetByteCode();
-
+				step.AddContext(InputLayout::Resolve(gfx, _mVertexLayout, *pvs));
 				step.AddContext(std::move(pvs));
 				step.AddContext(PixelShader::Resolve(gfx, shaderCode + "_PS.cso"));
 
-				step.AddContext(InputLayout::Resolve(gfx, _mVertexLayout, pvsbyte));
 				if (hasTexture)
 				{
 					step.AddContext(Sampler::Resolve(gfx));
@@ -134,7 +131,7 @@ namespace FraplesDev
 				Step mask("outlineMask");
 
 				//TODO: better sub-layout generation tech for future consideration maybe
-				mask.AddContext(InputLayout::Resolve(gfx, _mVertexLayout, VertexShader::Resolve(gfx,"Solid_VS.cso")->GetByteCode()));
+				mask.AddContext(InputLayout::Resolve(gfx, _mVertexLayout, *VertexShader::Resolve(gfx,"Solid_VS.cso")));
 				mask.AddContext(std::make_shared<TransformCBuf>(gfx));
 
 				//TODO: might need to specify rasterizer when doubled-sided models start being used
@@ -150,7 +147,7 @@ namespace FraplesDev
 					draw.AddContext(std::make_shared<CachingPixelConstantBufferEx>(gfx, buf, 1u));
 				}
 				//TODO: better sub-layout generation tech for future consideration maybe
-				draw.AddContext(InputLayout::Resolve(gfx, _mVertexLayout, VertexShader::Resolve(gfx, "Solid_VS.cso")->GetByteCode()));
+				draw.AddContext(InputLayout::Resolve(gfx, _mVertexLayout, *VertexShader::Resolve(gfx, "Solid_VS.cso")));
 				draw.AddContext(std::make_shared<TransformCBuf>(gfx));
 
 				//TODO: might need to specify resterizer when doubled-sided models start being used
