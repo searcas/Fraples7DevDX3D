@@ -189,34 +189,13 @@
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderPriority\TechniqueProbe.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\BindingPass.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\BufferClearPass.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\FullScreenPass.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\LambertianPass.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\RenderGraph.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\RenderQueuePass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\StepLinkProbe.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Exception\RenderGraphCompileException.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\OutlineRenderingPass.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\OutlineMaskGenerationPass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\TransformCBuf\TransformCBufScaling.cpp">
@@ -228,19 +207,10 @@
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Probe\TechProbeBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\VerticalBlurPass.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\ScaleOutlineRenderGraph.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\HorizontalBlurPass.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\BlurOutlineRenderGraph.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\BlurOutlineRenderPass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Sync.cpp">
@@ -262,6 +232,39 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Camera\ViewFrustum.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\BindingPass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\BlurOutlineRenderPass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\BufferClearPass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\FullScreenPass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\HorizontalBlurPass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\LambertianPass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\OutlineMaskGenerationPass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\OutlineRenderingPass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\RenderQueuePass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\VerticalBlurPass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\WireFramePass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -524,37 +527,16 @@
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Filters\BlurPack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\BindingPass.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\BufferClearPass.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\BufferResource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\FullScreenPass.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\LambertianPass.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\RenderGraph.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\RenderQueuePass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\StepLinkProbe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Exception\RenderGraphCompileException.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\OutlineRenderingPass.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\OutlineMaskGenerationPass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\TransformCBuf\TransformCBufScaling.h">
@@ -566,19 +548,10 @@
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Probe\TechProbeBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\VerticalBlurPass.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\ScaleOutlineRenderGraph.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\HorizontalBlurPass.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\BlurOutlineRenderGraph.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\BlurOutlineRenderPass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Sync.h">
@@ -600,6 +573,39 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Camera\ViewFrustum.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\BindingPass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\BlurOutlineRenderPass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\BufferClearPass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\FullScreenPass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\HorizontalBlurPass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\LambertianPass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\OutlineMaskGenerationPass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\OutlineRenderingPass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\RenderQueuePass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\VerticalBlurPass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\WireFramePass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

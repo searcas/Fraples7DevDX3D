@@ -1,7 +1,7 @@
 #pragma once
 #include "GraphicAPI/Graphics.h"	
 #include "RendererAPI/GFXContext.h"
-#include "RendererAPI/RenderGraph/RenderQueuePass.h"
+#include "RendererAPI/RenderGraph/Passes/RenderQueuePass.h"
 #include "RendererAPI/RenderGraph/RenderGraph.h"
 #include <vector>
 #include <memory>

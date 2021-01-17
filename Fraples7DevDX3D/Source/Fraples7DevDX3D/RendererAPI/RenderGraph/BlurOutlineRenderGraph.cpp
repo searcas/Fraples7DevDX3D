@@ -1,12 +1,13 @@
 #include "BlurOutlineRenderGraph.h"
-#include "BufferClearPass.h"
-#include "LambertianPass.h"
-#include "OutlineMaskGenerationPass.h"
-#include "HorizontalBlurPass.h"
-#include "VerticalBlurPass.h"
+#include "Passes/BufferClearPass.h"
+#include "Passes/LambertianPass.h"
+#include "Passes/OutlineMaskGenerationPass.h"
+#include "Passes/HorizontalBlurPass.h"
+#include "Passes/VerticalBlurPass.h"
 #include "Core/Math/Math.h"
-#include "BlurOutlineRenderPass.h"
+#include "Passes/BlurOutlineRenderPass.h"
 #include "ImGui/imgui.h"
+#include "Passes/WireFramePass.h"
 namespace FraplesDev
 {
 	BlurOutlineRenderGraph::BlurOutlineRenderGraph(Graphics& gfx)
@@ -75,7 +76,13 @@ namespace FraplesDev
 			pass->SetSyncLinkage("direction", "$.blurDirection");
 			AppendPass(std::move(pass));
 		}
-		SetSinkTarget("backbuffer", "vertical.renderTarget");
+		{
+			auto pass = std::make_unique<WireFramePass>(gfx, "wireframe");
+			pass->SetSyncLinkage("renderTarget", "vertical.renderTarget");
+			pass->SetSyncLinkage("depthStencil", "vertical.depthStencil");
+			AppendPass(std::move(pass));
+		}
+		SetSinkTarget("backbuffer", "wireframe.renderTarget");
 		Finalize();
 	}
 

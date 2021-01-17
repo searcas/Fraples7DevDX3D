@@ -47,7 +47,7 @@ namespace FraplesDev
 
 		{
 			Technique line;
-			Step only("lambertian");
+			Step only("wireframe");
 
 			auto pvs = VertexShader::Resolve(gfx, "Solid_VS.cso");
 			only.AddContext(InputLayout::Resolve(gfx, _mPvertices->GetLayout(), *pvs));

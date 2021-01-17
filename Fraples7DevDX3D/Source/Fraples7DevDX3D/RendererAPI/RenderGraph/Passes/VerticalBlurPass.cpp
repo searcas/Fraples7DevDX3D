@@ -1,6 +1,8 @@
 #include "VerticalBlurPass.h"
-#include "Sync.h"
-#include "Source.h"
+#include "RendererAPI/RenderGraph/Sync.h"
+
+#include "RendererAPI/RenderGraph/Source.h"
+
 #include "RendererAPI/PixelShader.h"
 #include "RendererAPI/Stencil.h"
 #include "RendererAPI/Blending/Blending.h"
@@ -22,8 +24,8 @@ namespace FraplesDev
 
 		RegisterSync(DirectContextSync<CachingPixelConstantBufferEx>::Make("direction", _mDirection));
 
-		RegisterSync(DirectBufferSnyc<RenderTarget>::Make("renderTarget", _mRenderTarget));
-		RegisterSync(DirectBufferSnyc<DepthStencil>::Make("depthStencil", _mDepthStencil));
+		RegisterSync(DirectBufferSync<RenderTarget>::Make("renderTarget", _mRenderTarget));
+		RegisterSync(DirectBufferSync<DepthStencil>::Make("depthStencil", _mDepthStencil));
 
 		RegisterSource(DirectBufferSource<RenderTarget>::Make("renderTarget", _mRenderTarget));
 		RegisterSource(DirectBufferSource<DepthStencil>::Make("depthStencil", _mDepthStencil));

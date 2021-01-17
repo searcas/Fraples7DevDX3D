@@ -11,7 +11,8 @@ namespace FraplesDev
 		{
 			Off,
 			Write,
-			Mask
+			Mask,
+			DepthOff
 		};
 		Stencil(Graphics& gfx, Mode mode)
 			:_mMode(mode)

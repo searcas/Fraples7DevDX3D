@@ -9,6 +9,7 @@ namespace FraplesDev
 		bool rotDirty = false;
 		bool posDirty = false;
 		const auto dcheck = [](bool d, bool& carry) {carry = carry || d; };
+		
 		ImGui::Text("Camera Position");
 		dcheck(ImGui::SliderFloat("X", &pos.x, -80.0f, 80.0f, "%.1f"), posDirty);
 		dcheck(ImGui::SliderFloat("Y", &pos.y, -80.0f, 80.0f, "%.1f"), posDirty);

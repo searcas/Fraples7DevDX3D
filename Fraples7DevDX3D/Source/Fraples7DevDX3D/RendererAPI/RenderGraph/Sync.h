@@ -26,13 +26,13 @@ namespace FraplesDev
 	};
 
 	template<typename T>
-	class DirectBufferSnyc : public Sync
+	class DirectBufferSync : public Sync
 	{
 		static_assert(std::is_base_of_v<BufferResource, T>, "DirectBufferSnyc target type must be a BufferResource type");
 	public:
 		static std::unique_ptr<Sync>Make(std::string registerName, std::shared_ptr<T>& target)
 		{
-			return std::make_unique<DirectBufferSnyc>(std::move(registerName), target);
+			return std::make_unique<DirectBufferSync>(std::move(registerName), target);
 		}
 		void PostLinkValidate()const override
 		{
@@ -55,7 +55,7 @@ namespace FraplesDev
 			_mTarget = std::move(p);
 			_mLinked = true;
 		}
-		DirectBufferSnyc(std::string registeredName, std::shared_ptr<T>& bind)
+		DirectBufferSync(std::string registeredName, std::shared_ptr<T>& bind)
 			:Sync(std::move(registeredName)), _mTarget(bind)
 		{
 

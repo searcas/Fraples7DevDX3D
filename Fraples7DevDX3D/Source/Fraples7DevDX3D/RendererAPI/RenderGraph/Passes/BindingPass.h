@@ -1,6 +1,6 @@
 #pragma once
 #include "RendererAPI/RenderPriority/Pass.h"
-#include "Sync.h"
+#include "RendererAPI/RenderGraph/Sync.h"
 #include <memory>
 namespace FraplesDev
 {

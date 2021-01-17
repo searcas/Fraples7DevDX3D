@@ -13,7 +13,7 @@ namespace FraplesDev
 				for (int i = 0; i < std::size(_mCameras); i++)
 				{
 					const bool isSelected = i == _mActive;
-					if (ImGui::Selectable(_mCameras[i]->GetName().c_str(),isSelected))
+					if (ImGui::Selectable(_mCameras[i]->GetName().c_str(), isSelected))
 					{
 						_mActive = i;
 					}

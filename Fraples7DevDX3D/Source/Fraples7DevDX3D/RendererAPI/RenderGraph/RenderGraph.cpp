@@ -4,7 +4,7 @@
 #include "RendererAPI/RenderTarget.h"
 #include "RendererAPI/GFXContextBase.h"
 #include "Exception/RenderGraphCompileException.h"
-#include "RenderQueuePass.h"
+#include "Passes/RenderQueuePass.h"
 #include "Sync.h"
 #include "Source.h"
 #include <sstream>
@@ -16,7 +16,7 @@ namespace FraplesDev
 	{
 		AddGlobalSource(DirectBufferSource<RenderTarget>::Make("backbuffer", _mBackBufferTarget));
 		AddGlobalSource(DirectBufferSource<DepthStencil>::Make("masterDepth", _mMasterDepth));
-		AddGlobalSink(DirectBufferSnyc<RenderTarget>::Make("backbuffer", _mBackBufferTarget));
+		AddGlobalSink(DirectBufferSync<RenderTarget>::Make("backbuffer", _mBackBufferTarget));
 	}
 	RenderGraph::~RenderGraph()
 	{

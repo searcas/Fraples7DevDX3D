@@ -1,8 +1,8 @@
 #include "ScaleOutlineRenderGraph.h"
-#include "RendererAPI/RenderGraph/BufferClearPass.h"
-#include "RendererAPI/RenderGraph/LambertianPass.h"
-#include "RendererAPI/RenderGraph/OutlineMaskGenerationPass.h"
-#include "RendererAPI/RenderGraph/OutlineRenderingPass.h"
+#include "RendererAPI/RenderGraph/Passes/BufferClearPass.h"
+#include "RendererAPI/RenderGraph/Passes/LambertianPass.h"
+#include "RendererAPI/RenderGraph/Passes/OutlineMaskGenerationPass.h"
+#include "RendererAPI/RenderGraph/Passes/OutlineRenderingPass.h"
 #include "GraphicAPI/Graphics.h"
 #include <memory>
 namespace FraplesDev

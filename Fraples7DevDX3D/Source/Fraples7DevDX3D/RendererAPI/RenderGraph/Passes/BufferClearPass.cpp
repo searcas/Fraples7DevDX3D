@@ -7,7 +7,7 @@ namespace FraplesDev
 	BufferClearPass::BufferClearPass(std::string name)
 		:Pass(std::move(name))
 	{
-		RegisterSync(DirectBufferSnyc<BufferResource>::Make("buffer", _mBuffer));
+		RegisterSync(DirectBufferSync<BufferResource>::Make("buffer", _mBuffer));
 		RegisterSource(DirectBufferSource<BufferResource>::Make("buffer", _mBuffer));
 	}
 	void BufferClearPass::Execute(Graphics& gfx) const noexcept(!IS_DEBUG)

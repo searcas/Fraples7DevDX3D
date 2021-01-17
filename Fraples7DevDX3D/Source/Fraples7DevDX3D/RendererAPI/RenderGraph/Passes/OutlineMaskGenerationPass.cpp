@@ -11,7 +11,7 @@ namespace FraplesDev
 	OutlineMaskGenerationPass::OutlineMaskGenerationPass(Graphics& gfx, std::string name)
 		: RenderQueuePass(std::move(name))
 	{
-		RegisterSync(DirectBufferSnyc<DepthStencil>::Make("depthStencil", _mDepthStencil));
+		RegisterSync(DirectBufferSync<DepthStencil>::Make("depthStencil", _mDepthStencil));
 		RegisterSource(DirectBufferSource<DepthStencil>::Make("depthStencil", _mDepthStencil));
 		AddBind(VertexShader::Resolve(gfx, "Solid_VS.cso"));
 		AddBind(NullPixelShader::Resolve(gfx));

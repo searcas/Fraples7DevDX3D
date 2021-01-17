@@ -7,6 +7,7 @@ namespace FraplesDev
 	class Camera;
 	class Graphics;
 	class RenderGraph;
+
 	class MultiCamera
 	{
 	public:
