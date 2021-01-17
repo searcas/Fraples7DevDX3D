@@ -57,7 +57,7 @@ namespace FraplesDev
 
 	void Application::SpawnFunc()
 	{
-		_mCameras.SpawnWindow();
+		_mCameras.SpawnWindow(_mWin.GetGFX());
 		
 		light.SpawnControlWindow();
 		SpawnAppInfoWindow();

@@ -11,7 +11,7 @@ namespace FraplesDev
 	public:
 		Camera(Graphics& gfx, std::string name, DirectX::XMFLOAT3 homePos,float homePitch, float homeYaw)noexcept;
 		void Reset();
-		void SpawnControllWindow() noexcept;
+		void SpawnControllWindow(Graphics& gfx) noexcept;
 		DirectX::XMMATRIX GetMatrix() const noexcept;
 		void Rotate(float dx, float dy) noexcept;
 		void Translate(DirectX::XMFLOAT3 translation) noexcept;

@@ -4,7 +4,7 @@
 #include "GraphicAPI/Graphics.h"
 namespace FraplesDev
 {
-	void MultiCamera::SpawnWindow()
+	void MultiCamera::SpawnWindow(Graphics& gfx)
 	{
 		if (ImGui::Begin("Cameras"))
 		{
@@ -20,7 +20,7 @@ namespace FraplesDev
 				}
 				ImGui::EndCombo();
 			}
-			GetCamera().SpawnControllWindow();
+			GetCamera().SpawnControllWindow(gfx);
 		}
 		ImGui::End();
 	}
@@ -47,6 +47,7 @@ namespace FraplesDev
 	{
 		for (size_t i = 0; i < _mCameras.size(); i++)
 		{
+			// We don't wanna render selected camera no sense there
 			if (i != _mSelected)
 			{
 				_mCameras[i]->Submit();

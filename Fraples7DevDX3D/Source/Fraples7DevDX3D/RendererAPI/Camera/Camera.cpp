@@ -4,7 +4,7 @@
 #include <algorithm>
 namespace FraplesDev
 {
-	void Camera::SpawnControllWindow() noexcept
+	void Camera::SpawnControllWindow(Graphics& gfx) noexcept
 	{
 			ImGui::Text("Camera Position");
 			ImGui::SliderFloat("X", &pos.x, -80.0f, 80.0f, "%.1f");
@@ -17,16 +17,18 @@ namespace FraplesDev
 			{
 				Reset();
 			}
-			_mProj.GetMatrix();
+			_mProj.RenderWidgets(gfx);
 	}
 
 	Camera::Camera(Graphics& gfx, std::string name, DirectX::XMFLOAT3 homePos, float homePitch, float homeYaw) noexcept
 		:_mHomePos(homePos), _mHomePitch(homePitch), _mHomeYaw(homeYaw), _mName(std::move(name)),
-		_mProj(1.0f, 9.0f / 16.0f, 0.5f, 400.0f),_mCamProj(gfx)
+		_mProj(gfx,1.0f, 9.0f / 16.0f, 0.5f, 400.0f),_mCamProj(gfx)
 	{
 		Reset();
 		_mCamProj.SetPosition(pos);
 		_mCamProj.SetRotation({ pitch,yaw,0.0f });
+		_mProj.SetPosition(pos);
+		_mProj.SetRotation({ pitch,yaw,0.0f });
 	}
 
 	void Camera::Reset()
@@ -57,7 +59,9 @@ namespace FraplesDev
 	{
 		yaw = wrap_angle(yaw + dx * rotationSpeed);
 		pitch = std::clamp(pitch + dy * rotationSpeed, 0.955f * -PI / 2.0f, 0.955f * PI / 2.0f);
-		_mCamProj.SetRotation({ pitch,yaw,0.0f });
+		const DirectX::XMFLOAT3 angles = { pitch,yaw,0.0f };
+		_mCamProj.SetRotation(angles);
+		_mProj.SetRotation(angles);
 	}
 	void Camera::Translate(DirectX::XMFLOAT3 translation) noexcept
 	{
@@ -67,6 +71,7 @@ namespace FraplesDev
 				pos.z + translation.z
 				};
 		_mCamProj.SetPosition(pos);
+		_mProj.SetPosition(pos);
 	}
 	void Camera::BindGraphics(Graphics& gfx) const
 	{
@@ -76,9 +81,11 @@ namespace FraplesDev
 	void Camera::LinkTechniques(RenderGraph& rg)
 	{
 		_mCamProj.LinkTechniques(rg);
+		_mProj.LinkTechniques(rg);
 	}
 	void Camera::Submit() const
 	{
 		_mCamProj.Submit();
+		_mProj.Submit();
 	}
 }
