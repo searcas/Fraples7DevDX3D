@@ -2,6 +2,7 @@
 #include "ImGui/imgui.h"
 #include "QualityAssurance/TestingQA.h"
 #include "RendererAPI/Probe/ModelProbeBase.h"
+#include "RendererAPI/Camera/Camera.h"
 namespace FraplesDev
 {
 	
@@ -10,7 +11,9 @@ namespace FraplesDev
 	{
 		//QA::TestMaterialSystemLoading(_mWin.GetGFX());
 		//QA::TestDynamicConstant();
-		QA::D3DTestScratchPad(_mWin);
+		//QA::D3DTestScratchPad(_mWin);
+		_mCameras.AddCamera(std::make_unique<Camera>("A", DirectX::XMFLOAT3{ -13.5,6.0f,3.5f }, 0.0f, PI / 2.0f));
+		_mCameras.AddCamera(std::make_unique<Camera>("B", DirectX::XMFLOAT3{ -13.5,28.8f,-6.4f },PI / 180.0f * 13.0f,PI / 180 * 61.0f));
 		cube1.SetPos({ 4.0f,0.0f,0.0f });
 		cube2.SetPos({ 0.0f,4.0f,0.0f });
 		_mNano.SetRootTransform( DirectX::XMMatrixRotationY(PI / 2.0f) *
@@ -25,8 +28,8 @@ namespace FraplesDev
 		gobber.LinkTechniques(renderGraph);
 		_mNano.LinkTechniques(renderGraph);
 
-		//bluePlane.SetPosXYZ(_mCamera.GetPos());
-		//redPlane.SetPosXYZ(_mCamera.GetPos());
+		//bluePlane.SetPosXYZ(_mCameras.GetCamera().GetPos());
+		//redPlane.SetPosXYZ(_mCameras.GetCamera().GetPos());
 		_mWin.GetGFX().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 800.0f));
 	}
 
@@ -54,7 +57,8 @@ namespace FraplesDev
 
 	void Application::SpawnFunc()
 	{
-		_mCamera.SpawnControllWindow();
+		_mCameras.SpawnWindow();
+		
 		light.SpawnControlWindow();
 		SpawnAppInfoWindow();
 		ShowRawInputWindow();
@@ -81,8 +85,8 @@ namespace FraplesDev
 		const auto dt = _mTimer.Get() * speed_accelerator;
 		_mWin.GetGFX().BeginFrame(0.000069f, 0.000069f, 0.06f);
 		//_mWin.GetGFX().BeginFrame(0.19f, 0.19f, 0.19f);
-		_mWin.GetGFX().SetCamera(_mCamera.GetMatrix());
-		light.Bind(_mWin.GetGFX(), _mCamera.GetMatrix());
+		_mWin.GetGFX().SetCamera(_mCameras.GetCamera().GetMatrix());
+		light.Bind(_mWin.GetGFX(), _mCameras.GetCamera().GetMatrix());
 		RenderObj();
 
 	
@@ -127,27 +131,27 @@ namespace FraplesDev
 		{
 			if (_mWin._mKey.KeyIsPressed('W'))
 			{
-				_mCamera.Translate({ 0.0f, 0.0f, dt });
+				_mCameras.GetCamera().Translate({ 0.0f, 0.0f, dt });
 			}
 			if (_mWin._mKey.KeyIsPressed('S'))
 			{
-				_mCamera.Translate({ 0.0f, 0.0f, -dt });
+				_mCameras.GetCamera().Translate({ 0.0f, 0.0f, -dt });
 			}
 			if (_mWin._mKey.KeyIsPressed('A'))
 			{
-				_mCamera.Translate({ -dt, 0.0f, 0.0f });
+				_mCameras.GetCamera().Translate({ -dt, 0.0f, 0.0f });
 			}
 			if (_mWin._mKey.KeyIsPressed('D'))
 			{
-				_mCamera.Translate({ dt, 0.0f, 0.0f });
+				_mCameras.GetCamera().Translate({ dt, 0.0f, 0.0f });
 			}
 			if (_mWin._mKey.KeyIsPressed(VK_SPACE))
 			{
-				_mCamera.Translate({ 0.0f, dt, 0.0f });
+				_mCameras.GetCamera().Translate({ 0.0f, dt, 0.0f });
 			}
 			if (_mWin._mKey.KeyIsPressed(VK_CONTROL))
 			{
-				_mCamera.Translate({ 0.0f, -dt, 0.0f });
+				_mCameras.GetCamera().Translate({ 0.0f, -dt, 0.0f });
 			}
 
 		}
@@ -156,7 +160,7 @@ namespace FraplesDev
 		{
 			if (!_mWin.IsCursorEnabled())
 			{
-				_mCamera.Rotate((float)delta->x, (float)delta->y);
+				_mCameras.GetCamera().Rotate((float)delta->x, (float)delta->y);
 			}
 
 		}

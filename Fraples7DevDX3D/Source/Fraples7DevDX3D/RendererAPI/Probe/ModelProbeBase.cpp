@@ -9,50 +9,52 @@ namespace FraplesDev
 	}
 	void ModelProbeBase::SpawnWindow(Model& model)
 	{
-		ImGui::Begin(_mName.c_str());
-		ImGui::Columns(2, nullptr, true);
-		model.Accept(*this);
-
-		ImGui::NextColumn();
-
-		if (pSelectedNode != nullptr)
+		if (ImGui::Begin(_mName.c_str()))
 		{
-			bool dirty = false;
-			const auto dcheck = [&dirty](bool changed) {dirty = dirty || changed; };
-			auto& tf = ResolveTransform();
+			ImGui::Columns(2, nullptr, true);
+			model.Accept(*this);
 
-			ImGui::TextColored({ 1.0f,0.2f,0.2f,0.7f }, "Translation");
-			dcheck(ImGui::SliderFloat("X", &tf.x, -60.0f, 60.0f));
-			dcheck(ImGui::SliderFloat("Y", &tf.y, -60.0f, 60.0f));
-			dcheck(ImGui::SliderFloat("Z", &tf.z, -60.0f, 60.0f));
+			ImGui::NextColumn();
 
-			//So we gotta be careful here cuz We can't name again X Y Z
-			//Gonna Trigger both childs and move both coords
-			ImGui::TextColored({ 0.2f,1.0f,0.2f,0.7f }, "Orientation");
-			dcheck(ImGui::SliderAngle("X-Rot", &tf.xRot, -180.0f, 180.0f));
-			dcheck(ImGui::SliderAngle("Y-Rot", &tf.yRot, -180.0f, 180.0f));
-			dcheck(ImGui::SliderAngle("Z-Rot", &tf.zRot, -180.0f, 180.0f));
-
-			if (dirty)
+			if (pSelectedNode != nullptr)
 			{
-				pSelectedNode->SetAppliedTransform(
-					DirectX::XMMatrixRotationX(tf.xRot) *
-					DirectX::XMMatrixRotationY(tf.yRot) *
-					DirectX::XMMatrixRotationZ(tf.zRot) *
-					DirectX::XMMatrixTranslation(tf.x, tf.y, tf.z));
-			}
-			if (ImGui::Button("Reset"))
-			{
-				tf = {};
-				pSelectedNode->SetAppliedTransform(
-					DirectX::XMMatrixRotationX(tf.xRot) *
-					DirectX::XMMatrixRotationY(tf.yRot) *
-					DirectX::XMMatrixRotationZ(tf.zRot) *
-					DirectX::XMMatrixTranslation(tf.x, tf.y, tf.z));
+				bool dirty = false;
+				const auto dcheck = [&dirty](bool changed) {dirty = dirty || changed; };
+				auto& tf = ResolveTransform();
 
+				ImGui::TextColored({ 1.0f,0.2f,0.2f,0.7f }, "Translation");
+				dcheck(ImGui::SliderFloat("X", &tf.x, -60.0f, 60.0f));
+				dcheck(ImGui::SliderFloat("Y", &tf.y, -60.0f, 60.0f));
+				dcheck(ImGui::SliderFloat("Z", &tf.z, -60.0f, 60.0f));
+
+				//So we gotta be careful here cuz We can't name again X Y Z
+				//Gonna Trigger both childs and move both coords
+				ImGui::TextColored({ 0.2f,1.0f,0.2f,0.7f }, "Orientation");
+				dcheck(ImGui::SliderAngle("X-Rot", &tf.xRot, -180.0f, 180.0f));
+				dcheck(ImGui::SliderAngle("Y-Rot", &tf.yRot, -180.0f, 180.0f));
+				dcheck(ImGui::SliderAngle("Z-Rot", &tf.zRot, -180.0f, 180.0f));
+
+				if (dirty)
+				{
+					pSelectedNode->SetAppliedTransform(
+						DirectX::XMMatrixRotationX(tf.xRot) *
+						DirectX::XMMatrixRotationY(tf.yRot) *
+						DirectX::XMMatrixRotationZ(tf.zRot) *
+						DirectX::XMMatrixTranslation(tf.x, tf.y, tf.z));
+				}
+				if (ImGui::Button("Reset"))
+				{
+					tf = {};
+					pSelectedNode->SetAppliedTransform(
+						DirectX::XMMatrixRotationX(tf.xRot) *
+						DirectX::XMMatrixRotationY(tf.yRot) *
+						DirectX::XMMatrixRotationZ(tf.zRot) *
+						DirectX::XMMatrixTranslation(tf.x, tf.y, tf.z));
+
+				}
+				TechProbe probe{};
+				pSelectedNode->Accept(probe);
 			}
-			TechProbe probe{};
-			pSelectedNode->Accept(probe);
 		}
 		ImGui::End();
 	}

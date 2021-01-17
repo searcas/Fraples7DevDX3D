@@ -6,25 +6,21 @@ namespace FraplesDev
 {
 	void Camera::SpawnControllWindow() noexcept
 	{
-		if (ImGui::Begin("Camera"))
-		{
 			ImGui::Text("Camera Position");
 			ImGui::SliderFloat("X", &pos.x, -80.0f, 80.0f, "%.1f");
 			ImGui::SliderFloat("Y", &pos.y, -80.0f, 80.0f, "%.1f");
 			ImGui::SliderFloat("Z", &pos.z, -80.0f, 80.0f, "%.1f");
 			ImGui::Text("Orientation");
 			ImGui::SliderAngle("Pitch", &pitch, 0.955f * -90.0f, 0.955f * 90.0f);
+			ImGui::SliderAngle("Yaw", &yaw, -180.0f, 180.0f);
 			if (ImGui::Button("Reset"))
 			{
 				Reset();
 			}
-		}
-
-			ImGui::End();
 	}
 
-	Camera::Camera(DirectX::XMFLOAT3 homePos, float homePitch, float homeYaw) noexcept
-		:_mHomePos(homePos),_mHomePitch(homePitch),_mHomeYaw(homeYaw)
+	Camera::Camera(std::string name, DirectX::XMFLOAT3 homePos, float homePitch, float homeYaw) noexcept
+		:_mHomePos(homePos),_mHomePitch(homePitch),_mHomeYaw(homeYaw),_mName(std::move(name))
 	{
 		Reset();
 	}

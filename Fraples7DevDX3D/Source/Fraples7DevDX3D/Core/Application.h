@@ -2,7 +2,7 @@
 #include "Platform/Windows/Window.h"
 #include "Utility/ScriptCommandCenter.h"
 #include "Objects/PointLight.h"
-#include "RendererAPI/Camera.h"
+#include "RendererAPI/Camera/MultiCamera.h"
 #include "Objects/BaseCube.h"
 #include "RendererAPI/Mesh/Model.h"
 #include "Utility/Timer.h"
@@ -42,7 +42,7 @@ namespace FraplesDev
 		BlurOutlineRenderGraph renderGraph{ _mWin.GetGFX() };
 		//objects
 		PointLight light;
-		Camera _mCamera { {-13.5f,6.0f,3.5f}, 0.0f, PI / 2.0f };
+		MultiCamera _mCameras;
 	
 		//std::unique_ptr<Mesh>_mPloaded;
 		BaseCube cube1 = { _mWin.GetGFX(), 4.0f };
