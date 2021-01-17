@@ -134,15 +134,22 @@ namespace FraplesDev
 			}
 			else //find source from within existing passes
 			{
-
+				bool bound = false;
 				for (auto& existingPass : _mPasses)
 				{
 					if (existingPass->GetName() == inputSourcePassName)
 					{
 						auto& source = existingPass->GetSource(in->GetSourceName());
 						in->Bind(source);
+						bound = true;
 						break;
 					}
+				}
+				if (!bound)
+				{
+					std::ostringstream oss;
+					oss << "Pass named [" << inputSourcePassName << "] not found";
+					throw RGC_EXCEPTION(oss.str());
 				}
 			}
 		}
