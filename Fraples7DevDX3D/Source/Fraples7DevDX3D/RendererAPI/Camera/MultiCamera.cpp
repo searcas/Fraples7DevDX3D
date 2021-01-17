@@ -8,33 +8,45 @@ namespace FraplesDev
 	{
 		if (ImGui::Begin("Cameras"))
 		{
-			if (ImGui::BeginCombo("Active Camera", _mCameras[_mSelected]->GetName().c_str()))
+			if (ImGui::BeginCombo("Active Camera", (*this)->GetName().c_str()))
 			{
 				for (int i = 0; i < std::size(_mCameras); i++)
 				{
-					const bool isSelected = i == _mSelected;
+					const bool isSelected = i == _mActive;
 					if (ImGui::Selectable(_mCameras[i]->GetName().c_str(),isSelected))
 					{
-						_mSelected = i;
+						_mActive = i;
 					}
 				}
 				ImGui::EndCombo();
 			}
-			GetCamera().SpawnControllWindow(gfx);
+			if (ImGui::BeginCombo("Controlled Camera",GetControlledCamera().GetName().c_str()))
+			{
+				for (int i = 0; i < std::size(_mCameras); i++)
+				{
+						const bool isSelected = i ==_mControlled;
+						if (ImGui::Selectable(_mCameras[i]->GetName().c_str(), isSelected))
+						{
+							_mControlled = i;
+						}
+				}
+				ImGui::EndCombo();
+			}
+			GetControlledCamera().SpawnControllWindow(gfx);
 		}
 		ImGui::End();
 	}
 	void MultiCamera::Bind(Graphics& gfx)
 	{
-		gfx.SetCamera(GetCamera().GetMatrix());
+		gfx.SetCamera((*this)->GetMatrix());
 	}
 	void MultiCamera::AddCamera(std::unique_ptr<Camera> pCam)
 	{
 		_mCameras.push_back(std::move(pCam));
 	}
-	Camera& MultiCamera::GetCamera()
+	Camera* MultiCamera::operator->()
 	{
-		return *_mCameras[_mSelected];
+		return _mCameras[_mActive].get();
 	}
 	void MultiCamera::LinnkTechniques(RenderGraph& rg)
 	{
@@ -48,7 +60,7 @@ namespace FraplesDev
 		for (size_t i = 0; i < _mCameras.size(); i++)
 		{
 			// We don't wanna render selected camera no sense there
-			if (i != _mSelected)
+			if (i != _mActive)
 			{
 				_mCameras[i]->Submit();
 			}

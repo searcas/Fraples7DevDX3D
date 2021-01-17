@@ -86,8 +86,8 @@ namespace FraplesDev
 		const auto dt = _mTimer.Get() * speed_accelerator;
 		_mWin.GetGFX().BeginFrame(0.000069f, 0.000069f, 0.06f);
 		//_mWin.GetGFX().BeginFrame(0.19f, 0.19f, 0.19f);
-		_mCameras.GetCamera().BindGraphics(_mWin.GetGFX());
-		light.Bind(_mWin.GetGFX(), _mCameras.GetCamera().GetMatrix());
+		_mCameras->BindGraphics(_mWin.GetGFX());
+		light.Bind(_mWin.GetGFX(), _mCameras->GetMatrix());
 		RenderObj();
 
 	
@@ -132,27 +132,27 @@ namespace FraplesDev
 		{
 			if (_mWin._mKey.KeyIsPressed('W'))
 			{
-				_mCameras.GetCamera().Translate({ 0.0f, 0.0f, dt });
+				_mCameras->Translate({ 0.0f, 0.0f, dt });
 			}
 			if (_mWin._mKey.KeyIsPressed('S'))
 			{
-				_mCameras.GetCamera().Translate({ 0.0f, 0.0f, -dt });
+				_mCameras->Translate({ 0.0f, 0.0f, -dt });
 			}
 			if (_mWin._mKey.KeyIsPressed('A'))
 			{
-				_mCameras.GetCamera().Translate({ -dt, 0.0f, 0.0f });
+				_mCameras->Translate({ -dt, 0.0f, 0.0f });
 			}
 			if (_mWin._mKey.KeyIsPressed('D'))
 			{
-				_mCameras.GetCamera().Translate({ dt, 0.0f, 0.0f });
+				_mCameras->Translate({ dt, 0.0f, 0.0f });
 			}
 			if (_mWin._mKey.KeyIsPressed(VK_SPACE))
 			{
-				_mCameras.GetCamera().Translate({ 0.0f, dt, 0.0f });
+				_mCameras->Translate({ 0.0f, dt, 0.0f });
 			}
 			if (_mWin._mKey.KeyIsPressed(VK_CONTROL))
 			{
-				_mCameras.GetCamera().Translate({ 0.0f, -dt, 0.0f });
+				_mCameras->Translate({ 0.0f, -dt, 0.0f });
 			}
 
 		}
@@ -161,7 +161,7 @@ namespace FraplesDev
 		{
 			if (!_mWin.IsCursorEnabled())
 			{
-				_mCameras.GetCamera().Rotate((float)delta->x, (float)delta->y);
+				_mCameras->Rotate((float)delta->x, (float)delta->y);
 			}
 
 		}

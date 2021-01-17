@@ -6,37 +6,55 @@ namespace FraplesDev
 {
 	void Camera::SpawnControllWindow(Graphics& gfx) noexcept
 	{
-			ImGui::Text("Camera Position");
-			ImGui::SliderFloat("X", &pos.x, -80.0f, 80.0f, "%.1f");
-			ImGui::SliderFloat("Y", &pos.y, -80.0f, 80.0f, "%.1f");
-			ImGui::SliderFloat("Z", &pos.z, -80.0f, 80.0f, "%.1f");
-			ImGui::Text("Orientation");
-			ImGui::SliderAngle("Pitch", &pitch, 0.955f * -90.0f, 0.955f * 90.0f);
-			ImGui::SliderAngle("Yaw", &yaw, -180.0f, 180.0f);
-			if (ImGui::Button("Reset"))
-			{
-				Reset();
-			}
-			_mProj.RenderWidgets(gfx);
+		bool rotDirty = false;
+		bool posDirty = false;
+		const auto dcheck = [](bool d, bool& carry) {carry = carry || d; };
+		ImGui::Text("Camera Position");
+		dcheck(ImGui::SliderFloat("X", &pos.x, -80.0f, 80.0f, "%.1f"), posDirty);
+		dcheck(ImGui::SliderFloat("Y", &pos.y, -80.0f, 80.0f, "%.1f"), posDirty);
+		dcheck(ImGui::SliderFloat("Z", &pos.z, -80.0f, 80.0f, "%.1f"), posDirty);
+		ImGui::Text("Orientation");
+		dcheck(ImGui::SliderAngle("Pitch", &pitch, 0.955f * -90.0f, 0.955f * 90.0f), rotDirty);
+		dcheck(ImGui::SliderAngle("Yaw", &yaw, -180.0f, 180.0f),rotDirty);
+		_mProj.RenderWidgets(gfx);
+		ImGui::Checkbox("Camera Projection", &_mEnableCameraProjection);
+		ImGui::Checkbox("Frustum Projection", &_mEnableFrustumProjection);
+		if (ImGui::Button("Reset"))
+		{
+			Reset(gfx);
+		}
+		if (rotDirty)
+		{
+			const DirectX::XMFLOAT3 angles = { pitch,yaw,0.0f };
+			_mCamProj.SetRotation(angles);
+			_mProj.SetRotation(angles);
+		}
+		if (posDirty)
+		{
+			_mCamProj.SetPosition(pos);
+			_mProj.SetPosition(pos);
+		}
 	}
 
 	Camera::Camera(Graphics& gfx, std::string name, DirectX::XMFLOAT3 homePos, float homePitch, float homeYaw) noexcept
 		:_mHomePos(homePos), _mHomePitch(homePitch), _mHomeYaw(homeYaw), _mName(std::move(name)),
 		_mProj(gfx,1.0f, 9.0f / 16.0f, 0.5f, 400.0f),_mCamProj(gfx)
 	{
-		Reset();
-		_mCamProj.SetPosition(pos);
-		_mCamProj.SetRotation({ pitch,yaw,0.0f });
-		_mProj.SetPosition(pos);
-		_mProj.SetRotation({ pitch,yaw,0.0f });
+		Reset(gfx);
 	}
 
-	void Camera::Reset()
+	void Camera::Reset(Graphics& gfx)
 	{
 		pos = _mHomePos;
 		pitch = _mHomePitch;
 		yaw = _mHomeYaw;
 
+		_mCamProj.SetPosition(pos);
+		_mProj.SetPosition(pos);
+		const DirectX::XMFLOAT3  angles = { pitch,yaw,0.0f };
+		_mCamProj.SetRotation(angles);
+		_mProj.SetRotation(angles);
+		_mProj.Reset(gfx);
 	}
 	
 	DirectX::XMMATRIX Camera::GetMatrix() const noexcept
@@ -85,7 +103,13 @@ namespace FraplesDev
 	}
 	void Camera::Submit() const
 	{
-		_mCamProj.Submit();
-		_mProj.Submit();
+		if (_mEnableCameraProjection)
+		{
+			_mCamProj.Submit();
+		}
+		if (_mEnableFrustumProjection)
+		{
+			_mProj.Submit();
+		}
 	}
 }

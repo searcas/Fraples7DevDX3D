@@ -13,12 +13,15 @@ namespace FraplesDev
 		void SpawnWindow(Graphics& gfx);
 		void Bind(Graphics& gfx);
 		void AddCamera(std::unique_ptr<Camera>pCam);
-		Camera& GetCamera();
+		inline Camera& GetControlledCamera() { return *_mCameras[_mControlled]; };
 		~MultiCamera() = default;
 		void LinnkTechniques(RenderGraph& rg);
 		void Submit()const;
+		Camera* operator->();
+			
 	private:
 		std::vector<std::unique_ptr<Camera>>_mCameras;
-		unsigned int _mSelected = 0;
+		unsigned int _mActive = 0;
+		unsigned int _mControlled = 0;
 	};
 }

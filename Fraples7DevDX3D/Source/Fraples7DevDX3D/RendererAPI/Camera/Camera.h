@@ -10,7 +10,7 @@ namespace FraplesDev
 	{
 	public:
 		Camera(Graphics& gfx, std::string name, DirectX::XMFLOAT3 homePos,float homePitch, float homeYaw)noexcept;
-		void Reset();
+		void Reset(Graphics& gfx);
 		void SpawnControllWindow(Graphics& gfx) noexcept;
 		DirectX::XMMATRIX GetMatrix() const noexcept;
 		void Rotate(float dx, float dy) noexcept;
@@ -32,5 +32,7 @@ namespace FraplesDev
 		float yaw = 0.0f;
 		Projection _mProj;
 		CameraProjection _mCamProj;
+		bool _mEnableCameraProjection = true;
+		bool _mEnableFrustumProjection = true;
 	};
 }
