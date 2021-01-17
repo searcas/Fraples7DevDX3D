@@ -30,7 +30,6 @@ namespace FraplesDev
 
 		//bluePlane.SetPosXYZ(_mCameras.GetCamera().GetPos());
 		//redPlane.SetPosXYZ(_mCameras.GetCamera().GetPos());
-		_mWin.GetGFX().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 800.0f));
 	}
 
 	Application::~Application()
@@ -85,7 +84,7 @@ namespace FraplesDev
 		const auto dt = _mTimer.Get() * speed_accelerator;
 		_mWin.GetGFX().BeginFrame(0.000069f, 0.000069f, 0.06f);
 		//_mWin.GetGFX().BeginFrame(0.19f, 0.19f, 0.19f);
-		_mWin.GetGFX().SetCamera(_mCameras.GetCamera().GetMatrix());
+		_mCameras.GetCamera().BindGraphics(_mWin.GetGFX());
 		light.Bind(_mWin.GetGFX(), _mCameras.GetCamera().GetMatrix());
 		RenderObj();
 

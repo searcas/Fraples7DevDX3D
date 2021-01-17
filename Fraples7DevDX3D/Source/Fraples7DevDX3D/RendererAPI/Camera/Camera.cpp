@@ -17,10 +17,12 @@ namespace FraplesDev
 			{
 				Reset();
 			}
+			_mProj.GetMatrix();
 	}
 
 	Camera::Camera(std::string name, DirectX::XMFLOAT3 homePos, float homePitch, float homeYaw) noexcept
-		:_mHomePos(homePos),_mHomePitch(homePitch),_mHomeYaw(homeYaw),_mName(std::move(name))
+		:_mHomePos(homePos), _mHomePitch(homePitch), _mHomeYaw(homeYaw), _mName(std::move(name)),
+		_mProj(1.0f, 9.0f / 16.0f, 0.5f, 400.0f)
 	{
 		Reset();
 	}
@@ -62,5 +64,10 @@ namespace FraplesDev
 				pos.y + translation.y,
 				pos.z + translation.z
 				};
+	}
+	void Camera::BindGraphics(Graphics& gfx) const
+	{
+		gfx.SetCamera(GetMatrix());
+		gfx.SetProjection(_mProj.GetMatrix());
 	}
 }

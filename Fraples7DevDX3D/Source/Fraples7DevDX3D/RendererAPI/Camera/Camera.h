@@ -1,9 +1,9 @@
 #pragma once
 #include "GraphicAPI/Graphics.h"
-
-
+#include "Projection.h"
 namespace FraplesDev
 {
+	class Graphics;
 	class Camera
 	{
 	public:
@@ -13,6 +13,7 @@ namespace FraplesDev
 		DirectX::XMMATRIX GetMatrix() const noexcept;
 		void Rotate(float dx, float dy) noexcept;
 		void Translate(DirectX::XMFLOAT3 translation) noexcept;
+		void BindGraphics(Graphics& gfx)const;
 		inline DirectX::XMFLOAT3 GetPos()const noexcept { return pos; }
 		inline const std::string& GetName()const noexcept { return _mName; }
 	private:
@@ -25,8 +26,6 @@ namespace FraplesDev
 		static constexpr float rotationSpeed = 0.004;
 		float pitch = 0.0f;
 		float yaw = 0.0f;
-
+		Projection _mProj;
 	};
-
-
 }

@@ -111,6 +111,7 @@
     <ClCompile Include="Source\Fraples7DevDX3D\GraphicAPI\GraphicsResource.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\QualityAssurance\TestingQA.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Camera\MultiCamera.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Camera\Projection.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Probe\ModelProbeBase.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Probe\TechProbeBase.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\BlurOutlineRenderGraph.cpp" />
@@ -203,6 +204,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\GraphicAPI\GraphicsResource.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Camera\MultiCamera.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Camera\Projection.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Probe\ModelProbeBase.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Probe\TechProbeBase.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\BlurOutlineRenderGraph.h" />
