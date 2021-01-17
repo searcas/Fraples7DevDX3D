@@ -20,11 +20,13 @@ namespace FraplesDev
 			_mProj.GetMatrix();
 	}
 
-	Camera::Camera(std::string name, DirectX::XMFLOAT3 homePos, float homePitch, float homeYaw) noexcept
+	Camera::Camera(Graphics& gfx, std::string name, DirectX::XMFLOAT3 homePos, float homePitch, float homeYaw) noexcept
 		:_mHomePos(homePos), _mHomePitch(homePitch), _mHomeYaw(homeYaw), _mName(std::move(name)),
-		_mProj(1.0f, 9.0f / 16.0f, 0.5f, 400.0f)
+		_mProj(1.0f, 9.0f / 16.0f, 0.5f, 400.0f),_mCamProj(gfx)
 	{
 		Reset();
+		_mCamProj.SetPosition(pos);
+		_mCamProj.SetRotation({ pitch,yaw,0.0f });
 	}
 
 	void Camera::Reset()
@@ -55,7 +57,7 @@ namespace FraplesDev
 	{
 		yaw = wrap_angle(yaw + dx * rotationSpeed);
 		pitch = std::clamp(pitch + dy * rotationSpeed, 0.955f * -PI / 2.0f, 0.955f * PI / 2.0f);
-
+		_mCamProj.SetRotation({ pitch,yaw,0.0f });
 	}
 	void Camera::Translate(DirectX::XMFLOAT3 translation) noexcept
 	{
@@ -64,10 +66,19 @@ namespace FraplesDev
 				pos.y + translation.y,
 				pos.z + translation.z
 				};
+		_mCamProj.SetPosition(pos);
 	}
 	void Camera::BindGraphics(Graphics& gfx) const
 	{
 		gfx.SetCamera(GetMatrix());
 		gfx.SetProjection(_mProj.GetMatrix());
+	}
+	void Camera::LinkTechniques(RenderGraph& rg)
+	{
+		_mCamProj.LinkTechniques(rg);
+	}
+	void Camera::Submit() const
+	{
+		_mCamProj.Submit();
 	}
 }

@@ -36,4 +36,21 @@ namespace FraplesDev
 	{
 		return *_mCameras[_mSelected];
 	}
+	void MultiCamera::LinnkTechniques(RenderGraph& rg)
+	{
+		for (auto& pcam : _mCameras)
+		{
+			pcam->LinkTechniques(rg);
+		}
+	}
+	void MultiCamera::Submit() const
+	{
+		for (size_t i = 0; i < _mCameras.size(); i++)
+		{
+			if (i != _mSelected)
+			{
+				_mCameras[i]->Submit();
+			}
+		}
+	}
 }
