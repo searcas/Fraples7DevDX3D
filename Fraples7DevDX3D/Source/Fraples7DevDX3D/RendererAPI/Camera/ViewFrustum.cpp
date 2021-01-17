@@ -47,23 +47,45 @@ namespace FraplesDev
 
 		{
 			Technique line;
-			Step only("wireframe");
-
-			auto pvs = VertexShader::Resolve(gfx, "Solid_VS.cso");
-			only.AddContext(InputLayout::Resolve(gfx, _mPvertices->GetLayout(), *pvs));
-			only.AddContext(std::move(pvs));
-
-			only.AddContext(PixelShader::Resolve(gfx, "Solid_PS.cso"));
-
-			struct PSColorConstant
 			{
-				DirectX::XMFLOAT3 color = { 0.6f,0.2f,0.2f };
-				float padding;
-			}colorConst;
-			only.AddContext(PixelConstantBuffer<PSColorConstant>::Resolve(gfx, colorConst, 1u));
-			only.AddContext(std::make_shared<TransformCBuf>(gfx));
-			only.AddContext(Rasterizer::Resolve(gfx, false));
-			line.AddStep(std::move(only));
+				Step unoccluded("lambertian");
+
+
+				auto pvs = VertexShader::Resolve(gfx, "Solid_VS.cso");
+				unoccluded.AddContext(InputLayout::Resolve(gfx, _mPvertices->GetLayout(), *pvs));
+				unoccluded.AddContext(std::move(pvs));
+
+				unoccluded.AddContext(PixelShader::Resolve(gfx, "Solid_PS.cso"));
+
+				struct PSColorConstant
+				{
+					DirectX::XMFLOAT3 color = { 0.6f,0.2f,0.2f };
+					float padding;
+				}colorConst;
+				unoccluded.AddContext(PixelConstantBuffer<PSColorConstant>::Resolve(gfx, colorConst, 1u));
+				unoccluded.AddContext(std::make_shared<TransformCBuf>(gfx));
+				unoccluded.AddContext(Rasterizer::Resolve(gfx, false));
+				line.AddStep(std::move(unoccluded));
+			}
+			{
+				Step occluded("wireframe");
+
+				auto pvs = VertexShader::Resolve(gfx, "Solid_VS.cso");
+				occluded.AddContext(InputLayout::Resolve(gfx, _mPvertices->GetLayout(), *pvs));
+				occluded.AddContext(std::move(pvs));
+				occluded.AddContext(PixelShader::Resolve(gfx, "Solid_PS.cso"));
+
+				struct PScolorConstantDark
+				{
+					DirectX::XMFLOAT3 color = { 0.25,0.8f,0.8f };
+					float padding;
+				}colorConst;
+
+				occluded.AddContext(PixelConstantBuffer<PScolorConstantDark>::Resolve(gfx, colorConst, 1u));
+				occluded.AddContext(std::make_shared<TransformCBuf>(gfx));
+				occluded.AddContext(Rasterizer::Resolve(gfx, false));
+				line.AddStep(std::move(occluded));
+			}
 			AddTechnique(std::move(line));
 		}
 	}

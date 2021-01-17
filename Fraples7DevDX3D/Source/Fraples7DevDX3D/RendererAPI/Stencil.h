@@ -12,7 +12,8 @@ namespace FraplesDev
 			Off,
 			Write,
 			Mask,
-			DepthOff
+			DepthOff,
+			DepthReversed
 		};
 		Stencil(Graphics& gfx, Mode mode)
 			:_mMode(mode)
@@ -36,6 +37,10 @@ namespace FraplesDev
 				dsDesc.FrontFace.StencilFunc = D3D11_COMPARISON_NOT_EQUAL;
 				dsDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
 				
+			}
+			else if (mode == Mode::DepthReversed)
+			{
+				dsDesc.DepthFunc = D3D11_COMPARISON_GREATER;
 			}
 			GetDevice(gfx)->CreateDepthStencilState(&dsDesc, &_mPstencil);
 		}
@@ -64,6 +69,8 @@ namespace FraplesDev
 				case Stencil::Mode::Mask:
 					return "mask"s;
 					break;
+				case Stencil::Mode::DepthOff:
+					return "depthreversed"s;
 				default:
 					return "ERROR"s;
 					break;
