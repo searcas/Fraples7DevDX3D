@@ -23,7 +23,7 @@ namespace FraplesDev
 		void BindAsBuffer(Graphics& gfx, RenderTarget* renderTarget)noexcept(!IS_DEBUG);
 		void BindAsDepthStencil(Graphics& gfx)const noexcept(!IS_DEBUG);
 		void Clear(Graphics& gfx)const noexcept(!IS_DEBUG);
-		Surface ToSurface(Graphics& gfx)const;
+		Surface ToSurface(Graphics& gfx,bool linearize = true)const;
 		inline const unsigned int& GetWidth() const { return _mWidth; };
 		inline const unsigned int& GetHeight()const { return _mHeight; };
 	protected:

@@ -101,7 +101,7 @@ namespace FraplesDev
 	{
 		GetContext(gfx)->ClearDepthStencilView(_mDepthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0u);
 	}
-	Surface DepthStencil::ToSurface(Graphics& gfx) const
+	Surface DepthStencil::ToSurface(Graphics& gfx, bool linearize ) const
 	{
 		INFOMAN(gfx);
 		// creating a temp texture compatible with the source, but with CPU read access
@@ -126,7 +126,7 @@ namespace FraplesDev
 		const auto height = GetHeight();
 		Surface s{ width, height };
 		D3D11_MAPPED_SUBRESOURCE msr{};
-		FPL_GFX_THROW_INFO(GetContext(gfx)->Map(pTexTemp.Get(), 0, D3D11_MAP_READ, 0, &msr));
+		FPL_GFX_THROW_INFO(GetContext(gfx)->Map(pTexTemp.Get(), 0, D3D11_MAP::D3D11_MAP_READ, 0, &msr));
 		auto pSrcBytes = static_cast<const char*>(msr.pData);
 
 		for (unsigned y = 0; y < height; y++)
@@ -141,26 +141,43 @@ namespace FraplesDev
 				if (textureDesc.Format == DXGI_FORMAT::DXGI_FORMAT_R24G8_TYPELESS)
 				{
 					const auto raw = 0xFFFFFF & *reinterpret_cast<const unsigned int*>(pSrcRow + x);
-					const unsigned char channel = raw >> 16;
-					s.PutPixel(x, y,{ channel,channel,channel });
+					if (linearize)
+					{
+						const auto normalized = (float)raw / (float)0xFFFFFF;
+						const auto linearized = 0.01f / (1.01f - normalized);
+						const auto channel = unsigned char(linearized * 255.0f);
+						s.PutPixel(x, y, { channel,channel,channel });
+					}
+					else
+					{
+						const unsigned char channel = raw >> 16;
+						s.PutPixel(x, y, { channel,channel,channel });
+					}
 				}
 				else if (textureDesc.Format == DXGI_FORMAT::DXGI_FORMAT_R32_TYPELESS)
 				{
 					const auto raw = *reinterpret_cast<const float*>(pSrcRow + x);
-					const auto channel = unsigned char(raw * 255.0f);
-					s.PutPixel(x, y, { channel,channel,channel });
+					if (linearize)
+					{
+						const auto linearized = 0.01f / (1.0f - raw);
+						const auto channel = unsigned char(linearized * 255.0f);
+						s.PutPixel(x, y, { channel,channel,channel });
+					}
+					else
+					{
+						const auto channel = unsigned char(raw * 255.0f);
+						s.PutPixel(x, y, { channel,channel,channel });
+
+					}
 				}
 				else
 				{
 					throw std::runtime_error{ "Bad format in Depth Stencil for conversion to Surface" };
 				}
 			}
-			FPL_GFX_THROW_INFO_ONLY(GetContext(gfx)->Unmap(pTexTemp.Get(), 0));
-
-			return s;
 		}
-
-
+		FPL_GFX_THROW_INFO_ONLY(GetContext(gfx)->Unmap(pTexTemp.Get(), 0));
+		return s;
 	}
 	ShaderInputDepthStencil::ShaderInputDepthStencil(Graphics& gfx, UINT slot, DepthStencil::Usage usage)
 		:ShaderInputDepthStencil(gfx, gfx.GetWidth(), gfx.GetHeight(), slot, usage)
