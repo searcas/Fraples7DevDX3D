@@ -7,6 +7,7 @@
 #include "Passes/RenderQueuePass.h"
 #include "Sync.h"
 #include "Source.h"
+#include "Core//Surface.h"
 #include <sstream>
 
 namespace FraplesDev
@@ -76,6 +77,10 @@ namespace FraplesDev
 		{
 			p->Reset();
 		}
+	}
+	void RenderGraph::StoreDepth(Graphics& gfx, const std::string& path)
+	{
+		_mMasterDepth->ToSurface(gfx).Save(path);
 	}
 	void RenderGraph::Finalize()
 	{

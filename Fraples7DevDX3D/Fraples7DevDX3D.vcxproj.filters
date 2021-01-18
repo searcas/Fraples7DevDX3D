@@ -449,9 +449,6 @@
     <ClInclude Include="Source\Fraples7DevDX3D\QualityAssurance\TestingQA.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Stencil.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderPriority\Job.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -606,6 +603,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\WireFramePass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Stencil\Stencil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

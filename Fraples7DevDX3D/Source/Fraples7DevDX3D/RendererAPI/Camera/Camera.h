@@ -10,7 +10,6 @@ namespace FraplesDev
 	{
 	public:
 		Camera(Graphics& gfx, std::string name, DirectX::XMFLOAT3 homePos,float homePitch, float homeYaw, bool thethered = false)noexcept;
-		void Reset(Graphics& gfx);
 		void SpawnControllWindow(Graphics& gfx) noexcept;
 		DirectX::XMMATRIX GetMatrix() const noexcept;
 		void Rotate(float dx, float dy) noexcept;
@@ -18,6 +17,7 @@ namespace FraplesDev
 		void BindGraphics(Graphics& gfx)const;
 		void LinkTechniques(RenderGraph& rg);
 		void Submit()const;
+		void Reset(Graphics& gfx);
 		void SetPos(const DirectX::XMFLOAT3& pos);
 		inline DirectX::XMFLOAT3 GetPos()const noexcept { return _mPos; }
 		inline const std::string& GetName()const noexcept { return _mName; }

@@ -55,6 +55,7 @@ namespace FraplesDev
 		float _mSpeedFactor = 1.0f;
 		bool show_demo_window = true;
 		float speed_accelerator = 1.500f;
+		bool _mSavingDepth;
 	};
 
 }

@@ -2,7 +2,7 @@
 #include "Cube.h"
 #include "RendererAPI/GFXContextBase.h"
 #include "ImGui/imgui.h"
-#include "RendererAPI/Stencil.h"
+#include "RendererAPI/Stencil/Stencil.h"
 #include "RendererAPI/RenderPriority/TechniqueProbe.h"
 #include "Core/MetaProgramming/DynamicConstant.h"
 #include "RendererAPI/ConstantBuffersEx.h"

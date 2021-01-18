@@ -6,7 +6,7 @@
 #include "RenderQueuePass.h"
 #include "RendererAPI/RenderTarget.h"
 #include "RendererAPI/Stencil/DepthStencil.h"
-#include "RendererAPI/Stencil.h"
+#include "RendererAPI/Stencil/Stencil.h"
 #include <vector>
 namespace FraplesDev
 {

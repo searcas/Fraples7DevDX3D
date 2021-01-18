@@ -2,6 +2,9 @@
 #include "imgui.h"
 #include "Core/Math/Math.h"
 #include <algorithm>
+
+
+
 namespace FraplesDev
 {
 	void Camera::SpawnControllWindow(Graphics& gfx) noexcept
@@ -19,7 +22,7 @@ namespace FraplesDev
 		}
 		ImGui::Text("Orientation");
 		dcheck(ImGui::SliderAngle("Pitch", &pitch, 0.955f * -90.0f, 0.955f * 90.0f), rotDirty);
-		dcheck(ImGui::SliderAngle("Yaw", &yaw, -180.0f, 180.0f),rotDirty);
+		dcheck(ImGui::SliderAngle("Yaw", &yaw, -180.0f, 180.0f), rotDirty);
 		_mProj.RenderWidgets(gfx);
 		ImGui::Checkbox("Camera Projection", &_mEnableCameraProjection);
 		ImGui::Checkbox("Frustum Projection", &_mEnableFrustumProjection);
@@ -69,7 +72,7 @@ namespace FraplesDev
 		_mProj.SetRotation(angles);
 		_mProj.Reset(gfx);
 	}
-	
+
 	DirectX::XMMATRIX Camera::GetMatrix() const noexcept
 	{
 		using namespace DirectX;

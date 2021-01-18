@@ -2,7 +2,7 @@
 #include "GraphicAPI/Graphics.h"
 #include "RendererAPI/VertexShader.h"
 #include "RendererAPI/PixelShader.h"
-#include "RendererAPI/Stencil.h"
+#include "RendererAPI/Stencil/Stencil.h"
 #include "RendererAPI/Rasterizer/Rasterizer.h"
 #include "RendererAPI/RenderTarget.h"
 #include "RendererAPI/Stencil/DepthStencil.h"

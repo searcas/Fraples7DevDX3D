@@ -1,6 +1,6 @@
 #pragma once
-#include "GFXContext.h"
-#include "GFXContextCodex.h"
+#include "RendererAPI/GFXContext.h"
+#include "RendererAPI/GFXContextCodex.h"
 #include "Core/Common/Exceptions/Macros/GraphicsThrowMacros.h"
 namespace FraplesDev
 {

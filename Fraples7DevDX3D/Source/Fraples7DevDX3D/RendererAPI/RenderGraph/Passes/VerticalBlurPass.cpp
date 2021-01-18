@@ -4,7 +4,7 @@
 #include "RendererAPI/RenderGraph/Source.h"
 
 #include "RendererAPI/PixelShader.h"
-#include "RendererAPI/Stencil.h"
+#include "RendererAPI/Stencil/Stencil.h"
 #include "RendererAPI/Blending/Blending.h"
 #include "RendererAPI/RenderTarget.h"
 #include "RendererAPI/Stencil/DepthStencil.h"

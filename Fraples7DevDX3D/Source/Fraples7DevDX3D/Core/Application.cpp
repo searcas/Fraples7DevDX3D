@@ -101,6 +101,11 @@ namespace FraplesDev
 		SpawnFunc();
 		_mWin.GetGFX().EndFrame();
 		renderGraph.Reset();
+		if (_mSavingDepth)
+		{
+			renderGraph.StoreDepth(_mWin.GetGFX(), "depth.png");
+			_mSavingDepth = false;
+		}
 	}
 
 	void Application::HandleEvents(float dt)
@@ -126,6 +131,9 @@ namespace FraplesDev
 				break;
 			case VK_F1:
 				show_demo_window = true;
+				break;
+			case VK_RETURN:
+				_mSavingDepth = true;
 				break;
 			}
 		}

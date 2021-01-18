@@ -3,7 +3,7 @@
 #include "Core/Common/Exceptions/Macros/GraphicsThrowMacros.h"
 #include "RendererAPI/GFXContextBase.h"
 #include "Core/MetaProgramming/Vertex.h"
-#include "RendererAPI/Stencil.h"
+#include "RendererAPI/Stencil/Stencil.h"
 namespace FraplesDev
 {
 	SolidSphere::SolidSphere(Graphics& gfx, float radius)

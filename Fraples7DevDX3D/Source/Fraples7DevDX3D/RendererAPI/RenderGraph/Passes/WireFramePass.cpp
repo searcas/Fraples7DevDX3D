@@ -1,5 +1,5 @@
 #include "WireFramePass.h"
-#include "RendererAPI/Stencil.h"
+#include "RendererAPI/Stencil/Stencil.h"
 #include "RendererAPI/Stencil/DepthStencil.h"
 #include "RendererAPI/RenderTarget.h"
 namespace FraplesDev

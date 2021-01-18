@@ -18,6 +18,7 @@ namespace FraplesDev
 		void Execute(Graphics& gfx)noexcept(!IS_DEBUG);
 		void SetSinkTarget(const std::string& skinName, const std::string& target);
 		void Reset()noexcept;
+		void StoreDepth(Graphics& gfx, const std::string& path);
 		void Finalize();
 		RenderQueuePass& GetRenderQueue(const std::string& passName);
 	private:
