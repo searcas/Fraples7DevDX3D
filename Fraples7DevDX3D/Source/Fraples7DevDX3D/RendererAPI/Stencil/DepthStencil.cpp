@@ -51,6 +51,7 @@ namespace FraplesDev
 		}
 	}
 	DepthStencil::DepthStencil(Graphics& gfx, UINT width, UINT height,bool canBindShaderInput, DepthStencil::Usage usage)
+		:_mWidth(width),_mHeight(height)
 	{
 		INFOMAN(gfx);
 
@@ -61,7 +62,7 @@ namespace FraplesDev
 		descDepth.Height = height;
 		descDepth.MipLevels = 1u;
 		descDepth.ArraySize = 1u;
-		descDepth.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+		descDepth.Format = MapUsageTypeless(usage);
 		descDepth.SampleDesc.Count = 1u;
 		descDepth.SampleDesc.Quality = 0u;
 		descDepth.Usage = D3D11_USAGE_DEFAULT;
@@ -69,7 +70,14 @@ namespace FraplesDev
 		FPL_GFX_THROW_INFO(GetDevice(gfx)->CreateTexture2D(&descDepth, nullptr, &pDepthStencil));
 
 		// create target view of depth stencil texture
-		FPL_GFX_THROW_INFO(GetDevice(gfx)->CreateDepthStencilView(pDepthStencil.Get(), nullptr, &_mDepthStencilView));
+		D3D11_DEPTH_STENCIL_VIEW_DESC descView = {};
+		descView.Format = MapUsageTyped(usage);
+		descView.Flags = 0;
+		descView.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+		descView.Texture2D.MipSlice = 0;
+
+
+		FPL_GFX_THROW_INFO(GetDevice(gfx)->CreateDepthStencilView(pDepthStencil.Get(), &descView, &_mDepthStencilView));
 	}
 	void DepthStencil::BindAsBuffer(Graphics& gfx)noexcept(!IS_DEBUG)
 	{
@@ -116,7 +124,7 @@ namespace FraplesDev
 
 		const auto width = GetWidth();
 		const auto height = GetHeight();
-		Surface s{ width,height };
+		Surface s{ width, height };
 		D3D11_MAPPED_SUBRESOURCE msr{};
 		FPL_GFX_THROW_INFO(GetContext(gfx)->Map(pTexTemp.Get(), 0, D3D11_MAP_READ, 0, &msr));
 		auto pSrcBytes = static_cast<const char*>(msr.pData);
@@ -142,6 +150,7 @@ namespace FraplesDev
 					const auto channel = unsigned char(raw * 255.0f);
 					s.PutPixel(x, y, { channel,channel,channel });
 				}
+				else
 				{
 					throw std::runtime_error{ "Bad format in Depth Stencil for conversion to Surface" };
 				}
