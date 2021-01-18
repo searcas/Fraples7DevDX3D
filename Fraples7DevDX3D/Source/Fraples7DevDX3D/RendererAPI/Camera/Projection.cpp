@@ -44,7 +44,7 @@ namespace FraplesDev
 		ImGui::Text("Projection");
 		dcheck(ImGui::SliderFloat("Width", &_mWidth, 0.01f, 4.0f, "%.2f"));
 		dcheck(ImGui::SliderFloat("Height", &_mHeight, 0.01f, 4.0f, "%.2f"));
-		dcheck(ImGui::SliderFloat("Near Z", &_mNearZ, 0.01f, _mFarZ - 0.01f, "%.2f"));
+		dcheck(ImGui::SliderFloat("Near Z", &_mNearZ, 0.5f, _mFarZ - 0.01f, "%.2f"));
 		dcheck(ImGui::SliderFloat("Far Z", &_mFarZ, _mNearZ + 0.01f, 400.0f, "%.2f"));
 
 		if (dirty)

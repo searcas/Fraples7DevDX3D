@@ -9,7 +9,7 @@ namespace FraplesDev
 	class Camera
 	{
 	public:
-		Camera(Graphics& gfx, std::string name, DirectX::XMFLOAT3 homePos,float homePitch, float homeYaw)noexcept;
+		Camera(Graphics& gfx, std::string name, DirectX::XMFLOAT3 homePos,float homePitch, float homeYaw, bool thethered = false)noexcept;
 		void Reset(Graphics& gfx);
 		void SpawnControllWindow(Graphics& gfx) noexcept;
 		DirectX::XMMATRIX GetMatrix() const noexcept;
@@ -18,14 +18,16 @@ namespace FraplesDev
 		void BindGraphics(Graphics& gfx)const;
 		void LinkTechniques(RenderGraph& rg);
 		void Submit()const;
-		inline DirectX::XMFLOAT3 GetPos()const noexcept { return pos; }
+		void SetPos(const DirectX::XMFLOAT3& pos);
+		inline DirectX::XMFLOAT3 GetPos()const noexcept { return _mPos; }
 		inline const std::string& GetName()const noexcept { return _mName; }
 	private:
+		bool tethered;
 		DirectX::XMFLOAT3 _mHomePos;
 		float _mHomePitch;
 		float _mHomeYaw;
 		std::string _mName;
-		DirectX::XMFLOAT3 pos;
+		DirectX::XMFLOAT3 _mPos;
 		static constexpr float travelSpeed = 12.0f;
 		static constexpr float rotationSpeed = 0.004;
 		float pitch = 0.0f;

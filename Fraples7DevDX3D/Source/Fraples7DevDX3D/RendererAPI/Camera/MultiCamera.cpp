@@ -40,7 +40,7 @@ namespace FraplesDev
 	{
 		gfx.SetCamera((*this)->GetMatrix());
 	}
-	void MultiCamera::AddCamera(std::unique_ptr<Camera> pCam)
+	void MultiCamera::AddCamera(std::shared_ptr<Camera> pCam)
 	{
 		_mCameras.push_back(std::move(pCam));
 	}

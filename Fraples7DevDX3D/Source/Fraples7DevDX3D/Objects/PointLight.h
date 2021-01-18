@@ -8,6 +8,7 @@
 
 namespace FraplesDev
 {
+	class Camera;
 	class PointLight
 	{
 	public:
@@ -17,6 +18,7 @@ namespace FraplesDev
 		void Reset()noexcept;
 		void Submit() const noexcept(!IS_DEBUG);
 		void LinkTechniques(RenderGraph&);
+		std::shared_ptr<Camera>ShareCamera()const noexcept;
 		void Bind(Graphics& gfx, DirectX::FXMMATRIX view) const noexcept;
 	private:
 		struct PointLightCBuf
@@ -36,6 +38,7 @@ namespace FraplesDev
 		PointLightCBuf _mConstantBufferData;
 		mutable SolidSphere _mMesh;
 		mutable PixelConstantBuffer<PointLightCBuf>_mCbuf;
+		std::shared_ptr<Camera>_mCamera;
 	};
 
 }

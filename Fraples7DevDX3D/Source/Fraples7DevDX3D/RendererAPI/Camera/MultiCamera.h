@@ -13,7 +13,7 @@ namespace FraplesDev
 	public:
 		void SpawnWindow(Graphics& gfx);
 		void Bind(Graphics& gfx);
-		void AddCamera(std::unique_ptr<Camera>pCam);
+		void AddCamera(std::shared_ptr<Camera>pCam);
 		inline Camera& GetControlledCamera() { return *_mCameras[_mControlled]; };
 		~MultiCamera() = default;
 		void LinnkTechniques(RenderGraph& rg);
@@ -21,7 +21,7 @@ namespace FraplesDev
 		Camera* operator->();
 			
 	private:
-		std::vector<std::unique_ptr<Camera>>_mCameras;
+		std::vector<std::shared_ptr<Camera>>_mCameras;
 		unsigned int _mActive = 0;
 		unsigned int _mControlled = 0;
 	};

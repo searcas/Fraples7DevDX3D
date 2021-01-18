@@ -10,10 +10,13 @@ namespace FraplesDev
 		bool posDirty = false;
 		const auto dcheck = [](bool d, bool& carry) {carry = carry || d; };
 		
-		ImGui::Text("Camera Position");
-		dcheck(ImGui::SliderFloat("X", &pos.x, -80.0f, 80.0f, "%.1f"), posDirty);
-		dcheck(ImGui::SliderFloat("Y", &pos.y, -80.0f, 80.0f, "%.1f"), posDirty);
-		dcheck(ImGui::SliderFloat("Z", &pos.z, -80.0f, 80.0f, "%.1f"), posDirty);
+		if (!tethered)
+		{
+			ImGui::Text("Camera Position");
+			dcheck(ImGui::SliderFloat("X", &_mPos.x, -80.0f, 80.0f, "%.1f"), posDirty);
+			dcheck(ImGui::SliderFloat("Y", &_mPos.y, -80.0f, 80.0f, "%.1f"), posDirty);
+			dcheck(ImGui::SliderFloat("Z", &_mPos.z, -80.0f, 80.0f, "%.1f"), posDirty);
+		}
 		ImGui::Text("Orientation");
 		dcheck(ImGui::SliderAngle("Pitch", &pitch, 0.955f * -90.0f, 0.955f * 90.0f), rotDirty);
 		dcheck(ImGui::SliderAngle("Yaw", &yaw, -180.0f, 180.0f),rotDirty);
@@ -32,26 +35,35 @@ namespace FraplesDev
 		}
 		if (posDirty)
 		{
-			_mCamProj.SetPosition(pos);
-			_mProj.SetPosition(pos);
+			_mCamProj.SetPosition(_mPos);
+			_mProj.SetPosition(_mPos);
 		}
 	}
 
-	Camera::Camera(Graphics& gfx, std::string name, DirectX::XMFLOAT3 homePos, float homePitch, float homeYaw) noexcept
+	Camera::Camera(Graphics& gfx, std::string name, DirectX::XMFLOAT3 homePos, float homePitch, float homeYaw, bool tethered) noexcept
 		:_mHomePos(homePos), _mHomePitch(homePitch), _mHomeYaw(homeYaw), _mName(std::move(name)),
-		_mProj(gfx,1.0f, 9.0f / 16.0f, 0.5f, 400.0f),_mCamProj(gfx)
+		_mProj(gfx,1.0f, 9.0f / 16.0f, 0.5f, 400.0f),_mCamProj(gfx),tethered(tethered)
 	{
+		if (tethered)
+		{
+			_mPos = homePos;
+			_mCamProj.SetPosition(_mPos);
+			_mProj.SetPosition(_mPos);
+		}
 		Reset(gfx);
 	}
 
 	void Camera::Reset(Graphics& gfx)
 	{
-		pos = _mHomePos;
+		if (!tethered)
+		{
+			_mPos = _mHomePos;
+			_mCamProj.SetPosition(_mPos);
+			_mProj.SetPosition(_mPos);
+		}
 		pitch = _mHomePitch;
 		yaw = _mHomeYaw;
 
-		_mCamProj.SetPosition(pos);
-		_mProj.SetPosition(pos);
 		const DirectX::XMFLOAT3  angles = { pitch,yaw,0.0f };
 		_mCamProj.SetRotation(angles);
 		_mProj.SetRotation(angles);
@@ -69,7 +81,7 @@ namespace FraplesDev
 		//generate camera transform (applied to all objects to arrange them relative
 		//to camera position/orientation in world from cam position and direction
 		//camera top always faces towards +Y (Cannot do a barrel roll)
-		const auto camPosition = DirectX::XMLoadFloat3(&pos);
+		const auto camPosition = DirectX::XMLoadFloat3(&_mPos);
 		const auto camTarget = camPosition + lookVector;
 
 		return XMMatrixLookAtLH(camPosition, camTarget, XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f));
@@ -84,13 +96,20 @@ namespace FraplesDev
 	}
 	void Camera::Translate(DirectX::XMFLOAT3 translation) noexcept
 	{
-		DirectX::XMStoreFloat3(&translation, DirectX::XMVector3Transform(DirectX::XMLoadFloat3(&translation), DirectX::XMMatrixRotationRollPitchYaw(pitch, yaw, 0.0f) * DirectX::XMMatrixScaling(travelSpeed, travelSpeed, travelSpeed)));
-		pos = { pos.x + translation.x,
-				pos.y + translation.y,
-				pos.z + translation.z
-				};
-		_mCamProj.SetPosition(pos);
-		_mProj.SetPosition(pos);
+		if (!tethered)
+		{
+			DirectX::XMStoreFloat3(&translation, 
+			DirectX::XMVector3Transform(
+			DirectX::XMLoadFloat3(&translation), 
+			DirectX::XMMatrixRotationRollPitchYaw(pitch, yaw, 0.0f) * 
+			DirectX::XMMatrixScaling(travelSpeed, travelSpeed, travelSpeed)));
+			_mPos = { _mPos.x + translation.x,
+					_mPos.y + translation.y,
+					_mPos.z + translation.z
+			};
+			_mCamProj.SetPosition(_mPos);
+			_mProj.SetPosition(_mPos);
+		}
 	}
 	void Camera::BindGraphics(Graphics& gfx) const
 	{
@@ -112,5 +131,11 @@ namespace FraplesDev
 		{
 			_mProj.Submit();
 		}
+	}
+	void Camera::SetPos(const DirectX::XMFLOAT3& pos)
+	{
+		_mPos = pos;
+		_mCamProj.SetPosition(pos);
+		_mProj.SetPosition(pos);
 	}
 }
