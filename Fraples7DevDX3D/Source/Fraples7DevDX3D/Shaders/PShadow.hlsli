@@ -1,7 +1,9 @@
 Texture2D smap : register(t3);
 SamplerState ssam : register(s1);
 
-bool ShadowUnoccluded(const in float3 shadowScreenPos)
+bool ShadowUnoccluded(const in float4 shadowHomePos)
 {
-    return smap.Sample(ssam, shadowScreenPos.xy).r > shadowScreenPos.z - 0.005f;
+    const float3 spos = shadowHomePos.xyz / shadowHomePos.w;
+    return spos.z > 1.0f ? true : smap.Sample(ssam, spos.xy).r > spos.z - 0.005f;
+
 }
