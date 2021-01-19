@@ -46,7 +46,7 @@ namespace FraplesDev
 	}
 	Camera* MultiCamera::operator->()
 	{
-		return _mCameras[_mActive].get();
+		return &GetActiveCamera();
 	}
 	void MultiCamera::LinnkTechniques(RenderGraph& rg)
 	{
@@ -65,5 +65,9 @@ namespace FraplesDev
 				_mCameras[i]->Submit(channels);
 			}
 		}
+	}
+	Camera& MultiCamera::GetActiveCamera()
+	{
+		return *_mCameras[_mActive];
 	}
 }

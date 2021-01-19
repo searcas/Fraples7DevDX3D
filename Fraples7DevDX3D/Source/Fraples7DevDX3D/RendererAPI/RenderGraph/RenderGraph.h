@@ -13,6 +13,7 @@ namespace FraplesDev
 		RenderGraph(class Graphics& gfx);
 		~RenderGraph();
 		void AppendPass(std::unique_ptr<class Pass>pass);
+		Pass& FindPassByName(const std::string& name);
 		void AddGlobalSource(std::unique_ptr<class Source>);
 		void AddGlobalSink(std::unique_ptr<class Sync>);
 		void Execute(Graphics& gfx)noexcept(!IS_DEBUG);

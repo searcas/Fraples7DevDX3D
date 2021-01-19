@@ -171,4 +171,11 @@ namespace FraplesDev
 		}
 		ImGui::End();
 	}
+	void BlurOutlineRenderGraph::BindMainCamera(Camera& cam)
+	{
+		dynamic_cast<LambertianPass&>(FindPassByName("lambertian")).BindMainCamera(cam);
+	}
+	void BlurOutlineRenderGraph::BindShadowCamera(Camera& cam)
+	{
+	}
 }

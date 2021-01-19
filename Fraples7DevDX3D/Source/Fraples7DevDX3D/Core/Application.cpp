@@ -87,11 +87,9 @@ namespace FraplesDev
 	{
 		const auto dt = _mTimer.Get() * speed_accelerator;
 		_mWin.GetGFX().BeginFrame(0.000069f, 0.000069f, 0.06f);
-		//_mWin.GetGFX().BeginFrame(0.19f, 0.19f, 0.19f);
-		_mCameras->BindGraphics(_mWin.GetGFX());
 		light.Bind(_mWin.GetGFX(), _mCameras->GetMatrix());
+		renderGraph.BindMainCamera(_mCameras.GetActiveCamera());
 		RenderObj();
-
 	
 		static ModelProbeBase sponza{ "Sponza" };
 		static ModelProbeBase nan{ "Nano" };

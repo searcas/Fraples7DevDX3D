@@ -18,6 +18,7 @@ namespace FraplesDev
 		~MultiCamera() = default;
 		void LinnkTechniques(RenderGraph& rg);
 		void Submit(size_t channels)const;
+		Camera& GetActiveCamera();
 		Camera* operator->();
 			
 	private:

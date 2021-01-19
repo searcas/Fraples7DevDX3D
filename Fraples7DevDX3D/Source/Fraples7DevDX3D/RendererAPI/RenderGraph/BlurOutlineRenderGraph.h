@@ -5,11 +5,14 @@
 
 namespace FraplesDev
 {
+	class Camera;
 	class BlurOutlineRenderGraph : public RenderGraph
 	{
 	public:
 		BlurOutlineRenderGraph(Graphics& gfx);
 		void RenderWidgets(Graphics& gfx);
+		void BindMainCamera(Camera& cam);
+		void BindShadowCamera(Camera& cam);
 	private:
 		void SetKernelGauss(int radius, float sigma) noexcept(!IS_DEBUG);
 		void SetKernelBox(int radius)noexcept(!IS_DEBUG);

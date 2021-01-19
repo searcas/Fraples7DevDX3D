@@ -54,6 +54,18 @@ namespace FraplesDev
 		// add to container of passes 
 		_mPasses.push_back(std::move(pass));
 	}
+	Pass& RenderGraph::FindPassByName(const std::string& name)
+	{
+		const auto i = std::find_if(_mPasses.begin(), _mPasses.end(), [&name](auto& p)
+			{
+				return p->GetName() == name;
+			});
+		if (i == _mPasses.end())
+		{
+			throw std::runtime_error{ "Filed to find pass name" };
+		}
+		return **i;
+	}
 	void RenderGraph::AddGlobalSource(std::unique_ptr<Source>out)
 	{
 		_mGlobalSources.push_back(std::move(out));
