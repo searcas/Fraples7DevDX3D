@@ -28,10 +28,10 @@ namespace FraplesDev
 				only.AddContext(Texture::Resolve(gfx, "Images\\brickwall.jpg"));
 				only.AddContext(Sampler::Resolve(gfx));
 
-				auto pvs = VertexShader::Resolve(gfx, "PhongDiffuse_VS.cso");
+				auto pvs = VertexShader::Resolve(gfx, "ShadowTest_VS.cso");
 				only.AddContext(InputLayout::Resolve(gfx, model._mVertices.GetLayout(), *pvs));
 				only.AddContext(std::move(pvs));
-				only.AddContext(PixelShader::Resolve(gfx, "PhongDiffuse_PS.cso"));
+				only.AddContext(PixelShader::Resolve(gfx, "ShadowTest_PS.cso"));
 				MP::RawLayout layout;
 				layout.Add<MP::Float3>("specularColor");
 				layout.Add<MP::Float>("specularWeight");

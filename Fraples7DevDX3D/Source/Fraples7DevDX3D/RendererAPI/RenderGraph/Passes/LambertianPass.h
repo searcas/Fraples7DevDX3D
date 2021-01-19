@@ -6,6 +6,7 @@ namespace FraplesDev
 	class Camera;
 	class Graphics;
 	class ShadowCameraCBuf;
+	class ShadowSampler;
 	class GfxContext;
 
 	class LambertianPass : public RenderQueuePass
@@ -17,6 +18,7 @@ namespace FraplesDev
 		void BindShadowCamera(const Camera& cam)noexcept;
 		void Execute(Graphics& gfx)const noexcept(!IS_DEBUG) override;
 	private:
+		std::shared_ptr<ShadowSampler>_mShadowSampler;
 		std::shared_ptr<ShadowCameraCBuf>_mShadowCBuf;
 		const Camera* _mMainCamera = nullptr;
 	};

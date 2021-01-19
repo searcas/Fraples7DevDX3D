@@ -3,9 +3,17 @@
 #include "RendererAPI/Camera/Camera.h"
 namespace FraplesDev
 {
-	PointLight::PointLight(Graphics& gfx, float radius) :
+	PointLight::PointLight(Graphics& gfx, DirectX::XMFLOAT3 pos,float radius) :
 		_mMesh(gfx, radius), _mCbuf(gfx)
 	{
+		_mHome = { pos,
+		{0.05f,0.05,0.05f},
+		{1.0f, 1.0f, 1.0f},
+		1.0f,
+		1.0f,
+		0.045f,
+		0.0075f
+		};
 		Reset();
 		_mCamera = std::make_shared<Camera>(gfx, "Light Camera", _mConstantBufferData.pos, 0.0f, 0.0f, true);
 	}
@@ -53,15 +61,7 @@ namespace FraplesDev
 	}
 	void PointLight::Reset() noexcept
 	{
-		_mConstantBufferData = {
-			{10.0f,9.0f,-2.5f},
-			{0.05f,0.05f,0.05f,},
-			{1.0f,1.0f,1.0f,},
-			1.0f,
-			1.0f,
-			0.045f,
-			0.0075
-		};
+		_mConstantBufferData = _mHome;
 	}
 
 	void PointLight::Submit(size_t channels) const noexcept(!IS_DEBUG)

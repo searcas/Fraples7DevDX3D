@@ -13,7 +13,7 @@ namespace FraplesDev
 	{
 	public:
 		PointLight() = default;
-		PointLight(Graphics& gfx, float radius = 0.5f);
+		PointLight(Graphics& gfx, DirectX::XMFLOAT3 pos = { 10.0f,9.0f,2.5f }, float radius = 0.5f);
 		void SpawnControlWindow()noexcept;
 		void Reset()noexcept;
 		void Submit(size_t channels) const noexcept(!IS_DEBUG);
@@ -35,6 +35,7 @@ namespace FraplesDev
 
 
 	private:
+		PointLightCBuf _mHome;
 		PointLightCBuf _mConstantBufferData;
 		mutable SolidSphere _mMesh;
 		mutable PixelConstantBuffer<PointLightCBuf>_mCbuf;

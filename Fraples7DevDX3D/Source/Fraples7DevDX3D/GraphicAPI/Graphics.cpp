@@ -134,6 +134,10 @@ namespace FraplesDev {
 			ImGui_ImplWin32_NewFrame();
 			ImGui::NewFrame();
 		}
+		// clearing shader inputs to prevent simultaneous in/out bind carried ove from prev 
+		ID3D11ShaderResourceView* const pNullTex = nullptr;
+		_mpContext->PSSetShaderResources(0, 1, &pNullTex);
+		_mpContext->PSSetShaderResources(3, 1, &pNullTex);
 	}
 	void FraplesDev::Graphics::EndFrame()
 	{

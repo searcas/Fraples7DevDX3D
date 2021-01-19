@@ -31,9 +31,11 @@ namespace FraplesDev
 	TransformCBuf::Transforms TransformCBuf::GetTransforms(Graphics& gfx) noexcept(!IS_DEBUG)
 	{
 		assert(_mPparent != nullptr);
-		const auto modelView = _mPparent->GetTransformXM() * gfx.GetCamera();
+		const auto model = _mPparent->GetTransformXM();
+		const auto modelView = model * gfx.GetCamera();
 		return
 		{
+			DirectX::XMMatrixTranspose(model),
 			DirectX::XMMatrixTranspose(modelView),
 			DirectX::XMMatrixTranspose(modelView * gfx.GetProjection())
 		};

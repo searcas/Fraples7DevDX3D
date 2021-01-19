@@ -7,13 +7,17 @@
 #include "RendererAPI/Stencil/DepthStencil.h"
 #include "RendererAPI/Stencil/Stencil.h"
 #include "RendererAPI/ShadowMapping/ShadowCameraCBuf.h"
+#include "RendererAPI/ShadowMapping/ShadowSampler.h"
 #include <vector>
 namespace FraplesDev
 {
 	LambertianPass::LambertianPass(Graphics& gfx, std::string&& name)
-		:RenderQueuePass(std::move(name)), _mShadowCBuf{ std::make_shared<ShadowCameraCBuf>(gfx) }
+		:RenderQueuePass(std::move(name)), 
+		_mShadowCBuf{ std::make_shared<ShadowCameraCBuf>(gfx) },
+		_mShadowSampler{ std::make_shared<ShadowSampler>(gfx) }
 	{
 		AddBind(_mShadowCBuf);
+		AddBind(_mShadowSampler);
 		RegisterSync(DirectBufferSync<RenderTarget>::Make("renderTarget", _mRenderTarget));
 		RegisterSync(DirectBufferSync<DepthStencil>::Make("depthStencil", _mDepthStencil));
 		AddBindSink<GfxContext>("shadowMap");

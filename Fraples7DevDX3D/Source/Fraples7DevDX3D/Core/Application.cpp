@@ -8,7 +8,7 @@ namespace FraplesDev
 {
 	
 	Application::Application(const char* name, int width, int height, const std::string& commandLine)
-		:_mWin(name, width, height), light(_mWin.GetGFX()), scriptCommander(Utility::TokenizeQuoted(commandLine))
+		:_mWin(name, width, height), light(_mWin.GetGFX(), { 10.f,5.0f,0.0f }), scriptCommander(Utility::TokenizeQuoted(commandLine))
 	{
 		//QA::TestMaterialSystemLoading(_mWin.GetGFX());
 		//QA::TestDynamicConstant();
@@ -16,8 +16,8 @@ namespace FraplesDev
 		_mCameras.AddCamera(std::make_unique<Camera>(_mWin.GetGFX(),"A", DirectX::XMFLOAT3{ -13.5,6.0f,3.5f }, 0.0f, PI / 2.0f));
 		_mCameras.AddCamera(std::make_unique<Camera>(_mWin.GetGFX(),"B", DirectX::XMFLOAT3{ -13.5,28.8f,-6.4f },PI / 180.0f * 13.0f,PI / 180 * 61.0f));
 		_mCameras.AddCamera(light.ShareCamera());
-		cube1.SetPos({ 4.0f,0.0f,0.0f });
-		cube2.SetPos({ 0.0f,4.0f,0.0f });
+		cube1.SetPos({ 10.0f, 5.0f, 6.0f });
+		cube2.SetPos({ 10.0f, 5.0f, 14.0f });
 		_mNano.SetRootTransform( DirectX::XMMatrixRotationY(PI / 2.0f) *
 			DirectX::XMMatrixTranslation(27.f,-0.56f,1.7f) );
 		gobber.SetRootTransform(DirectX::XMMatrixRotationY(-PI / 2.0f) *

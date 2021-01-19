@@ -6,6 +6,7 @@ namespace FraplesDev
 	ShadowCameraCBuf::ShadowCameraCBuf(Graphics& gfx, UINT slot)
 		:_mVertexConstantBuffer{ std::make_unique<VertexConstantBuffer<Transform>>(gfx,slot) }
 	{
+		_mCamera = nullptr;
 	}
 	void ShadowCameraCBuf::Bind(Graphics& gfx) noexcept(!IS_DEBUG)
 	{
