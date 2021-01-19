@@ -128,6 +128,12 @@ namespace FraplesDev
 		{
 			const auto& inputSourcePassName = in->GetPassName();
 
+			if (inputSourcePassName.empty())
+			{
+				std::ostringstream oss;
+				oss << "In pass Named [" << pass.GetName() << "] sink named [" << in->GetRegisteredName() << "] has no target source set.";
+				throw RGC_EXCEPTION(oss.str());
+			}
 			//check whether target source is global
 
 			if (inputSourcePassName == "$")

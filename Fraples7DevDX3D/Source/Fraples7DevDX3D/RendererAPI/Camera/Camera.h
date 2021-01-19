@@ -12,6 +12,7 @@ namespace FraplesDev
 		Camera(Graphics& gfx, std::string name, DirectX::XMFLOAT3 homePos,float homePitch, float homeYaw, bool thethered = false)noexcept;
 		void SpawnControllWindow(Graphics& gfx) noexcept;
 		DirectX::XMMATRIX GetMatrix() const noexcept;
+		inline DirectX::XMMATRIX GetProjection()const noexcept { return _mProj.GetMatrix(); }
 		void Rotate(float dx, float dy) noexcept;
 		void Translate(DirectX::XMFLOAT3 translation) noexcept;
 		void BindGraphics(Graphics& gfx)const;

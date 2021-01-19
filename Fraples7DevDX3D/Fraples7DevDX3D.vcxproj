@@ -119,9 +119,11 @@
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\BlurOutlineRenderGraph.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\BlurOutlineRenderPass.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\HorizontalBlurPass.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\ShadowMappingPass.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\WireFramePass.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\ScaleOutlineRenderGraph.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\VerticalBlurPass.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\ShadowMapping\ShadowCameraCBuf.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\TransformCBuf\TransformCBufScaling.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\Material.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\ModelException.cpp" />
@@ -215,10 +217,12 @@
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\BlurOutlineRenderGraph.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\BlurOutlineRenderPass.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\HorizontalBlurPass.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\ShadowMappingPass.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\WireFramePass.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\ScaleOutlineRenderGraph.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\VerticalBlurPass.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\ShadowMapping\Channels.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\ShadowMapping\ShadowCameraCBuf.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\TransformCBuf\TransformCBufScaling.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Filters\BlurPack.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\Material.h" />

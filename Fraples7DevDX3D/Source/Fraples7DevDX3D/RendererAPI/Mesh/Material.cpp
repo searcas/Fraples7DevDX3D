@@ -156,6 +156,21 @@ namespace FraplesDev
 			}
 			_mTechniques.push_back(std::move(outline));
 		}
+		//shadow map technique
+		{
+			Technique map{ "ShadowMap", Channel::shadow,true };
+			{
+				Step draw("shadowMap");
+
+				//TODO: better sub-layout generation tech for future consideration maybe?
+				draw.AddContext(InputLayout::Resolve(gfx, _mVertexLayout, *VertexShader::Resolve(gfx, "Solid_VS.cso")));
+				draw.AddContext(std::make_shared <TransformCBuf>(gfx));
+
+				// TODO: might need to specify rasterizer when doubled-sided models start being used
+				map.AddStep(std::move(draw));
+			}
+			_mTechniques.push_back(std::move(map));
+		}
 	}
 
 	MP::VertexBuffer Material::ExtractVertices(const aiMesh& mesh) const noexcept

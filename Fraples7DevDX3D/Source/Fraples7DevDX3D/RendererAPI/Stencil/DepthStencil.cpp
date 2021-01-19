@@ -50,7 +50,7 @@ namespace FraplesDev
 			break;
 		}
 	}
-	DepthStencil::DepthStencil(Graphics& gfx, UINT width, UINT height,bool canBindShaderInput, DepthStencil::Usage usage)
+	DepthStencil::DepthStencil(Graphics& gfx, UINT width, UINT height, bool canBindShaderInput, DepthStencil::Usage usage)
 		:_mWidth(width),_mHeight(height)
 	{
 		INFOMAN(gfx);
@@ -66,7 +66,7 @@ namespace FraplesDev
 		descDepth.SampleDesc.Count = 1u;
 		descDepth.SampleDesc.Quality = 0u;
 		descDepth.Usage = D3D11_USAGE_DEFAULT;
-		descDepth.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+		descDepth.BindFlags = D3D11_BIND_DEPTH_STENCIL | (canBindShaderInput ? D3D11_BIND_SHADER_RESOURCE : 0);
 		FPL_GFX_THROW_INFO(GetDevice(gfx)->CreateTexture2D(&descDepth, nullptr, &pDepthStencil));
 
 		// create target view of depth stencil texture
@@ -190,6 +190,7 @@ namespace FraplesDev
 		INFOMAN(gfx);
 		Microsoft::WRL::ComPtr<ID3D11Resource>pRes;
 		_mDepthStencilView->GetResource(&pRes);
+
 		D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
 		srvDesc.Format = MapUsageColored(usage); 
 		srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;

@@ -30,6 +30,7 @@ namespace FraplesDev
 		gobber.LinkTechniques(renderGraph);
 		_mNano.LinkTechniques(renderGraph);
 		_mCameras.LinnkTechniques(renderGraph);
+		renderGraph.BindShadowCamera(*light.ShareCamera());
 
 		//bluePlane.SetPosXYZ(_mCameras.GetCamera().GetPos());
 		//redPlane.SetPosXYZ(_mCameras.GetCamera().GetPos());
@@ -80,6 +81,14 @@ namespace FraplesDev
 		cube2.Submit(Channel::main);
 		_mNano.Submit(Channel::main);
 		gobber.Submit(Channel::main);
+
+		_mCameras.Submit(Channel::shadow);
+		light.Submit(Channel::shadow);
+		_mSponza.Submit(Channel::shadow);
+		cube1.Submit(Channel::shadow);
+		cube2.Submit(Channel::shadow);
+		_mNano.Submit(Channel::shadow);
+		gobber.Submit(Channel::shadow);
 		renderGraph.Execute(_mWin.GetGFX());
 	}
 
@@ -102,7 +111,7 @@ namespace FraplesDev
 		renderGraph.Reset();
 		if (_mSavingDepth)
 		{
-			renderGraph.StoreDepth(_mWin.GetGFX(), "depth.png");
+			renderGraph.DumpShadowMap(_mWin.GetGFX(), "shadow.png");
 			_mSavingDepth = false;
 		}
 	}

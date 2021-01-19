@@ -8,6 +8,7 @@
 #include "Passes/BlurOutlineRenderPass.h"
 #include "ImGui/imgui.h"
 #include "Passes/WireFramePass.h"
+#include "Passes/ShadowMappingPass.h"
 namespace FraplesDev
 {
 	BlurOutlineRenderGraph::BlurOutlineRenderGraph(Graphics& gfx)
@@ -24,7 +25,12 @@ namespace FraplesDev
 			AppendPass(std::move(pass));
 		}
 		{
+			auto pass = std::make_unique<ShadowMappingPass>(gfx, "shadowMap");
+			AppendPass(std::move(pass));
+		}
+		{
 			auto pass = std::make_unique<LambertianPass>(gfx, "lambertian");
+			pass->SetSyncLinkage("shadowMap", "shadowMap.map");
 			pass->SetSyncLinkage("renderTarget", "clearRT.buffer");
 			pass->SetSyncLinkage("depthStencil", "clearDS.buffer");
 			AppendPass(std::move(pass));
@@ -177,5 +183,11 @@ namespace FraplesDev
 	}
 	void BlurOutlineRenderGraph::BindShadowCamera(Camera& cam)
 	{
+		dynamic_cast<ShadowMappingPass&>(FindPassByName("shadowMap")).BindShadowCamera(cam);
+		dynamic_cast<LambertianPass&>(FindPassByName("lambertian")).BindShadowCamera(cam);
+	}
+	void BlurOutlineRenderGraph::DumpShadowMap(Graphics& gfx, const std::string& path)
+	{
+		dynamic_cast<ShadowMappingPass&>(FindPassByName("shadowMap")).DumpShadowMap(gfx, path);
 	}
 }

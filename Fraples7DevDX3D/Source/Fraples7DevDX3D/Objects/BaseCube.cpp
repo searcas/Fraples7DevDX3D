@@ -74,6 +74,22 @@ namespace FraplesDev
 
 			AddTechnique(std::move(outLine));
 		}
+		// Shadow map technique
+		{
+			Technique map{ "ShadowMap",Channel::shadow, true };
+			{
+				Step draw("shadowMap");
+
+				//TODO: better sub-layout generation tech for future consideration maybe
+				draw.AddContext(InputLayout::Resolve(gfx, model._mVertices.GetLayout(), *VertexShader::Resolve(gfx, "Solid_VS.cso")));
+				draw.AddContext(std::make_shared<TransformCBuf>(gfx));
+				
+				//TODO: might need to specify rasterizer when doubled-sided models start being used
+
+				map.AddStep(std::move(draw));
+			}
+			AddTechnique(std::move(map));
+		}
 	}
 	void BaseCube::SetPos(DirectX::XMFLOAT3 pos_in) noexcept
 	{
