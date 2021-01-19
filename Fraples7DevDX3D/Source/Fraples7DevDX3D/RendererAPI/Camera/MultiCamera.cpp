@@ -55,14 +55,14 @@ namespace FraplesDev
 			pcam->LinkTechniques(rg);
 		}
 	}
-	void MultiCamera::Submit() const
+	void MultiCamera::Submit(size_t channels) const
 	{
 		for (size_t i = 0; i < _mCameras.size(); i++)
 		{
 			// We don't wanna render selected camera no sense there
 			if (i != _mActive)
 			{
-				_mCameras[i]->Submit();
+				_mCameras[i]->Submit(channels);
 			}
 		}
 	}

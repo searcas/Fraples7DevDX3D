@@ -1,5 +1,6 @@
 #include "Material.h"
 #include "RendererAPI/TransformCBuf/TransformCBufScaling.h"
+#include "RendererAPI/ShadowMapping/Channels.h"
 namespace FraplesDev
 {
 	Material::Material(Graphics& gfx, const aiMaterial& material, const std::filesystem::path& modelPath) noexcept(!IS_DEBUG)
@@ -14,7 +15,7 @@ namespace FraplesDev
 
 		// phong technique
 		{
-			Technique phong{ "Phong" };
+			Technique phong{ "Phong",Channel::main };
 			Step step("lambertian");
 			std::string shaderCode = "Phong";
 			aiString texFileName;
@@ -126,7 +127,7 @@ namespace FraplesDev
 
 		//outline technique
 		{
-			Technique outline("Outline", false);
+			Technique outline("Outline", Channel::main, false);
 			{
 				Step mask("outlineMask");
 

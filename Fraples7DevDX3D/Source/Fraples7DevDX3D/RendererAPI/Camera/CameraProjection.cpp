@@ -9,6 +9,7 @@
 #include "RendererAPI/ConstantBuffers.h"
 #include "RendererAPI/TransformCBuf.h"
 #include "RendererAPI/Rasterizer/Rasterizer.h"
+#include "RendererAPI/ShadowMapping/Channels.h"
 namespace FraplesDev
 {
 	CameraProjection::CameraProjection(Graphics& gfx)
@@ -62,7 +63,7 @@ namespace FraplesDev
 		_mPindices = IndexBuffer::Resolve(gfx, geometryTag, indices);
 		_mPtopology = Topology::Resolve(gfx, D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 		{
-			Technique line;
+			Technique line{ Channel::main };
 			Step only("lambertian");
 			auto pvs = VertexShader::Resolve(gfx, "Solid_VS.cso");
 			only.AddContext(InputLayout::Resolve(gfx, vertices.GetLayout(),*pvs));

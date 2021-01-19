@@ -33,9 +33,9 @@ namespace FraplesDev
 		_mRoot = ParseNode(nextId, *pScene->mRootNode, scale);
 	}
 
-	void Model::Submit() const noexcept(!IS_DEBUG)
+	void Model::Submit(size_t channels) const noexcept(!IS_DEBUG)
 	{
-		_mRoot->Submit(DirectX::XMMatrixIdentity());
+		_mRoot->Submit(channels, DirectX::XMMatrixIdentity());
 	}
 
 	std::unique_ptr<Node>Model::ParseNode(int& nextId, const aiNode& node, float scale)noexcept

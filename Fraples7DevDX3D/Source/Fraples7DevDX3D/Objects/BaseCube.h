@@ -2,6 +2,7 @@
 #include "RendererAPI/Renderer.h"
 #include "RendererAPI/GFXContext.h"
 #include "RendererAPI/IndexBuffer.h"
+#include "RendererAPI/ShadowMapping/Channels.h"
 namespace FraplesDev
 {
 	class BaseCube : public Renderer

@@ -64,10 +64,10 @@ namespace FraplesDev
 		};
 	}
 
-	void PointLight::Submit() const noexcept(!IS_DEBUG)
+	void PointLight::Submit(size_t channels) const noexcept(!IS_DEBUG)
 	{
 		_mMesh.SetPos(_mConstantBufferData.pos);
-		_mMesh.Submit();
+		_mMesh.Submit(channels);
 	}
 
 	void PointLight::Bind(Graphics& gfx, DirectX::FXMMATRIX view) const noexcept

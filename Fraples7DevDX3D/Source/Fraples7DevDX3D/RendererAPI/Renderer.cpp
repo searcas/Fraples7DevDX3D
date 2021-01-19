@@ -22,11 +22,11 @@ namespace FraplesDev {
 		tech_in.InitializeParentReferences(*this);
 		_mTechniques.push_back(std::move(tech_in));
 	}
-	void Renderer::Submit() const noexcept
+	void Renderer::Submit(size_t channels) const noexcept
 	{
 		for (auto& tech : _mTechniques)
 		{
-			tech.Submit(*this);
+			tech.Submit(*this, channels);
 		}
 	}
 	void Renderer::Bind(Graphics& gfx)const noexcept(!IS_DEBUG)

@@ -218,6 +218,7 @@
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\WireFramePass.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\ScaleOutlineRenderGraph.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\VerticalBlurPass.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\ShadowMapping\Channels.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\TransformCBuf\TransformCBufScaling.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Filters\BlurPack.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\Material.h" />

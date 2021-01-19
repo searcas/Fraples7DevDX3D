@@ -10,6 +10,7 @@
 #include "RendererAPI/ConstantBuffers.h"
 #include "RendererAPI/TransformCBuf.h"
 #include "RendererAPI/Rasterizer/Rasterizer.h"
+#include "RendererAPI/ShadowMapping/Channels.h"
 namespace FraplesDev
 {
 	Frustum::Frustum(Graphics& gfx, float width, float height, float nearZ, float farZ)
@@ -46,7 +47,7 @@ namespace FraplesDev
 		_mPtopology = Topology::Resolve(gfx, D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 
 		{
-			Technique line;
+			Technique line{ Channel::main };
 			{
 				Step unoccluded("lambertian");
 

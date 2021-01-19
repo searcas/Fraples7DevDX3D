@@ -22,7 +22,7 @@ namespace FraplesDev
 
 		auto tcb = std::make_shared<TransformCBuf>(gfx);
 		{
-			Technique shade("Shade");
+			Technique shade("Shade", Channel::main);
 			{
 				Step only("lambertian");
 				only.AddContext(Texture::Resolve(gfx, "Images\\brickwall.jpg"));
@@ -47,7 +47,7 @@ namespace FraplesDev
 			AddTechnique(std::move(shade));
 		}
 		{
-			Technique outLine("Outline");
+			Technique outLine("Outline", Channel::main);
 			{
 				Step mask("outlineMask");
 

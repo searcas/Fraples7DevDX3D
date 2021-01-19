@@ -17,7 +17,7 @@ namespace FraplesDev
 		inline Camera& GetControlledCamera() { return *_mCameras[_mControlled]; };
 		~MultiCamera() = default;
 		void LinnkTechniques(RenderGraph& rg);
-		void Submit()const;
+		void Submit(size_t channels)const;
 		Camera* operator->();
 			
 	private:

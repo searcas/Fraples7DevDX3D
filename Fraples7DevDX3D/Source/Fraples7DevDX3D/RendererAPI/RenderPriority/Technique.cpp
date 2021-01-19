@@ -3,9 +3,9 @@
 #include "TechniqueProbe.h"
 namespace FraplesDev
 {
-	void Technique::Submit(const Renderer& renderer) const noexcept
+	void Technique::Submit(const Renderer& renderer, size_t channelsFilter) const noexcept
 	{
-		if (_mActivate)
+		if (_mActivate && ((_mChannel  & channelsFilter) != 0))
 		{
 			for (const auto& step : _mSteps)
 			{
@@ -28,8 +28,13 @@ namespace FraplesDev
 		}
 	}
 
-	Technique::Technique(std::string name, bool isActive )noexcept
-		:_mName(name), _mActivate(isActive)
+	Technique::Technique(std::string name, size_t channels, bool isActive )noexcept
+		:_mName(name), _mActivate(isActive),_mChannel(channels)
+	{
+
+	}
+	Technique::Technique(size_t channels)
+		: _mChannel(channels)
 	{
 
 	}

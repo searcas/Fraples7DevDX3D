@@ -16,7 +16,7 @@ namespace FraplesDev
 		PointLight(Graphics& gfx, float radius = 0.5f);
 		void SpawnControlWindow()noexcept;
 		void Reset()noexcept;
-		void Submit() const noexcept(!IS_DEBUG);
+		void Submit(size_t channels) const noexcept(!IS_DEBUG);
 		void LinkTechniques(RenderGraph&);
 		std::shared_ptr<Camera>ShareCamera()const noexcept;
 		void Bind(Graphics& gfx, DirectX::FXMMATRIX view) const noexcept;

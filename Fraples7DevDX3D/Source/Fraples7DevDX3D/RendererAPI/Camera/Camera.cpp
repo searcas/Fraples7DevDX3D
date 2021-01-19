@@ -124,15 +124,15 @@ namespace FraplesDev
 		_mCamProj.LinkTechniques(rg);
 		_mProj.LinkTechniques(rg);
 	}
-	void Camera::Submit() const
+	void Camera::Submit(size_t channels) const
 	{
 		if (_mEnableCameraProjection)
 		{
-			_mCamProj.Submit();
+			_mCamProj.Submit(channels);
 		}
 		if (_mEnableFrustumProjection)
 		{
-			_mProj.Submit();
+			_mProj.Submit(channels);
 		}
 	}
 	void Camera::SetPos(const DirectX::XMFLOAT3& pos)

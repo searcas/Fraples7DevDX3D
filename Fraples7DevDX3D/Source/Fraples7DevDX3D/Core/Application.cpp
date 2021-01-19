@@ -3,6 +3,7 @@
 #include "QualityAssurance/TestingQA.h"
 #include "RendererAPI/Probe/ModelProbeBase.h"
 #include "RendererAPI/Camera/Camera.h"
+#include "RendererAPI/ShadowMapping/Channels.h"
 namespace FraplesDev
 {
 	
@@ -72,13 +73,13 @@ namespace FraplesDev
 
 	void Application::RenderObj()
 	{
-		_mCameras.Submit();
-		light.Submit();
-		_mSponza.Submit();
-		cube1.Submit();
-		cube2.Submit();
-		_mNano.Submit();
-		gobber.Submit();
+		_mCameras.Submit(Channel::main);
+		light.Submit(Channel::main);
+		_mSponza.Submit(Channel::main);
+		cube1.Submit(Channel::main);
+		cube2.Submit(Channel::main);
+		_mNano.Submit(Channel::main);
+		gobber.Submit(Channel::main);
 		renderGraph.Execute(_mWin.GetGFX());
 	}
 

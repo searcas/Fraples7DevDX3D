@@ -16,7 +16,7 @@ namespace FraplesDev
 		void Translate(DirectX::XMFLOAT3 translation) noexcept;
 		void BindGraphics(Graphics& gfx)const;
 		void LinkTechniques(RenderGraph& rg);
-		void Submit()const;
+		void Submit(size_t channels)const;
 		void Reset(Graphics& gfx);
 		void SetPos(const DirectX::XMFLOAT3& pos);
 		inline DirectX::XMFLOAT3 GetPos()const noexcept { return _mPos; }

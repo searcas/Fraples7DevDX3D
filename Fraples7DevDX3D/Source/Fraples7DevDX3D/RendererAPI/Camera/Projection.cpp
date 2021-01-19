@@ -21,9 +21,9 @@ namespace FraplesDev
 	{
 		_mFrust.SetRotation(rot);
 	}
-	void Projection::Submit() const
+	void Projection::Submit(size_t channel) const
 	{
-		_mFrust.Submit();
+		_mFrust.Submit(channel);
 	}
 	void Projection::Reset(Graphics& gfx)
 	{

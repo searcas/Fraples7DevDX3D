@@ -4,6 +4,7 @@
 #include "RendererAPI/GFXContextBase.h"
 #include "Core/MetaProgramming/Vertex.h"
 #include "RendererAPI/Stencil/Stencil.h"
+#include "RendererAPI/ShadowMapping/Channels.h"
 namespace FraplesDev
 {
 	SolidSphere::SolidSphere(Graphics& gfx, float radius)
@@ -16,7 +17,7 @@ namespace FraplesDev
 			_mPtopology = Topology::Resolve(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 			
 			{
-				Technique solid;
+				Technique solid{ Channel::main };
 				Step only("lambertian");
 				auto pvs = VertexShader::Resolve(gfx, "Solid_VS.cso");
 				only.AddContext(InputLayout::Resolve(gfx, model._mVertices.GetLayout(), *pvs));

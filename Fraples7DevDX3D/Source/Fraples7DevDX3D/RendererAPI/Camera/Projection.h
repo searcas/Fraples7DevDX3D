@@ -11,7 +11,7 @@ namespace FraplesDev
 		void RenderWidgets(Graphics& gfx);
 		void SetPosition(DirectX::XMFLOAT3);
 		void SetRotation(DirectX::XMFLOAT3);
-		void Submit()const;
+		void Submit(size_t channel)const;
 		void Reset(Graphics& gfx);
 		void LinkTechniques(RenderGraph& rg);
 	private:
