@@ -9,7 +9,7 @@ namespace FraplesDev
 	public:
 		BindingPass(std::string name, std::vector<std::shared_ptr<GfxContext>>binds = {});
 		void AddBind(std::shared_ptr<GfxContext> bind)noexcept;
-		void BindAll(Graphics& gfx)const noexcept;
+		void BindAll(Graphics& gfx)const noexcept(!IS_DEBUG);
 		void Finalize()override;
 		template<class T>
 		void AddBindSink(std::string name)
