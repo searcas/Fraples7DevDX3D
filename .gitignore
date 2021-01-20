@@ -271,3 +271,4 @@ __pycache__/
 *.cso
 /Fraples7DevDX3D/imgui.ini
 !Publish/
+!Publish/*.exe
