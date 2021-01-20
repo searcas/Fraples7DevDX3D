@@ -12,7 +12,8 @@ namespace FraplesDev
 
 	ScriptCommander::ScriptCommander(const std::vector<std::string>& args)
 	{
-		if (args.size()>=2 && args[0]=="--commands")
+
+		if (args.size() >= 2 && args[0] == "--commands")
 		{
 			const auto scriptPath = args[1];
 			std::ifstream script(scriptPath);
@@ -24,10 +25,10 @@ namespace FraplesDev
 			nlohmann::json top;
 			script >> top;
 
-			if (!top.at("enabled"))
+			if (top.at("enabled"))
 			{
 				bool abort = false;
-				for (const auto& j : top)
+				for (const auto& j : top.at("commands"))
 				{
 					const auto commandName = j.at("command").get<std::string>();
 					const auto params = j.at("params");
@@ -73,11 +74,11 @@ namespace FraplesDev
 	{
 		std::filesystem::create_directory(path);
 		//copy executable
-		std::filesystem::copy_file(R"(..\x64\Release\Fraples7DevDX3D.exe)", path + R"(\Fraples7DevDX3D.exe)", std::filesystem::copy_options::overwrite_existing);
-		std::filesystem::copy_file("imgui_default.ini", path + R"(\imgui_default.ini)", std::filesystem::copy_options::overwrite_existing);
+		std::filesystem::copy_file(R"(Fraples7DevDX3D.exe)", path + R"(\Fraples7DevDX3D.exe)", std::filesystem::copy_options::overwrite_existing);
+		std::filesystem::copy_file("..\\..\\Fraples7DevDX3D\\imgui_default.ini", path + R"(\imgui_default.ini)", std::filesystem::copy_options::overwrite_existing);
 
 		// copy all dlls
-		for (auto& p : std::filesystem::directory_iterator(""))
+		for (auto& p : std::filesystem::directory_iterator(std::filesystem::current_path()))
 		{
 			if (p.path().extension() == L".dll")
 			{
@@ -85,10 +86,10 @@ namespace FraplesDev
 			}
 		}
 		// copy compiled shaders
-		std::filesystem::copy("Shaders", path + R"(\Shaders)", std::filesystem::copy_options::overwrite_existing);
+		std::filesystem::copy("..\\..\\Fraples7DevDX3D\\Shaders", path + R"(\Shaders)", std::filesystem::copy_options::overwrite_existing);
 		// copy assets
-		std::filesystem::copy("Images", path + R"(\Images)", std::filesystem::copy_options::overwrite_existing | std::filesystem::copy_options::recursive);
-		std::filesystem::copy("Models", path + R"(\Models)", std::filesystem::copy_options::overwrite_existing | std::filesystem::copy_options::recursive);
+		std::filesystem::copy("..\\..\\Fraples7DevDX3D\\Images", path + R"(\Images)", std::filesystem::copy_options::overwrite_existing | std::filesystem::copy_options::recursive);
+		std::filesystem::copy("..\\..\\Fraples7DevDX3D\\Models", path + R"(\Models)", std::filesystem::copy_options::overwrite_existing | std::filesystem::copy_options::recursive);
 
 
 	}
