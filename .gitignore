@@ -272,3 +272,4 @@ __pycache__/
 /Fraples7DevDX3D/imgui.ini
 !Publish/
 !Publish/*.exe
+!Publish/Shaders/*
