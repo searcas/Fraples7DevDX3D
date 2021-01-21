@@ -1,7 +1,7 @@
 # Fraples7DevDX3D
 Development the Engine journey with DirectX 11 3D, eventually gonna be merged with Original Fraples7 Engine
 # Installation
-If you running without visual studio you have publish folder all compiled and ready to be used :)
+If you running without visual studio you have <b>publish</b> folder all compiled and ready to be used :)
 # Progress of project
 https://youtu.be/TFAi-Ot5M_Y <br>
 https://www.youtube.com/watch?v=atoQFfHQd6g <br>
