@@ -3,7 +3,7 @@
 struct VSOut
 {
 	float3 viewPos : Position;
-	float3 normal : Normal;
+    float3 normal: Normal;
 	float2 tc : Texcoord;
 	float4 shadowHomePos : ShadowPosition;
 	float4 pos : SV_Position;

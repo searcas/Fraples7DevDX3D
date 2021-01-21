@@ -3,6 +3,7 @@
 
 #include "PointLight.hlsli"
 #include "PShadow.hlsli"
+
 cbuffer ObjectCBuf : register(b1)
 {
 	bool useGlossAlpha;
@@ -22,9 +23,10 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
 {
 	float3 diffuse;
 	float3 specularReflected;
+	
 	// shadow map test
 	const float shadowLevel = Shadow(spos);
-	if(shadowLevel != 0.0f)
+	if (shadowLevel != 0.0f)
 	{
 		// normalize the mesh normal
 		viewNormal = normalize(viewNormal);
@@ -52,18 +54,16 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
 		diffuse = Diffuse(diffuseColor, diffuseIntensity, att, lv.dirToL, viewNormal);
 		// specular reflected
 		specularReflected = Speculate(
-		diffuseColor * specularReflectionColor, specularWeight, viewNormal,
-		lv.vToL, viewFragPos, att, specularPowerLoaded
+			diffuseColor * specularReflectionColor, specularWeight, viewNormal,
+			lv.vToL, viewFragPos, att, specularPowerLoaded
 		);
 		// scale by shadow level
 		diffuse *= shadowLevel;
-		specularReflected *= shadowLevel;
 	}
 	else
 	{
 		diffuse = specularReflected = 0.0f;
 	}
-	
 	// final color = attenuate diffuse & ambient by diffuse texture color and add specular reflected
 	return float4(saturate((diffuse + ambient) * tex.Sample(splr, tc).rgb + specularReflected), 1.0f);
 }
