@@ -13,6 +13,7 @@ namespace FraplesDev
 		{
 			DirectX::XMMATRIX VieWProj;
 		};
+
 		ShadowCameraCBuf(Graphics& gfx, UINT slot = 1u);
 		void Bind(Graphics& gfx)noexcept(!IS_DEBUG)override;
 		void Update(Graphics& gfx);
