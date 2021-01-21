@@ -2,10 +2,10 @@ Texture2D smap : register(t3);
 SamplerComparisonState ssam : register(s1);
 
 #define PCF_RANGE 2
-bool Shadow(const in float4 shadowHomePos)
+float Shadow(const in float4 shadowHomePos)
 {
     float shadowLevel = 0.0f;
-    const float3 spos = shadowHomePos / shadowHomePos.w;
+    const float3 spos = shadowHomePos.xyz / shadowHomePos.w;
     
     
     if(spos.z > 1.0f || spos.z < 0.0f)

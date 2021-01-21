@@ -39,9 +39,9 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
 		specular = Speculate(diffuseColor * diffuseIntensity *
 	specularColor, specularWeight, viewNormal, lv.vToL, viewFragPos, att, specularGloss);
 		// scale by shadow level
-        diffuse *= shadowLevel;
-        specular *= shadowLevel;
-    }
+		diffuse *= shadowLevel;
+		specular *= shadowLevel;
+	}
 	else
 	{
 		diffuse = specular = 0.0f;

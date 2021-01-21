@@ -39,8 +39,8 @@ float4 main(float3 viewFragPos :Position, float3 viewNormal : Normal, float3 vie
 	}
 #endif
 
-    const float shadowLevel = Shadow(spos);
-    if (shadowLevel != 0.0f)
+	const float shadowLevel = Shadow(spos);
+	if (shadowLevel != 0.0f)
 	{
 		// normalize the mesh normal
 		viewNormal = normalize(viewNormal);
@@ -78,9 +78,9 @@ float4 main(float3 viewFragPos :Position, float3 viewNormal : Normal, float3 vie
 		lv.vToL, viewFragPos, att, specularPower
 	);
 		// scale by shadow level
-        diffuse *= shadowLevel;
-        specularReflected *= shadowLevel;
-    }
+		diffuse *= shadowLevel;
+		specularReflected *= shadowLevel;
+	}
 	else
 	{
 		diffuse = specularReflected = 0.0f;
