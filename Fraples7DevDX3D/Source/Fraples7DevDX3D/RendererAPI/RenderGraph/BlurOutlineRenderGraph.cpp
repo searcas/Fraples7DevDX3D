@@ -10,6 +10,7 @@
 #include "Passes/WireFramePass.h"
 #include "Passes/ShadowMappingPass.h"
 #include "RendererAPI/ShadowMapping/ShadowSampler.h"
+#include "RendererAPI/ShadowMapping/ShadowRasterizer.h"
 namespace FraplesDev
 {
 	BlurOutlineRenderGraph::BlurOutlineRenderGraph(Graphics& gfx)
@@ -25,8 +26,14 @@ namespace FraplesDev
 			pass->SetSyncLinkage("buffer", "$.masterDepth");
 			AppendPass(std::move(pass));
 		}
+		// setup shadow rasterizer
+		{
+			_mShadowRasterizer = std::make_shared<ShadowRasterizer>(gfx, 0, 0.005, 1.0f);
+			AddGlobalSource(DirectContextSource<ShadowRasterizer>::Make("shadowRasterizer", _mShadowRasterizer));
+		}
 		{
 			auto pass = std::make_unique<ShadowMappingPass>(gfx, "shadowMap");
+			pass->SetSyncLinkage("shadowRasterizer", "$.shadowRasterizer");
 			AppendPass(std::move(pass));
 		}
 		//Shadow controll buffer & sampler

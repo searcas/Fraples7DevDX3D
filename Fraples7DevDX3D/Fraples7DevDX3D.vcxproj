@@ -124,6 +124,7 @@
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\ScaleOutlineRenderGraph.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\VerticalBlurPass.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\ShadowMapping\ShadowCameraCBuf.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\ShadowMapping\ShadowRasterizer.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\ShadowMapping\ShadowSampler.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\TransformCBuf\TransformCBufScaling.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\Material.cpp" />
@@ -224,6 +225,7 @@
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\VerticalBlurPass.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\ShadowMapping\Channels.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\ShadowMapping\ShadowCameraCBuf.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\ShadowMapping\ShadowRasterizer.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\ShadowMapping\ShadowSampler.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\TransformCBuf\TransformCBufScaling.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Filters\BlurPack.h" />

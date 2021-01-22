@@ -276,6 +276,9 @@
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\ShadowMapping\ShadowSampler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\ShadowMapping\ShadowRasterizer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Fraples7.h">
@@ -627,6 +630,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\ShadowMapping\ShadowSampler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\ShadowMapping\ShadowRasterizer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -7,6 +7,7 @@ namespace FraplesDev
 {
 	class Camera;
 	class ShadowSampler;
+	class ShadowRasterizer;
 	class BlurOutlineRenderGraph : public RenderGraph
 	{
 	public:
@@ -34,6 +35,6 @@ namespace FraplesDev
 		std::shared_ptr<CachingPixelConstantBufferEx>_mBlurKernel;
 		std::shared_ptr<CachingPixelConstantBufferEx>_mBlurDirection;
 		std::shared_ptr<ShadowSampler>_mShadowSampler;
-
+		std::shared_ptr<ShadowRasterizer>_mShadowRasterizer;
 	};
 }
