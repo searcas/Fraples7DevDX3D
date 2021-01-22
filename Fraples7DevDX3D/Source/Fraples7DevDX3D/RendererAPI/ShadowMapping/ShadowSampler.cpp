@@ -53,11 +53,11 @@ namespace FraplesDev
 	}
 	void ShadowSampler::SetBilinear(bool bilin)
 	{
-		_mCurrentSampler = (_mCurrentSampler & 0b01) | (bilin ? 0b01 : 0);
+		_mCurrentSampler = (_mCurrentSampler & ~0b01) | (bilin ? 0b01 : 0);
 	}
 	void ShadowSampler::SetHwPcf(bool hwPcf)
 	{
-		_mCurrentSampler = (_mCurrentSampler & 0b10) | (hwPcf ? 0b10 : 0);
+		_mCurrentSampler = (_mCurrentSampler & ~0b10) | (hwPcf ? 0b10 : 0);
 	}
 	bool ShadowSampler::GetBilinear() const
 	{

@@ -208,9 +208,14 @@ namespace FraplesDev
 		{
 			auto ctrl = _mShadowControl->GetBuffer();
 			bool pfcChange = ImGui::SliderInt("PCF Level", &ctrl["pcfLevel"], 0, 4);
-			bool biasChange = ImGui::SliderFloat("Depth Bias",&ctrl["depthBias"], 0.0f, 0.1f, "%.6f");
+			bool biasChange = ImGui::SliderFloat("Depth Bias",&ctrl["depthBias"], 0.00001f, 0.1f, "%.6f");
 			if (pfcChange || biasChange)
 			{
+				_mShadowControl->SetBuffer(ctrl);
+			}
+			if (ImGui::Button("Reset"))
+			{
+				ctrl["depthBias"] = 0.0005f;
 				_mShadowControl->SetBuffer(ctrl);
 			}
 		}
