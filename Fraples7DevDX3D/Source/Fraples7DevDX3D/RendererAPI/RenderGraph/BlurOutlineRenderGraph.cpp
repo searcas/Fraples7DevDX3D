@@ -29,25 +29,34 @@ namespace FraplesDev
 			auto pass = std::make_unique<ShadowMappingPass>(gfx, "shadowMap");
 			AppendPass(std::move(pass));
 		}
-		//Shadow controll
+		//Shadow controll buffer & sampler
 		{
-			MP::RawLayout l;
-			l.Add<MP::Integer>("pcfLevel");
-			l.Add<MP::Float>("depthBias");
-			l.Add<MP::Bool>("hwPcf");
-			MP::Buffer buf(std::move(l));
-			buf["pcfLevel"] = 0;
-			buf["depthBias"] = 0.0005f;
-			buf["hwPcf"] = true;
-			_mShadowControl = std::make_shared<CachingPixelConstantBufferEx>(gfx, buf, 2);
-			AddGlobalSource(DirectContextSource<CachingPixelConstantBufferEx>::Make("shadowControl", _mShadowControl));
+			{
+				MP::RawLayout l;
+				l.Add<MP::Integer>("pcfLevel");
+				l.Add<MP::Float>("depthBias");
+				l.Add<MP::Bool>("hwPcf");
+				MP::Buffer buf(std::move(l));
+				buf["pcfLevel"] = 0;
+				buf["depthBias"] = 0.0005f;
+				buf["hwPcf"] = true;
+				_mShadowControl = std::make_shared<CachingPixelConstantBufferEx>(gfx, buf, 2);
+				AddGlobalSource(DirectContextSource<CachingPixelConstantBufferEx>::Make("shadowControl", _mShadowControl));
+			}
+
+			{
+				_mShadowSampler = std::make_shared<ShadowSampler>(gfx);
+				AddGlobalSource(DirectContextSource<ShadowSampler>::Make("shadowSampler", _mShadowSampler));
+			}
 		}
+		
 		{
 			auto pass = std::make_unique<LambertianPass>(gfx, "lambertian");
 			pass->SetSyncLinkage("shadowMap", "shadowMap.map");
 			pass->SetSyncLinkage("renderTarget", "clearRT.buffer");
 			pass->SetSyncLinkage("depthStencil", "clearDS.buffer");
 			pass->SetSyncLinkage("shadowControl", "$.shadowControl");
+			pass->SetSyncLinkage("shadowSampler", "$.shadowSampler");
 			
 			AppendPass(std::move(pass));
 		}

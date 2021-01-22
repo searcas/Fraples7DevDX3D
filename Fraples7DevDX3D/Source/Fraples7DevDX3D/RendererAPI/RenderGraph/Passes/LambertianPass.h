@@ -18,7 +18,6 @@ namespace FraplesDev
 		void BindShadowCamera(const Camera& cam)noexcept;
 		void Execute(Graphics& gfx)const noexcept(!IS_DEBUG) override;
 	private:
-		std::shared_ptr<ShadowSampler>_mShadowSampler;
 		std::shared_ptr<ShadowCameraCBuf>_mShadowCBuf;
 		const Camera* _mMainCamera = nullptr;
 	};
