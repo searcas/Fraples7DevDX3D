@@ -28,11 +28,24 @@ namespace FraplesDev
 			auto pass = std::make_unique<ShadowMappingPass>(gfx, "shadowMap");
 			AppendPass(std::move(pass));
 		}
+		//Shadow controll
+		{
+			MP::RawLayout l;
+			l.Add<MP::Integer>("pcfLevel");
+			l.Add<MP::Float>("depthBias");
+			MP::Buffer buf(std::move(l));
+			buf["pcfLevel"] = 0;
+			buf["depthBias"] = 0.0005f;
+			_mShadowControl = std::make_shared<CachingPixelConstantBufferEx>(gfx, buf, 2);
+			AddGlobalSource(DirectContextSource<CachingPixelConstantBufferEx>::Make("shadowControl", _mShadowControl));
+		}
 		{
 			auto pass = std::make_unique<LambertianPass>(gfx, "lambertian");
 			pass->SetSyncLinkage("shadowMap", "shadowMap.map");
 			pass->SetSyncLinkage("renderTarget", "clearRT.buffer");
 			pass->SetSyncLinkage("depthStencil", "clearDS.buffer");
+			pass->SetSyncLinkage("shadowControl", "$.shadowControl");
+			
 			AppendPass(std::move(pass));
 		}
 		// setup blur constant buffers
@@ -126,7 +139,7 @@ namespace FraplesDev
 		}
 		_mBlurKernel->SetBuffer(k);
 	}
-	void BlurOutlineRenderGraph::RenderWidgets(Graphics& gfx)
+	void BlurOutlineRenderGraph::RenderKernelWindow(Graphics& gfx)
 	{
 		if (ImGui::Begin("Kernel"))
 		{
@@ -157,7 +170,7 @@ namespace FraplesDev
 							ImGui::SetItemDefaultFocus();
 						}
 					}
-				ImGui::EndCombo();
+					ImGui::EndCombo();
 				}
 			}
 			bool RadChange = ImGui::SliderInt("Radius", &radius, 0, maxRadius);
@@ -173,9 +186,28 @@ namespace FraplesDev
 					SetKernelBox(radius);
 				}
 			}
-			
+
 		}
 		ImGui::End();
+	}
+	void BlurOutlineRenderGraph::RenderShadowWindow(Graphics& gfx)
+	{
+		if (ImGui::Begin("Shadows"))
+		{
+			auto ctrl = _mShadowControl->GetBuffer();
+			bool pfcChange = ImGui::SliderInt("PCF Level", &ctrl["pcfLevel"], 0, 4);
+			bool biasChange = ImGui::SliderFloat("Depth Bias",&ctrl["depthBias"], 0.0f, 0.1f, "%.6f");
+			if (pfcChange || biasChange)
+			{
+				_mShadowControl->SetBuffer(ctrl);
+			}
+		}
+		ImGui::End();
+	}
+	void BlurOutlineRenderGraph::RenderWindows(Graphics& gfx)
+	{
+		RenderShadowWindow(gfx);
+		RenderKernelWindow(gfx);
 	}
 	void BlurOutlineRenderGraph::BindMainCamera(Camera& cam)
 	{
