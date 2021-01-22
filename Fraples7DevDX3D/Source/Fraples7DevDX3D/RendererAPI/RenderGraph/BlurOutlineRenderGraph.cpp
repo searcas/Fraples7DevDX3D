@@ -9,6 +9,7 @@
 #include "ImGui/imgui.h"
 #include "Passes/WireFramePass.h"
 #include "Passes/ShadowMappingPass.h"
+#include "RendererAPI/ShadowMapping/ShadowSampler.h"
 namespace FraplesDev
 {
 	BlurOutlineRenderGraph::BlurOutlineRenderGraph(Graphics& gfx)
@@ -33,9 +34,11 @@ namespace FraplesDev
 			MP::RawLayout l;
 			l.Add<MP::Integer>("pcfLevel");
 			l.Add<MP::Float>("depthBias");
+			l.Add<MP::Bool>("hwPcf");
 			MP::Buffer buf(std::move(l));
 			buf["pcfLevel"] = 0;
 			buf["depthBias"] = 0.0005f;
+			buf["hwPcf"] = true;
 			_mShadowControl = std::make_shared<CachingPixelConstantBufferEx>(gfx, buf, 2);
 			AddGlobalSource(DirectContextSource<CachingPixelConstantBufferEx>::Make("shadowControl", _mShadowControl));
 		}
