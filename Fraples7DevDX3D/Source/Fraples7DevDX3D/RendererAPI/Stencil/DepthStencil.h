@@ -27,6 +27,7 @@ namespace FraplesDev
 		inline const unsigned int& GetWidth() const { return _mWidth; };
 		inline const unsigned int& GetHeight()const { return _mHeight; };
 	protected:
+		DepthStencil(Graphics& gfx, Microsoft::WRL::ComPtr<ID3D11Texture2D>pTexture, UINT face);
 		DepthStencil(Graphics& gfx, UINT width, UINT height, bool canBindShaderInput,Usage usage);
 		Microsoft::WRL::ComPtr<ID3D11DepthStencilView>_mDepthStencilView;
 		unsigned int _mWidth;
@@ -46,6 +47,7 @@ namespace FraplesDev
 	class OutputOnlyDepthStencil : public DepthStencil
 	{
 	public:
+		OutputOnlyDepthStencil(Graphics& gfx, Microsoft::WRL::ComPtr<ID3D11Texture2D>pTexture, UINT face);
 		OutputOnlyDepthStencil(Graphics& gfx);
 		OutputOnlyDepthStencil(Graphics& gfx, UINT width, UINT height);
 		void Bind(Graphics& gfx)noexcept(!IS_DEBUG) override;

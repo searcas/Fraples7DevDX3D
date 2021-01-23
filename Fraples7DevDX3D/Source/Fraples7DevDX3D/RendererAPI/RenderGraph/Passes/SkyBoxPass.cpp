@@ -33,9 +33,9 @@ namespace FraplesDev
 			auto model = Cube::Make();
 			model.Transform(DirectX::XMMatrixScaling(3.0f, 3.0f, 3.0f));
 			const auto geometryTag = "$cube_map";
-			AddBind(VertexBuffer::Resolve(gfx, geometryTag, model._mVertices));
+			AddBind(VertexBuffer::Resolve(gfx, geometryTag, std::move(model._mVertices)));
 			_mCount = (UINT)model._mIndices.size();
-			AddBind(IndexBuffer::Resolve(gfx, geometryTag, model._mIndices));
+			AddBind(IndexBuffer::Resolve(gfx, geometryTag, std::move(model._mIndices)));
 			AddBind(InputLayout::Resolve(gfx, model._mVertices.GetLayout(), *pvs));
 			AddBind(std::move(pvs));
 		}

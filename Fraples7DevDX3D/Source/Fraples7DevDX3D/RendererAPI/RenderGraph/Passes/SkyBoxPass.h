@@ -13,6 +13,6 @@ namespace FraplesDev
 		void Execute(Graphics& gfx)const noexcept override;
 	private:
 		UINT _mCount;
-		const Camera* _mMainCam;
+		const Camera* _mMainCam = nullptr;
 	};
 }

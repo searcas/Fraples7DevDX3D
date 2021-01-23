@@ -1,6 +1,7 @@
 #include "CubeTexture.h"
 #include "Core/Surface.h"
 #include "Core/Common/Exceptions/Macros/GraphicsThrowMacros.h"
+#include "RendererAPI/Stencil/DepthStencil.h"
 #include <vector>
 namespace FraplesDev
 {
@@ -57,5 +58,50 @@ namespace FraplesDev
 	{
 		INFOMAN_NOHR(gfx);
 		FPL_GFX_THROW_INFO_ONLY(GetContext(gfx)->PSSetShaderResources(_mSlot, 1u, _mTextureView.GetAddressOf()));
+	}
+	DepthCubeTexture::DepthCubeTexture(Graphics& gfx, UINT size, UINT slot)
+		:_mSlot(slot)
+	{
+		INFOMAN(gfx);
+		// Texture descriptor
+		D3D11_TEXTURE2D_DESC textureDesc = {};
+		textureDesc.Width = size;
+		textureDesc.Height = size;
+		textureDesc.MipLevels = 1;
+		textureDesc.ArraySize = 6;
+		textureDesc.Format = DXGI_FORMAT::DXGI_FORMAT_R32_TYPELESS;
+		textureDesc.SampleDesc.Count = 1;
+		textureDesc.SampleDesc.Quality = 0;
+		textureDesc.Usage = D3D11_USAGE_DEFAULT;
+		textureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_DEPTH_STENCIL;
+		textureDesc.CPUAccessFlags = 0;
+		textureDesc.MiscFlags = D3D11_RESOURCE_MISC_TEXTURECUBE;
+		// create texture resource
+		Microsoft::WRL::ComPtr<ID3D11Texture2D> pTexture;
+		FPL_GFX_THROW_INFO(GetDevice(gfx)->CreateTexture2D(&textureDesc, nullptr, &pTexture));
+
+		// create the resource view on the texture
+		D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
+		srvDesc.Format = DXGI_FORMAT_R32_FLOAT;
+		srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURECUBE;
+		srvDesc.Texture2D.MostDetailedMip = 0;
+		srvDesc.Texture2D.MipLevels = 1;
+		FPL_GFX_THROW_INFO(GetDevice(gfx)->CreateShaderResourceView(pTexture.Get(), &srvDesc, &_mTextureView));
+
+		// make depth buffer resources for capturing shadow map
+
+		for (UINT face = 0; face < 6; face++)
+		{
+			_mDepthBuffers.push_back(std::make_shared<OutputOnlyDepthStencil>(gfx, pTexture, face));
+		}
+	}
+	void DepthCubeTexture::Bind(Graphics& gfx) noexcept(!IS_DEBUG)
+	{
+		INFOMAN_NOHR(gfx);
+		FPL_GFX_THROW_INFO_ONLY(GetContext(gfx)->PSSetShaderResources(_mSlot, 1u, _mTextureView.GetAddressOf()));
+	}
+	std::shared_ptr<OutputOnlyDepthStencil> DepthCubeTexture::GetDepthBuffer(size_t index) const
+	{
+		return _mDepthBuffers[index];
 	}
 }
