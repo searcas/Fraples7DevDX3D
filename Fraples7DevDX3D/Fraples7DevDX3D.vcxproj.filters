@@ -33,9 +33,6 @@
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\TransformCBuf.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\InputLayout.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -279,6 +276,18 @@
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\ShadowMapping\ShadowRasterizer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\SkyBoxPass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\TransformCBuf\TransformCBuf.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\TransformCBuf\SkyBoxTransformCBuf.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\Core\Texture\CubeTexture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Fraples7.h">
@@ -306,9 +315,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Renderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\TransformCBuf.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\InputLayout.h">
@@ -635,6 +641,18 @@
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\ShadowMapping\ShadowRasterizer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\TransformCBuf\TransformCBuf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\SkyBoxPass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\TransformCBuf\SkyBoxTransformCBuf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\Core\Texture\CubeTexture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="DirectXTex\DirectXTex.inl">
@@ -690,5 +708,7 @@
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\PhongDiffuseMaskSpecular_PS.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\ShadowTest_PS.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\ShadowTest_VS.hlsl" />
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\SkyBox_PS.hlsl" />
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\SkyBox_VS.hlsl" />
   </ItemGroup>
 </Project>

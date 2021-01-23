@@ -57,6 +57,10 @@ namespace FraplesDev
 	{
 		return (unsigned int)_mScratch.GetMetadata().height;
 	}
+	unsigned int Surface::GetBytePitch() const noexcept
+	{
+		return (unsigned int)_mScratch.GetImage(0,0,0)->rowPitch;
+	}
 	Surface::Color* Surface::GetBufferPtr()  noexcept
 	{
 		 return reinterpret_cast<Color*>(_mScratch.GetPixels());

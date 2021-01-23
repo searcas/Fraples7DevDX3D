@@ -1,7 +1,8 @@
 #pragma once
 #include <DirectXMath.h>
-#include "../Core/IndexedList.h"
 #include <initializer_list>
+#include <optional>
+#include "../Core/IndexedList.h"
 namespace FraplesDev
 {
 
@@ -9,7 +10,36 @@ namespace FraplesDev
 	class Cube
 	{
 	public:
+		static IndexedList Make(std::optional<MP::VertexLayout> layout = {})
+		{
+			if (!layout)
+			{
+				layout = MP::VertexLayout{};
+				layout->Append(MP::ElementType::Position3D);
+			}
+			constexpr float side = 1.0f / 2.0f;
 
+			MP::VertexBuffer vertices(std::move(*layout),8u);
+
+			vertices[0].Attr<MP::ElementType::Position3D>() = { -side,-side,-side };
+			vertices[1].Attr<MP::ElementType::Position3D>() = {  side,-side,-side };
+			vertices[2].Attr<MP::ElementType::Position3D>() = { -side, side,-side };
+			vertices[3].Attr<MP::ElementType::Position3D>() = {  side, side,-side };
+			vertices[4].Attr<MP::ElementType::Position3D>() = { -side,-side,-side };
+			vertices[5].Attr<MP::ElementType::Position3D>() = {  side,-side, side };
+			vertices[6].Attr<MP::ElementType::Position3D>() = { -side, side, side };
+			vertices[7].Attr<MP::ElementType::Position3D>() = {  side, side, side };
+
+			return { std::move(vertices),
+			{
+					0,2,1, 2,3,1,
+					1,3,5, 3,7,5,
+					2,6,3, 3,6,7,
+					4,5,7, 4,7,6,
+					0,4,2, 2,4,6,
+					0,1,4, 1,5,4
+			} };
+		}
 		static IndexedList MakeIndependent(MP::VertexLayout layout)
 		{
 			MP::VertexBuffer vertices(std::move(layout),24u);

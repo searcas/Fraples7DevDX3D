@@ -1,6 +1,6 @@
 #pragma once
-#include "ConstantBuffers.h"
-#include "Renderer.h"
+#include "RendererAPI/ConstantBuffers.h"
+#include "RendererAPI/Renderer.h"
 #include "GraphicAPI/Graphics.h"
 #include <DirectXMath.h>
 namespace FraplesDev

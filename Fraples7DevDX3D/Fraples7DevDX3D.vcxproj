@@ -108,6 +108,7 @@
     <ClCompile Include="ImGui\imgui_impl_dx11.cpp" />
     <ClCompile Include="ImGui\imgui_impl_win32.cpp" />
     <ClCompile Include="ImGui\imgui_widgets.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\Core\Texture\CubeTexture.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\GraphicAPI\GraphicsResource.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\QualityAssurance\TestingQA.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Camera\CameraProjection.cpp" />
@@ -120,12 +121,14 @@
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\BlurOutlineRenderPass.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\HorizontalBlurPass.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\ShadowMappingPass.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\SkyBoxPass.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\WireFramePass.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\ScaleOutlineRenderGraph.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\VerticalBlurPass.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\ShadowMapping\ShadowCameraCBuf.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\ShadowMapping\ShadowRasterizer.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\ShadowMapping\ShadowSampler.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\TransformCBuf\SkyBoxTransformCBuf.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\TransformCBuf\TransformCBufScaling.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\Material.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\ModelException.cpp" />
@@ -185,7 +188,7 @@
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderPriority\Step.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderPriority\Technique.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Topology.cpp" />
-    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\TransformCBuf.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\TransformCBuf\TransformCBuf.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\VertexBuffer.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\VertexShader.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Renderer.cpp" />
@@ -209,6 +212,7 @@
     <ClInclude Include="ImGui\imstb_textedit.h" />
     <ClInclude Include="ImGui\imstb_truetype.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\Core\Texture\CubeTexture.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\GraphicAPI\GraphicsResource.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Camera\CameraProjection.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Camera\MultiCamera.h" />
@@ -220,6 +224,7 @@
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\BlurOutlineRenderPass.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\HorizontalBlurPass.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\ShadowMappingPass.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\SkyBoxPass.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\WireFramePass.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\ScaleOutlineRenderGraph.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\Passes\VerticalBlurPass.h" />
@@ -227,6 +232,7 @@
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\ShadowMapping\ShadowCameraCBuf.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\ShadowMapping\ShadowRasterizer.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\ShadowMapping\ShadowSampler.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\TransformCBuf\SkyBoxTransformCBuf.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\TransformCBuf\TransformCBufScaling.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Filters\BlurPack.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Mesh\Material.h" />
@@ -304,7 +310,7 @@
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderPriority\Technique.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Stencil\Stencil.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Topology.h" />
-    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\TransformCBuf.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\TransformCBuf\TransformCBuf.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\VertexBuffer.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\VertexShader.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\ConstantBuffers.h" />
@@ -534,6 +540,18 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)Shaders/%(Filename).cso</ObjectFileOutput>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\SkyBox_PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)Shaders/%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)Shaders/%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\SkyBox_VS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)Shaders/%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)Shaders/%(Filename).cso</ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\Solid_PS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>

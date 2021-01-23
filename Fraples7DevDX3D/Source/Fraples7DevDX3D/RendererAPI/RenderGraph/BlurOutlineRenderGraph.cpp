@@ -9,6 +9,7 @@
 #include "ImGui/imgui.h"
 #include "Passes/WireFramePass.h"
 #include "Passes/ShadowMappingPass.h"
+#include "RendererAPI/RenderGraph/Passes/SkyBoxPass.h"
 namespace FraplesDev
 {
 	BlurOutlineRenderGraph::BlurOutlineRenderGraph(Graphics& gfx)
@@ -38,8 +39,14 @@ namespace FraplesDev
 		}
 		// setup blur constant buffers
 		{
-			auto pass = std::make_unique<OutlineMaskGenerationPass>(gfx, "outlineMask");
+			auto pass = std::make_unique<SkyBoxPass>(gfx, "skybox");
+			pass->SetSyncLinkage("renderTarget", "lambertian.renderTarget");
 			pass->SetSyncLinkage("depthStencil", "lambertian.depthStencil");
+			AppendPass(std::move(pass));
+		}
+		{
+			auto pass = std::make_unique<OutlineMaskGenerationPass>(gfx, "outlineMask");
+			pass->SetSyncLinkage("depthStencil", "skybox.depthStencil");
 			AppendPass(std::move(pass));
 		}
 		// setup blur constant buffers
@@ -76,7 +83,7 @@ namespace FraplesDev
 		}
 		{
 			auto pass = std::make_unique<VerticalBlurPass>("vertical", gfx);
-			pass->SetSyncLinkage("renderTarget", "lambertian.renderTarget");
+			pass->SetSyncLinkage("renderTarget", "skybox.renderTarget");
 			pass->SetSyncLinkage("depthStencil", "outlineMask.depthStencil");
 			pass->SetSyncLinkage("scratchIn", "horizontal.scratchOut");
 			pass->SetSyncLinkage("kernel", "$.blurKernel");
@@ -185,6 +192,7 @@ namespace FraplesDev
 	void BlurOutlineRenderGraph::BindMainCamera(Camera& cam)
 	{
 		dynamic_cast<LambertianPass&>(FindPassByName("lambertian")).BindMainCamera(cam);
+		dynamic_cast<SkyBoxPass&>(FindPassByName("skybox")).BindMainCamera(cam);
 	}
 	void BlurOutlineRenderGraph::BindShadowCamera(Camera& cam)
 	{
