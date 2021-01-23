@@ -14,10 +14,7 @@ namespace FraplesDev
 			_mSamplers[i] = MakeSampler(gfx, GetBilinear(), GetHwPcf());
 		}
 		SetBilinear(true);
-		SetHwPcf(false);
-		Bind(gfx);
 		SetHwPcf(true);
-		Bind(gfx);
 	}
 	Microsoft::WRL::ComPtr<ID3D11SamplerState> ShadowSampler::MakeSampler(Graphics& gfx, bool bilin, bool hwPcf)
 	{

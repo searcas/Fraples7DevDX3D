@@ -1,5 +1,5 @@
-#include "TransformData.hlsli"
-#include "VShadow.hlsli"
+#include "Common/TransformData.hlsli"
+#include "Common/VShadow.hlsli"
 cbuffer ShadowTransform
 {
     matrix shadowView;

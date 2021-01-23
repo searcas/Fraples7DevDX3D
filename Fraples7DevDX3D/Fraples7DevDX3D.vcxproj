@@ -317,12 +317,14 @@
     <None Include="Source\Fraples7DevDX3D\Core\Common\DXGetErrorString.inl" />
     <None Include="Source\Fraples7DevDX3D\Core\Common\DXTrace.inl" />
     <None Include="process.json" />
-    <None Include="Source\Fraples7DevDX3D\Shaders\LightVectorData.hlsli" />
-    <None Include="Source\Fraples7DevDX3D\Shaders\PointLight.hlsli" />
-    <None Include="Source\Fraples7DevDX3D\Shaders\PShadow.hlsli" />
-    <None Include="Source\Fraples7DevDX3D\Shaders\ShaderOps.hlsli" />
-    <None Include="Source\Fraples7DevDX3D\Shaders\TransformData.hlsli" />
-    <None Include="Source\Fraples7DevDX3D\Shaders\VShadow.hlsli" />
+    <None Include="Source\Fraples7DevDX3D\Shaders\Common\LightVectorData.hlsli" />
+    <None Include="Source\Fraples7DevDX3D\Shaders\Common\PointLight.hlsli" />
+    <None Include="Source\Fraples7DevDX3D\Shaders\Common\PShadow.hlsli" />
+    <None Include="Source\Fraples7DevDX3D\Shaders\Common\ShaderOps.hlsli" />
+    <None Include="Source\Fraples7DevDX3D\Shaders\Common\TransformData.hlsli" />
+    <None Include="Source\Fraples7DevDX3D\Shaders\Common\VShadow.hlsli" />
+    <None Include="Source\Fraples7DevDX3D\Shaders\Common\_PShadow_Dynamic.hlsli" />
+    <None Include="Source\Fraples7DevDX3D\Shaders\Common\_PShadow_Static.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\BlendedPhongPS.hlsl">

@@ -9,8 +9,6 @@
 #include "ImGui/imgui.h"
 #include "Passes/WireFramePass.h"
 #include "Passes/ShadowMappingPass.h"
-#include "RendererAPI/ShadowMapping/ShadowSampler.h"
-#include "RendererAPI/ShadowMapping/ShadowRasterizer.h"
 namespace FraplesDev
 {
 	BlurOutlineRenderGraph::BlurOutlineRenderGraph(Graphics& gfx)
@@ -26,35 +24,9 @@ namespace FraplesDev
 			pass->SetSyncLinkage("buffer", "$.masterDepth");
 			AppendPass(std::move(pass));
 		}
-		// setup shadow rasterizer
-		{
-			_mShadowRasterizer = std::make_shared<ShadowRasterizer>(gfx, 10000, 0.0005, 1.0f);
-			AddGlobalSource(DirectContextSource<ShadowRasterizer>::Make("shadowRasterizer", _mShadowRasterizer));
-		}
 		{
 			auto pass = std::make_unique<ShadowMappingPass>(gfx, "shadowMap");
-			pass->SetSyncLinkage("shadowRasterizer", "$.shadowRasterizer");
 			AppendPass(std::move(pass));
-		}
-		//Shadow controll buffer & sampler
-		{
-			{
-				MP::RawLayout l;
-				l.Add<MP::Integer>("pcfLevel");
-				l.Add<MP::Float>("depthBias");
-				l.Add<MP::Bool>("hwPcf");
-				MP::Buffer buf(std::move(l));
-				buf["pcfLevel"] = 0;
-				buf["depthBias"] = 0.0005f;
-				buf["hwPcf"] = true;
-				_mShadowControl = std::make_shared<CachingPixelConstantBufferEx>(gfx, buf, 2);
-				AddGlobalSource(DirectContextSource<CachingPixelConstantBufferEx>::Make("shadowControl", _mShadowControl));
-			}
-
-			{
-				_mShadowSampler = std::make_shared<ShadowSampler>(gfx);
-				AddGlobalSource(DirectContextSource<ShadowSampler>::Make("shadowSampler", _mShadowSampler));
-			}
 		}
 		
 		{
@@ -62,9 +34,6 @@ namespace FraplesDev
 			pass->SetSyncLinkage("shadowMap", "shadowMap.map");
 			pass->SetSyncLinkage("renderTarget", "clearRT.buffer");
 			pass->SetSyncLinkage("depthStencil", "clearDS.buffer");
-			pass->SetSyncLinkage("shadowControl", "$.shadowControl");
-			pass->SetSyncLinkage("shadowSampler", "$.shadowSampler");
-			
 			AppendPass(std::move(pass));
 		}
 		// setup blur constant buffers
@@ -209,48 +178,8 @@ namespace FraplesDev
 		}
 		ImGui::End();
 	}
-	void BlurOutlineRenderGraph::RenderShadowWindow(Graphics& gfx)
-	{
-		if (ImGui::Begin("Shadows"))
-		{
-			auto ctrl = _mShadowControl->GetBuffer();
-			bool bilin = _mShadowSampler->GetBilinear();
-			
-			bool pfcChange = ImGui::SliderInt("PCF Level", &ctrl["pcfLevel"], 0, 4);
-			bool biasChange = ImGui::SliderFloat("Post Bias",&ctrl["depthBias"], 0.00001f, 0.1f, "%.6f");
-			bool hwPcfChange = ImGui::Checkbox("Hw PCF", &ctrl["hwPcf"]);
-			ImGui::Checkbox("Bilinear", &bilin);
-
-			if (pfcChange || biasChange || hwPcfChange)
-			{
-				_mShadowControl->SetBuffer(ctrl);
-			}
-			_mShadowSampler->SetHwPcf(ctrl["hwPcf"]);
-			_mShadowSampler->SetBilinear(bilin);
-			{
-				auto bias = _mShadowRasterizer->GetDepthBias();
-				auto slope = _mShadowRasterizer->GetSlopeBias();
-				auto clamp = _mShadowRasterizer->GetClamp();
-
-				bool biasChange = ImGui::SliderInt("Pre Bias", &bias, 0, 100000);
-				bool slopeChange = ImGui::SliderFloat("Slope Bias", &slope, 0.0f, 100.0f, "%.4f");
-				bool clampChange = ImGui::SliderFloat("Clamp", &clamp, 0.0001f, 0.5f, "%.4f");
-				if (biasChange || slopeChange || clampChange)
-				{
-					_mShadowRasterizer->ChangeDepthBiasParameters(gfx, bias, slope, clamp);
-				}
-			}
-			if (ImGui::Button("Reset"))
-			{
-				ctrl["depthBias"] = 0.0005f;
-				_mShadowControl->SetBuffer(ctrl);
-			}
-		}
-		ImGui::End();
-	}
 	void BlurOutlineRenderGraph::RenderWindows(Graphics& gfx)
 	{
-		RenderShadowWindow(gfx);
 		RenderKernelWindow(gfx);
 	}
 	void BlurOutlineRenderGraph::BindMainCamera(Camera& cam)

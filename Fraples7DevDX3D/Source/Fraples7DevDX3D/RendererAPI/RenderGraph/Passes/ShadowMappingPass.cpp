@@ -2,7 +2,7 @@
 #include "RendererAPI/Stencil/DepthStencil.h"
 #include "RendererAPI/Stencil/Stencil.h"
 #include "RendererAPI/Blending/Blending.h"
-#include "RendererAPI/Rasterizer/Rasterizer.h"
+#include "RendererAPI/ShadowMapping/ShadowRasterizer.h"
 #include "RendererAPI/VertexShader.h"
 #include "RendererAPI/NullPixelShader.h"
 #include "RendererAPI/RenderGraph/Source.h"
@@ -22,7 +22,7 @@ namespace FraplesDev
 		AddBind(NullPixelShader::Resolve(gfx));
 		AddBind(Stencil::Resolve(gfx, Stencil::Mode::Off));
 		AddBind(Blending::Resolve(gfx, false));
-		AddBindSink<GfxContext>("shadowRasterizer");
+		AddBind(std::make_shared<ShadowRasterizer>(gfx, 50, 2.0f, 0.1f));
 		RegisterSource(DirectContextSource<DepthStencil>::Make("map", _mDepthStencil));
 
 	}

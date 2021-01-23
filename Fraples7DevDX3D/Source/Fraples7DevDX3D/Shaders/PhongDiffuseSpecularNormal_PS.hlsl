@@ -1,8 +1,8 @@
-#include "ShaderOps.hlsli"
-#include "LightVectorData.hlsli"
+#include "Common/ShaderOps.hlsli"
+#include "Common/LightVectorData.hlsli"
 
-#include "PointLight.hlsli"
-#include "PShadow.hlsli"
+#include "Common/PointLight.hlsli"
+#include "Common/PShadow.hlsli"
 cbuffer ObjectCBuf : register(b1)
 {
 	bool useGlossAlpha;

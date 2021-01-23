@@ -1,7 +1,7 @@
-#include "ShaderOps.hlsli"
-#include "LightVectorData.hlsli"
+#include "Common/ShaderOps.hlsli"
+#include "Common/LightVectorData.hlsli"
 
-#include "PointLight.hlsli"
+#include "Common/PointLight.hlsli"
 
 cbuffer ObjectCBuf
 {
@@ -11,7 +11,7 @@ cbuffer ObjectCBuf
 	float padding[1];
 };
 
-#include "TransformData.hlsli"
+#include "Common/TransformData.hlsli"
 
 Texture2D tex;
 Texture2D nmap : register(t2);

@@ -17,7 +17,7 @@ float ShadowLoop_(const in float3 spos, uniform int range)
         [unroll]
         for (int y = -range; y <= range; y++)
         {
-            if(hwPcf)
+            if (hwPcf)
             {
                 shadowLevel += smap.SampleCmpLevelZero(ssamHw, spos.xy, spos.b - depthBias, int2(x, y));
 
@@ -37,7 +37,7 @@ float Shadow(const in float4 shadowHomePos)
     const float3 spos = shadowHomePos.xyz / shadowHomePos.w;
     
     
-    if(spos.z > 1.0f || spos.z < 0.0f)
+    if (spos.z > 1.0f || spos.z < 0.0f)
     {
         shadowLevel = 1.0f;
     }
@@ -46,11 +46,11 @@ float Shadow(const in float4 shadowHomePos)
         [unroll]
         for (int level = 0; level <= 4; level++)
         {
-            if(level == pcfLevel)
+            if (level == pcfLevel)
             {
                 shadowLevel = ShadowLoop_(spos, level);
             }
-        }            
+        }
     }
     return shadowLevel;
 }
