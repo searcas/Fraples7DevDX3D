@@ -25,7 +25,7 @@ namespace FraplesDev
 			vertices[1].Attr<MP::ElementType::Position3D>() = {  side,-side,-side };
 			vertices[2].Attr<MP::ElementType::Position3D>() = { -side, side,-side };
 			vertices[3].Attr<MP::ElementType::Position3D>() = {  side, side,-side };
-			vertices[4].Attr<MP::ElementType::Position3D>() = { -side,-side,-side };
+			vertices[4].Attr<MP::ElementType::Position3D>() = { -side,-side, side };
 			vertices[5].Attr<MP::ElementType::Position3D>() = {  side,-side, side };
 			vertices[6].Attr<MP::ElementType::Position3D>() = { -side, side, side };
 			vertices[7].Attr<MP::ElementType::Position3D>() = {  side, side, side };
