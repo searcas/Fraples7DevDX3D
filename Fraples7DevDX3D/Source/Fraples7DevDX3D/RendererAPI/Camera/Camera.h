@@ -35,7 +35,7 @@ namespace FraplesDev
 		float yaw = 0.0f;
 		Projection _mProj;
 		CameraProjection _mCamProj;
-		bool _mEnableCameraProjection = true;
-		bool _mEnableFrustumProjection = true;
+		bool _mEnableCameraProjection = false;
+		bool _mEnableFrustumProjection = false;
 	};
 }
