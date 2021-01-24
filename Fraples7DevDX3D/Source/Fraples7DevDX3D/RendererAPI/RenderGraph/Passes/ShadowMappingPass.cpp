@@ -10,6 +10,7 @@
 #include "Core/Surface.h"
 #include "Core/ViewPort.h"
 #include "Core/Texture/CubeTexture.h"
+#include "Core/Math/Math.h"
 
 namespace FraplesDev
 {
@@ -29,7 +30,7 @@ namespace FraplesDev
 		AddBind(std::make_shared<ViewPort>(gfx, (float)size, (float)size));
 		AddBind(std::make_shared<ShadowRasterizer>(gfx, 50, 2.0f, 0.1f));
 		RegisterSource(DirectContextSource<DepthCubeTexture>::Make("map", _mDepthCube));
-		DirectX::XMStoreFloat4x4(&_mProjection, DirectX::XMMatrixPerspectiveLH(1.0f, 1.0f, 0.5f, 100.0f));
+		DirectX::XMStoreFloat4x4(&_mProjection, DirectX::XMMatrixPerspectiveFovLH( PI / 2.0f, 1.0f, 0.5f, 100.0f));
 		// +X
 		DirectX::XMStoreFloat3(&_mCameraDirections[0], DirectX::XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f));
 		DirectX::XMStoreFloat3(&_mCameraUps[0], DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f));
