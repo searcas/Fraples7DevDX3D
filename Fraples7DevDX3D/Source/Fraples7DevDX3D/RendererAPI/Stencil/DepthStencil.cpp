@@ -244,15 +244,10 @@ namespace FraplesDev
 		// flatten texture elements
 		for (unsigned int y = 0; y < height; y++)
 		{
-			struct Pixel
-			{
-				char data[4];
-			};
-			auto psrcRow = reinterpret_cast<const Pixel*>(pSrcBytes + msr.RowPitch * size_t(y));
+			auto psrcRow = reinterpret_cast<const float*>(pSrcBytes + msr.RowPitch * size_t(y));
 			for (unsigned int x = 0; x < width; x++)
 			{
-				const auto& raw = *reinterpret_cast<const float*>(psrcRow + x);
-				arr.push_back(raw);
+				arr.push_back(psrcRow[x]);
 			}
 		}
 		FPL_GFX_THROW_INFO_ONLY(GetContext(gfx)->Unmap(pTexTemp.Get(), 0));

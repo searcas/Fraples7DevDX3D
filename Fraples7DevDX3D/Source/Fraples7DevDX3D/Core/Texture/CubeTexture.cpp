@@ -13,7 +13,7 @@ namespace FraplesDev
 
 		// load 6 surfaces for cube faces
 		std::vector<Surface>surfaces;
-		for (int i = 0; i < 6; i++)
+		for (int i = 0; i < 0b110; i++)
 		{
 			surfaces.push_back(Surface::FromFile(path + "\\" + std::to_string(i) + ".png"));
 		}
@@ -144,8 +144,6 @@ namespace FraplesDev
 		{
 			_mRenderTargets.push_back(std::make_shared<OutputOnlyRenderTarget>(gfx, pTexture.Get(), face));
 		}
-
-
 	}
 	void CubeTargetTexture::Bind(Graphics& gfx) noexcept(!IS_DEBUG)
 	{
