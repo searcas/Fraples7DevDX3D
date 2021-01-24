@@ -8,6 +8,7 @@
 #include "RendererAPI/Stencil/Stencil.h"
 #include "RendererAPI/ShadowMapping/ShadowCameraCBuf.h"
 #include "RendererAPI/ShadowMapping/ShadowSampler.h"
+#include "Core/Sampler.h"
 #include <vector>
 namespace FraplesDev
 {
@@ -20,6 +21,7 @@ namespace FraplesDev
 		RegisterSync(DirectBufferSync<DepthStencil>::Make("depthStencil", _mDepthStencil));
 		AddBindSink<GfxContext>("shadowMap");
 		AddBind(std::make_shared<ShadowSampler>(gfx));
+		AddBind(std::make_shared<Sampler>(gfx, Sampler::Type::Anisotropic, false, 2));
 		RegisterSource(DirectBufferSource<RenderTarget>::Make("renderTarget", _mRenderTarget));
 		RegisterSource(DirectBufferSource<DepthStencil>::Make("depthStencil", _mDepthStencil));
 		AddBind(Stencil::Resolve(gfx, Stencil::Mode::Off));

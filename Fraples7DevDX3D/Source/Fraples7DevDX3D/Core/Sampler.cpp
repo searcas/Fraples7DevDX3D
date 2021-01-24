@@ -4,8 +4,8 @@
 namespace FraplesDev
 {
 
-	Sampler::Sampler(Graphics& gfx, Type type, bool reflect)
-		:_mType(type), _mReflect(reflect)
+	Sampler::Sampler(Graphics& gfx, Type type, bool reflect, UINT slot)
+		:_mType(type), _mReflect(reflect),_mSlot(slot)
 	{
 		INFOMAN(gfx);
 		D3D11_SAMPLER_DESC samplerDesc = CD3D11_SAMPLER_DESC{ CD3D11_DEFAULT{} };
@@ -35,19 +35,19 @@ namespace FraplesDev
 	void Sampler::Bind(Graphics& gfx)noexcept(!IS_DEBUG)
 	{
 		INFOMAN_NOHR(gfx);
-		FPL_GFX_THROW_INFO_ONLY(GetContext(gfx)->PSSetSamplers(0, 1, pSampler.GetAddressOf()));
+		FPL_GFX_THROW_INFO_ONLY(GetContext(gfx)->PSSetSamplers(_mSlot, 1, pSampler.GetAddressOf()));
 	}
-	std::shared_ptr<Sampler> Sampler::Resolve(Graphics& gfx, Type type,bool reflect)
+	std::shared_ptr<Sampler> Sampler::Resolve(Graphics& gfx, Type type,bool reflect, UINT slot)
 	{
-		return Codex::Resolve<Sampler>(gfx, type,  reflect);
+		return Codex::Resolve<Sampler>(gfx, type, reflect, slot);
 	}
-	std::string Sampler::GenerateUID(Type type, bool reflect)
+	std::string Sampler::GenerateUID(Type type, bool reflect, UINT slot)
 	{
 		using namespace std::string_literals;
-		return typeid(Sampler).name() + "#"s + std::to_string((int)type) + (reflect ? "R"s : "W"s);
+		return typeid(Sampler).name() + "#"s + std::to_string((int)type) + (reflect ? "R"s : "W"s) + "@"s + std::to_string(slot);
 	}
 	std::string Sampler::GetUID() const noexcept
 	{
-		return GenerateUID(_mType,_mReflect);
+		return GenerateUID(_mType,_mReflect,_mSlot);
 	}
 }
