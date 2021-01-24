@@ -24,6 +24,7 @@ namespace FraplesDev
 		void BindAsDepthStencil(Graphics& gfx)const noexcept(!IS_DEBUG);
 		void Clear(Graphics& gfx)const noexcept(!IS_DEBUG);
 		Surface ToSurface(Graphics& gfx,bool linearize = true)const;
+		void Dumpy(Graphics& gfx, const std::string& path)const;
 		inline const unsigned int& GetWidth() const { return _mWidth; };
 		inline const unsigned int& GetHeight()const { return _mHeight; };
 	protected:
@@ -32,6 +33,8 @@ namespace FraplesDev
 		Microsoft::WRL::ComPtr<ID3D11DepthStencilView>_mDepthStencilView;
 		unsigned int _mWidth;
 		unsigned int _mHeight;
+	private:
+		std::pair<Microsoft::WRL::ComPtr<ID3D11Texture2D>, D3D11_TEXTURE2D_DESC>MakeStaging(Graphics& gfx)const;
 	};
 
 	class ShaderInputDepthStencil : public DepthStencil

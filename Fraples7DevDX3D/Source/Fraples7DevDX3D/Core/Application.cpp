@@ -80,7 +80,7 @@ namespace FraplesDev
 		light.Submit(Channel::main);
 		_mCameras.Submit(Channel::main);
 		cube1.Submit(Channel::shadow);
-	/*	
+		
 		_mSponza.Submit(Channel::main);
 		cube2.Submit(Channel::main);
 		_mNano.Submit(Channel::main);
@@ -91,7 +91,7 @@ namespace FraplesDev
 		
 		cube2.Submit(Channel::shadow);
 		_mNano.Submit(Channel::shadow);
-		*/
+		
 		gobber.Submit(Channel::shadow);
 		renderGraph.Execute(_mWin.GetGFX());
 	}

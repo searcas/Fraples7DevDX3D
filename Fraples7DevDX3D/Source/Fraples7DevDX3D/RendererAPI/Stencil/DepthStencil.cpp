@@ -3,6 +3,7 @@
 #include "RendererAPI/RenderTarget.h"
 #include "GraphicAPI/Graphics.h"
 #include "Core/Surface.h"
+#include "Core/Debugging/cnpy.h"
 namespace FraplesDev
 {
 	DXGI_FORMAT MapUsageTypeless(DepthStencil::Usage usage)
@@ -98,29 +99,7 @@ namespace FraplesDev
 
 		FPL_GFX_THROW_INFO(GetDevice(gfx)->CreateDepthStencilView(pDepthStencil.Get(), &descView, &_mDepthStencilView));
 	}
-	void DepthStencil::BindAsBuffer(Graphics& gfx)noexcept(!IS_DEBUG)
-	{
-		INFOMAN_NOHR(gfx);
-		FPL_GFX_THROW_INFO_ONLY(GetContext(gfx)->OMSetRenderTargets(0, nullptr, _mDepthStencilView.Get()));
-	}
-	void DepthStencil::BindAsBuffer(Graphics& gfx, BufferResource* renderTarget) noexcept(!IS_DEBUG)
-	{
-		assert(dynamic_cast<RenderTarget*>(renderTarget) != nullptr);
-		BindAsBuffer(gfx, static_cast<RenderTarget*>(renderTarget));
-	}
-	void DepthStencil::BindAsBuffer(Graphics& gfx, RenderTarget* renderTarget) noexcept(!IS_DEBUG)
-	{
-		renderTarget->BindAsBuffer(gfx, this);
-	}
-	void DepthStencil::BindAsDepthStencil(Graphics& gfx) const noexcept(!IS_DEBUG)
-	{
-		GetContext(gfx)->OMSetRenderTargets(0, nullptr, _mDepthStencilView.Get());
-	}
-	void DepthStencil::Clear(Graphics& gfx) const noexcept(!IS_DEBUG)
-	{
-		GetContext(gfx)->ClearDepthStencilView(_mDepthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0u);
-	}
-	Surface DepthStencil::ToSurface(Graphics& gfx, bool linearize ) const
+	std::pair<Microsoft::WRL::ComPtr<ID3D11Texture2D>, D3D11_TEXTURE2D_DESC> DepthStencil::MakeStaging(Graphics& gfx) const
 	{
 		INFOMAN(gfx);
 		D3D11_DEPTH_STENCIL_VIEW_DESC srcViewDesc{};
@@ -152,8 +131,37 @@ namespace FraplesDev
 			FPL_GFX_THROW_INFO_ONLY(GetContext(gfx)->CopyResource(pTexTemp.Get(), pTexSource.Get()));
 		}
 
-		// create Surface and copy from temp texture to it
+		return { std::move(pTexTemp),srcTextureDesc };
+	}
+	void DepthStencil::BindAsBuffer(Graphics& gfx)noexcept(!IS_DEBUG)
+	{
+		INFOMAN_NOHR(gfx);
+		FPL_GFX_THROW_INFO_ONLY(GetContext(gfx)->OMSetRenderTargets(0, nullptr, _mDepthStencilView.Get()));
+	}
+	void DepthStencil::BindAsBuffer(Graphics& gfx, BufferResource* renderTarget) noexcept(!IS_DEBUG)
+	{
+		assert(dynamic_cast<RenderTarget*>(renderTarget) != nullptr);
+		BindAsBuffer(gfx, static_cast<RenderTarget*>(renderTarget));
+	}
+	void DepthStencil::BindAsBuffer(Graphics& gfx, RenderTarget* renderTarget) noexcept(!IS_DEBUG)
+	{
+		renderTarget->BindAsBuffer(gfx, this);
+	}
+	void DepthStencil::BindAsDepthStencil(Graphics& gfx) const noexcept(!IS_DEBUG)
+	{
+		GetContext(gfx)->OMSetRenderTargets(0, nullptr, _mDepthStencilView.Get());
+	}
+	void DepthStencil::Clear(Graphics& gfx) const noexcept(!IS_DEBUG)
+	{
+		GetContext(gfx)->ClearDepthStencilView(_mDepthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0u);
+	}
+	Surface DepthStencil::ToSurface(Graphics& gfx, bool linearize ) const
+	{
+		INFOMAN(gfx);
+		// copy from resource to staging
+		auto [pTexTemp, srcTextureDesc] = MakeStaging(gfx);
 
+		// create Surface and copy from temp texture to it
 		const auto width = GetWidth();
 		const auto height = GetHeight();
 		Surface s{ width, height };
@@ -210,6 +218,45 @@ namespace FraplesDev
 		}
 		FPL_GFX_THROW_INFO_ONLY(GetContext(gfx)->Unmap(pTexTemp.Get(), 0));
 		return s;
+	}
+	void DepthStencil::Dumpy(Graphics& gfx, const std::string& path) const
+	{
+		INFOMAN(gfx);
+
+		// copy from resource to staging
+		auto [pTexTemp, srcTextureDesc] = MakeStaging(gfx);
+
+		// create Surface and copy from temp texture to it
+
+		const auto width = GetWidth();
+		const auto height = GetHeight();
+
+		std::vector<float>arr;
+		arr.reserve(width * height);
+		D3D11_MAPPED_SUBRESOURCE msr = {};
+		FPL_GFX_THROW_INFO(GetContext(gfx)->Map(pTexTemp.Get(), 0, D3D11_MAP::D3D11_MAP_READ, 0, &msr));
+		auto pSrcBytes = static_cast<const char*>(msr.pData);
+
+		if (srcTextureDesc.Format != DXGI_FORMAT::DXGI_FORMAT_R32_TYPELESS)
+		{
+			throw std::runtime_error{ "Bad format in Depth Stencil for dumpy" };
+		}
+		// flatten texture elements
+		for (unsigned int y = 0; y < height; y++)
+		{
+			struct Pixel
+			{
+				char data[4];
+			};
+			auto psrcRow = reinterpret_cast<const Pixel*>(pSrcBytes + msr.RowPitch * size_t(y));
+			for (unsigned int x = 0; x < width; x++)
+			{
+				const auto& raw = *reinterpret_cast<const float*>(psrcRow + x);
+				arr.push_back(raw);
+			}
+		}
+		FPL_GFX_THROW_INFO_ONLY(GetContext(gfx)->Unmap(pTexTemp.Get(), 0));
+		cnpy::npy_save(path, arr.data(), { height,width });
 	}
 	ShaderInputDepthStencil::ShaderInputDepthStencil(Graphics& gfx, UINT slot, DepthStencil::Usage usage)
 		:ShaderInputDepthStencil(gfx, gfx.GetWidth(), gfx.GetHeight(), slot, usage)

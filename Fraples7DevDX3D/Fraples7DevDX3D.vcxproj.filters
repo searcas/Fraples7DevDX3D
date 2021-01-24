@@ -720,5 +720,6 @@
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\SkyBox_PS.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\SkyBox_VS.hlsl" />
     <FxCompile Include="Source\Fraples7DevDX3D\Shaders\Shadow_VS.hlsl" />
+    <FxCompile Include="Source\Fraples7DevDX3D\Shaders\Shadow_PS.hlsl" />
   </ItemGroup>
 </Project>

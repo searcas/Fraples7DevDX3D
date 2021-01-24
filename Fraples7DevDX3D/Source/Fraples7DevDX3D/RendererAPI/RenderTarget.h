@@ -1,6 +1,7 @@
 #pragma once
 #include "GFXContext.h"
 #include "RenderGraph/BufferResource.h"
+#include <optional>
 #include <array>
 namespace FraplesDev
 {
@@ -18,7 +19,7 @@ namespace FraplesDev
 	private:
 		void BindAsBuffer(Graphics& gfx, ID3D11DepthStencilView* pDepthStencilView)noexcept(!IS_DEBUG);
 	protected:
-		RenderTarget(Graphics& gfx, ID3D11Texture2D* pTexture);
+		RenderTarget(Graphics& gfx, ID3D11Texture2D* pTexture, std::optional<UINT>face);
 		RenderTarget(Graphics& gfx, UINT width, UINT height);
 	protected:
 		Microsoft::WRL::ComPtr<ID3D11RenderTargetView>_mTargetView;
@@ -43,7 +44,6 @@ namespace FraplesDev
 		friend Graphics;
 	public:
 		void Bind(Graphics& gfx)noexcept(!IS_DEBUG) override;
-	private:
-		OutputOnlyRenderTarget(Graphics& gfx, ID3D11Texture2D* pTexture);
+		OutputOnlyRenderTarget(Graphics& gfx, ID3D11Texture2D* pTexture, std::optional<UINT>face = {});
 	};
 }

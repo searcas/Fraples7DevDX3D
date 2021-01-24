@@ -34,7 +34,7 @@ namespace FraplesDev
 		rtvDesc.Texture2D = D3D11_TEX2D_RTV{ 0 };
 		FPL_GFX_THROW_INFO(GetDevice(gfx)->CreateRenderTargetView(ptexture.Get(), &rtvDesc, &_mTargetView));
 	}
-	RenderTarget::RenderTarget(Graphics& gfx, ID3D11Texture2D* pTexture)
+	RenderTarget::RenderTarget(Graphics& gfx, ID3D11Texture2D* pTexture,std::optional<UINT>face)
 	{
 		INFOMAN(gfx);
 		// get information from texture about dimensions
@@ -47,8 +47,17 @@ namespace FraplesDev
 
 		D3D11_RENDER_TARGET_VIEW_DESC rtvDesc = {};
 		rtvDesc.Format = textureDesc.Format;
-		rtvDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
-		rtvDesc.Texture2D = D3D11_TEX2D_RTV{ 0 };
+
+		if (face.has_value())
+		{
+			rtvDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2DARRAY;
+			rtvDesc.Texture2DArray.ArraySize = 1;
+			rtvDesc.Texture2DArray.MipSlice = 0;
+		}
+		{
+			rtvDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
+			rtvDesc.Texture2D = D3D11_TEX2D_RTV{ 0 };
+		}
 		FPL_GFX_THROW_INFO(GetDevice(gfx)->CreateRenderTargetView(pTexture, &rtvDesc, &_mTargetView));
 
 	}
@@ -169,8 +178,8 @@ namespace FraplesDev
 	{
 		assert("Cannot bind OutputOnlyRenderTarget as shader input" && false);
 	}
-	OutputOnlyRenderTarget::OutputOnlyRenderTarget(Graphics& gfx, ID3D11Texture2D* pTexture)
-		:RenderTarget(gfx,pTexture)
+	OutputOnlyRenderTarget::OutputOnlyRenderTarget(Graphics& gfx, ID3D11Texture2D* pTexture, std::optional<UINT>face )
+		:RenderTarget(gfx, pTexture, face)
 	{
 
 	}
