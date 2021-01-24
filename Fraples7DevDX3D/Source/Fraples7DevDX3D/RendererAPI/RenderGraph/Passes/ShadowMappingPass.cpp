@@ -26,7 +26,7 @@ namespace FraplesDev
 		AddBind(NullPixelShader::Resolve(gfx));
 		AddBind(Stencil::Resolve(gfx, Stencil::Mode::Off));
 		AddBind(Blending::Resolve(gfx, false));
-		AddBind(std::make_shared<ViewPort>(gfx, 100.0f));
+		AddBind(std::make_shared<ViewPort>(gfx, (float)size, (float)size));
 		AddBind(std::make_shared<ShadowRasterizer>(gfx, 50, 2.0f, 0.1f));
 		RegisterSource(DirectContextSource<DepthCubeTexture>::Make("map", _mDepthCube));
 		DirectX::XMStoreFloat4x4(&_mProjection, DirectX::XMMatrixPerspectiveLH(1.0f, 1.0f, 1.0f, 60.0f));

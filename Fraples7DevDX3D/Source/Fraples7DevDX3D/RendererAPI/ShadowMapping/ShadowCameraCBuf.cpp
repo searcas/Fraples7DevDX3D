@@ -14,7 +14,8 @@ namespace FraplesDev
 	}
 	void ShadowCameraCBuf::Update(Graphics& gfx)
 	{
-		const Transform T{ DirectX::XMMatrixTranspose(_mCamera->GetMatrix() * _mCamera->GetProjection()) };
+		const auto pos = _mCamera->GetPos();
+		const Transform T{ DirectX::XMMatrixTranspose(DirectX::XMMatrixTranslation(-pos.x,-pos.y,-pos.z)) };
 		_mVertexConstantBuffer->Update(gfx, T);
 	}
 	void ShadowCameraCBuf::SetCamera(const Camera* pCamera) noexcept

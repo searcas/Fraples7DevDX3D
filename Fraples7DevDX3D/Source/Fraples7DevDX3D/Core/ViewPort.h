@@ -6,10 +6,16 @@ namespace FraplesDev
 	class ViewPort : public GfxContext
 	{
 	public:
-		ViewPort(Graphics& gfx, float maxDepth = 1.0f)
+		ViewPort(Graphics& gfx) :
+			ViewPort(gfx, (float)gfx.GetWidth(), (float)gfx.GetHeight())
 		{
-			vp.Width = (float)gfx.GetWidth();
-			vp.Height = (float)gfx.GetHeight();
+
+		}
+		ViewPort(Graphics& gfx, float width,float height)
+			
+		{
+			vp.Width = width;
+			vp.Height = height;
 			vp.MinDepth = 0.0f;
 			vp.MaxDepth = 1.0f;
 			vp.TopLeftX = 0.0f;
