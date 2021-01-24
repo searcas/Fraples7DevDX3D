@@ -66,8 +66,13 @@ namespace FraplesDev
 		gfx.SetProjection(DirectX::XMLoadFloat4x4(&_mProjection));
 		for (size_t i = 0; i < 0b110; i++)
 		{
+
 			auto d = _mDepthCube->GetDepthBuffer(i);
 			d->Clear(gfx);
+		}
+		for (size_t i = 0; i < 0b01; i++)
+		{
+			auto d = _mDepthCube->GetDepthBuffer(i);
 			SetDepthBuffer(std::move(d));
 			const auto lootAt = pos + DirectX::XMLoadFloat3(&_mCameraDirections[i]);
 			gfx.SetCamera(DirectX::XMMatrixLookAtLH(pos, lootAt, DirectX::XMLoadFloat3(&_mCameraUps[i])));
@@ -76,7 +81,11 @@ namespace FraplesDev
 	}
 	void ShadowMappingPass::DumpShadowMap(Graphics&gfx, const std::string& path)
 	{
-		_mDepthStencil->ToSurface(gfx).Save(path);
+		for (size_t i = 0; i < 0b110; i++)
+		{
+			auto d = _mDepthCube->GetDepthBuffer(i);
+			d->ToSurface(gfx).Save(path + std::to_string(i) + ".png");
+		}
 	}
 	void ShadowMappingPass::SetDepthBuffer(std::shared_ptr<DepthStencil> ds) const
 	{

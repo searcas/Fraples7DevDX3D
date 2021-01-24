@@ -15,11 +15,13 @@ namespace FraplesDev
 		void RenderWindows(Graphics& gfx);
 		void BindMainCamera(Camera& cam);
 		void BindShadowCamera(Camera& cam);
+		void StoreDepth(Graphics& gfx, const std::string& path);
 		void DumpShadowMap(Graphics& gfx, const std::string& path);
 	private:
 		void SetKernelGauss(int radius, float sigma) noexcept(!IS_DEBUG);
 		void SetKernelBox(int radius)noexcept(!IS_DEBUG);
 		void RenderKernelWindow(Graphics& gfx);
+		void RenderShadowWindow(Graphics& gfx);
 	private:
 		
 		enum class KernelType

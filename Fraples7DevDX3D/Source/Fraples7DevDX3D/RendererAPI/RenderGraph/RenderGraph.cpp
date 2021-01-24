@@ -90,10 +90,6 @@ namespace FraplesDev
 			p->Reset();
 		}
 	}
-	void RenderGraph::StoreDepth(Graphics& gfx, const std::string& path)
-	{
-		_mMasterDepth->ToSurface(gfx).Save(path);
-	}
 	void RenderGraph::Finalize()
 	{
 		assert(!finalized);

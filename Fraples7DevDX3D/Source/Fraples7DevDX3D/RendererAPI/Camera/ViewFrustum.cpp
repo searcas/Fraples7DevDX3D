@@ -8,7 +8,7 @@
 #include "RendererAPI/IndexBuffer.h"
 #include "RendererAPI/InputLayout.h"
 #include "RendererAPI/ConstantBuffers.h"
-#include "RendererAPI/TransformCBuf.h"
+#include "RendererAPI/TransformCBuf/TransformCBuf.h"
 #include "RendererAPI/Rasterizer/Rasterizer.h"
 #include "RendererAPI/ShadowMapping/Channels.h"
 namespace FraplesDev

@@ -185,9 +185,21 @@ namespace FraplesDev
 		}
 		ImGui::End();
 	}
+	void BlurOutlineRenderGraph::RenderShadowWindow(Graphics& gfx)
+	{
+		if (ImGui::Begin("Shadow"))
+		{
+			if (ImGui::Button("Dump CubeMap"))
+			{
+				DumpShadowMap(gfx, "Dumps\\shadow_");
+			}
+		}
+		ImGui::End();
+	}
 	void BlurOutlineRenderGraph::RenderWindows(Graphics& gfx)
 	{
 		RenderKernelWindow(gfx);
+		RenderShadowWindow(gfx);
 	}
 	void BlurOutlineRenderGraph::BindMainCamera(Camera& cam)
 	{
@@ -198,6 +210,9 @@ namespace FraplesDev
 	{
 		dynamic_cast<ShadowMappingPass&>(FindPassByName("shadowMap")).BindShadowCamera(cam);
 		dynamic_cast<LambertianPass&>(FindPassByName("lambertian")).BindShadowCamera(cam);
+	}
+	void BlurOutlineRenderGraph::StoreDepth(Graphics& gfx, const std::string& path)
+	{
 	}
 	void BlurOutlineRenderGraph::DumpShadowMap(Graphics& gfx, const std::string& path)
 	{

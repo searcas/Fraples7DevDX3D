@@ -123,21 +123,34 @@ namespace FraplesDev
 	Surface DepthStencil::ToSurface(Graphics& gfx, bool linearize ) const
 	{
 		INFOMAN(gfx);
+		D3D11_DEPTH_STENCIL_VIEW_DESC srcViewDesc{};
+		_mDepthStencilView->GetDesc(&srcViewDesc);
 		// creating a temp texture compatible with the source, but with CPU read access
 		Microsoft::WRL::ComPtr<ID3D11Resource> pResSource;
 		_mDepthStencilView->GetResource(&pResSource);
 		Microsoft::WRL::ComPtr<ID3D11Texture2D>pTexSource;
 		pResSource.As(&pTexSource);
-		D3D11_TEXTURE2D_DESC textureDesc;
-		pTexSource->GetDesc(&textureDesc);
-		textureDesc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
-		textureDesc.Usage = D3D11_USAGE_STAGING;
-		textureDesc.BindFlags = 0;
+		D3D11_TEXTURE2D_DESC srcTextureDesc{};
+		pTexSource->GetDesc(&srcTextureDesc);
+		D3D11_TEXTURE2D_DESC tmpTextureDesc = srcTextureDesc;
+		tmpTextureDesc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
+		tmpTextureDesc.Usage = D3D11_USAGE_STAGING;
+		tmpTextureDesc.BindFlags = 0;
+		tmpTextureDesc.MiscFlags = 0;
+		tmpTextureDesc.ArraySize = 1;
 		Microsoft::WRL::ComPtr<ID3D11Texture2D>pTexTemp;
-		FPL_GFX_THROW_INFO(GetDevice(gfx)->CreateTexture2D(&textureDesc, nullptr, &pTexTemp));
+		FPL_GFX_THROW_INFO(GetDevice(gfx)->CreateTexture2D(&tmpTextureDesc, nullptr, &pTexTemp));
 
 		// copy texture contents
-		FPL_GFX_THROW_INFO_ONLY(GetContext(gfx)->CopyResource(pTexTemp.Get(), pTexSource.Get()));
+		if (srcViewDesc.ViewDimension == D3D11_DSV_DIMENSION::D3D11_DSV_DIMENSION_TEXTURE2DARRAY)
+		{
+			// source is actually inside a cubemap texture, use view info to find the correct slice and copy subresource
+			FPL_GFX_THROW_INFO_ONLY(GetContext(gfx)->CopySubresourceRegion(pTexTemp.Get(), 0, 0, 0, 0, pTexSource.Get(), srcViewDesc.Texture2DArray.FirstArraySlice, nullptr));
+		}
+		else
+		{
+			FPL_GFX_THROW_INFO_ONLY(GetContext(gfx)->CopyResource(pTexTemp.Get(), pTexSource.Get()));
+		}
 
 		// create Surface and copy from temp texture to it
 
@@ -157,7 +170,7 @@ namespace FraplesDev
 			auto pSrcRow = reinterpret_cast<const Pixel*>(pSrcBytes + msr.RowPitch * size_t(y));
 			for (unsigned x = 0; x < width; x++)
 			{
-				if (textureDesc.Format == DXGI_FORMAT::DXGI_FORMAT_R24G8_TYPELESS)
+				if (srcTextureDesc.Format == DXGI_FORMAT::DXGI_FORMAT_R24G8_TYPELESS)
 				{
 					const auto raw = 0xFFFFFF & *reinterpret_cast<const unsigned int*>(pSrcRow + x);
 					if (linearize)
@@ -173,7 +186,7 @@ namespace FraplesDev
 						s.PutPixel(x, y, { channel,channel,channel });
 					}
 				}
-				else if (textureDesc.Format == DXGI_FORMAT::DXGI_FORMAT_R32_TYPELESS)
+				else if (srcTextureDesc.Format == DXGI_FORMAT::DXGI_FORMAT_R32_TYPELESS)
 				{
 					const auto raw = *reinterpret_cast<const float*>(pSrcRow + x);
 					if (linearize)
