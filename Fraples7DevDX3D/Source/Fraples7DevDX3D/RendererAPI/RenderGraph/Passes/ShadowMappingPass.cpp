@@ -29,7 +29,7 @@ namespace FraplesDev
 		AddBind(std::make_shared<ViewPort>(gfx, (float)size, (float)size));
 		AddBind(std::make_shared<ShadowRasterizer>(gfx, 50, 2.0f, 0.1f));
 		RegisterSource(DirectContextSource<DepthCubeTexture>::Make("map", _mDepthCube));
-		DirectX::XMStoreFloat4x4(&_mProjection, DirectX::XMMatrixPerspectiveLH(1.0f, 1.0f, 1.0f, 60.0f));
+		DirectX::XMStoreFloat4x4(&_mProjection, DirectX::XMMatrixPerspectiveLH(1.0f, 1.0f, 0.5f, 100.0f));
 		// +X
 		DirectX::XMStoreFloat3(&_mCameraDirections[0], DirectX::XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f));
 		DirectX::XMStoreFloat3(&_mCameraUps[0], DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f));
@@ -69,10 +69,6 @@ namespace FraplesDev
 
 			auto d = _mDepthCube->GetDepthBuffer(i);
 			d->Clear(gfx);
-		}
-		for (size_t i = 0; i < 0b01; i++)
-		{
-			auto d = _mDepthCube->GetDepthBuffer(i);
 			SetDepthBuffer(std::move(d));
 			const auto lootAt = pos + DirectX::XMLoadFloat3(&_mCameraDirections[i]);
 			gfx.SetCamera(DirectX::XMMatrixLookAtLH(pos, lootAt, DirectX::XMLoadFloat3(&_mCameraUps[i])));
