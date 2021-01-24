@@ -75,20 +75,23 @@ namespace FraplesDev
 
 	void Application::RenderObj()
 	{
-		_mCameras.Submit(Channel::main);
-		light.Submit(Channel::main);
-		_mSponza.Submit(Channel::main);
 		cube1.Submit(Channel::main);
+		_mCameras.Submit(Channel::shadow);
+		light.Submit(Channel::main);
+		_mCameras.Submit(Channel::main);
+		cube1.Submit(Channel::shadow);
+	/*	
+		_mSponza.Submit(Channel::main);
 		cube2.Submit(Channel::main);
 		_mNano.Submit(Channel::main);
 		gobber.Submit(Channel::main);
 
-		_mCameras.Submit(Channel::shadow);
 		light.Submit(Channel::shadow);
 		_mSponza.Submit(Channel::shadow);
-		cube1.Submit(Channel::shadow);
+		
 		cube2.Submit(Channel::shadow);
 		_mNano.Submit(Channel::shadow);
+		*/
 		gobber.Submit(Channel::shadow);
 		renderGraph.Execute(_mWin.GetGFX());
 	}

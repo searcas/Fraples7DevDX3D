@@ -2,6 +2,7 @@
 #include "RendererAPI/Stencil/DepthStencil.h"
 #include "RendererAPI/Stencil/Stencil.h"
 #include "RendererAPI/Blending/Blending.h"
+#include "RendererAPI/Rasterizer/Rasterizer.h"
 #include "RendererAPI/ShadowMapping/ShadowRasterizer.h"
 #include "RendererAPI/VertexShader.h"
 #include "RendererAPI/NullPixelShader.h"
@@ -28,7 +29,7 @@ namespace FraplesDev
 		AddBind(Stencil::Resolve(gfx, Stencil::Mode::Off));
 		AddBind(Blending::Resolve(gfx, false));
 		AddBind(std::make_shared<ViewPort>(gfx, (float)size, (float)size));
-		AddBind(std::make_shared<ShadowRasterizer>(gfx, 50, 2.0f, 0.1f));
+		AddBind(std::make_shared<Rasterizer>(gfx, false));
 		RegisterSource(DirectContextSource<DepthCubeTexture>::Make("map", _mDepthCube));
 		DirectX::XMStoreFloat4x4(&_mProjection, DirectX::XMMatrixPerspectiveFovLH( PI / 2.0f, 1.0f, 0.5f, 100.0f));
 		// +X

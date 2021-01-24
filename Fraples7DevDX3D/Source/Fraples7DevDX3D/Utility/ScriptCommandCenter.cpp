@@ -3,6 +3,7 @@
 #include <fstream>
 #include "TexturePreprocessor.h"
 #include "Json/nlohmann/json.hpp"
+#include "QualityAssurance/TestingQA.h"
 #include <filesystem>
 namespace FraplesDev
 {
@@ -56,6 +57,14 @@ namespace FraplesDev
 					else if (commandName == "publish")
 					{
 						Publish(params.at("dest"));
+						abort = true;
+					}
+					else if (commandName == "run-tests")
+					{
+						QA::TestDynamicMeshLoading();
+						QA::TestDynamicConstant();
+						QA::TestScaleMatrixTranslation();
+						QA::TestNumpy();
 						abort = true;
 					}
 					else

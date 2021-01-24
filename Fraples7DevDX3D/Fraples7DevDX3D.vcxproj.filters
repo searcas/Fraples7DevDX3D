@@ -288,6 +288,9 @@
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Texture\CubeTexture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\Core\Debugging\cnpy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Fraples7.h">
@@ -654,6 +657,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Fraples7DevDX3D\Core\ViewPort.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\Core\Debugging\cnpy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

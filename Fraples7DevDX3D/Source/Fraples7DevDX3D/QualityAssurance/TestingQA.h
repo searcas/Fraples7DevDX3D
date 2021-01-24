@@ -12,5 +12,6 @@ namespace FraplesDev
 		void TestDynamicConstant();
 		void TestScaleMatrixTranslation();
 		void D3DTestScratchPad(class Window& wn);
+		void TestNumpy();
 	}
 }

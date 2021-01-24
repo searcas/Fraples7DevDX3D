@@ -12,6 +12,7 @@
 #include "Platform/Windows/Window.h"
 #include "RendererAPI/RenderTarget.h"	
 #include "Core/Surface.h"
+#include "Core/Debugging/cnpy.h"
 #include <algorithm>
 #include <array>
 namespace FraplesDev
@@ -73,6 +74,12 @@ namespace FraplesDev
 			};
 			RenderWithVS("Test1_VS.cso");
 			RenderWithVS("Test2_VS.cso");
+
+		}
+		void TestNumpy()
+		{
+			auto v = std::vector{ 0,1,2,4,5,6 };
+			cnpy::npy_save("test.npy", v.data(), { 3,2 });
 
 		}
 		void TestDynamicMeshLoading()

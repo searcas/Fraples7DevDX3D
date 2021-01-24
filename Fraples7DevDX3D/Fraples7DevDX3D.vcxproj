@@ -108,6 +108,7 @@
     <ClCompile Include="ImGui\imgui_impl_dx11.cpp" />
     <ClCompile Include="ImGui\imgui_impl_win32.cpp" />
     <ClCompile Include="ImGui\imgui_widgets.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\Core\Debugging\cnpy.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Texture\CubeTexture.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\GraphicAPI\GraphicsResource.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\QualityAssurance\TestingQA.cpp" />
@@ -212,6 +213,7 @@
     <ClInclude Include="ImGui\imstb_textedit.h" />
     <ClInclude Include="ImGui\imstb_truetype.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\Core\Debugging\cnpy.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Texture\CubeTexture.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\Core\ViewPort.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\GraphicAPI\GraphicsResource.h" />
