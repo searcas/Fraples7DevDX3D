@@ -91,7 +91,7 @@ namespace FraplesDev
 
 		// make depth buffer resources for capturing shadow map
 
-		for (UINT face = 0; face < 6; face++)
+		for (UINT face = 0; face < 0b110; face++)
 		{
 			_mDepthBuffers.push_back(std::make_shared<OutputOnlyDepthStencil>(gfx, pTexture, face));
 		}

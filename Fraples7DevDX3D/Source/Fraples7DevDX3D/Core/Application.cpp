@@ -27,7 +27,6 @@ namespace FraplesDev
 		cube2.LinkTechniques(renderGraph);
 		_mSponza.LinkTechniques(renderGraph);
 		light.LinkTechniques(renderGraph);
-
 		gobber.LinkTechniques(renderGraph);
 		_mNano.LinkTechniques(renderGraph);
 		_mCameras.LinnkTechniques(renderGraph);
@@ -84,14 +83,14 @@ namespace FraplesDev
 		_mNano.Submit(Channel::main);
 		gobber.Submit(Channel::main);
 
-		cube1.Submit(Channel::shadow);
 		light.Submit(Channel::shadow);
 		_mSponza.Submit(Channel::shadow);
 		
 		cube2.Submit(Channel::shadow);
-		_mNano.Submit(Channel::shadow);
+		cube1.Submit(Channel::shadow);
 		
 		gobber.Submit(Channel::shadow);
+		_mNano.Submit(Channel::shadow);
 		renderGraph.Execute(_mWin.GetGFX());
 	}
 

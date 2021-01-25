@@ -71,7 +71,7 @@ namespace FraplesDev
 		{
 			auto d = _mDepthCube->GetDepthBuffer(i);
 			d->Clear(gfx);
-
+			SetDepthBuffer(std::move(d));
 			const auto lootAt = pos + DirectX::XMLoadFloat3(&_mCameraDirections[i]);
 			gfx.SetCamera(DirectX::XMMatrixLookAtLH(pos, lootAt, DirectX::XMLoadFloat3(&_mCameraUps[i])));
 			RenderQueuePass::Execute(gfx);
