@@ -291,6 +291,9 @@
     <ClCompile Include="Source\Fraples7DevDX3D\Core\Debugging\cnpy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Multithreading\CommandList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Fraples7.h">
@@ -663,6 +666,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Common\WarrningDis.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Multithreading\CommandList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
