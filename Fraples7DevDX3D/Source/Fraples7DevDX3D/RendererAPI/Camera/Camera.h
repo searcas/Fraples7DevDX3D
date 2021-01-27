@@ -20,7 +20,7 @@ namespace FraplesDev
 		void Submit(size_t channels)const;
 		void Reset(Graphics& gfx);
 		void SetPos(const DirectX::XMFLOAT3& pos);
-		inline DirectX::XMFLOAT3 GetPos()const noexcept { return _mPos; }
+		inline const DirectX::XMFLOAT3& GetPos()const noexcept { return _mPos; }
 		inline const std::string& GetName()const noexcept { return _mName; }
 	private:
 		bool tethered;

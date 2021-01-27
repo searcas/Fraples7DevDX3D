@@ -6,7 +6,7 @@
 // The following #defines disable a bunch of unused windows stuff. If you 
 // get weird errors when trying to do some windows stuff, try removing some
 // (or all) of these defines (it will increase build time though).
-#ifndef WIN_TAR
+#ifndef FULL_WINTARD
 #define WIN32_LEAN_AND_MEAN
 #define NOGDICAPMASKS
 #define NOSYSMETRICS
@@ -47,7 +47,3 @@
 #define STRICT
 
 #include <Windows.h>
-
-#pragma warning(disable:4265)
-#include <wrl.h>
-#pragma warning(default:4265)

@@ -1,5 +1,6 @@
 #pragma once
 #include "Core/Fraples7.h"
+#include "WarrningDis.h"
 #include <dxgidebug.h>
 #include <vector>
 #include <string>

@@ -662,6 +662,9 @@
     <ClInclude Include="Source\Fraples7DevDX3D\Core\Debugging\cnpy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Fraples7DevDX3D\Core\Common\WarrningDis.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="DirectXTex\DirectXTex.inl">

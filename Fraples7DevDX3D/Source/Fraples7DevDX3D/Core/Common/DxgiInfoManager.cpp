@@ -1,8 +1,9 @@
 #include "DxgiInfoManager.h"
-#include "../../Platform/Windows/Window.h"
-#include "../Common/Exceptions/Macros/GraphicsThrowMacros.h"
-#include "../Common/Exceptions/Macros/WindowsThrowMacros.h"
+#include "Platform/Windows/Window.h"
+#include "Core/Common/Exceptions/Macros/GraphicsThrowMacros.h"
+#include "Core/Common/Exceptions/Macros/WindowsThrowMacros.h"
 #include <memory>
+
 FraplesDev::DxgiInfoManager::DxgiInfoManager()
 {
 	//define function signature of DXGIGetDebugInterface
