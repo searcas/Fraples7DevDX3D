@@ -273,3 +273,4 @@ __pycache__/
 !Publish/
 !Publish/*.exe
 !Publish/Shaders/*
+!Publish/Models/*
