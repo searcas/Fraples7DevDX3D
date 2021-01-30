@@ -117,6 +117,7 @@
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Camera\Projection.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Camera\ViewFrustum.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Multithreading\CommandList.cpp" />
+    <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Multithreading\ThreadPool.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Probe\ModelProbeBase.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\Probe\TechProbeBase.cpp" />
     <ClCompile Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\BlurOutlineRenderGraph.cpp" />
@@ -224,6 +225,7 @@
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Camera\Projection.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Camera\ViewFrustum.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Multithreading\CommandList.h" />
+    <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Multithreading\ThreadPool.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Probe\ModelProbeBase.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\Probe\TechProbeBase.h" />
     <ClInclude Include="Source\Fraples7DevDX3D\RendererAPI\RenderGraph\BlurOutlineRenderGraph.h" />

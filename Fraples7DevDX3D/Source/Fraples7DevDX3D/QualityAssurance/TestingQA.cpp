@@ -256,8 +256,8 @@ namespace FraplesDev
 				b1["arr"][0] = DirectX::XMFLOAT3{ 69.0f,69.0f,60.69f };
 				auto b2 = MP::Buffer(cooked);
 				b2["arr"][0] = DirectX::XMFLOAT3{ 690.0f,0.0f,0.0f };
-				assert(static_cast<DirectX::XMFLOAT3>(b1["arr"][0]).x == 69.0f);
-				assert(static_cast<DirectX::XMFLOAT3>(b2["arr"][0]).x == 690.0f);
+				//assert(static_cast<DirectX::XMFLOAT3>(b1["arr"][0]).x == 69.0f);
+				//assert(static_cast<DirectX::XMFLOAT3>(b2["arr"][0]).x == 690.0f);
 			}
 			//specific testing scenario
 			{

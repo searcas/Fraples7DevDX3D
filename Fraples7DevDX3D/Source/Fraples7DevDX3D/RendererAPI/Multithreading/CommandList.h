@@ -9,10 +9,11 @@ namespace FraplesDev
 	{
 	public:
 		CommandList(Graphics &gfx);
+		void Begin();
+		void Execute();
+		void Finish();
 
 	private:
 
 	};
-
-
 }
