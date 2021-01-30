@@ -8,7 +8,7 @@ namespace FraplesDev
 	{
 		ThreadPool::ThreadPool(size_t numOfThreads)
 		{
-			for (unsigned int i = 0u; i < _mThreadPool.size(); ++i)
+			for (unsigned int i = 0u; i < numOfThreads; ++i)
 			{
 				_mThreadPool.emplace_back(std::thread(&ThreadPool::Execute, this));
 			}

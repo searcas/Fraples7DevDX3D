@@ -9,8 +9,10 @@ namespace FraplesDev
 	
 	Application::Application(const char* name, int width, int height, const std::string& commandLine)
 		:_mWin(name, width, height), light(_mWin.GetGFX(), { 10.f,5.0f,0.0f }),
-		scriptCommander(Utility::TokenizeQuoted(commandLine))
+		scriptCommander(Utility::TokenizeQuoted(commandLine)),
+		_mThreadPool(std::thread::hardware_concurrency())
 	{
+		
 		//QA::TestMaterialSystemLoading(_mWin.GetGFX());
 		//QA::TestDynamicConstant();
 		//QA::D3DTestScratchPad(_mWin);

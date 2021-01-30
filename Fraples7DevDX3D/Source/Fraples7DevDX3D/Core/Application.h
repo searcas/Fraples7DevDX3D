@@ -9,6 +9,7 @@
 #include "RendererAPI/RenderGraph/ScaleOutlineRenderGraph.h"
 #include "RendererAPI/RenderGraph/BlurOutlineRenderGraph.h"
 #include "Math/Math.h"
+#include "RendererAPI/Multithreading/ThreadPool.h"
 
 namespace FraplesDev
 {
@@ -45,6 +46,7 @@ namespace FraplesDev
 		MultiCamera _mCameras;
 	
 		//std::unique_ptr<Mesh>_mPloaded;
+		MT::ThreadPool _mThreadPool;
 		BaseCube cube1 = { _mWin.GetGFX(), 4.0f };
 		BaseCube cube2 = { _mWin.GetGFX(), 4.0f };
 		Model gobber{ _mWin.GetGFX(),"Models\\gobber\\GoblinX.obj", 4.0f};
