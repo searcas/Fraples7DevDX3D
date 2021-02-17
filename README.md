@@ -3,6 +3,8 @@ Development the Engine journey with DirectX 11 3D, eventually gonna be merged wi
 # Installation
 If you running without visual studio you have <b>publish</b> folder all compiled and ready to be used :)
 # Progress of project
+<b>Full Scene With Dynamic Shadows!</b><br>
+https://www.youtube.com/embed/bAybOfnyfk0 <br>
 https://youtu.be/TFAi-Ot5M_Y <br>
 https://www.youtube.com/watch?v=atoQFfHQd6g <br>
 https://www.youtube.com/watch?v=53PGQKCWjkI <br> <br>
