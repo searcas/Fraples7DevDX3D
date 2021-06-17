@@ -8,11 +8,5 @@ namespace FraplesDev
 	{
 	public:
 		OutlineMaskGenerationPass(Graphics& gfx,std::string name);
-
-
-	private:
-
 	};
-
-
 }

@@ -2,7 +2,7 @@
 #include "NodeSystem.h"
 #include "ModelException.h"
 #include "assimp/Importer.hpp"
-#include  "assimp/postprocess.h"
+#include "assimp/postprocess.h"
 #include "Core/Math/FraplesXM.h"
 #include "Core/Math/Math.h"
 namespace FraplesDev
@@ -12,7 +12,11 @@ namespace FraplesDev
 	Model::Model(Graphics& gfx, const std::string& path, float scale)
 	{
 		Assimp::Importer imp;
-		const auto pScene = imp.ReadFile(path.c_str(), aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_ConvertToLeftHanded | aiProcess_GenNormals | aiProcess_CalcTangentSpace);
+		const auto pScene = imp.ReadFile(path.c_str(), 
+			aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | 
+			aiProcess_ConvertToLeftHanded | aiProcess_GenNormals | 
+			aiProcess_CalcTangentSpace);
+
 		if (pScene==nullptr)
 		{
 			throw ModelException(imp.GetErrorString(), __LINE__, __FILE__);
@@ -38,10 +42,11 @@ namespace FraplesDev
 		_mRoot->Submit(channels, DirectX::XMMatrixIdentity());
 	}
 
-	std::unique_ptr<Node>Model::ParseNode(int& nextId, const aiNode& node, float scale)noexcept
+	std::unique_ptr<Node>Model::ParseNode(int& nextId, const aiNode& node, float scale) noexcept
 	{
 		
-		const auto transform = ScaleTranslation(DirectX::XMMatrixTranspose(DirectX::XMLoadFloat4x4(reinterpret_cast<const DirectX::XMFLOAT4X4*>(&node.mTransformation))),scale);
+		const auto transform = ScaleTranslation(DirectX::XMMatrixTranspose(DirectX::XMLoadFloat4x4
+		(reinterpret_cast<const DirectX::XMFLOAT4X4*>(&node.mTransformation))),scale);
 		std::vector<Mesh*> curMeshPtrs;
 		curMeshPtrs.reserve(node.mNumMeshes);
 

@@ -1,8 +1,8 @@
 #include "Window.h"
 #include <sstream>
-#include "../../Core/Common/Exceptions/Macros/WindowsThrowMacros.h"
-#include "../../../../ImGui/imgui_impl_win32.h"
-#include "../Source/Fraples7DevDX3D/ImGuiMgr/ImGuiMgr.h"
+#include "Core/Common/Exceptions/Macros/WindowsThrowMacros.h"
+#include "ImGui/imgui_impl_win32.h"
+#include "Source/Fraples7DevDX3D/ImGuiMgr/ImGuiMgr.h"
 namespace FraplesDev {
 	Window::WindowClass Window::WindowClass::_sWindClass;
 	//Window Exception Stuff

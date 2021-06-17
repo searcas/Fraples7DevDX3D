@@ -16,6 +16,7 @@ namespace FraplesDev
 		PointLight(Graphics& gfx, DirectX::XMFLOAT3 pos = { 10.0f,9.0f,2.5f }, float radius = 0.5f);
 		void SpawnControlWindow()noexcept;
 		void Reset()noexcept;
+		void SetPosition(DirectX::XMFLOAT3 pos)noexcept;
 		void Submit(size_t channels) const noexcept(!IS_DEBUG);
 		void LinkTechniques(RenderGraph&);
 		std::shared_ptr<Camera>ShareCamera()const noexcept;
@@ -35,8 +36,8 @@ namespace FraplesDev
 
 
 	private:
-		PointLightCBuf _mHome;
-		PointLightCBuf _mConstantBufferData;
+		inline static PointLightCBuf _mHome;
+		inline static PointLightCBuf _mConstantBufferData;
 		mutable SolidSphere _mMesh;
 		mutable PixelConstantBuffer<PointLightCBuf>_mCbuf;
 		std::shared_ptr<Camera>_mCamera;

@@ -61,7 +61,7 @@ namespace FraplesDev
 		// check for overlap of input names
 		for (auto& in : _mSyncs)
 		{
-			if (in->GetRegisteredName() ==input->GetRegisteredName())
+			if (in->GetRegisteredName() == input->GetRegisteredName())
 			{
 				throw RGC_EXCEPTION("Registered input overlaps with existing: " + input->GetRegisteredName());
 			}

@@ -68,7 +68,7 @@ namespace FraplesDev
 				buf["color"] = DirectX::XMFLOAT4{ 1.0f,0.4f,0.4f,1.0f };
 				draw.AddContext(std::make_shared<CachingPixelConstantBufferEx>(gfx, buf, 1u));
 				draw.AddContext(InputLayout::Resolve(gfx, model._mVertices.GetLayout(), *VertexShader::Resolve(gfx, "Solid_VS.cso")));
-				draw.AddContext(std::make_shared<TransformCBuf>(gfx));
+				draw.AddContext(std::make_shared<TransformCBufScaling>(gfx));
 				outLine.AddStep(std::move(draw));
 			}
 
@@ -145,7 +145,7 @@ namespace FraplesDev
 
 					if (auto v = buf["scale"]; v.Exists())
 					{
-						dCheck(ImGui::SliderFloat(tag("Scale"), &v, 1.02f, 2.0f, "%.3f"));
+						dCheck(ImGui::SliderFloat(tag("Scale"), &v, 1.02, 2.0f, "%.3f"));
 					}
 					if (auto v = buf["color"]; v.Exists())
 					{

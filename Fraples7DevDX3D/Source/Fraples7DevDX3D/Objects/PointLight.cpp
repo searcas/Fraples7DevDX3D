@@ -64,6 +64,11 @@ namespace FraplesDev
 		_mConstantBufferData = _mHome;
 	}
 
+	void PointLight::SetPosition(DirectX::XMFLOAT3 pos) noexcept
+	{
+		_mConstantBufferData.pos = {pos};
+	}
+
 	void PointLight::Submit(size_t channels) const noexcept(!IS_DEBUG)
 	{
 		_mMesh.SetPos(_mConstantBufferData.pos);

@@ -110,7 +110,7 @@ namespace FraplesDev
 		for (int i = 0; i < nTaps; i++)
 		{
 			const auto x = float(i - radius);
-			const auto g = gauss(x,sigma);
+			const auto g = gauss(x, sigma);
 			sum += g;
 			k["coefficients"][i] = g;
 		}

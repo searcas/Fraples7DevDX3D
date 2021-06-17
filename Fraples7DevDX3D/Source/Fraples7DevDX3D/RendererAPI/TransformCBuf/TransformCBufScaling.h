@@ -8,7 +8,7 @@ namespace FraplesDev
 	class TransformCBufScaling : public TransformCBuf
 	{
 	public:
-		TransformCBufScaling(Graphics& gfx, float scale = 1.01f);
+		TransformCBufScaling(Graphics& gfx, float scale = 1.1f);
 		void Accept(TechniqueProbe& probe)override;
 		void Bind(Graphics& gfx)noexcept(!IS_DEBUG) override;
 		std::unique_ptr<CloningContext>Clone()const noexcept override;

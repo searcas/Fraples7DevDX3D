@@ -46,6 +46,5 @@ namespace FraplesDev
 			bool _mStopThreads = false;
 			TaskQueue _mTaskQueue;
 		};
-
 	}
 }

@@ -15,7 +15,7 @@ namespace FraplesDev
 
 		for (const auto pm : _mMeshPtrs)
 		{
-			pm->Submit(channels,built);
+			pm->Submit(channels, built);
 		}
 		for (const auto& pc : _mChildPtrs)
 		{

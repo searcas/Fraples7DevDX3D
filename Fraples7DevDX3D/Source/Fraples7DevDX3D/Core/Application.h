@@ -49,8 +49,8 @@ namespace FraplesDev
 		MT::ThreadPool _mThreadPool;
 		BaseCube cube1 = { _mWin.GetGFX(), 4.0f };
 		BaseCube cube2 = { _mWin.GetGFX(), 4.0f };
-		Model gobber{ _mWin.GetGFX(),"Models\\gobber\\GoblinX.obj", 4.0f};
 		Model _mSponza{_mWin.GetGFX(),"Models\\Sponza\\sponza.obj", 1.0f / 20.0f };
+		Model gobber{ _mWin.GetGFX(),"Models\\gobber\\GoblinX.obj", 4.0f};
 		Model _mNano{ _mWin.GetGFX(),"Models\\nano_textured\\nanosuit.obj", 2.0f };
 	private:
 		FraplesDev::Timer _mTimer;
